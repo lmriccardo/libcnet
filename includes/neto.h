@@ -6,6 +6,9 @@
 #include <stdbool.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "buffer.h"
 
 __BEGIN_DECLS
@@ -15,15 +18,15 @@ __BEGIN_DECLS
 #define ICMP_HEADER_MAX_SIZE 0x08
 
 // Summary of ICMP Message Types
-#define ICMP_ECHO_REPLY_TYPE             0x00
-#define ICMP_DESTINATIO_UNREACHABLE_TYPE 0x03
-#define ICMP_SOURCE_QUENCH_TYPE          0x04
-#define ICMP_REDIRECT_TYPE               0x05
-#define ICMP_ECHO_TYPE                   0x08
-#define ICMP_TIME_EXCEEEDED_TYPE         0x0b
-#define ICMP_PARAMETER_PROBLEM_TYPE      0x0c
-#define ICMP_INFORMATION_REQUEST_TYPE    0x0f
-#define ICMP_INFORMATION_REPLY_TYPE      0x10
+#define ICMP_ECHO_REPLY_TYPE              0x00
+#define ICMP_DESTINATION_UNREACHABLE_TYPE 0x03
+#define ICMP_SOURCE_QUENCH_TYPE           0x04
+#define ICMP_REDIRECT_TYPE                0x05
+#define ICMP_ECHO_TYPE                    0x08
+#define ICMP_TIME_EXCEEEDED_TYPE          0x0b
+#define ICMP_PARAMETER_PROBLEM_TYPE       0x0c
+#define ICMP_INFORMATION_REQUEST_TYPE     0x0f
+#define ICMP_INFORMATION_REPLY_TYPE       0x10
 
 // Summary of Destination Unreachable Codes
 #define ICMP_NET_UNREACHABLE_CODE      0x00
@@ -32,6 +35,8 @@ __BEGIN_DECLS
 #define ICMP_PORT_UNREACHABLE_CODE     0x03
 #define ICMP_FRAGMENTATION_NEEDED_CODE 0x04
 #define ICMP_SOURCE_ROUTE_FAILED_CODE  0x05
+
+#define ICMP_ECHO_CODE 0x0
 
 struct h_echo_t {
     

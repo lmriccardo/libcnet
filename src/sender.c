@@ -1,9 +1,7 @@
-#include <string.h>
 #include "sender.h"
-#include "crafter.h"
 
 
-RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, u_int16_t _dstport, char* _proto)
+RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16_t _dstport, char* _proto)
 {
     struct sockaddr_in src, dst;
     int socketfd;
@@ -24,10 +22,11 @@ RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, u_int16_t _dstport, cha
     RawSender *sender = (RawSender*)malloc(sizeof(RawSender));
     sender->_srcaddress = _srcaddr;
     sender->_dstaddress = dst;
+    sender->_gateway = _gateway;
     sender->_socket = socketfd;
     sender->_msgcnt = 0;
     sender->_proto = proto;
-    sender->_lastid = (unsigned short)getpid();
+    sender->_lastid = 0x1235; // (unsigned short)getpid();
     sender->_icmpsn = 0;
 }
 
@@ -57,6 +56,8 @@ void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
 void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
 {
     ByteBuffer* buffer = IpPacket_encode(_pckt);
+    ByteBuffer_writeToFile(buffer, "test.bin");
+    
     __RawSender_sendto_v2(_self, buffer->_buffer, buffer->_size);
     _self->_buff = buffer;
     _self->_msgcnt += 1;
@@ -86,7 +87,7 @@ void RawSender_sendc(RawSender* _self, IpPacket* _pckt)
     }
 }
 
-IpPacket* RawSender_craftIpPacket(RawSender *_self, u_int16_t _id)
+IpPacket* RawSender_createIpPacket(RawSender *_self, u_int16_t _id)
 {
     u_int8_t proto = _self->_proto->p_proto;
     char *dstaddr = RawSender_getDestinationIP(_self);
@@ -101,26 +102,58 @@ IpPacket* RawSender_craftIpPacket(RawSender *_self, u_int16_t _id)
     return ippckt;
 }
 
-void RawSender_sendIcmp_Echo_v2(RawSender* _self, u_int8_t _type, u_int8_t _code, u_int16_t _id)
+IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_t _code)
 {
-    RawSender_sendIcmp_Echo_v4(_self, _type, _code, _id, _self->_icmpsn++);
-}
+    if (
+        (
+            _type == ICMP_DESTINATION_UNREACHABLE_TYPE ||
+            _type == ICMP_SOURCE_QUENCH_TYPE           ||
+            _type == ICMP_TIME_EXCEEEDED_TYPE  
+        )
+    ) {
+        return craftIcmpPacket_Unused(_type, _code, 0x0);
+    }
 
-void RawSender_sendIcmp_Echo_v3(RawSender* _self, u_int8_t _type, u_int8_t _code, u_int16_t _seqnum)
-{
-    RawSender_sendIcmp_Echo_v4(_self, _type, _code, _self->_lastid, _seqnum);
-}
+    if (_type == ICMP_REDIRECT_TYPE)
+    {
+        return craftIcmpPacket_Redirect(_type, _code, 0x0, _self->_gateway);
+    }
 
-void RawSender_sendIcmp_Echo_v4(
-    RawSender* _self, u_int8_t _type, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum
-) {
-    IpPacket* ippckt = RawSender_craftIpPacket(_self, _id);
-    IcmpPacket *icmppckt = IcmpPacket_new_v2(_type, 0);
-
-    // IcmpPacket_fillHeader();
+    if (
+        (
+            _type == ICMP_ECHO_REPLY_TYPE          ||
+            _type == ICMP_ECHO_TYPE                ||
+            _type == ICMP_INFORMATION_REQUEST_TYPE ||
+            _type == ICMP_INFORMATION_REPLY_TYPE
+        )
+    ) {
+        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lastid++, ++_self->_icmpsn);
+    }
 }
 
 void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code)
 {
-    // RawSender_sendIcmp_v4(_self, _type, _code, _self->_lastid++, _self->_icmpsn++);
+    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
+    IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
+
+    // Compute the checksum of the ICMP header
+    ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
+    u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer, icmphdrbuff->_size);
+
+    printf("Checksum %hu\n", chksum);
+
+    IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
+    ByteBuffer_delete(icmphdrbuff);
+
+    // Wrap the ICMP packet inside the IP packet
+    IpPacket_wrapIcmp(ippckt, icmppckt);
+
+    IpHeader_printInfo(ippckt->_iphdr);
+    IcmpHeader_printInfo(icmppckt->_icmphdr);
+
+    // Then send the packet
+    RawSender_sendto(_self, ippckt);
+
+    IcmpPacket_delete(icmppckt);
+    IpPacket_delete(ippckt);
 }

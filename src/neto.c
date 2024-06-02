@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "neto.h"
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
@@ -13,7 +10,7 @@ IcmpHeader* IcmpHeader_new(u_int8_t _type)
 
     switch (_type)
     {
-        case ICMP_DESTINATIO_UNREACHABLE_TYPE:
+        case ICMP_DESTINATION_UNREACHABLE_TYPE:
         case ICMP_SOURCE_QUENCH_TYPE:
         case ICMP_TIME_EXCEEEDED_TYPE:
             __IcmpHeader_createHeader_v1(hdr);
@@ -208,8 +205,8 @@ void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer)
 
     if (
         (
-            _self->_type == ICMP_DESTINATIO_UNREACHABLE_TYPE ||
-            _self->_type == ICMP_SOURCE_QUENCH_TYPE          ||
+            _self->_type == ICMP_DESTINATION_UNREACHABLE_TYPE ||
+            _self->_type == ICMP_SOURCE_QUENCH_TYPE           ||
             _self->_type == ICMP_TIME_EXCEEEDED_TYPE
         )
     ) {
@@ -467,14 +464,14 @@ void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
-    ByteBuffer_putShort(_buffer, htons(_self->_tlength));
+    ByteBuffer_putShort(_buffer, _self->_tlength);
     ByteBuffer_putShort(_buffer, htons(_self->_id));
     ByteBuffer_putShort(_buffer, htons(_self->_flag_off));
     ByteBuffer_put(_buffer, _self->_ttl);
     ByteBuffer_put(_buffer, _self->_protocol);
-    ByteBuffer_putShort(_buffer, htons(_self->_hdr_chksum));
-    ByteBuffer_putInt(_buffer, htonl(_self->_srcaddr));
-    ByteBuffer_putInt(_buffer, htonl(_self->_dstaddr));
+    ByteBuffer_putShort(_buffer, _self->_hdr_chksum);
+    ByteBuffer_putInt(_buffer, _self->_srcaddr);
+    ByteBuffer_putInt(_buffer, _self->_dstaddr);
 }
 
 ByteBuffer* IpHeader_encode_v2(IpHeader* _self)

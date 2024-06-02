@@ -4,41 +4,42 @@
 
 int main(char **argv, int argc)
 {
-    IpPacket* ippckt = IpPacket_new();
-    u_int16_t flagoff = computeFlagOff(
-        X_FLAG_NOT_SET, D_FLAG_SET, M_FLAG_NOT_SET, 0x0
-    );
+    // IpPacket* ippckt = IpPacket_new();
+    // u_int16_t flagoff = computeFlagOff(
+    //     X_FLAG_NOT_SET, D_FLAG_SET, M_FLAG_NOT_SET, 0x0
+    // );
 
-    u_int8_t dsf = computeDifferentiatedServiceField(IP_HEADER_DSCP_CS0, IP_HEADER_ECN_NECT);
+    // u_int8_t dsf = computeDifferentiatedServiceField(IP_HEADER_DSCP_CS0, IP_HEADER_ECN_NECT);
 
-    IpPacket_fillHeader(
-        ippckt, IPv4, dsf, IP_HEADER_SIZE, 0xabcd, flagoff  ,
-        0x40, IP_HEADER_ICMP_PROTOCOL_CODE, 0x0, "172.19.11.1", "8.8.8.8"
-    );
+    // IpPacket_fillHeader(
+    //     ippckt, IPv4, dsf, IP_HEADER_SIZE, 0xabcd, flagoff  ,
+    //     0x40, IP_HEADER_ICMP_PROTOCOL_CODE, 0x0, "172.19.11.1", "8.8.8.8"
+    // );
 
-    IcmpPacket* icmppckt = IcmpPacket_new_v2(ICMP_ECHO_TYPE, 0);
+    // IcmpPacket* icmppckt = IcmpPacket_new_v2(ICMP_ECHO_TYPE, 0);
 
-    IcmpPacket_fillHeader_v3(icmppckt, 0x0, 0x3412, 0x0100);
-    IcmpHeader_printInfo(icmppckt->_icmphdr);
+    // IcmpPacket_fillHeader_v3(icmppckt, 0x0, 0x3412, 0x0100);
+    // IcmpHeader_printInfo(icmppckt->_icmphdr);
 
-    IpPacket_wrapIcmp(ippckt, icmppckt);
-    IpHeader_printInfo(ippckt->_iphdr);
+    // IpPacket_wrapIcmp(ippckt, icmppckt);
+    // IpHeader_printInfo(ippckt->_iphdr);
 
     // Initialize a sender
-    RawSender* sender = RawSender_new("172.19.11.1", "8.8.8.8", 0, "icmp");
+    RawSender* sender = RawSender_new("172.19.11.1", "8.8.8.8", "172.19.0.1", 0, "icmp");
+    RawSender_sendIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE);
 
     // Send the packet
-    RawSender_sendto(sender, ippckt);
+    // RawSender_sendto(sender, ippckt);
 
     // ByteBuffer *icmpbuff = ByteBuffer_new_v2(sender->_buff->_buffer + 20, 8);
     // ByteBuffer_writeToFile(icmpbuff, "test.bin");
 
     RawSender_delete(sender);
-    IcmpPacket_delete(icmppckt);
-    IpPacket_delete(ippckt);
 
-    u_int16_t id = (unsigned short)getpid();
-    printf("%hu\n", id);
+    printf("%s\n", addressNumberToString(2886929153, false));
 
+    // IcmpPacket_delete(icmppckt);
+    // IpPacket_delete(ippckt);
+    
     return 0;
 }
