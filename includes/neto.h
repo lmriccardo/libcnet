@@ -246,4 +246,6 @@ extern ByteBuffer* IpPacket_encode(IpPacket* _self);
 
 extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt);
 
+__END_DECLS
+
 #endif

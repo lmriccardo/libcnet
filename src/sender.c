@@ -1,5 +1,6 @@
 #include <string.h>
 #include "sender.h"
+#include "crafter.h"
 
 
 RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, u_int16_t _dstport, char* _proto)
@@ -116,28 +117,10 @@ void RawSender_sendIcmp_Echo_v4(
     IpPacket* ippckt = RawSender_craftIpPacket(_self, _id);
     IcmpPacket *icmppckt = IcmpPacket_new_v2(_type, 0);
 
-    IcmpPacket_fillHeader();
+    // IcmpPacket_fillHeader();
 }
 
 void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code)
 {
-    RawSender_sendIcmp_v4(_self, _type, _code, _self->_lastid++, _self->_icmpsn++);
-}
-
-IpPacket* craftIpPacket(
-    u_int8_t _version, int       _dscp,     int   _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int   _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, char* _srcaddr, char*     _dstaddr
-) {
-    IpPacket* ippckt = IpPacket_new();
-
-    u_int16_t flagoff = computeFlagOff(_xf, _df, _mf, _offset);
-    u_int16_t dsf = computeDifferentiatedServiceField(_dscp, _ecn);
-
-    IpPacket_fillHeader(
-        ippckt, _version, dsf, _tlen, _id, flagoff, _ttl, _proto,
-        _checksum, _srcaddr, _dstaddr
-    );
-
-    return ippckt;
+    // RawSender_sendIcmp_v4(_self, _type, _code, _self->_lastid++, _self->_icmpsn++);
 }

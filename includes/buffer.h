@@ -39,4 +39,6 @@ extern void ByteBuffer_writeToFile(ByteBuffer* _self, char *_file);
 
 extern void checkForOOB(int _position, size_t _size, size_t _max);
 
+__END_DECLS
+
 #endif

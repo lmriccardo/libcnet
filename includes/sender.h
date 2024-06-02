@@ -47,14 +47,6 @@ extern void RawSender_sendIcmp_Echo_v3(RawSender* _self, u_int8_t _type, u_int8_
 extern void RawSender_sendIcmp_Echo_v4(
     RawSender* _self, u_int8_t _type, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum);
 
-extern IpPacket* craftIpPacket(
-    u_int8_t _version, int       _dscp,     int   _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int   _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, char* _srcaddr, char*     _dstaddr
-);
-
-extern IcmpPacket* craftIcmpPacket(
-    
-);
+__END_DECLS
 
 #endif
