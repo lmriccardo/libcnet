@@ -541,7 +541,7 @@ void IpPacket_fillPayload(IpPacket *_self, char *_data, size_t _datasize)
 
 u_int16_t IpPacket_getPayloadSize(IpPacket *_self)
 {
-    return _self->_iphdr->_tlength - IP_HEADER_MIN_SIZE;
+    return _self->_iphdr->_tlength - IP_HEADER_SIZE;
 }
 
 ByteBuffer* IpPacket_encode(IpPacket* _self)

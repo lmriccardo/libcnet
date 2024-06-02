@@ -58,7 +58,18 @@ typedef struct
 
 } IcmpHeader;
 
+typedef struct
+{
 
+    IcmpHeader *_icmphdr; // The ICMP Header
+    char       *_payload; // The payload containing all the ICMP data
+
+    size_t __size;  // The size of the payload
+
+} IcmpPacket;
+
+
+/* ICMP Header Functions */
 extern IcmpHeader* IcmpHeader_new(u_int8_t _type);
 extern void        IcmpHeader_delete(IcmpHeader* _self);
 
@@ -81,18 +92,8 @@ extern u_int16_t computeIcmpChecksum(char* _buff, size_t _size);
 extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer);
 extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
 
+/* ICMP Packet Functions */
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
-
-typedef struct
-{
-
-    IcmpHeader *_icmphdr; // The ICMP Header
-    char       *_payload; // The payload containing all the ICMP data
-
-    size_t __size;  // The size of the payload
-
-} IcmpPacket;
-
 
 extern IcmpPacket* IcmpPacket_new(u_int8_t _type);
 extern IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size);
@@ -111,14 +112,14 @@ extern ByteBuffer* IcmpPacket_encode(IcmpPacket *_self);
 
 #define IPv4 0x4
 #define IPv6 0x6
-#define IP_HEADER_MIN_SIZE 0x14
+#define IP_HEADER_SIZE 0x14
 
 /* IP Header Flags */
-#define IP_HEADER_X_FLAG_NOT_SET 0
-#define IP_HEADER_D_FLAG_NOT_SET 0
-#define IP_HEADER_M_FLAG_NOT_SET 0
-#define IP_HEADER_D_FLAG_SET     2
-#define IP_HEADER_M_FLAG_SET     4
+#define X_FLAG_NOT_SET 0
+#define D_FLAG_NOT_SET 0
+#define M_FLAG_NOT_SET 0
+#define D_FLAG_SET     0x02
+#define M_FLAG_SET     0x04
 
 #define IP_HEADER_FLAG(_x, _d, _m) (_x + _d + _m)
 
@@ -157,6 +158,12 @@ extern ByteBuffer* IcmpPacket_encode(IcmpPacket *_self);
 #define IP_HEADER_UDP_PROTOCOL_CODE  0x11
 #define IP_HEADER_TCP_PROTOCOL_CODE  0x06
 
+/* TTL values */
+#ifndef _WIN32
+    #define TTL_DEFAULT_VALUE 0x80
+#elif __linux__
+    #define TTL_DEFAULT_VALUE 0x40
+#endif
 
 typedef struct
 {
