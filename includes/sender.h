@@ -27,7 +27,8 @@ typedef struct
     int                _msgcnt;      /* Current Message Number */
     ByteBuffer*        _buff;        /* Last buffer being sent */
     struct protoent*   _proto;       /* The protocol used */
-    u_int16_t          _lastid;      /* Last used identifier */
+    u_int16_t          _lastid;      /* Last used IP Packet identifier */
+    u_int16_t          _lsticmpid;   /* Last used ICMP Packet identifier */
     u_int16_t          _icmpsn;      /* ICMP Message Sequence Number */
 
 } RawSender;

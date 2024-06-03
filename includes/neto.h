@@ -97,6 +97,8 @@ extern u_int16_t computeIcmpChecksum(char* _buff, size_t _size);
 extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer);
 extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
 
+extern void IcmpHeader_decode(IcmpHeader *_self, ByteBuffer* _buffer);
+
 /* ICMP Packet Functions */
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 

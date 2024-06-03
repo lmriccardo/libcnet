@@ -26,8 +26,9 @@ RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16
     sender->_socket = socketfd;
     sender->_msgcnt = 0;
     sender->_proto = proto;
-    sender->_lastid = 0x1235; // (unsigned short)getpid();
+    sender->_lastid = (unsigned short)getpid();
     sender->_icmpsn = 0;
+    sender->_lsticmpid = 1;
 }
 
 void RawSender_delete(RawSender* _self)
@@ -127,7 +128,7 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_
             _type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lastid++, ++_self->_icmpsn);
+        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, ++_self->_icmpsn);
     }
 }
 
@@ -139,8 +140,6 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code)
     // Compute the checksum of the ICMP header
     ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
     u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer, icmphdrbuff->_size);
-
-    printf("Checksum %hu\n", chksum);
 
     IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
     ByteBuffer_delete(icmphdrbuff);

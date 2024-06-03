@@ -82,3 +82,39 @@ void checkForOOB(int _position, size_t _size, size_t _max)
         exit(EXIT_FAILURE);
     }
 }
+
+u_int8_t ByteBuffer_get(ByteBuffer* _self)
+{
+    u_int8_t data = *(_self->_buffer + _self->_position);
+    ByteBuffer_position(_self, _self->_position + BYTE_SIZE);
+    return data;
+}
+
+u_int16_t ByteBuffer_getShort(ByteBuffer* _self)
+{
+    u_int16_t *data = (u_int16_t *)malloc(SHORT_SIZE * sizeof(char));
+    memcpy(data, _self->_buffer + _self->_position, SHORT_SIZE);
+    ByteBuffer_position(_self, _self->_position + SHORT_SIZE);
+    return *data;
+}
+
+u_int32_t ByteBuffer_getInt(ByteBuffer* _self)
+{
+    u_int32_t *data = (u_int32_t *)malloc(INT_SIZE * sizeof(char));
+    memcpy(data, _self->_buffer + _self->_position, INT_SIZE);
+    ByteBuffer_position(_self, _self->_position + INT_SIZE);
+    return *data;
+}
+
+char* ByteBuffer_getBuffer(ByteBuffer* _self, size_t _size)
+{
+    return ByteBuffer_getBufferFrom(_self, _self->_position, _size);
+}
+
+char* ByteBuffer_getBufferFrom(ByteBuffer* _self, size_t _start, size_t _size)
+{
+    char *data = (char*)malloc(_size * sizeof(char));
+    memcpy(data, _self->_buffer + _start, INT_SIZE);
+    ByteBuffer_position(_self, _start + INT_SIZE);
+    return data;
+}

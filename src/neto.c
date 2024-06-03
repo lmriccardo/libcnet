@@ -238,6 +238,11 @@ ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self)
     return buff;
 }
 
+void IcmpHeader_decode(IcmpHeader *_self, ByteBuffer* _buffer)
+{
+    
+}
+
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
 IcmpPacket* IcmpPacket_new(u_int8_t _type)
