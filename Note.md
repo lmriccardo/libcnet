@@ -19,7 +19,7 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [x] Implement ICMP Packet (Header + Payload) and wrap ICMP into IP
 - [x] Create a Sender which sends the packet
 - [x] Create a crafter for IP and ICMP packet
-- [] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
+- [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
 - [] TCP Packet (Header + Payload)
 - [] UDP Packet (Header + Payload)
 - [] Decoder for already implemented Packets

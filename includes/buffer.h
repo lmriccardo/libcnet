@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 __BEGIN_DECLS
 
@@ -16,9 +17,9 @@ __BEGIN_DECLS
 typedef struct
 {
 
-    char*  _buffer;
-    int    _position;
-    size_t _size;
+    char*  _buffer;   /* The actual buffer */
+    int    _position; /* The current position into the buffer */
+    size_t _size;     /* The size of the buffer */
 
 } ByteBuffer;
 

@@ -191,7 +191,7 @@ u_int16_t computeIcmpChecksum(char* _buff, size_t _size)
     memcpy(&x2, _buff + 4, 2);
     memcpy(&x3, _buff + 6, 2);
 
-    sum = x1 + x2 + x3;
+    sum = x1 + htons(x2) + htons(x3);
     checksum = 0xFFFF - sum;
 
     return checksum;
@@ -464,14 +464,14 @@ void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
-    ByteBuffer_putShort(_buffer, _self->_tlength);
+    ByteBuffer_putShort(_buffer, htons(_self->_tlength));
     ByteBuffer_putShort(_buffer, htons(_self->_id));
     ByteBuffer_putShort(_buffer, htons(_self->_flag_off));
     ByteBuffer_put(_buffer, _self->_ttl);
     ByteBuffer_put(_buffer, _self->_protocol);
-    ByteBuffer_putShort(_buffer, _self->_hdr_chksum);
-    ByteBuffer_putInt(_buffer, _self->_srcaddr);
-    ByteBuffer_putInt(_buffer, _self->_dstaddr);
+    ByteBuffer_putShort(_buffer, htons(_self->_hdr_chksum));
+    ByteBuffer_putInt(_buffer, htonl(_self->_srcaddr));
+    ByteBuffer_putInt(_buffer, htonl(_self->_dstaddr));
 }
 
 ByteBuffer* IpHeader_encode_v2(IpHeader* _self)
