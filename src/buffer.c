@@ -2,9 +2,8 @@
 
 ByteBuffer* ByteBuffer_new(size_t _size)
 {
-    char *data = (char *)malloc(_size * sizeof(char));
     ByteBuffer* buffer = (ByteBuffer *)malloc(sizeof(ByteBuffer));
-    buffer->_buffer = data;
+    buffer->_buffer = (char *)malloc(_size * sizeof(char));
     buffer->_position = 0;
     buffer->_size = _size;
     return buffer;
@@ -72,6 +71,7 @@ void ByteBuffer_writeToFile(ByteBuffer* _self, char *_file)
 {
     FILE *fptr = fopen(_file, "wb");
     fwrite(_self->_buffer, _self->_size, 1, fptr);
+    fclose(fptr);
 }
 
 void checkForOOB(int _position, size_t _size, size_t _max)

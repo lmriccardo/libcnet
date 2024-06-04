@@ -34,6 +34,7 @@ RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16
 void RawSender_delete(RawSender* _self)
 {
     shutdown(_self->_socket, 2);
+    ByteBuffer_delete(_self->_buff);
     free(_self);
 }
 
@@ -62,6 +63,8 @@ void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
     __RawSender_sendto_v2(_self, buffer->_buffer, buffer->_size);
     _self->_buff = buffer;
     _self->_msgcnt += 1;
+
+    // ByteBuffer_delete(buffer);
 }
 
 void RawSender_printInfo(RawSender* _self)
@@ -70,6 +73,8 @@ void RawSender_printInfo(RawSender* _self)
     char *dstaddr = RawSender_getDestinationIP(_self);
 
     printf("[*] Sending To %s:%d\n", dstaddr, dstport);
+
+    free(dstaddr);
 }
 
 char* RawSender_getDestinationIP(RawSender* _self)
@@ -91,8 +96,8 @@ void RawSender_sendc(RawSender* _self, IpPacket* _pckt)
 IpPacket* RawSender_createIpPacket(RawSender *_self, u_int16_t _id)
 {
     u_int8_t proto = _self->_proto->p_proto;
-    char *dstaddr = RawSender_getDestinationIP(_self);
-    char *srcaddr = _self->_srcaddress;
+    u_int32_t dstaddr = _self->_dstaddress.sin_addr.s_addr;
+    u_int32_t srcaddr = inet_network(_self->_srcaddress);
 
     IpPacket* ippckt = craftIpPacket(
         IPv4, 0x0, 0x0, IP_HEADER_SIZE, _id, X_FLAG_NOT_SET, D_FLAG_SET,

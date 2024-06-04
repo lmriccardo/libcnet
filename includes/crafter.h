@@ -7,15 +7,15 @@
 __BEGIN_DECLS
 
 extern IpPacket* craftIpPacket(
-    u_int8_t _version, int       _dscp,     int   _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int   _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, char* _srcaddr, char*     _dstaddr
+    u_int8_t _version, int       _dscp,     int       _ecn,     u_int16_t _tlen,   u_int16_t _id,
+    int      _xf,      int       _df,       int       _mf,      int       _offset, u_int8_t  _ttl,
+    u_int8_t _proto,   u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
 );
 
 extern IpPacket* craftIpPacket_withData(
-    u_int8_t _version, int       _dscp,     int   _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int   _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, char* _srcaddr, char*     _dstaddr,
+    u_int8_t _version, int       _dscp,     int       _ecn,     u_int16_t _tlen,   u_int16_t _id,
+    int      _xf,      int       _df,       int       _mf,      int       _offset, u_int8_t  _ttl,
+    u_int8_t _proto,   u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr,
     char*    _payload
 );
 

@@ -61,11 +61,11 @@ void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
 {
     // The second version of the header consists of Type, code
     // checksum, identification and sequence number.
-    struct h_echo_t *echo_s = (struct h_echo_t*)malloc(sizeof(struct h_echo_t));
-    echo_s->_id = 0;
-    echo_s->_seqnum = 0;
+    struct h_echo_t echo_s;
+    echo_s._id = 0;
+    echo_s._seqnum = 0;
 
-    _self->_rest->_echo = *echo_s;
+    _self->_rest->_echo = echo_s;
 }
 
 void IcmpHeader_setType(IcmpHeader* _self, u_int8_t _type)
@@ -240,7 +240,7 @@ ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self)
 
 void IcmpHeader_decode(IcmpHeader *_self, ByteBuffer* _buffer)
 {
-    
+
 }
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
@@ -318,6 +318,7 @@ ByteBuffer* IcmpPacket_encode(IcmpPacket *_self)
     ByteBuffer* buffer = ByteBuffer_new(IcmpPacket_getPacketSize(_self));
     IcmpHeader_encode(_self->_icmphdr, buffer);
     ByteBuffer_putBuffer(buffer, _self->_payload, _self->__size);
+    return buffer;
 }
 
 /* --------------------------------------------- IP HEADER --------------------------------------------- */
@@ -430,7 +431,7 @@ char* convertFlagToBin(u_int8_t _flags)
     int _d = ((_flags >> 1) & 1);
     int _m = (_flags & 1);
 
-    char* flags = (char *)malloc(3 * sizeof(char));
+    char* flags = (char *)malloc(3 * sizeof(char) + 1);
     sprintf(flags, "%d%d%d", _x, _d, _m);
 
     return flags;
@@ -443,11 +444,16 @@ char* addressNumberToString(u_int32_t _addr, bool _be)
 
     char *addr_str = (char *)malloc(INET_ADDRSTRLEN * sizeof(char));
     inet_ntop(AF_INET, &_addr, addr_str, INET_ADDRSTRLEN);
+
     return addr_str;
 }
 
 void IpHeader_printInfo(IpHeader* _self)
 {
+    char *flag = convertFlagToBin(IpHeader_getFlags(_self));
+    char *srcaddr = addressNumberToString(_self->_srcaddr, false);
+    char *dstaddr = addressNumberToString(_self->_dstaddr, false);
+
     printf("[*] Printing Header Information Fields\n");
     printf("Ip Version: %d\n", IpHeader_getVersion(_self));
     printf("Internet Header Length: %d\n", IpHeader_getInternetHeaderLength(_self));
@@ -455,14 +461,18 @@ void IpHeader_printInfo(IpHeader* _self)
     printf("Explicit Congestion Network: %d\n", IpHeader_getECN(_self));
     printf("Total Length: %d\n", _self->_tlength);
     printf("Identification: %d\n", _self->_id);
-    printf("IP Flags (X D M): %s\n", convertFlagToBin(IpHeader_getFlags(_self)));
+    printf("IP Flags (X D M): %s\n", flag);
     printf("Fragment Offset: %d\n", IpHeader_getFragmentOffset(_self));
     printf("Time To Live: %d\n", _self->_ttl);
     printf("IP Protocol: %d\n", _self->_protocol);
     printf("Header Checksum: %d\n", _self->_hdr_chksum);
-    printf("Source Address: %s\n", addressNumberToString(_self->_srcaddr, false));
-    printf("Destination Address: %s\n", addressNumberToString(_self->_dstaddr, false));
+    printf("Source Address: %s\n", srcaddr);
+    printf("Destination Address: %s\n", dstaddr);
     printf("\n");
+
+    free(flag);
+    free(srcaddr);
+    free(dstaddr);
 }
 
 void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer)
@@ -518,7 +528,7 @@ void IpPacket_setHeader(IpPacket *_self, IpHeader *_iphdr)
 void IpPacket_fillHeader(
     IpPacket* _self,     u_int8_t  _version, u_int8_t  _dsf, u_int16_t _tlen,
     u_int16_t _id,       u_int16_t _flagoff, u_int8_t  _ttl, u_int8_t  _protocol, 
-    u_int16_t _checksum, char*     _srcaddr, char*     _dstaddr
+    u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
 ) {
     IpHeader_setVersion(_self->_iphdr, _version);
     IpHeader_setDifferentiatedServiceField(_self->_iphdr, _dsf);
@@ -528,8 +538,8 @@ void IpPacket_fillHeader(
     IpHeader_setTimeToLive(_self->_iphdr, _ttl);
     IpHeader_setProtocol(_self->_iphdr, _protocol);
     IpHeader_setHeaderChecksum(_self->_iphdr, _checksum);
-    IpHeader_setSourceAddress(_self->_iphdr, inet_network(_srcaddr));
-    IpHeader_setDestinationAddress(_self->_iphdr, inet_network(_dstaddr));
+    IpHeader_setSourceAddress(_self->_iphdr, _srcaddr);
+    IpHeader_setDestinationAddress(_self->_iphdr, _dstaddr);
 }
 
 void IpPacket_fillPayload(IpPacket *_self, char *_data, size_t _datasize)
@@ -550,6 +560,7 @@ ByteBuffer* IpPacket_encode(IpPacket* _self)
 {
     ByteBuffer* buff = IpHeader_encode_v2(_self->_iphdr);
     ByteBuffer_putBuffer(buff, _self->_payload, (size_t)IpPacket_getPayloadSize(_self));
+    return buff;
 }
 
 void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
@@ -557,4 +568,5 @@ void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
     ByteBuffer* buff = IcmpPacket_encode(_icmppckt);
     IpPacket_fillPayload(_self, buff->_buffer, buff->_size);
     IpHeader_setProtocol(_self->_iphdr, IP_HEADER_ICMP_PROTOCOL_CODE);
+    ByteBuffer_delete(buff);
 }

@@ -24,4 +24,7 @@ debug:
 	sudo $(CC) -I./includes -g -o $@ $(SRC)
 	sudo chmod u+s $@
 
+main-vg:
+	sudo $(CC) -I./includes -o $@ $(SRC)
+
 .PHONY: clean

@@ -244,7 +244,7 @@ extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr);
 extern void IpPacket_fillHeader(
     IpPacket* _self,     u_int8_t  _version, u_int8_t  _dsf, u_int16_t _tlen,
     u_int16_t _id,       u_int16_t _flagoff, u_int8_t  _ttl, u_int8_t  _protocol, 
-    u_int16_t _checksum, char*     _srcaddr, char*     _dstaddr
+    u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
 );
 
 extern void IpPacket_fillPayload(IpPacket * _self, char *_data, size_t _datasize);
