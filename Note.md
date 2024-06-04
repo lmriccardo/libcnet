@@ -22,10 +22,11 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
 - [] TCP Packet (Header + Payload)
 - [] UDP Packet (Header + Payload)
-- [] Decoder for already implemented Packets
+- [x] Decoder for already implemented Packets
 - [] Update the crafter for TCP and UDP
 - [] Update the sender to TCP and UDP
 - [] Create a receiver
+- [] Check for memory safetiness using Valgrind
 
 ### Advanced Development
 

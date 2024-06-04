@@ -97,7 +97,7 @@ extern u_int16_t computeIcmpChecksum(char* _buff, size_t _size);
 extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer);
 extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
 
-extern void IcmpHeader_decode(IcmpHeader *_self, ByteBuffer* _buffer);
+extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer);
 
 /* ICMP Packet Functions */
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
@@ -111,9 +111,12 @@ extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_
 extern void IcmpPacket_fillHeader_v3(
     IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum);
 
+extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr);
+
 extern void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size);
 extern size_t IcmpPacket_getPacketSize(IcmpPacket* _self);
 extern ByteBuffer* IcmpPacket_encode(IcmpPacket *_self);
+extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
 
 /******************************* IP PACKET ******************************/
 
@@ -224,6 +227,7 @@ extern u_int8_t IpHeader_getFlags(IpHeader* _self);
 extern u_int8_t IpHeader_getFragmentOffset(IpHeader* _self);
 extern void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer);
 extern ByteBuffer* IpHeader_encode_v2(IpHeader* _self);
+extern IpHeader* IpHeader_decode(ByteBuffer* _buffer);
 
 extern void IpHeader_printInfo(IpHeader* _self);
 
@@ -249,7 +253,10 @@ extern void IpPacket_fillHeader(
 
 extern void IpPacket_fillPayload(IpPacket * _self, char *_data, size_t _datasize);
 extern u_int16_t IpPacket_getPayloadSize(IpPacket * _self);
+extern IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self);
+
 extern ByteBuffer* IpPacket_encode(IpPacket* _self);
+extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer);
 
 extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt);
 

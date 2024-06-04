@@ -12,9 +12,17 @@ ByteBuffer* ByteBuffer_new(size_t _size)
 ByteBuffer* ByteBuffer_new_v2(char *_buffer, size_t _size)
 {
     ByteBuffer* buffer = (ByteBuffer*)malloc(sizeof(ByteBuffer));
-    buffer->_buffer = _buffer;
+    buffer->_buffer = (char *)malloc(_size * sizeof(char));
     buffer->_position = 0;
     buffer->_size = _size;
+    
+    // As usual it is better to copy the content of the memory instead
+    // of directly assigning that allocation inside this variable.
+    // This beacause, once this ByteBuffer will be deleted, in the first
+    // case the memory from which we copied is still accessible, in the
+    // other case it will not.
+    memcpy(buffer->_buffer, _buffer, _size);
+
     return buffer;
 }
 
@@ -92,18 +100,18 @@ u_int8_t ByteBuffer_get(ByteBuffer* _self)
 
 u_int16_t ByteBuffer_getShort(ByteBuffer* _self)
 {
-    u_int16_t *data = (u_int16_t *)malloc(SHORT_SIZE * sizeof(char));
-    memcpy(data, _self->_buffer + _self->_position, SHORT_SIZE);
+    u_int16_t data;
+    memcpy(&data, _self->_buffer + _self->_position, SHORT_SIZE);
     ByteBuffer_position(_self, _self->_position + SHORT_SIZE);
-    return *data;
+    return data;
 }
 
 u_int32_t ByteBuffer_getInt(ByteBuffer* _self)
 {
-    u_int32_t *data = (u_int32_t *)malloc(INT_SIZE * sizeof(char));
-    memcpy(data, _self->_buffer + _self->_position, INT_SIZE);
+    u_int32_t data;
+    memcpy(&data, _self->_buffer + _self->_position, INT_SIZE);
     ByteBuffer_position(_self, _self->_position + INT_SIZE);
-    return *data;
+    return data;
 }
 
 char* ByteBuffer_getBuffer(ByteBuffer* _self, size_t _size)
@@ -114,7 +122,7 @@ char* ByteBuffer_getBuffer(ByteBuffer* _self, size_t _size)
 char* ByteBuffer_getBufferFrom(ByteBuffer* _self, size_t _start, size_t _size)
 {
     char *data = (char*)malloc(_size * sizeof(char));
-    memcpy(data, _self->_buffer + _start, INT_SIZE);
-    ByteBuffer_position(_self, _start + INT_SIZE);
+    memcpy(data, _self->_buffer + _start, _size);
+    ByteBuffer_position(_self, _start + _size);
     return data;
 }

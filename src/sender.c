@@ -58,13 +58,11 @@ void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
 void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
 {
     ByteBuffer* buffer = IpPacket_encode(_pckt);
-    ByteBuffer_writeToFile(buffer, "test.bin");
+    ByteBuffer_writeToFile(buffer, "sent.bin");
     
     __RawSender_sendto_v2(_self, buffer->_buffer, buffer->_size);
     _self->_buff = buffer;
     _self->_msgcnt += 1;
-
-    // ByteBuffer_delete(buffer);
 }
 
 void RawSender_printInfo(RawSender* _self)

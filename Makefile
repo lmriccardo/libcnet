@@ -21,6 +21,7 @@ clean:
 	rm -f $(OBJECTS)
 
 debug:
+	rm -f debug
 	sudo $(CC) -I./includes -g -o $@ $(SRC)
 	sudo chmod u+s $@
 
