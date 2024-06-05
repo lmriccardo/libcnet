@@ -1,5 +1,6 @@
 CC=gcc
 OBJECTS=$(patsubst src/%.c,./%.o,$(wildcard src/*.c))
+LIBS=-lpthread
 SRC=$(wildcard src/*.c)
 
 # the last operation executed by the makefile is to set the SUID
@@ -9,23 +10,23 @@ SRC=$(wildcard src/*.c)
 all: main clean
 
 main: $(OBJECTS)
-	sudo $(CC) -I./includes -o dist/$@ $^
+	sudo $(CC) -I./includes $(LIBS) -o dist/$@ $^
 	sudo chmod u+s dist/$@
 	rm -f main
 	sudo ln -s dist/$@ $@
 
 $(OBJECTS): %.o: src/%.c
-	sudo $(CC) -I./includes -c -o $@ $<
+	sudo $(CC) -I./includes $(LIBS) -c -o $@ $<
 
 clean:
 	rm -f $(OBJECTS)
 
 debug:
 	rm -f debug
-	sudo $(CC) -I./includes -g -o $@ $(SRC)
+	sudo $(CC) -I./includes $(LIBS) -g -o $@ $(SRC)
 	sudo chmod u+s $@
 
 main-vg:
-	sudo $(CC) -I./includes -o $@ $(SRC)
+	sudo $(CC) -I./includes $(LIBS) -o $@ $(SRC)
 
 .PHONY: clean
