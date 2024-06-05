@@ -10,13 +10,19 @@ SRC=$(wildcard src/*.c)
 all: main clean
 
 main: $(OBJECTS)
-	sudo $(CC) -I./includes $(LIBS) -o dist/$@ $^
-	sudo chmod u+s dist/$@
-	rm -f main
-	sudo ln -s dist/$@ $@
+	sudo $(CC) -I./includes $(LIBS) -o $@ main.c $^
+	sudo chmod u+s $@
+
+static: $(OBJECTS)
+	ar rcsv dist/static/libcnet.a $^
+	rm -f $(OBJECTS)
+
+shared: $(OBJECTS) 
+	$(CC) -shared -o dist/shared/libcnet.so $^
+	rm -f $(OBJECTS)
 
 $(OBJECTS): %.o: src/%.c
-	sudo $(CC) -I./includes $(LIBS) -c -o $@ $<
+	sudo $(CC) -I./includes/ $(LIBS) -fPIC -c -o $@ $<
 
 clean:
 	rm -f $(OBJECTS)
