@@ -25,7 +25,6 @@ typedef struct
     char*              _gateway;     /* The gateway address of the current Source Address */
     int                _socket;      /* File descriptor for the created socket */
     int                _msgcnt;      /* Current Message Number */
-    ByteBuffer*        _buff;        /* Last buffer being sent */
     struct protoent*   _proto;       /* The protocol used */
     u_int16_t          _lastid;      /* Last used IP Packet identifier */
     u_int16_t          _lsticmpid;   /* Last used ICMP Packet identifier */
@@ -49,7 +48,7 @@ extern void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
 extern IpPacket*   RawSender_createIpPacket(RawSender *_self, u_int16_t _id);
 extern IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_t _code);
 
-extern void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code);
+extern void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n);
 
 __END_DECLS
 

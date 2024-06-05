@@ -1,6 +1,6 @@
 # Note on Development
 
-- `memcpy` in an LSB machine (Little-Endian) it will copy LSB and then MSB
+`memcpy` in an LSB machine (Little-Endian) it will copy LSB and then MSB
 
 ```c
 unsigned short x = 0x1234;
@@ -10,6 +10,11 @@ memcpy(buf, &x, 2); // --> buf = 0x3412
 unsigned short x1 = htons(0x1234); // --> x = 0x3412
 memcpy(buf, &x, 2); // --> buf = 0x1234
 ```
+
+In current implementation of the sender-receiver paradigm, once the sender has finished
+sending the message, we need to wait 1 seconds in order to the receiver being able to
+receive the response. 
+
 
 ## Todo
 

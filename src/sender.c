@@ -34,7 +34,6 @@ RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16
 void RawSender_delete(RawSender* _self)
 {
     shutdown(_self->_socket, 2);
-    ByteBuffer_delete(_self->_buff);
     free(_self);
 }
 
@@ -61,8 +60,9 @@ void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
     ByteBuffer_writeToFile(buffer, "sent.bin");
     
     __RawSender_sendto_v2(_self, buffer->_buffer, buffer->_size);
-    _self->_buff = buffer;
     _self->_msgcnt += 1;
+    
+    ByteBuffer_delete(buffer);
 }
 
 void RawSender_printInfo(RawSender* _self)
@@ -135,27 +135,30 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_
     }
 }
 
-void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code)
+void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n)
 {
-    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
-    IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
+    for (int j = 0; j < _n; j++)
+    {
+        IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
+        IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
 
-    // Compute the checksum of the ICMP header
-    ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
-    u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer, icmphdrbuff->_size);
+        // Compute the checksum of the ICMP header
+        ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
+        u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer, icmphdrbuff->_size);
 
-    IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
-    ByteBuffer_delete(icmphdrbuff);
+        IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
+        ByteBuffer_delete(icmphdrbuff);
 
-    // Wrap the ICMP packet inside the IP packet
-    IpPacket_wrapIcmp(ippckt, icmppckt);
+        // Wrap the ICMP packet inside the IP packet
+        IpPacket_wrapIcmp(ippckt, icmppckt);
 
-    IpHeader_printInfo(ippckt->_iphdr);
-    IcmpHeader_printInfo(icmppckt->_icmphdr);
+        IpHeader_printInfo(ippckt->_iphdr);
+        IcmpHeader_printInfo(icmppckt->_icmphdr);
 
-    // Then send the packet
-    RawSender_sendto(_self, ippckt);
+        // Then send the packet
+        RawSender_sendto(_self, ippckt);
 
-    IcmpPacket_delete(icmppckt);
-    IpPacket_delete(ippckt);
+        IcmpPacket_delete(icmppckt);
+        IpPacket_delete(ippckt);
+    }
 }
