@@ -26,12 +26,19 @@ receive the response.
 - [x] Create a crafter for IP and ICMP packet
 - [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
 - [] TCP Packet (Header + Payload)
-- [] UDP Packet (Header + Payload)
+- [?] UDP Packet (Header + Payload)
 - [x] Decoder for already implemented Packets
 - [] Update the crafter for TCP and UDP
 - [] Update the sender to TCP and UDP
-- [] Create a receiver
-- [] Check for memory safetiness using Valgrind
+- [?] Create a receiver
+- [?] Check for memory safetiness using Valgrind
+- [] Maybe we should create a Thread also for the sender
+
+Legend:
+
+- [x] Task completed
+- [?] Still under development/to be tested
+- []  Not started Yet (aka, to be done)
 
 ### Advanced Development
 

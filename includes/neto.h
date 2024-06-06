@@ -38,6 +38,8 @@ __BEGIN_DECLS
 
 #define ICMP_ECHO_CODE 0x0
 
+#define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
+
 struct h_echo_t {
     
     u_int16_t _id; // 16 bit for the identifier of the echo or echo reply
@@ -100,7 +102,6 @@ extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
 extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer);
 
 /* ICMP Packet Functions */
-#define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 
 extern IcmpPacket* IcmpPacket_new(u_int8_t _type);
 extern IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size);
@@ -117,6 +118,50 @@ extern void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size)
 extern size_t IcmpPacket_getPacketSize(IcmpPacket* _self);
 extern ByteBuffer* IcmpPacket_encode(IcmpPacket *_self);
 extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
+
+/******************************* UDP PACKET ******************************/
+
+#define UDP_HEADER_SIZE      0x08
+#define UDP_PAYLOAD_MAX_SIZE 0xffe3
+
+typedef struct
+{
+
+    u_int16_t _srcport;
+    u_int16_t _dstport;
+    u_int16_t _length;
+    u_int16_t _checksum;
+
+} UdpHeader;
+
+typedef struct
+{
+
+    UdpHeader* _hdr;
+    char*      _payload;
+
+} UdpPacket;
+
+extern UdpHeader* UdpHeader_new();
+extern void UdpHeader_delete(UdpHeader* _self);
+
+extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport);
+extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport);
+extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length );
+extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum);
+
+extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer);
+extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self);
+
+extern UdpPacket* UdpPacket_new();
+extern void UdpPacket_delete(UdpPacket* _self);
+
+extern void UdpPacket_fillHeader(
+    UdpPacket* _self,   u_int16_t _srcport, u_int16_t _dstport,
+    u_int16_t  _length, u_int16_t _checksum
+);
+
+extern void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size);
 
 /******************************* IP PACKET ******************************/
 
@@ -238,10 +283,6 @@ extern char*     addressNumberToString(u_int32_t _addr, bool _be);
 
 /* Constructor, Deconstructor and Methods for IpPacket struct/class */
 extern IpPacket* IpPacket_new();
-
-/**
- * @param _ippckt The IpPacket object to delete
-*/
 extern void IpPacket_delete(IpPacket* _self);
 
 extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr);

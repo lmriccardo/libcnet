@@ -52,14 +52,14 @@ void ByteBuffer_put(ByteBuffer* _self, char _data)
 void ByteBuffer_putShort(ByteBuffer* _self, u_int16_t _data)
 {
     checkForOOB(_self->_position, SHORT_SIZE, _self->_size);
-    memcpy(_self->_buffer + _self->_position, &_data, SHORT_SIZE * sizeof(char));
+    memcpy(_self->_buffer + _self->_position, &_data, SHORT_SIZE);
     ByteBuffer_position(_self, _self->_position + SHORT_SIZE);
 }
 
 void ByteBuffer_putInt(ByteBuffer* _self, u_int32_t _data)
 {
     checkForOOB(_self->_position, INT_SIZE, _self->_size);
-    memcpy(_self->_buffer + _self->_position, &_data, INT_SIZE * sizeof(char));
+    memcpy(_self->_buffer + _self->_position, &_data, INT_SIZE);
     ByteBuffer_position(_self, _self->_position + INT_SIZE);
 }
 
