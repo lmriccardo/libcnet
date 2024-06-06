@@ -825,3 +825,11 @@ void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
     IpHeader_setProtocol(_self->_iphdr, IP_HEADER_ICMP_PROTOCOL_CODE);
     ByteBuffer_delete(buff);
 }
+
+void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt)
+{
+    ByteBuffer* buff = UdpPacket_encode(_udppckt);
+    IpPacket_fillPayload(_self, buff->_buffer, buff->_size);
+    IpHeader_setProtocol(_self->_iphdr, IP_HEADER_UDP_PROTOCOL_CODE);
+    ByteBuffer_delete(buff);
+}

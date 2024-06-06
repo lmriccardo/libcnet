@@ -302,6 +302,7 @@ extern ByteBuffer* IpPacket_encode(IpPacket* _self);
 extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer);
 
 extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt);
+extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt);
 
 __END_DECLS
 

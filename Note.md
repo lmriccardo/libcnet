@@ -33,6 +33,8 @@ receive the response.
 - [?] Create a receiver
 - [?] Check for memory safetiness using Valgrind
 - [] Maybe we should create a Thread also for the sender
+- [] Fragmenter for UDP Packets
+- [] Implements a simple Linked Lists for UDP Fragments
 
 Legend:
 
