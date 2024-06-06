@@ -162,6 +162,8 @@ extern void UdpPacket_fillHeader(
 );
 
 extern void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size);
+extern size_t UdpPacket_getPayloadSize(UdpPacket* _self);
+extern ByteBuffer* UdpPacket_encode(UdpPacket* _self);
 
 /******************************* IP PACKET ******************************/
 

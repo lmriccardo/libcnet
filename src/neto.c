@@ -511,6 +511,18 @@ void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size)
     UdpHeader_setLength(_self->_hdr, _size + UDP_HEADER_SIZE);
 }
 
+size_t UdpPacket_getPayloadSize(UdpPacket* _self)
+{
+    return _self->_hdr->_length - UDP_HEADER_SIZE;
+}
+
+ByteBuffer* UdpPacket_encode(UdpPacket* _self)
+{
+    ByteBuffer* buff = UdpHeader_encode_v2(_self->_hdr);
+    ByteBuffer_putBuffer(buff, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
+    return buff;
+}
+
 /* --------------------------------------------- IP HEADER --------------------------------------------- */
 
 IpHeader* IpHeader_new()
