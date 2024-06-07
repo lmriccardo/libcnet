@@ -37,17 +37,19 @@ __BEGIN_DECLS
 #define ICMP_SOURCE_ROUTE_FAILED_CODE  0x05
 
 #define ICMP_ECHO_CODE 0x0
-
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 
-struct h_echo_t {
+
+struct h_echo_t 
+{
     
     u_int16_t _id; // 16 bit for the identifier of the echo or echo reply
     u_int16_t _seqnum; // 16 bit for the sequence number
 
 };
 
-union h_data_t {
+union h_data_t 
+{
 
     u_int32_t       _unused;  // 32 bit of unused data
     u_int32_t       _gateway; // 32 bit for gateway internet address
@@ -55,6 +57,14 @@ union h_data_t {
     
 };
 
+/* Struct representing the ICMP Header of the ICMP Packet. There are the
+   classical 32 bits of ICMP Header: Type, Code and Checksum and the also
+   the remaining 32 bits of Optional header fields like: Identification,
+   Sequence Number, Gateway or Zeros (Unused) according to the given type
+   and ICMP Code.
+   
+   This structure refers to the RFC 792 https://datatracker.ietf.org/doc/html/rfc792 
+*/
 typedef struct
 {
 
@@ -65,6 +75,7 @@ typedef struct
 
 } IcmpHeader;
 
+/* Struct representing the ICMP Packet with 8 bytes of Header and Payload */
 typedef struct
 {
 
@@ -75,42 +86,76 @@ typedef struct
 
 } IcmpPacket;
 
+/* Return a pointer to an IcmpHeader struct initialized given the input type */
+extern IcmpHeader* IcmpHeader_new(u_int8_t _type) __returns_nonnull;
 
-/* ICMP Header Functions */
-extern IcmpHeader* IcmpHeader_new(u_int8_t _type);
-extern void        IcmpHeader_delete(IcmpHeader* _self);
+/* Free the memory of the previously allocated IcmpHeader */
+extern void IcmpHeader_delete(const IcmpHeader* _self) __attribute__ ((__noreturn__)) __nonnull ((1));
 
-extern void IcmpHeader_setType(IcmpHeader* _self, u_int8_t _type);
-extern void IcmpHeader_setCode(IcmpHeader* _self, u_int8_t _code);
-extern void IcmpHeader_setChecksum(IcmpHeader* _self, u_int16_t _checksum);
-extern void IcmpHeader_setGateway(IcmpHeader* _self, u_int32_t _gateway);
-extern void IcmpHeader_setIdentifier(IcmpHeader* _self, u_int16_t _id);
-extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, u_int16_t _seqnum);
-extern void IcmpHeader_printInfo(IcmpHeader* _self);
-extern void IcmpHeader_printInfo_v2(IcmpHeader* _self);
-extern void IcmpHeader_printInfo_v3(IcmpHeader* _self);
+/* Set the Type field of the ICMP header with the input Type */
+extern void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type) __attribute__ ((__noreturn__)) __nonnull ((1));
 
-extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self);
-extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self);
-extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self);
+/* Set the Code field of the ICMP header with the input Code */
+extern void IcmpHeader_setCode(IcmpHeader* _self, const u_int8_t _code)  __attribute__ ((__noreturn__)) __nonnull ((1));
 
-extern u_int16_t computeIcmpChecksum(char* _buff);
+/* Set the Checksum field of the ICMP header with the input checksum */
+extern void IcmpHeader_setChecksum(IcmpHeader* _self, const u_int16_t _checksum)  __attribute__ ((__noreturn__)) __nonnull ((1));
 
-extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer);
+/* Set the Gateway field of the ICMP header with the input gateway address
+   if the given ICMP Type corresponds to the correct ICMP Header format.
+   If it is not, then an error is raise and the process exit with failure
+*/
+extern void IcmpHeader_setGateway(IcmpHeader* _self, const u_int32_t _gateway) __attribute__ ((__noreturn__));
+
+/* Set the Identifier field of the ICMP header with the input identifier
+   if the given ICMP Type corresponds to the correct ICMP Header format.
+   If it is not, then an error is raise and the process exit with failure
+*/
+extern void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id) __attribute__ ((__noreturn__));
+
+/* Set the Sequence Number field of the ICMP header with the input sequence number
+   if the given ICMP Type corresponds to the correct ICMP Header format.
+   If it is not, then an error is raise and the process exit with failure
+*/
+extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum) __attribute__ ((__noreturn__));
+
+/* Print all the Header fields with corresponding values */
+extern void IcmpHeader_printInfo(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void IcmpHeader_printInfo_v2(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void IcmpHeader_printInfo_v3(IcmpHeader* _self) __attribute__ ((__noreturn__));
+
+extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __attribute__ ((__noreturn__));
+
+/* Compute the ICMP Checksum as defined in the Corresponding RFC 792.
+   The input buffer parameter is the header encoded into a buffer of bytes.
+*/
+extern u_int16_t computeIcmpChecksum(const char* _buff);
+
+/* Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.
+   Notice that all the elements with size grater than 1 are converted
+   from little-endian into big-endian (network byte order)
+*/
+extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer) __attribute__ ((__noreturn__));
+
+/* Perform the encoding as the `IcmpHeader_encode` function and also returns the ByteBuffer */
 extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
 
+/* Decode the input bytes into an ICMP Header */
 extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer);
 
-/* ICMP Packet Functions */
-
-extern IcmpPacket* IcmpPacket_new(u_int8_t _type);
+/* Create a new ICMP Packet initialized according to input Type */
+extern IcmpPacket* IcmpPacket_new(const u_int8_t _type);
 extern IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size);
-extern void        IcmpPacket_delete(IcmpPacket* _self);
+extern void        IcmpPacket_delete(IcmpPacket* _self) __attribute__ ((__noreturn__));
 
-extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code);
-extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway);
+extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code) __attribute__ ((__noreturn__));
+extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway)
+    __attribute__ ((__noreturn__));
+
 extern void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum);
+    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum) __attribute__ ((__noreturn__));
 
 extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr);
 
