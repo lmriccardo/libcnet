@@ -47,8 +47,10 @@ extern void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
 
 extern IpPacket*   RawSender_createIpPacket(RawSender *_self, u_int16_t _id);
 extern IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_t _code);
+extern UdpPacket*  RawSender_createUdpPacket(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size);
 
 extern void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n);
+extern void RawSender_sendUdp(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size);
 
 __END_DECLS
 

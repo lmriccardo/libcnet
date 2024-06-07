@@ -59,3 +59,13 @@ IcmpPacket* craftIcmpPacket_Redirect(
     IcmpHeader_setGateway(icmppckt->_icmphdr, inet_network(_gateway));
     return icmppckt;
 }
+
+UdpPacket* craftUdpPacket(
+    u_int16_t _srcport, u_int16_t _dstport, u_int16_t _length, u_int16_t _checksum,
+    char*     _payload, size_t    _size
+) {
+    UdpPacket* pckt = UdpPacket_new_v2(_size);
+    UdpPacket_fillHeader(pckt, _srcport, _dstport, _length, _checksum);
+    UdpPacket_fillPayload(pckt, _payload, _size);
+    return pckt;
+}

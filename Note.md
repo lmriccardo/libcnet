@@ -28,14 +28,15 @@ receive the response.
 - [] TCP Packet (Header + Payload)
 - [?] UDP Packet (Header + Payload)
 - [x] Decoder for already implemented Packets
-- [] Update the crafter for TCP and UDP
-- [] Update the sender to TCP and UDP
+- [?] Update the crafter for TCP and UDP
+- [?] Update the sender to TCP and UDP
 - [?] Create a receiver
 - [?] Check for memory safetiness using Valgrind
 - [] Maybe we should create a Thread also for the sender
 - [] Fragmenter for UDP Packets
 - [] Implements a simple Linked Lists for UDP Fragments and other application
 - [] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
+- [] Add Documentation Strings to Function declaration in .h files
 
 Legend:
 

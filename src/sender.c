@@ -140,6 +140,14 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_
     exit(EXIT_FAILURE);
 }
 
+UdpPacket* RawSender_createUdpPacket(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size)
+{
+    u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
+    u_int16_t length = _size + UDP_HEADER_SIZE;
+    UdpPacket* pckt = craftUdpPacket(_srcport, dstport, length, 0x0, _payload, _size);
+    return pckt;
+}
+
 void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n)
 {
     for (int j = 0; j < _n; j++)
@@ -166,4 +174,36 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n
         IcmpPacket_delete(icmppckt);
         IpPacket_delete(ippckt);
     }
+}
+
+void RawSender_sendUdp(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size)
+{
+    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
+    UdpPacket* udppckt = RawSender_createUdpPacket(_self, _srcport, _payload, _size);
+
+    // Compute the checksum of the UDP header
+    ByteBuffer* buff = ByteBuffer_new(UDP_HEADER_PLUS_PSEUDO_SIZE);
+    UdpHeader_encode(udppckt->_hdr, buff);
+
+    // Put the pseudo header inside the buffer
+    ByteBuffer_putInt(buff, htonl(inet_network(_self->_srcaddress)));
+    ByteBuffer_putInt(buff, _self->_dstaddress.sin_addr.s_addr);
+    ByteBuffer_put(buff, 0x0);
+    ByteBuffer_put(buff, (u_int8_t)_self->_proto->p_proto);
+    ByteBuffer_putShort(buff, htons(udppckt->_hdr->_length));
+
+    u_int16_t checksum = computeUDPChecksum(buff->_buffer);
+    UdpHeader_setChecksum(udppckt->_hdr, checksum);
+    ByteBuffer_delete(buff);
+
+    // Wrap the UDP packet into the IP Packet
+    IpPacket_wrapUdp(ippckt, udppckt);
+    IpHeader_printInfo(ippckt->_iphdr);
+    UdpHeader_printInfo(udppckt->_hdr);
+
+    // Finally, send the packet
+    RawSender_sendto(_self, ippckt);
+
+    UdpPacket_delete(udppckt);
+    IpPacket_delete(ippckt);
 }

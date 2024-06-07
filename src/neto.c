@@ -28,7 +28,7 @@ IcmpHeader* IcmpHeader_new(u_int8_t _type)
             break;
         
         default:
-            fprintf(stderr, "ICMP Header Type %d do not exists!", _type);
+            fprintf(stderr, "[IcmpHeader_new] ICMP Header Type %d do not exists!\n", _type);
             exit(EXIT_FAILURE);
     }
 
@@ -87,7 +87,7 @@ void IcmpHeader_setGateway(IcmpHeader* _self, u_int32_t _gateway)
 {
     if (_self->_type != ICMP_REDIRECT_TYPE)
     {
-        fprintf(stderr, "(Invalid Operation) To set gateway address ");
+        fprintf(stderr, "[IcmpHeader_setGateway] To set gateway address ");
         fprintf(stderr, "an ICMP message of Type %d is required. ", ICMP_REDIRECT_TYPE);
         fprintf(stderr, "Current Type is: %d.\n", _self->_type);
         exit(EXIT_FAILURE);
@@ -106,7 +106,7 @@ void IcmpHeader_setIdentifier(IcmpHeader* _self, u_int16_t _id)
             _self->_type != ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        fprintf(stderr, "(Invalid Operation) To set Identifier Header field ");
+        fprintf(stderr, "[IcmpHeader_setIdentifier] To set Identifier Header field ");
 
         fprintf(
             stderr, "an ICMP message of Type %d/%d/%d/%d is required. ", 
@@ -131,7 +131,7 @@ void IcmpHeader_setSequenceNumber(IcmpHeader* _self, u_int16_t _seqnum)
             _self->_type != ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        fprintf(stderr, "(Invalid Operation) To set Sequence Number Header field ");
+        fprintf(stderr, "[IcmpHeader_setSequenceNumber] To set Sequence Number Header field ");
 
         fprintf(
             stderr, "an ICMP message of Type %d/%d/%d/%d is required. ", 
@@ -295,7 +295,7 @@ IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size)
     // Check if the given size is out of bound
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
     {
-        fprintf(stderr, "Given ICMP Payload size is OOB\n");
+        fprintf(stderr, "[IcmpPacket_new_v2] Given ICMP Payload size is OOB\n");
         exit(EXIT_FAILURE);
     }
 
@@ -342,8 +342,13 @@ void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size)
 {
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
     {
-        fprintf(stderr, "Given ICMP Payload size is OOB\n");
+        fprintf(stderr, "[IcmpPacket_fillPayload] Given ICMP Payload size is OOB\n");
         exit(EXIT_FAILURE);
+    }
+
+    if (_self->__size - ICMP_HEADER_MAX_SIZE > _size)
+    {
+        _self->_payload = (char*)realloc(_self->_payload, _size * sizeof(char));
     }
 
     memcpy(_self->_payload, _data, _size);
@@ -447,6 +452,16 @@ void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum)
     _self->_checksum = _checksum;
 }
 
+void UdpHeader_printInfo(UdpHeader* _self)
+{
+    printf("[*] Printing Header Information Fields\n");
+    printf("Source Port: %hu\n", _self->_srcport);
+    printf("Destination Port: %hu\n", _self->_dstport);
+    printf("Length: %hu\n", _self->_length);
+    printf("Checksum: %hu\n", _self->_checksum);
+    printf("\n");
+}
+
 u_int16_t computeUDPChecksum(char* _buff)
 {
     // one's complement of the 16-bit complemeted sum of the
@@ -493,7 +508,12 @@ ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self)
 UdpPacket* UdpPacket_new()
 {
     size_t payload_size = sizeof(char) * UDP_PAYLOAD_MAX_SIZE;
-    char* payload = (char*)malloc(payload_size);
+    return UdpPacket_new_v2(payload_size);
+}
+
+UdpPacket* UdpPacket_new_v2(size_t _size)
+{
+    char* payload = (char*)malloc(_size);
 
     UdpHeader* hdr = UdpHeader_new();
     UdpHeader_setLength(hdr, UDP_PAYLOAD_MAX_SIZE + UDP_HEADER_SIZE);
@@ -526,7 +546,7 @@ void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size)
 {
     if (_size > UDP_PAYLOAD_MAX_SIZE)
     {
-        fprintf(stderr, "Given UDP Payload size %ld > %d", _size, UDP_PAYLOAD_MAX_SIZE);
+        fprintf(stderr, "[UdpPacket_fillPayload] Given UDP Payload size %ld > %d", _size, UDP_PAYLOAD_MAX_SIZE);
         exit(EXIT_FAILURE);
     }
 

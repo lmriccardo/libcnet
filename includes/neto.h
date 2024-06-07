@@ -123,7 +123,7 @@ extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
 
 #define UDP_HEADER_SIZE             0x08
 #define UDP_PAYLOAD_MAX_SIZE        0xffe3
-#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x0c
+#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
 
 typedef struct
 {
@@ -150,6 +150,7 @@ extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport);
 extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport);
 extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length );
 extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum);
+extern void UdpHeader_printInfo(UdpHeader* _self);
 
 extern u_int16_t computeUDPChecksum(char* _buff);
 
@@ -157,6 +158,7 @@ extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer);
 extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self);
 
 extern UdpPacket* UdpPacket_new();
+extern UdpPacket* UdpPacket_new_v2(size_t _size);
 extern void UdpPacket_delete(UdpPacket* _self);
 
 extern void UdpPacket_fillHeader(

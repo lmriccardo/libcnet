@@ -86,7 +86,7 @@ void checkForOOB(int _position, size_t _size, size_t _max)
 {
     if (_position + _size > _max)
     {
-        fprintf(stderr, "Index Out Of Bound: %ld > %ld", _position + _size, _max);
+        fprintf(stderr, "[ByteBuffer] Index Out Of Bound: %ld > %ld\n", _position + _size, _max);
         exit(EXIT_FAILURE);
     }
 }

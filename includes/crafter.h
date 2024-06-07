@@ -31,6 +31,11 @@ extern IcmpPacket* craftIcmpPacket_Redirect(
     u_int8_t _type, u_int8_t _code, u_int16_t _checksum, char* _gateway
 );
 
+extern UdpPacket* craftUdpPacket(
+    u_int16_t _srcport, u_int16_t _dstport, u_int16_t _length, u_int16_t _checksum,
+    char*     _payload, size_t    _size
+);
+
 __END_DECLS
 
 #endif
