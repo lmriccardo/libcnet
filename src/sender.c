@@ -152,7 +152,7 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n
 {
     for (int j = 0; j < _n; j++)
     {
-        IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
+        IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid++);
         IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
 
         // Compute the checksum of the ICMP header
@@ -178,7 +178,7 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n
 
 void RawSender_sendUdp(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size)
 {
-    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid);
+    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid++);
     UdpPacket* udppckt = RawSender_createUdpPacket(_self, _srcport, _payload, _size);
 
     // Compute the checksum of the UDP header
