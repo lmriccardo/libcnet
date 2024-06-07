@@ -33,8 +33,7 @@ receive the response.
 - [?] Create a receiver
 - [?] Check for memory safetiness using Valgrind
 - [] Maybe we should create a Thread also for the sender
-- [] Fragmenter for UDP Packets
-- [] Implements a simple Linked Lists for UDP Fragments and other application
+- [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
 
