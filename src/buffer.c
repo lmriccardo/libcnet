@@ -75,7 +75,7 @@ void ByteBuffer_putBuffer(ByteBuffer* _self, char* _src, size_t _size)
     ByteBuffer_putBufferFrom(_self, _src, _self->_position, _size);
 }
 
-void ByteBuffer_writeToFile(ByteBuffer* _self, char *_file)
+void ByteBuffer_writeToFile(const ByteBuffer* _self, char *_file)
 {
     FILE *fptr = fopen(_file, "wb");
     fwrite(_self->_buffer, _self->_size, 1, fptr);

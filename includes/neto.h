@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include "buffer.h"
 
+#define __NONNULL __nonnull(())
+
 __BEGIN_DECLS
 
 /******************************* ICMP PACKET ******************************/
@@ -90,79 +92,103 @@ typedef struct
 extern IcmpHeader* IcmpHeader_new(u_int8_t _type) __returns_nonnull;
 
 /* Free the memory of the previously allocated IcmpHeader */
-extern void IcmpHeader_delete(const IcmpHeader* _self) __attribute__ ((__noreturn__)) __nonnull ((1));
+extern void IcmpHeader_delete(IcmpHeader* _self) __NONNULL;
 
 /* Set the Type field of the ICMP header with the input Type */
-extern void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type) __attribute__ ((__noreturn__)) __nonnull ((1));
+extern void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type) __NONNULL;
 
 /* Set the Code field of the ICMP header with the input Code */
-extern void IcmpHeader_setCode(IcmpHeader* _self, const u_int8_t _code)  __attribute__ ((__noreturn__)) __nonnull ((1));
+extern void IcmpHeader_setCode(IcmpHeader* _self, const u_int8_t _code) __NONNULL;
 
 /* Set the Checksum field of the ICMP header with the input checksum */
-extern void IcmpHeader_setChecksum(IcmpHeader* _self, const u_int16_t _checksum)  __attribute__ ((__noreturn__)) __nonnull ((1));
+extern void IcmpHeader_setChecksum(IcmpHeader* _self, const u_int16_t _checksum) __NONNULL;
 
 /* Set the Gateway field of the ICMP header with the input gateway address
    if the given ICMP Type corresponds to the correct ICMP Header format.
    If it is not, then an error is raise and the process exit with failure
 */
-extern void IcmpHeader_setGateway(IcmpHeader* _self, const u_int32_t _gateway) __attribute__ ((__noreturn__));
+extern void IcmpHeader_setGateway(IcmpHeader* _self, const u_int32_t _gateway) __NONNULL;
 
 /* Set the Identifier field of the ICMP header with the input identifier
    if the given ICMP Type corresponds to the correct ICMP Header format.
    If it is not, then an error is raise and the process exit with failure
 */
-extern void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id) __attribute__ ((__noreturn__));
+extern void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id) __NONNULL;
 
 /* Set the Sequence Number field of the ICMP header with the input sequence number
    if the given ICMP Type corresponds to the correct ICMP Header format.
    If it is not, then an error is raise and the process exit with failure
 */
-extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum) __attribute__ ((__noreturn__));
+extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum) __NONNULL;
 
 /* Print all the Header fields with corresponding values */
-extern void IcmpHeader_printInfo(IcmpHeader* _self) __attribute__ ((__noreturn__));
-extern void IcmpHeader_printInfo_v2(IcmpHeader* _self) __attribute__ ((__noreturn__));
-extern void IcmpHeader_printInfo_v3(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void IcmpHeader_printInfo(const IcmpHeader* _self) __NONNULL;
+extern void IcmpHeader_printInfo_v2(const IcmpHeader* _self) __NONNULL;
+extern void IcmpHeader_printInfo_v3(const IcmpHeader* _self) __NONNULL;
 
-extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self) __attribute__ ((__noreturn__));
-extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __attribute__ ((__noreturn__));
-extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __attribute__ ((__noreturn__));
+extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self) __NONNULL;
+extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __NONNULL;
+extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __NONNULL;
 
 /* Compute the ICMP Checksum as defined in the Corresponding RFC 792.
    The input buffer parameter is the header encoded into a buffer of bytes.
 */
-extern u_int16_t computeIcmpChecksum(const char* _buff);
+extern u_int16_t computeIcmpChecksum(const char* _buff) __NONNULL;
 
 /* Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.
    Notice that all the elements with size grater than 1 are converted
    from little-endian into big-endian (network byte order)
 */
-extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer) __attribute__ ((__noreturn__));
+extern void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer) __NONNULL;
 
 /* Perform the encoding as the `IcmpHeader_encode` function and also returns the ByteBuffer */
-extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
+extern ByteBuffer* IcmpHeader_encode_v2(const IcmpHeader *_self) __NONNULL __returns_nonnull;
 
 /* Decode the input bytes into an ICMP Header */
-extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer);
+extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer) __NONNULL __returns_nonnull;
 
 /* Create a new ICMP Packet initialized according to input Type */
-extern IcmpPacket* IcmpPacket_new(const u_int8_t _type);
-extern IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size);
-extern void        IcmpPacket_delete(IcmpPacket* _self) __attribute__ ((__noreturn__));
+extern IcmpPacket* IcmpPacket_new(const u_int8_t _type) __returns_nonnull;
 
-extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code) __attribute__ ((__noreturn__));
-extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway)
-    __attribute__ ((__noreturn__));
+/* Create a new ICMP Packet initialized according to input Type and Payload Size */
+extern IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const size_t _size) __returns_nonnull;
 
+/* Free the memory allocated for the ICMP Packet */
+extern void IcmpPacket_delete(IcmpPacket* _self) __NONNULL;
+
+/* Fill the Header of the ICMP Packet with the Code. This version of the
+   `fillHeader` function is reserved for ICMP Header with 32 bits unused
+*/
+extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code) __NONNULL;
+
+/* Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the
+   `fillHeader` function is reserved for ICMP Header with 32 bits for the gateway address
+*/
+extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway) __NONNULL;
+
+/* Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. 
+   This version of the `fillHeader` function is reserved for ICMP Header with 32 bits 
+   divided into Identifier (16 bits) and Sequence Number (16 bits).
+*/
 extern void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum) __attribute__ ((__noreturn__));
+    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum) __NONNULL;
 
-extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr);
+/* Set a new Header for the ICMP Packet. The input headers will be copied into
+   a new header of the ICMP Packet, and the memory for the input header will
+   be freed. This means, that it will be unusable after calling this function */
+extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr) __NONNULL;
 
-extern void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size);
-extern size_t IcmpPacket_getPacketSize(IcmpPacket* _self);
-extern ByteBuffer* IcmpPacket_encode(IcmpPacket *_self);
-extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
+/* Fill the ICMP Packet payload with input buffer and set a new size */
+extern void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size) __NONNULL;
+
+/* Returns the entire size of the ICMP Packet (Header + Payload) */
+extern size_t IcmpPacket_getPacketSize(const IcmpPacket* _self) __NONNULL;
+
+/* Encodes the entire ICMP Packet into a ByteBuffer */
+extern ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self) __NONNULL __returns_nonnull;
+
+/* Decode the input ByteBuffer into a ICMP Packet */
+extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer) __NONNULL __returns_nonnull;
 
 /******************************* UDP PACKET ******************************/
 
@@ -170,50 +196,86 @@ extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
 #define UDP_PAYLOAD_MAX_SIZE        0xffe3
 #define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
 
+/* Struct representing the UDP Header of the UDP Packet. It consists of the
+   classical 8 bytes divided into: (optional) Source port (16 bits),
+   Destination port (16 bits), Total length (16 bits) and Checksum (16 bits)
+    
+   This structure refers to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
+*/
 typedef struct
 {
 
-    u_int16_t _srcport;
-    u_int16_t _dstport;
-    u_int16_t _length;
-    u_int16_t _checksum;
+    u_int16_t _srcport;   // The optional Source Port 
+    u_int16_t _dstport;   // The Desination Port
+    u_int16_t _length;    // The total length of the UDP Packet
+    u_int16_t _checksum;  // The checksum
 
 } UdpHeader;
 
+/* This struct represents the entire UDP Packet (Header + Payload)
+   as according to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
+*/
 typedef struct
 {
 
-    UdpHeader* _hdr;
-    char*      _payload;
+    UdpHeader* _hdr;      // The UDP Header
+    char*      _payload;  // The payload
 
 } UdpPacket;
 
-extern UdpHeader* UdpHeader_new();
-extern void UdpHeader_delete(UdpHeader* _self);
+/* Creates and returns a new UDP Header instance */
+extern UdpHeader* UdpHeader_new() __returns_nonnull;
 
-extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport);
-extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport);
-extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length );
-extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum);
-extern void UdpHeader_printInfo(UdpHeader* _self);
+/* Free the memory allocated for the input UDP Header */
+extern void UdpHeader_delete(UdpHeader* _self) __NONNULL;
 
-extern u_int16_t computeUDPChecksum(char* _buff);
+/* Set the Source Port field into the UDP Header */
+extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport) __NONNULL;
 
-extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer);
-extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self);
+/* Set the Destination Port field into the UDP Header */
+extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport) __NONNULL;
 
-extern UdpPacket* UdpPacket_new();
-extern UdpPacket* UdpPacket_new_v2(size_t _size);
-extern void UdpPacket_delete(UdpPacket* _self);
+/* Set the Length field into the UDP Header */
+extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length ) __NONNULL;
 
+/* Set the Checksum field into the UDP Header */
+extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum) __NONNULL;
+
+/* Print all the Header fields with current values */
+extern void UdpHeader_printInfo(const UdpHeader* _self) __NONNULL;
+
+/* Compute the UDP Checksum according to its RFC */
+extern u_int16_t computeUDPChecksum(char* _buff) __NONNULL;
+
+/* Encode the UDP Header into a ByteBuffer */
+extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer) __NONNULL;
+
+/* Encode and returns the ByteBuffer containing the UDP header */
+extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self) __NONNULL __returns_nonnull;
+
+/* Creates and returns a new UDP Packet */
+extern UdpPacket* UdpPacket_new() __returns_nonnull;
+
+/* Creates and returns a new UDP Packet with the payload initialized with input size */
+extern UdpPacket* UdpPacket_new_v2(const size_t _size) __returns_nonnull;
+
+/* Free the memory allocated for the input UDP Packet */
+extern void UdpPacket_delete(UdpPacket* _self) __NONNULL;
+
+/* Fill the header of the input UDP Packet given all its fields */
 extern void UdpPacket_fillHeader(
     UdpPacket* _self,   u_int16_t _srcport, u_int16_t _dstport,
     u_int16_t  _length, u_int16_t _checksum
-);
+) __NONNULL;
 
-extern void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size);
-extern size_t UdpPacket_getPayloadSize(UdpPacket* _self);
-extern ByteBuffer* UdpPacket_encode(UdpPacket* _self);
+/* Fill the payload of the UDP Packet with the input buffer of input size */
+extern void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size) __NONNULL;
+
+/* Returns the size of the payload inside the input UDP Packet */
+extern size_t UdpPacket_getPayloadSize(const UdpPacket* _self) __NONNULL;
+
+/* Encode the UDP Packet into a Byte Buffer */
+extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __NONNULL __returns_nonnull;
 
 /******************************* IP PACKET ******************************/
 
@@ -272,6 +334,18 @@ extern ByteBuffer* UdpPacket_encode(UdpPacket* _self);
     #define TTL_DEFAULT_VALUE 0x40
 #endif
 
+#define IP_PAYLOAD_MAX_SIZE 65515 // Max dimension of the payload of an IP Packet
+
+/* Struct representing the IP Header of the IP Packet. It consists of classical
+   28 bytes divided into: IP Protocol Version + IHL (8 bits), Type of service (8 bits),
+   Total length (16 bits), Identification (16 bits), Flags and Fragment Offset (16 bits),
+   Time to Live (8 bits), IP Protocol (8 bits), Checksum (16 bits), Source Address
+   (32 bits) and Destination Address (32 bits). 
+   
+   This structure refers to the RFC 791 https://datatracker.ietf.org/doc/html/rfc791
+   The TOS field has been subtituted with the Differentiated Service Field
+   according to the RFC 2474 https://datatracker.ietf.org/doc/html/rfc2474
+*/
 typedef struct
 {
 
@@ -288,10 +362,7 @@ typedef struct
 
 } IpHeader;
 
-
-#define IP_PAYLOAD_MAX_SIZE 65515 // Max dimension of the payload of an IP Packet
-
-
+/* This struct refers to the entire IP Packet (Header + Payload) */
 typedef struct
 {
 
@@ -300,33 +371,37 @@ typedef struct
     
 } IpPacket;
 
-/* Constructor, Deconstructor and Methods for IpHeader struct/class */
-extern IpHeader* IpHeader_new();
+/* Creates and returns a new IP Header */
+extern IpHeader* IpHeader_new() __returns_nonnull;
 
-extern void IpHeader_delete(IpHeader* _self);
+/* Free the memory allocated for the input IP Header */
+extern void IpHeader_delete(IpHeader* _self) __NONNULL;
 
-extern void IpHeader_setVersion(IpHeader* _self, u_int8_t _version);
-extern void IpHeader_setDifferentiatedServiceField(IpHeader* _self, u_int8_t _dsf);
-extern void IpHeader_setTotalLength(IpHeader* _self, u_int16_t _total_length);
-extern void IpHeader_setIdentfication(IpHeader* _self, u_int16_t _identification);
-extern void IpHeader_setFlagOffField(IpHeader* _self, u_int16_t _flagoff);
-extern void IpHeader_setTimeToLive(IpHeader* _self, u_int8_t _time_to_live);
-extern void IpHeader_setProtocol(IpHeader* _self, u_int8_t _protocol);
-extern void IpHeader_setHeaderChecksum(IpHeader* _self, u_int16_t _checksum);
-extern void IpHeader_setSourceAddress(IpHeader* _self, u_int32_t _srcaddres);
-extern void IpHeader_setDestinationAddress(IpHeader* _self, u_int32_t _dstaddress);
+/* Set the IP Version field and the IHL (always 5) field */
+extern void IpHeader_setVersion(IpHeader* _self, u_int8_t _version) __NONNULL;
 
-extern u_int8_t IpHeader_getVersion(IpHeader* _self);
-extern u_int8_t IpHeader_getInternetHeaderLength(IpHeader* _self);
-extern u_int8_t IpHeader_getDSCP(IpHeader* _self);
-extern u_int8_t IpHeader_getECN(IpHeader* _self);
-extern u_int8_t IpHeader_getFlags(IpHeader* _self);
-extern u_int8_t IpHeader_getFragmentOffset(IpHeader* _self);
-extern void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer);
-extern ByteBuffer* IpHeader_encode_v2(IpHeader* _self);
-extern IpHeader* IpHeader_decode(ByteBuffer* _buffer);
+/*  */
+extern void IpHeader_setDifferentiatedServiceField(IpHeader* _self, u_int8_t _dsf) __NONNULL;
+extern void IpHeader_setTotalLength(IpHeader* _self, u_int16_t _total_length) __NONNULL;
+extern void IpHeader_setIdentfication(IpHeader* _self, u_int16_t _identification) __NONNULL;
+extern void IpHeader_setFlagOffField(IpHeader* _self, u_int16_t _flagoff) __NONNULL;
+extern void IpHeader_setTimeToLive(IpHeader* _self, u_int8_t _time_to_live) __NONNULL;
+extern void IpHeader_setProtocol(IpHeader* _self, u_int8_t _protocol) __NONNULL;
+extern void IpHeader_setHeaderChecksum(IpHeader* _self, u_int16_t _checksum) __NONNULL;
+extern void IpHeader_setSourceAddress(IpHeader* _self, u_int32_t _srcaddres) __NONNULL;
+extern void IpHeader_setDestinationAddress(IpHeader* _self, u_int32_t _dstaddress) __NONNULL;
 
-extern void IpHeader_printInfo(IpHeader* _self);
+extern u_int8_t IpHeader_getVersion(IpHeader* _self) __NONNULL;
+extern u_int8_t IpHeader_getInternetHeaderLength(IpHeader* _self) __NONNULL;
+extern u_int8_t IpHeader_getDSCP(IpHeader* _self) __NONNULL;
+extern u_int8_t IpHeader_getECN(IpHeader* _self) __NONNULL;
+extern u_int8_t IpHeader_getFlags(IpHeader* _self) __NONNULL;
+extern u_int8_t IpHeader_getFragmentOffset(IpHeader* _self) __NONNULL;
+extern void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer) __NONNULL;
+extern ByteBuffer* IpHeader_encode_v2(IpHeader* _self) __NONNULL;
+extern IpHeader* IpHeader_decode(ByteBuffer* _buffer) __NONNULL;
+
+extern void IpHeader_printInfo(IpHeader* _self) __NONNULL;
 
 extern u_int16_t computeFlagOff(int _x, int _d, int _m, int _offset);
 extern u_int8_t  computeDifferentiatedServiceField(int _dscp, int _ecn);
