@@ -1,4 +1,4 @@
-CC=gcc -Wall
+CC=gcc -Wall -O3
 OBJECTS=$(patsubst src/%.c,./%.o,$(wildcard src/*.c))
 LIBS=-lpthread
 SRC=$(wildcard src/*.c)
