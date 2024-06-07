@@ -45,7 +45,7 @@ void *Receiver_run(void* _self)
     char* pname = ((Receiver*)_self)->_proto->p_name;
 
     char* addr = addressNumberToString(addrn, true);
-    printf("[*] %s Receiver starting on (%s, %hu)\n", pname, addr, port);
+    printf("[*] %s Receiver starting on (%s, %hu)\n", pname, addr, ntohs(port));
     free(addr);
 
     size_t ip_size = (IP_PAYLOAD_MAX_SIZE + IP_HEADER_SIZE);
@@ -62,7 +62,7 @@ void *Receiver_run(void* _self)
         
         if (retval < 0) continue;
         printf("[*] %s Receiver received %ld bytes\n", pname, retval);
-        
+
         ((Receiver*)_self)->__process_fn(buff);
     }
 

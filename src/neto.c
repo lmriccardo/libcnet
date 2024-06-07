@@ -482,7 +482,9 @@ u_int16_t computeUDPChecksum(char* _buff)
     memcpy(&x9,  _buff + 16, 2);
     memcpy(&x10, _buff + 18, 2);
 
-    sum = x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10;
+    sum = htons(x1) + htons(x2) + htons(x3) + x4 + htons(x5) + \
+          htons(x6) + htons(x7) + htons(x8) + x9 + htons(x10);
+    
     checksum = 0xFFFF - sum;
 
     return checksum;
@@ -498,7 +500,7 @@ void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer)
 
 ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self)
 {
-    ByteBuffer* buff = ByteBuffer_new(UDP_HEADER_SIZE);
+    ByteBuffer* buff = ByteBuffer_new(_self->_length);
     UdpHeader_encode(_self, buff);
     return buff;
 }
@@ -507,16 +509,15 @@ ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self)
 
 UdpPacket* UdpPacket_new()
 {
-    size_t payload_size = sizeof(char) * UDP_PAYLOAD_MAX_SIZE;
-    return UdpPacket_new_v2(payload_size);
+    return UdpPacket_new_v2(UDP_PAYLOAD_MAX_SIZE);
 }
 
 UdpPacket* UdpPacket_new_v2(size_t _size)
 {
-    char* payload = (char*)malloc(_size);
+    char* payload = (char*)malloc(_size * sizeof(char));
 
     UdpHeader* hdr = UdpHeader_new();
-    UdpHeader_setLength(hdr, UDP_PAYLOAD_MAX_SIZE + UDP_HEADER_SIZE);
+    UdpHeader_setLength(hdr, _size + UDP_HEADER_SIZE);
 
     UdpPacket* pckt = (UdpPacket*)malloc(sizeof(UdpPacket));
     pckt->_hdr = hdr;

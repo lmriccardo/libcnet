@@ -96,7 +96,7 @@ void RawSender_sendc(RawSender* _self, IpPacket* _pckt)
 IpPacket* RawSender_createIpPacket(RawSender *_self, u_int16_t _id)
 {
     u_int8_t proto = _self->_proto->p_proto;
-    u_int32_t dstaddr = _self->_dstaddress.sin_addr.s_addr;
+    u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
     u_int32_t srcaddr = inet_network(_self->_srcaddress);
 
     IpPacket* ippckt = craftIpPacket(

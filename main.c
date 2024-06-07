@@ -14,12 +14,13 @@ int main(int argc, char **argv)
 {
 
     // Instantiate the Receiver
-    Receiver* recv = Receiver_new("172.19.11.1", INADDR_ANY, "icmp");
+    Receiver* recv = Receiver_new("127.0.0.1", 8004, "udp");
     Receiver_start(recv, process_recv);
 
     // Initialize a sender
-    RawSender* sender = RawSender_new("172.19.11.1", "8.8.8.8", "172.19.0.1", 0, "icmp");
-    RawSender_sendIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 2);
+    RawSender* sender = RawSender_new("172.19.11.1", "127.0.0.1", "172.19.0.1", 8004, "udp");
+    // RawSender_sendIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 2);
+    RawSender_sendUdp(sender, INADDR_ANY, "Ciao", 5);
 
     sleep(1);
     Receiver_stop(recv);
