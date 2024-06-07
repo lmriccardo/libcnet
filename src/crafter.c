@@ -2,9 +2,10 @@
 
 
 IpPacket* craftIpPacket(
-    u_int8_t _version, int       _dscp,     int       _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int       _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
+    const u_int8_t  _version, const int       _dscp, const int      _ecn,   const u_int16_t _tlen,
+    const u_int16_t _id,      const int       _xf,   const int      _df,    const int       _mf, 
+    const int       _offset,  const u_int8_t  _ttl,  const u_int8_t _proto, const u_int16_t _checksum, 
+    const u_int32_t _srcaddr, const u_int32_t _dstaddr
 ) {
     IpPacket* ippckt = IpPacket_new();
 
@@ -20,10 +21,10 @@ IpPacket* craftIpPacket(
 }
 
 IpPacket* craftIpPacket_withData(
-    u_int8_t _version, int       _dscp,     int       _ecn,     u_int16_t _tlen,   u_int16_t _id,
-    int      _xf,      int       _df,       int       _mf,      int       _offset, u_int8_t  _ttl,
-    u_int8_t _proto,   u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr,
-    char*    _payload
+    const u_int8_t  _version, const int       _dscp,    const int      _ecn,   const u_int16_t _tlen,
+    const u_int16_t _id,      const int       _xf,      const int      _df,    const int       _mf, 
+    const int       _offset,  const u_int8_t  _ttl,     const u_int8_t _proto, const u_int16_t _checksum, 
+    const u_int32_t _srcaddr, const u_int32_t _dstaddr, char*          _payload
 ){
     IpPacket* ippckt = craftIpPacket(
         _version, _dscp, _ecn, _tlen, _id, _xf, _df, _mf, _offset,
@@ -35,7 +36,7 @@ IpPacket* craftIpPacket_withData(
     return ippckt;
 }
 
-IcmpPacket* craftIcmpPacket_Unused(u_int8_t _type, u_int8_t _code, u_int16_t _checksum)
+IcmpPacket* craftIcmpPacket_Unused(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum)
 {
     IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, 0x0);
     IcmpHeader_setCode(icmppckt->_icmphdr, _code);
@@ -44,7 +45,8 @@ IcmpPacket* craftIcmpPacket_Unused(u_int8_t _type, u_int8_t _code, u_int16_t _ch
 }
 
 IcmpPacket* craftIcmpPacket_Echo(
-    u_int8_t _type, u_int8_t _code, u_int16_t _checksum, u_int16_t _id, u_int16_t _seqnum
+    const u_int8_t  _type, const u_int8_t  _code, const u_int16_t _checksum, 
+    const u_int16_t _id,   const u_int16_t _seqnum
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
     IcmpHeader_setIdentifier(icmppckt->_icmphdr, _id);
@@ -53,7 +55,7 @@ IcmpPacket* craftIcmpPacket_Echo(
 }
 
 IcmpPacket* craftIcmpPacket_Redirect(
-    u_int8_t _type, u_int8_t _code, u_int16_t _checksum, char* _gateway
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
     IcmpHeader_setGateway(icmppckt->_icmphdr, inet_network(_gateway));
@@ -61,8 +63,8 @@ IcmpPacket* craftIcmpPacket_Redirect(
 }
 
 UdpPacket* craftUdpPacket(
-    u_int16_t _srcport, u_int16_t _dstport, u_int16_t _length, u_int16_t _checksum,
-    char*     _payload, size_t    _size
+    const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum,
+    const char*     _payload, const size_t    _size
 ) {
     UdpPacket* pckt = UdpPacket_new_v2(_size);
     UdpPacket_fillHeader(pckt, _srcport, _dstport, _length, _checksum);
