@@ -94,7 +94,7 @@ extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self);
 extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self);
 extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self);
 
-extern u_int16_t computeIcmpChecksum(char* _buff, size_t _size);
+extern u_int16_t computeIcmpChecksum(char* _buff);
 
 extern void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer);
 extern ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self);
@@ -121,8 +121,9 @@ extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer);
 
 /******************************* UDP PACKET ******************************/
 
-#define UDP_HEADER_SIZE      0x08
-#define UDP_PAYLOAD_MAX_SIZE 0xffe3
+#define UDP_HEADER_SIZE             0x08
+#define UDP_PAYLOAD_MAX_SIZE        0xffe3
+#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x0c
 
 typedef struct
 {
@@ -149,6 +150,8 @@ extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport);
 extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport);
 extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length );
 extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum);
+
+extern u_int16_t computeUDPChecksum(char* _buff);
 
 extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer);
 extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self);

@@ -3,12 +3,19 @@
 #include "receiver.h"
 
 
-int main(char **argv, int argc)
+void *process_recv(char *buff)
+{
+    printf("Processing ...");
+    return NULL;
+}
+
+
+int main(int argc, char **argv)
 {
 
     // Instantiate the Receiver
     Receiver* recv = Receiver_new("172.19.11.1", INADDR_ANY, "icmp");
-    Receiver_start(recv);
+    Receiver_start(recv, process_recv);
 
     // Initialize a sender
     RawSender* sender = RawSender_new("172.19.11.1", "8.8.8.8", "172.19.0.1", 0, "icmp");

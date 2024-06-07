@@ -183,7 +183,7 @@ void IcmpHeader_printInfo_v3(IcmpHeader* _self)
     printf("ICMP Header Sequence Number: %d\n", _self->_rest->_echo._seqnum);
 }
 
-u_int16_t computeIcmpChecksum(char* _buff, size_t _size)
+u_int16_t computeIcmpChecksum(char* _buff)
 {
     u_int16_t x1, x2, x3, checksum, sum;
     x1 = (*(_buff) << 8) + *(_buff + 1);
@@ -305,6 +305,8 @@ IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size)
     pckt->_icmphdr = hdr;
     pckt->_payload = (char *)malloc(_size * sizeof(char));
     pckt->__size = _size;
+
+    return pckt;
 }
 
 void IcmpPacket_delete(IcmpPacket* _self)
@@ -443,6 +445,32 @@ void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length )
 void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum)
 {
     _self->_checksum = _checksum;
+}
+
+u_int16_t computeUDPChecksum(char* _buff)
+{
+    // one's complement of the 16-bit complemeted sum of the
+    // header and the pseudo-header, which is already
+    // included into the buffer
+
+    u_int16_t x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, sum, checksum;
+
+    // Get the content of the UDP header
+    memcpy(&x1,  _buff,      2);
+    memcpy(&x2,  _buff + 2,  2);
+    memcpy(&x3,  _buff + 4,  2);
+    memcpy(&x4,  _buff + 6,  2);
+    memcpy(&x5,  _buff + 8,  2);
+    memcpy(&x6,  _buff + 10, 2);
+    memcpy(&x7,  _buff + 12, 2);
+    memcpy(&x8,  _buff + 14, 2);
+    memcpy(&x9,  _buff + 16, 2);
+    memcpy(&x10, _buff + 18, 2);
+
+    sum = x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10;
+    checksum = 0xFFFF - sum;
+
+    return checksum;
 }
 
 void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer)

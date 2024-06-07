@@ -34,7 +34,8 @@ receive the response.
 - [?] Check for memory safetiness using Valgrind
 - [] Maybe we should create a Thread also for the sender
 - [] Fragmenter for UDP Packets
-- [] Implements a simple Linked Lists for UDP Fragments
+- [] Implements a simple Linked Lists for UDP Fragments and other application
+- [] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 
 Legend:
 

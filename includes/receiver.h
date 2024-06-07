@@ -16,20 +16,23 @@ __BEGIN_DECLS
 typedef struct 
 {
 
-    struct protoent*   _proto;    /* The protocol used */
-    struct sockaddr_in _address;  /* The IP address on which we are binded */
-    int                _socket;   /* File descriptor for the created socket */
-    bool               _running;  /* If the receiver in receiving or not */
-    pthread_t          _thread;   /* The receiver thread */
+    struct protoent*   _proto;      /* The protocol used */
+    struct sockaddr_in _address;    /* The IP address on which we are binded */
+    int                _socket;     /* File descriptor for the created socket */
+    bool               _running;    /* If the receiver in receiving or not */
+    pthread_t          _thread;     /* The receiver thread */
+    void *(*__process_fn) (char *); /* Function to process the response */
 
 } Receiver;
 
 extern Receiver* Receiver_new(char* _addr, u_int16_t _port, char* _proto);
 extern void Receiver_delete(Receiver* _self);
 
-extern void  Receiver_start(Receiver* _self);
+extern void  Receiver_start(Receiver* _self, void *(*__process_fn) (char *));
 extern void* Receiver_run(void* _self);
 extern void  Receiver_stop(Receiver* _self);
+
+extern void* process(char* _buff);
 
 __END_DECLS
 

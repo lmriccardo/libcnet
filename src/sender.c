@@ -3,7 +3,7 @@
 
 RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16_t _dstport, char* _proto)
 {
-    struct sockaddr_in src, dst;
+    struct sockaddr_in dst;
     int socketfd;
 
     struct protoent *proto = getprotobyname(_proto);
@@ -29,6 +29,8 @@ RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16
     sender->_lastid = (unsigned short)getpid();
     sender->_icmpsn = 0;
     sender->_lsticmpid = 1;
+
+    return sender;
 }
 
 void RawSender_delete(RawSender* _self)
@@ -133,6 +135,9 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_
     ) {
         return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, ++_self->_icmpsn);
     }
+
+    fprintf(stderr, "[RawSender_createIcmpPacket] Undefined ICMP type %c\n", _type);
+    exit(EXIT_FAILURE);
 }
 
 void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n)
@@ -144,7 +149,7 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n
 
         // Compute the checksum of the ICMP header
         ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
-        u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer, icmphdrbuff->_size);
+        u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer);
 
         IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
         ByteBuffer_delete(icmphdrbuff);

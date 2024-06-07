@@ -1,5 +1,7 @@
 #include "receiver.h"
 
+void * process(char* _buff) { return NULL; }
+
 Receiver* Receiver_new(char* _addr, u_int16_t _port, char* _proto)
 {
     struct sockaddr_in addr;
@@ -26,6 +28,9 @@ Receiver* Receiver_new(char* _addr, u_int16_t _port, char* _proto)
     recv->_proto = proto;
     recv->_socket = socketfd;
     recv->_running = false;
+    recv->__process_fn = process;
+
+    return recv;
 }
 
 void Receiver_delete(Receiver* _self)
@@ -57,6 +62,7 @@ void *Receiver_run(void* _self)
         
         if (retval < 0) continue;
         printf("[*] %s Receiver received %ld bytes\n", pname, retval);
+        ((Receiver*)_self)->__process_fn(buff);
     }
 
     free(buff);
@@ -64,9 +70,10 @@ void *Receiver_run(void* _self)
     return NULL;
 }
 
-void Receiver_start(Receiver* _self)
+void Receiver_start(Receiver* _self, void *(*__process_fn) (char *))
 {
     _self->_running = true;
+    _self->__process_fn = __process_fn;
 
     pthread_t recv_thread;
     pthread_create(&recv_thread, NULL, Receiver_run, _self);

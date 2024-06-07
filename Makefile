@@ -1,4 +1,4 @@
-CC=gcc
+CC=gcc -Wall
 OBJECTS=$(patsubst src/%.c,./%.o,$(wildcard src/*.c))
 LIBS=-lpthread
 SRC=$(wildcard src/*.c)
@@ -29,10 +29,10 @@ clean:
 
 debug:
 	rm -f debug
-	sudo $(CC) -I./includes $(LIBS) -g -o $@ $(SRC)
+	sudo $(CC) -I./includes $(LIBS) -g -o $@ main.c $(SRC)
 	sudo chmod u+s $@
 
 main-vg:
-	sudo $(CC) -I./includes $(LIBS) -o $@ $(SRC)
+	sudo $(CC) -I./includes $(LIBS) -o $@ main.c $(SRC)
 
 .PHONY: clean
