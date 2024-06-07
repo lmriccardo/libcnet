@@ -253,6 +253,9 @@ extern void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer) __attr
 /* Encode and returns the ByteBuffer containing the UDP header */
 extern ByteBuffer* UdpHeader_encode_v2(const UdpHeader* _self) __attribute__((nonnull)) __returns_nonnull;
 
+/* Decode a ByteBuffer into an UDP Header */
+extern UdpHeader* UdpHeader_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
+
 /* Creates and returns a new UDP Packet */
 extern UdpPacket* UdpPacket_new() __returns_nonnull;
 
@@ -268,6 +271,13 @@ extern void UdpPacket_fillHeader(
     const u_int16_t  _length, const u_int16_t _checksum
 ) __attribute__((nonnull));
 
+/* Set the header of the udp packet. Notice that the entire header is
+   copied into the header of the input UDP Packet. Finally, the memory
+   location of the input Header is freed. This means that, once the function
+   finished it will not be reachable anymore. 
+*/
+extern void UdpPacket_setHeader(UdpPacket* _self, UdpHeader* _hdr) __attribute__((nonnull));
+
 /* Fill the payload of the UDP Packet with the input buffer of input size */
 extern void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size) __attribute__((nonnull));
 
@@ -276,6 +286,9 @@ extern size_t UdpPacket_getPayloadSize(const UdpPacket* _self) __attribute__((no
 
 /* Encode the UDP Packet into a Byte Buffer */
 extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnull)) __returns_nonnull;
+
+/* Decode a ByteBuffer into a UDP Packet */
+extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
 
 /******************************* IP PACKET ******************************/
 
