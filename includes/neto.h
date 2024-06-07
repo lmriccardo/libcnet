@@ -288,7 +288,7 @@ extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnu
 #define D_FLAG_NOT_SET 0
 #define M_FLAG_NOT_SET 0
 #define D_FLAG_SET     0x02
-#define M_FLAG_SET     0x04
+#define M_FLAG_SET     0x01
 
 #define IP_HEADER_FLAG(_x, _d, _m) (_x + _d + _m)
 
@@ -378,56 +378,122 @@ extern IpHeader* IpHeader_new() __returns_nonnull;
 extern void IpHeader_delete(IpHeader* _self) __attribute__((nonnull));
 
 /* Set the IP Version field and the IHL (always 5) field */
-extern void IpHeader_setVersion(IpHeader* _self, u_int8_t _version) __attribute__((nonnull));
+extern void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version) __attribute__((nonnull));
 
-/*  */
-extern void IpHeader_setDifferentiatedServiceField(IpHeader* _self, u_int8_t _dsf) __attribute__((nonnull));
-extern void IpHeader_setTotalLength(IpHeader* _self, u_int16_t _total_length) __attribute__((nonnull));
-extern void IpHeader_setIdentfication(IpHeader* _self, u_int16_t _identification) __attribute__((nonnull));
-extern void IpHeader_setFlagOffField(IpHeader* _self, u_int16_t _flagoff) __attribute__((nonnull));
-extern void IpHeader_setTimeToLive(IpHeader* _self, u_int8_t _time_to_live) __attribute__((nonnull));
-extern void IpHeader_setProtocol(IpHeader* _self, u_int8_t _protocol) __attribute__((nonnull));
-extern void IpHeader_setHeaderChecksum(IpHeader* _self, u_int16_t _checksum) __attribute__((nonnull));
-extern void IpHeader_setSourceAddress(IpHeader* _self, u_int32_t _srcaddres) __attribute__((nonnull));
-extern void IpHeader_setDestinationAddress(IpHeader* _self, u_int32_t _dstaddress) __attribute__((nonnull));
+/* Set the differentiated Service field In the IP Header */
+extern void IpHeader_setDifferentiatedServiceField(IpHeader* _self, const u_int8_t _dsf) __attribute__((nonnull));
 
-extern u_int8_t IpHeader_getVersion(IpHeader* _self) __attribute__((nonnull));
-extern u_int8_t IpHeader_getInternetHeaderLength(IpHeader* _self) __attribute__((nonnull));
-extern u_int8_t IpHeader_getDSCP(IpHeader* _self) __attribute__((nonnull));
-extern u_int8_t IpHeader_getECN(IpHeader* _self) __attribute__((nonnull));
-extern u_int8_t IpHeader_getFlags(IpHeader* _self) __attribute__((nonnull));
-extern u_int8_t IpHeader_getFragmentOffset(IpHeader* _self) __attribute__((nonnull));
-extern void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
-extern ByteBuffer* IpHeader_encode_v2(IpHeader* _self) __attribute__((nonnull));
-extern IpHeader* IpHeader_decode(ByteBuffer* _buffer) __attribute__((nonnull));
+/* Set the Total Length field of the IP Header */
+extern void IpHeader_setTotalLength(IpHeader* _self, const u_int16_t _total_length) __attribute__((nonnull));
 
-extern void IpHeader_printInfo(IpHeader* _self) __attribute__((nonnull));
+/* Set the Identification field of the IP Header */
+extern void IpHeader_setIdentfication(IpHeader* _self, const u_int16_t _identification) __attribute__((nonnull));
 
-extern u_int16_t computeFlagOff(int _x, int _d, int _m, int _offset);
-extern u_int8_t  computeDifferentiatedServiceField(int _dscp, int _ecn);
-extern char*     convertFlagToBin(u_int8_t _flags);
-extern char*     addressNumberToString(u_int32_t _addr, bool _be);
+/* Set the Flag and the Fragment Offset field */
+extern void IpHeader_setFlagOffField(IpHeader* _self, const u_int16_t _flagoff) __attribute__((nonnull));
 
-/* Constructor, Deconstructor and Methods for IpPacket struct/class */
-extern IpPacket* IpPacket_new();
-extern void IpPacket_delete(IpPacket* _self);
+/* Set the TTL Field */
+extern void IpHeader_setTimeToLive(IpHeader* _self, const u_int8_t _time_to_live) __attribute__((nonnull));
 
-extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr);
+/* Set the Protocol Field */
+extern void IpHeader_setProtocol(IpHeader* _self, const u_int8_t _protocol) __attribute__((nonnull));
+
+/* Set the Checksum of the Header */
+extern void IpHeader_setHeaderChecksum(IpHeader* _self, const u_int16_t _checksum) __attribute__((nonnull));
+
+/* Set the source Address field of the IP Header */
+extern void IpHeader_setSourceAddress(IpHeader* _self, const u_int32_t _srcaddres) __attribute__((nonnull));
+
+/* Set the Destination Address field of the IP Header */
+extern void IpHeader_setDestinationAddress(IpHeader* _self, const u_int32_t _dstaddress) __attribute__((nonnull));
+
+/* Returns the version of the IP */
+extern u_int8_t IpHeader_getVersion(const IpHeader* _self) __attribute__((nonnull));
+
+/* Returns the IHL Value from the IP Header */
+extern u_int8_t IpHeader_getInternetHeaderLength(const IpHeader* _self) __attribute__((nonnull));
+
+/* Returns the Differentiated Service Code Point from the DSF field */
+extern u_int8_t IpHeader_getDSCP(const IpHeader* _self) __attribute__((nonnull));
+
+/* Returns the Explicit Congestion Notification value from the DSF field */
+extern u_int8_t IpHeader_getECN(const IpHeader* _self) __attribute__((nonnull));
+
+/* Returns the Flags value from the IP Header */
+extern u_int8_t IpHeader_getFlags(const IpHeader* _self) __attribute__((nonnull));
+
+/* Returns the Fragment Offset value from the IP Header */
+extern u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self) __attribute__((nonnull));
+
+/* Encode the IP header into a ByteBuffer */
+extern void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+
+/* Encode the IP header into a ByteBuffer and returns the ByteBuffer */
+extern ByteBuffer* IpHeader_encode_v2(const IpHeader* _self) __attribute__((nonnull)) __returns_nonnull;
+
+/* Decode the input ByteBuffer into an IP Header */
+extern IpHeader* IpHeader_decode(const ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
+
+/* Prints the IP Header fields and values */
+extern void IpHeader_printInfo(const IpHeader* _self) __attribute__((nonnull));
+
+/* Compute the value for the Flags + Fragment Offset field by combining the
+   three input flags into a single value and then combining this single value
+   with the input fragment offset into the final value
+*/
+extern u_int16_t computeFlagOff(const int _x, const int _d, const int _m, const int _offset);
+
+/* Compute the value for the DSF Field by combining the input DSCP and ECN values */
+extern u_int8_t computeDifferentiatedServiceField(const int _dscp, const int _ecn);
+
+/* Converts the IP Header flags into a binary string (i.e., 2 -> 010) */
+extern char* convertFlagToBin(const u_int8_t _flags) __returns_nonnull;
+
+/* Converts the input address number into a string. The second argument is used
+   to specify whether the input address number is in LE or BE format.
+*/
+extern char* addressNumberToString(const u_int32_t _addr, const bool _be) __returns_nonnull;
+
+/* Create and returns a new instance of IP Packet */
+extern IpPacket* IpPacket_new() __returns_nonnull;
+
+/* Free the memory allocated for the input IP Packet */
+extern void IpPacket_delete(IpPacket* _self) __attribute__((nonnull));
+
+/* Set a new header for the IP Packet. Notice that the conten of the new header is entirely copied 
+   inside the header of the input packet. Once all the content has been copied, the memory allocated 
+   for the  input header will be freed. This means that, once this function ends the memory location 
+   of the input IP Header is no longer accessible.
+*/
+extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr) __attribute__((nonnull));
+
+/* Fill the header of the input IP Packet with all the values given as input */
 extern void IpPacket_fillHeader(
     IpPacket* _self,     u_int8_t  _version, u_int8_t  _dsf, u_int16_t _tlen,
     u_int16_t _id,       u_int16_t _flagoff, u_int8_t  _ttl, u_int8_t  _protocol, 
     u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
-);
+) __attribute__((nonnull));
 
-extern void IpPacket_fillPayload(IpPacket * _self, char *_data, size_t _datasize);
-extern u_int16_t IpPacket_getPayloadSize(IpPacket * _self);
-extern IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self);
+/* Fill the payload of the input IP Packet with the input data of input size */
+extern void IpPacket_fillPayload(IpPacket * _self, char *_data, size_t _datasize) __attribute__((nonnull));
 
-extern ByteBuffer* IpPacket_encode(IpPacket* _self);
-extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer);
+/* Returns the payload size of the input IP Packet */
+extern u_int16_t IpPacket_getPayloadSize(IpPacket * _self) __attribute__((nonnull));
 
-extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt);
-extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt);
+/* Returns the ICMP Packet encoded into the IP Packet Payload */
+extern IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self) __attribute__((nonnull)) __returns_nonnull;
+
+/* Encode the IP Packet into a ByteBuffer */
+extern ByteBuffer* IpPacket_encode(IpPacket* _self) __attribute__((nonnull)) __returns_nonnull;
+
+/* Decode the input ByteBuffer into an IP packet */
+extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
+
+/* Wrap the input ICMP Packet into the payload of the input IP Packet */
+extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt) __attribute__((nonnull));
+
+/* Wrap the input UDP Packet into the payload of the input IP Packet */
+extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__((nonnull));
 
 __END_DECLS
 
