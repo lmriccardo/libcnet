@@ -79,8 +79,6 @@ void Receiver_start(Receiver* _self, void *(*__process_fn) (char *))
     pthread_t recv_thread;
     pthread_create(&recv_thread, NULL, Receiver_run, _self);
     pthread_detach(recv_thread);
-
-    _self->_thread = recv_thread;
 }
 
 void Receiver_stop(Receiver* _self)
