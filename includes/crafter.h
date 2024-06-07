@@ -19,7 +19,7 @@ extern IpPacket* craftIpPacket_withData(
     int      _xf,      int       _df,       int       _mf,      int       _offset, u_int8_t  _ttl,
     u_int8_t _proto,   u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr,
     char*    _payload
-) __returns_nonnull __nonnull((15));
+) __returns_nonnull __attribute__((nonnull));
 
 /* Craft an ICMP Packet with Unused fields */
 extern IcmpPacket* craftIcmpPacket_Unused(u_int8_t _type, u_int8_t _code, u_int16_t _checksum) __returns_nonnull;
@@ -31,13 +31,13 @@ extern IcmpPacket* craftIcmpPacket_Echo(
 
 /* Craft an ICMP Packet with the Gateway field */
 extern IcmpPacket* craftIcmpPacket_Redirect(
-    u_int8_t _type, u_int8_t _code, u_int16_t _checksum, char* _gateway) __returns_nonnull __nonnull ((4));
+    u_int8_t _type, u_int8_t _code, u_int16_t _checksum, char* _gateway) __returns_nonnull __attribute__((nonnull));
 
 /* Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet */
 extern UdpPacket* craftUdpPacket(
     u_int16_t _srcport, u_int16_t _dstport, u_int16_t _length, u_int16_t _checksum,
     char*     _payload, size_t    _size
-) __returns_nonnull __nonnull ((5));
+) __returns_nonnull __attribute__((nonnull));
 
 __END_DECLS
 
