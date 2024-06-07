@@ -89,7 +89,7 @@ typedef struct
 } IcmpPacket;
 
 /* Return a pointer to an IcmpHeader struct initialized given the input type */
-extern IcmpHeader* IcmpHeader_new(u_int8_t _type) __returns_nonnull;
+extern IcmpHeader* IcmpHeader_new(const u_int8_t _type) __returns_nonnull;
 
 /* Free the memory of the previously allocated IcmpHeader */
 extern void IcmpHeader_delete(IcmpHeader* _self) __attribute__((nonnull));
@@ -159,19 +159,19 @@ extern void IcmpPacket_delete(IcmpPacket* _self) __attribute__((nonnull));
 /* Fill the Header of the ICMP Packet with the Code. This version of the
    `fillHeader` function is reserved for ICMP Header with 32 bits unused
 */
-extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code) __attribute__((nonnull));
+extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int8_t _code) __attribute__((nonnull));
 
 /* Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the
    `fillHeader` function is reserved for ICMP Header with 32 bits for the gateway address
 */
-extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway) __attribute__((nonnull));
+extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int8_t _code, const u_int32_t _gateway) __attribute__((nonnull));
 
 /* Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. 
    This version of the `fillHeader` function is reserved for ICMP Header with 32 bits 
    divided into Identifier (16 bits) and Sequence Number (16 bits).
 */
 extern void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum) __attribute__((nonnull));
+    IcmpPacket* _self, const u_int8_t _code, const u_int16_t _id, const u_int16_t _seqnum) __attribute__((nonnull));
 
 /* Set a new Header for the ICMP Packet. The input headers will be copied into
    a new header of the ICMP Packet, and the memory for the input header will
@@ -179,7 +179,7 @@ extern void IcmpPacket_fillHeader_v3(
 extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr) __attribute__((nonnull));
 
 /* Fill the ICMP Packet payload with input buffer and set a new size */
-extern void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size) __attribute__((nonnull));
+extern void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size) __attribute__((nonnull));
 
 /* Returns the entire size of the ICMP Packet (Header + Payload) */
 extern size_t IcmpPacket_getPacketSize(const IcmpPacket* _self) __attribute__((nonnull));
@@ -230,28 +230,28 @@ extern UdpHeader* UdpHeader_new() __returns_nonnull;
 extern void UdpHeader_delete(UdpHeader* _self) __attribute__((nonnull));
 
 /* Set the Source Port field into the UDP Header */
-extern void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport) __attribute__((nonnull));
+extern void UdpHeader_setSourcePort(UdpHeader* _self, const u_int16_t _srcport) __attribute__((nonnull));
 
 /* Set the Destination Port field into the UDP Header */
-extern void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport) __attribute__((nonnull));
+extern void UdpHeader_setDestinationPort(UdpHeader* _self, const u_int16_t _dstport) __attribute__((nonnull));
 
 /* Set the Length field into the UDP Header */
-extern void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length ) __attribute__((nonnull));
+extern void UdpHeader_setLength(UdpHeader* _self, const u_int16_t _length ) __attribute__((nonnull));
 
 /* Set the Checksum field into the UDP Header */
-extern void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum) __attribute__((nonnull));
+extern void UdpHeader_setChecksum(UdpHeader* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
 /* Print all the Header fields with current values */
 extern void UdpHeader_printInfo(const UdpHeader* _self) __attribute__((nonnull));
 
 /* Compute the UDP Checksum according to its RFC */
-extern u_int16_t computeUDPChecksum(char* _buff) __attribute__((nonnull));
+extern u_int16_t computeUDPChecksum(const char* _buff) __attribute__((nonnull));
 
 /* Encode the UDP Header into a ByteBuffer */
-extern void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Encode and returns the ByteBuffer containing the UDP header */
-extern ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self) __attribute__((nonnull)) __returns_nonnull;
+extern ByteBuffer* UdpHeader_encode_v2(const UdpHeader* _self) __attribute__((nonnull)) __returns_nonnull;
 
 /* Creates and returns a new UDP Packet */
 extern UdpPacket* UdpPacket_new() __returns_nonnull;
@@ -264,12 +264,12 @@ extern void UdpPacket_delete(UdpPacket* _self) __attribute__((nonnull));
 
 /* Fill the header of the input UDP Packet given all its fields */
 extern void UdpPacket_fillHeader(
-    UdpPacket* _self,   u_int16_t _srcport, u_int16_t _dstport,
-    u_int16_t  _length, u_int16_t _checksum
+    UdpPacket*       _self,   const u_int16_t _srcport, const u_int16_t _dstport,
+    const u_int16_t  _length, const u_int16_t _checksum
 ) __attribute__((nonnull));
 
 /* Fill the payload of the UDP Packet with the input buffer of input size */
-extern void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size) __attribute__((nonnull));
+extern void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size) __attribute__((nonnull));
 
 /* Returns the size of the payload inside the input UDP Packet */
 extern size_t UdpPacket_getPayloadSize(const UdpPacket* _self) __attribute__((nonnull));
@@ -432,7 +432,7 @@ extern void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer) __attrib
 extern ByteBuffer* IpHeader_encode_v2(const IpHeader* _self) __attribute__((nonnull)) __returns_nonnull;
 
 /* Decode the input ByteBuffer into an IP Header */
-extern IpHeader* IpHeader_decode(const ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
+extern IpHeader* IpHeader_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;
 
 /* Prints the IP Header fields and values */
 extern void IpHeader_printInfo(const IpHeader* _self) __attribute__((nonnull));
@@ -452,7 +452,7 @@ extern char* convertFlagToBin(const u_int8_t _flags) __returns_nonnull;
 /* Converts the input address number into a string. The second argument is used
    to specify whether the input address number is in LE or BE format.
 */
-extern char* addressNumberToString(const u_int32_t _addr, const bool _be) __returns_nonnull;
+extern char* addressNumberToString(u_int32_t _addr, const bool _be) __returns_nonnull;
 
 /* Create and returns a new instance of IP Packet */
 extern IpPacket* IpPacket_new() __returns_nonnull;
@@ -469,22 +469,22 @@ extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr) __attribute_
 
 /* Fill the header of the input IP Packet with all the values given as input */
 extern void IpPacket_fillHeader(
-    IpPacket* _self,     u_int8_t  _version, u_int8_t  _dsf, u_int16_t _tlen,
-    u_int16_t _id,       u_int16_t _flagoff, u_int8_t  _ttl, u_int8_t  _protocol, 
-    u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
+    IpPacket*       _self,     const u_int8_t  _version, const u_int8_t  _dsf, const u_int16_t _tlen,
+    const u_int16_t _id,       const u_int16_t _flagoff, const u_int8_t  _ttl, const u_int8_t  _protocol, 
+    const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr
 ) __attribute__((nonnull));
 
 /* Fill the payload of the input IP Packet with the input data of input size */
-extern void IpPacket_fillPayload(IpPacket * _self, char *_data, size_t _datasize) __attribute__((nonnull));
+extern void IpPacket_fillPayload(IpPacket * _self, const char *_data, const size_t _datasize) __attribute__((nonnull));
 
 /* Returns the payload size of the input IP Packet */
-extern u_int16_t IpPacket_getPayloadSize(IpPacket * _self) __attribute__((nonnull));
+extern u_int16_t IpPacket_getPayloadSize(const IpPacket * _self) __attribute__((nonnull));
 
 /* Returns the ICMP Packet encoded into the IP Packet Payload */
-extern IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self) __attribute__((nonnull)) __returns_nonnull;
+extern IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self) __attribute__((nonnull)) __returns_nonnull;
 
 /* Encode the IP Packet into a ByteBuffer */
-extern ByteBuffer* IpPacket_encode(IpPacket* _self) __attribute__((nonnull)) __returns_nonnull;
+extern ByteBuffer* IpPacket_encode(const IpPacket* _self) __attribute__((nonnull)) __returns_nonnull;
 
 /* Decode the input ByteBuffer into an IP packet */
 extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer) __attribute__((nonnull)) __returns_nonnull;

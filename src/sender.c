@@ -1,8 +1,9 @@
 #include "sender.h"
 
 
-RawSender* RawSender_new(char *_srcaddr, char* _dstaddr, char* _gateway, u_int16_t _dstport, char* _proto)
-{
+RawSender* RawSender_new(
+    char *_srcaddr, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
+) {
     struct sockaddr_in dst;
     int socketfd;
 
@@ -39,7 +40,7 @@ void RawSender_delete(RawSender* _self)
     free(_self);
 }
 
-void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
+void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _size)
 {
     socklen_t dstlen;
     dstlen = sizeof(struct sockaddr_in);
@@ -56,7 +57,7 @@ void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size)
     printf("Sent %ld bytes of IP Packet\n", _size);
 }
 
-void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
+void RawSender_sendto(RawSender* _self, const IpPacket* _pckt)
 {
     ByteBuffer* buffer = IpPacket_encode(_pckt);
     ByteBuffer_writeToFile(buffer, "sent.bin");
@@ -67,7 +68,7 @@ void RawSender_sendto(RawSender* _self, IpPacket* _pckt)
     ByteBuffer_delete(buffer);
 }
 
-void RawSender_printInfo(RawSender* _self)
+void RawSender_printInfo(const RawSender* _self)
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
     char *dstaddr = RawSender_getDestinationIP(_self);
@@ -77,13 +78,13 @@ void RawSender_printInfo(RawSender* _self)
     free(dstaddr);
 }
 
-char* RawSender_getDestinationIP(RawSender* _self)
+char* RawSender_getDestinationIP(const RawSender* _self)
 {
     char *dstaddr = addressNumberToString(_self->_dstaddress.sin_addr.s_addr, true);
     return dstaddr;
 }
 
-void RawSender_sendc(RawSender* _self, IpPacket* _pckt)
+void RawSender_sendc(RawSender* _self, const IpPacket* _pckt)
 {
     RawSender_printInfo(_self);
 
@@ -93,7 +94,7 @@ void RawSender_sendc(RawSender* _self, IpPacket* _pckt)
     }
 }
 
-IpPacket* RawSender_createIpPacket(RawSender *_self, u_int16_t _id)
+IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id)
 {
     u_int8_t proto = _self->_proto->p_proto;
     u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
@@ -108,7 +109,7 @@ IpPacket* RawSender_createIpPacket(RawSender *_self, u_int16_t _id)
     return ippckt;
 }
 
-IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_t _code)
+IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, const u_int8_t _code)
 {
     if (
         (
@@ -140,7 +141,7 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, u_int8_t _type, u_int8_
     exit(EXIT_FAILURE);
 }
 
-UdpPacket* RawSender_createUdpPacket(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size)
+UdpPacket* RawSender_createUdpPacket(RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
     u_int16_t length = _size + UDP_HEADER_SIZE;
@@ -148,7 +149,7 @@ UdpPacket* RawSender_createUdpPacket(RawSender* _self, u_int16_t _srcport, char*
     return pckt;
 }
 
-void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n)
+void RawSender_sendIcmp(RawSender* _self, const u_int8_t _type, const u_int8_t _code, const int _n)
 {
     for (int j = 0; j < _n; j++)
     {
@@ -176,7 +177,7 @@ void RawSender_sendIcmp(RawSender* _self, u_int8_t _type, u_int8_t _code, int _n
     }
 }
 
-void RawSender_sendUdp(RawSender* _self, u_int16_t _srcport, char* _payload, size_t _size)
+void RawSender_sendUdp(RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
 {
     IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid++);
     UdpPacket* udppckt = RawSender_createUdpPacket(_self, _srcport, _payload, _size);

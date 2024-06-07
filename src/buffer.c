@@ -1,6 +1,6 @@
 #include "buffer.h"
 
-ByteBuffer* ByteBuffer_new(size_t _size)
+ByteBuffer* ByteBuffer_new(const size_t _size)
 {
     ByteBuffer* buffer = (ByteBuffer *)malloc(sizeof(ByteBuffer));
     buffer->_buffer = (char *)malloc(_size * sizeof(char));
@@ -9,7 +9,7 @@ ByteBuffer* ByteBuffer_new(size_t _size)
     return buffer;
 }
 
-ByteBuffer* ByteBuffer_new_v2(char *_buffer, size_t _size)
+ByteBuffer* ByteBuffer_new_v2(const char *_buffer, const size_t _size)
 {
     ByteBuffer* buffer = (ByteBuffer*)malloc(sizeof(ByteBuffer));
     buffer->_buffer = (char *)malloc(_size * sizeof(char));
@@ -37,52 +37,52 @@ void ByteBuffer_resetPosition(ByteBuffer* _self)
     _self->_position = 0;
 }
 
-void ByteBuffer_position(ByteBuffer* _self, int _newpos)
+void ByteBuffer_position(ByteBuffer* _self, const int _newpos)
 {
     _self->_position = _newpos;
 }
 
-void ByteBuffer_put(ByteBuffer* _self, char _data)
+void ByteBuffer_put(ByteBuffer* _self, const char _data)
 {
     checkForOOB(_self->_position, BYTE_SIZE, _self->_size);
     _self->_buffer[_self->_position] = _data;
     ByteBuffer_position(_self, _self->_position + BYTE_SIZE);
 }
 
-void ByteBuffer_putShort(ByteBuffer* _self, u_int16_t _data)
+void ByteBuffer_putShort(ByteBuffer* _self, const u_int16_t _data)
 {
     checkForOOB(_self->_position, SHORT_SIZE, _self->_size);
     memcpy(_self->_buffer + _self->_position, &_data, SHORT_SIZE);
     ByteBuffer_position(_self, _self->_position + SHORT_SIZE);
 }
 
-void ByteBuffer_putInt(ByteBuffer* _self, u_int32_t _data)
+void ByteBuffer_putInt(ByteBuffer* _self, const u_int32_t _data)
 {
     checkForOOB(_self->_position, INT_SIZE, _self->_size);
     memcpy(_self->_buffer + _self->_position, &_data, INT_SIZE);
     ByteBuffer_position(_self, _self->_position + INT_SIZE);
 }
 
-void ByteBuffer_putBufferFrom(ByteBuffer* _self, char* _src, int _start, size_t _size)
+void ByteBuffer_putBufferFrom(ByteBuffer* _self, const char* _src, const int _start, const size_t _size)
 {
     checkForOOB(_start, _size, _self->_size);
     memcpy(_self->_buffer + _start, _src, _size);
     ByteBuffer_position(_self, _start + _size);
 }
 
-void ByteBuffer_putBuffer(ByteBuffer* _self, char* _src, size_t _size)
+void ByteBuffer_putBuffer(ByteBuffer* _self, const char* _src, const size_t _size)
 {
     ByteBuffer_putBufferFrom(_self, _src, _self->_position, _size);
 }
 
-void ByteBuffer_writeToFile(const ByteBuffer* _self, char *_file)
+void ByteBuffer_writeToFile(const ByteBuffer* _self, const char *_file)
 {
     FILE *fptr = fopen(_file, "wb");
     fwrite(_self->_buffer, _self->_size, 1, fptr);
     fclose(fptr);
 }
 
-void checkForOOB(int _position, size_t _size, size_t _max)
+void checkForOOB(const int _position, const size_t _size, const size_t _max)
 {
     if (_position + _size > _max)
     {
@@ -114,12 +114,12 @@ u_int32_t ByteBuffer_getInt(ByteBuffer* _self)
     return data;
 }
 
-char* ByteBuffer_getBuffer(ByteBuffer* _self, size_t _size)
+char* ByteBuffer_getBuffer(ByteBuffer* _self, const size_t _size)
 {
     return ByteBuffer_getBufferFrom(_self, _self->_position, _size);
 }
 
-char* ByteBuffer_getBufferFrom(ByteBuffer* _self, size_t _start, size_t _size)
+char* ByteBuffer_getBufferFrom(ByteBuffer* _self, const size_t _start, const size_t _size)
 {
     char *data = (char*)malloc(_size * sizeof(char));
     memcpy(data, _self->_buffer + _start, _size);

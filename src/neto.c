@@ -2,7 +2,7 @@
 
 /* --------------------------------------------- ICMP HEADER --------------------------------------------- */
 
-IcmpHeader* IcmpHeader_new(u_int8_t _type)
+IcmpHeader* IcmpHeader_new(const u_int8_t _type)
 {
     IcmpHeader* hdr = (IcmpHeader*)malloc(sizeof(IcmpHeader));
     union h_data_t* rest = (union h_data_t*)malloc(sizeof(union h_data_t));
@@ -68,22 +68,22 @@ void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
     _self->_rest->_echo = echo_s;
 }
 
-void IcmpHeader_setType(IcmpHeader* _self, u_int8_t _type)
+void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type)
 {
     _self->_type = _type;
 }
 
-void IcmpHeader_setCode(IcmpHeader* _self, u_int8_t _code)
+void IcmpHeader_setCode(IcmpHeader* _self, const u_int8_t _code)
 {
     _self->_code = _code;
 }
 
-void IcmpHeader_setChecksum(IcmpHeader* _self, u_int16_t _checksum)
+void IcmpHeader_setChecksum(IcmpHeader* _self, const u_int16_t _checksum)
 {
     _self->_checksum = _checksum;
 }
 
-void IcmpHeader_setGateway(IcmpHeader* _self, u_int32_t _gateway)
+void IcmpHeader_setGateway(IcmpHeader* _self, const u_int32_t _gateway)
 {
     if (_self->_type != ICMP_REDIRECT_TYPE)
     {
@@ -96,7 +96,7 @@ void IcmpHeader_setGateway(IcmpHeader* _self, u_int32_t _gateway)
     _self->_rest->_gateway = _gateway;
 }
 
-void IcmpHeader_setIdentifier(IcmpHeader* _self, u_int16_t _id)
+void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id)
 {
     if (
         (
@@ -121,7 +121,7 @@ void IcmpHeader_setIdentifier(IcmpHeader* _self, u_int16_t _id)
     _self->_rest->_echo._id = _id;
 }
 
-void IcmpHeader_setSequenceNumber(IcmpHeader* _self, u_int16_t _seqnum)
+void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum)
 {
     if (
         (
@@ -146,7 +146,7 @@ void IcmpHeader_setSequenceNumber(IcmpHeader* _self, u_int16_t _seqnum)
     _self->_rest->_echo._seqnum = _seqnum;
 }
 
-void IcmpHeader_printInfo(IcmpHeader* _self)
+void IcmpHeader_printInfo(const IcmpHeader* _self)
 {
     printf("[*] Printing Information of the ICMP Header\n");
     printf("ICMP Message Type: %d\n", _self->_type);
@@ -172,18 +172,18 @@ void IcmpHeader_printInfo(IcmpHeader* _self)
     printf("\n");
 }
 
-void IcmpHeader_printInfo_v2(IcmpHeader* _self)
+void IcmpHeader_printInfo_v2(const IcmpHeader* _self)
 {
     printf("ICMP Header Gateway: %d\n", _self->_rest->_gateway);
 }
 
-void IcmpHeader_printInfo_v3(IcmpHeader* _self)
+void IcmpHeader_printInfo_v3(const IcmpHeader* _self)
 {
     printf("ICMP Header Identifier: %d\n", _self->_rest->_echo._id);
     printf("ICMP Header Sequence Number: %d\n", _self->_rest->_echo._seqnum);
 }
 
-u_int16_t computeIcmpChecksum(char* _buff)
+u_int16_t computeIcmpChecksum(const char* _buff)
 {
     u_int16_t x1, x2, x3, checksum, sum;
     x1 = (*(_buff) << 8) + *(_buff + 1);
@@ -197,7 +197,7 @@ u_int16_t computeIcmpChecksum(char* _buff)
     return checksum;
 }
 
-void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer)
+void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_type);
     ByteBuffer_put(_buffer, _self->_code);
@@ -231,7 +231,7 @@ void IcmpHeader_encode(IcmpHeader *_self, ByteBuffer* _buffer)
     }
 }
 
-ByteBuffer* IcmpHeader_encode_v2(IcmpHeader *_self)
+ByteBuffer* IcmpHeader_encode_v2(const IcmpHeader *_self)
 {
     ByteBuffer *buff = ByteBuffer_new(ICMP_HEADER_MAX_SIZE);
     IcmpHeader_encode(_self, buff);
@@ -285,12 +285,12 @@ IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer)
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
-IcmpPacket* IcmpPacket_new(u_int8_t _type)
+IcmpPacket* IcmpPacket_new(const u_int8_t _type)
 {
     return IcmpPacket_new_v2(_type, ICMP_PAYLOAD_MAXIMUM_SIZE);
 }
 
-IcmpPacket* IcmpPacket_new_v2(u_int8_t _type, size_t _size)
+IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const size_t _size)
 {
     // Check if the given size is out of bound
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
@@ -316,13 +316,13 @@ void IcmpPacket_delete(IcmpPacket* _self)
     free(_self);
 }
 
-void IcmpPacket_fillHeader_v1(IcmpPacket* _self, u_int8_t _code)
+void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int8_t _code)
 {
     IcmpHeader_setCode(_self->_icmphdr, _code);
     IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
 }
 
-void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gateway)
+void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int8_t _code, const u_int32_t _gateway)
 {
     IcmpHeader_setCode(_self->_icmphdr, _code);
     IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
@@ -330,7 +330,7 @@ void IcmpPacket_fillHeader_v2(IcmpPacket* _self, u_int8_t _code, u_int32_t _gate
 }
 
 void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, u_int8_t _code, u_int16_t _id, u_int16_t _seqnum
+    IcmpPacket* _self, const u_int8_t _code, const u_int16_t _id, const u_int16_t _seqnum
 ) {
     IcmpHeader_setCode(_self->_icmphdr, _code);
     IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
@@ -338,7 +338,7 @@ void IcmpPacket_fillHeader_v3(
     IcmpHeader_setSequenceNumber(_self->_icmphdr, _seqnum);
 }
 
-void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size)
+void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size)
 {
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
     {
@@ -355,12 +355,12 @@ void IcmpPacket_fillPayload(IcmpPacket* _self, char* _data, size_t _size)
     _self->__size = _size;
 }
 
-size_t IcmpPacket_getPacketSize(IcmpPacket* _self)
+size_t IcmpPacket_getPacketSize(const IcmpPacket* _self)
 {
     return _self->__size + ICMP_HEADER_MAX_SIZE;
 }
 
-ByteBuffer* IcmpPacket_encode(IcmpPacket *_self)
+ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self)
 {
     ByteBuffer* buffer = ByteBuffer_new(IcmpPacket_getPacketSize(_self));
     IcmpHeader_encode(_self->_icmphdr, buffer);
@@ -432,27 +432,27 @@ void UdpHeader_delete(UdpHeader* _self)
     free(_self);
 }
 
-void UdpHeader_setSourcePort(UdpHeader* _self, u_int16_t _srcport)
+void UdpHeader_setSourcePort(UdpHeader* _self, const u_int16_t _srcport)
 {
     _self->_srcport = _srcport;
 }
 
-void UdpHeader_setDestinationPort(UdpHeader* _self, u_int16_t _dstport)
+void UdpHeader_setDestinationPort(UdpHeader* _self, const u_int16_t _dstport)
 {
     _self->_dstport = _dstport;
 }
 
-void UdpHeader_setLength(UdpHeader* _self, u_int16_t _length )
+void UdpHeader_setLength(UdpHeader* _self, const u_int16_t _length )
 {
     _self->_length = _length;
 }
 
-void UdpHeader_setChecksum(UdpHeader* _self, u_int16_t _checksum)
+void UdpHeader_setChecksum(UdpHeader* _self, const u_int16_t _checksum)
 {
     _self->_checksum = _checksum;
 }
 
-void UdpHeader_printInfo(UdpHeader* _self)
+void UdpHeader_printInfo(const UdpHeader* _self)
 {
     printf("[*] Printing Header Information Fields\n");
     printf("Source Port: %hu\n", _self->_srcport);
@@ -462,7 +462,7 @@ void UdpHeader_printInfo(UdpHeader* _self)
     printf("\n");
 }
 
-u_int16_t computeUDPChecksum(char* _buff)
+u_int16_t computeUDPChecksum(const char* _buff)
 {
     // one's complement of the 16-bit complemeted sum of the
     // header and the pseudo-header, which is already
@@ -490,7 +490,7 @@ u_int16_t computeUDPChecksum(char* _buff)
     return checksum;
 }
 
-void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer)
+void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_putShort(_buffer, htons(_self->_srcport));
     ByteBuffer_putShort(_buffer, htons(_self->_dstport));
@@ -498,7 +498,7 @@ void UdpHeader_encode(UdpHeader* _self, ByteBuffer* _buffer)
     ByteBuffer_putShort(_buffer, htons(_self->_checksum));
 }
 
-ByteBuffer* UdpHeader_encode_v2(UdpHeader* _self)
+ByteBuffer* UdpHeader_encode_v2(const UdpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new(_self->_length);
     UdpHeader_encode(_self, buff);
@@ -512,7 +512,7 @@ UdpPacket* UdpPacket_new()
     return UdpPacket_new_v2(UDP_PAYLOAD_MAX_SIZE);
 }
 
-UdpPacket* UdpPacket_new_v2(size_t _size)
+UdpPacket* UdpPacket_new_v2(const size_t _size)
 {
     char* payload = (char*)malloc(_size * sizeof(char));
 
@@ -534,8 +534,8 @@ void UdpPacket_delete(UdpPacket* _self)
 }
 
 void UdpPacket_fillHeader(
-    UdpPacket* _self,   u_int16_t _srcport, u_int16_t _dstport,
-    u_int16_t  _length, u_int16_t _checksum
+    UdpPacket*       _self,   const u_int16_t _srcport, const u_int16_t _dstport,
+    const u_int16_t  _length, const u_int16_t _checksum
 ) {
     UdpHeader_setSourcePort(_self->_hdr, _srcport);
     UdpHeader_setDestinationPort(_self->_hdr, _dstport);
@@ -543,7 +543,7 @@ void UdpPacket_fillHeader(
     UdpHeader_setChecksum(_self->_hdr, _checksum);
 }
 
-void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size)
+void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size)
 {
     if (_size > UDP_PAYLOAD_MAX_SIZE)
     {
@@ -560,12 +560,12 @@ void UdpPacket_fillPayload(UdpPacket* _self, char* _data, size_t _size)
     UdpHeader_setLength(_self->_hdr, _size + UDP_HEADER_SIZE);
 }
 
-size_t UdpPacket_getPayloadSize(UdpPacket* _self)
+size_t UdpPacket_getPayloadSize(const UdpPacket* _self)
 {
     return _self->_hdr->_length - UDP_HEADER_SIZE;
 }
 
-ByteBuffer* UdpPacket_encode(UdpPacket* _self)
+ByteBuffer* UdpPacket_encode(const UdpPacket* _self)
 {
     ByteBuffer* buff = UdpHeader_encode_v2(_self->_hdr);
     ByteBuffer_putBuffer(buff, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
@@ -585,53 +585,53 @@ void IpHeader_delete(IpHeader* _self)
     free(_self);
 }
 
-void IpHeader_setVersion(IpHeader* _self, u_int8_t _version)
+void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version)
 {
     // Add 5 for IHL (this ensure the IP header always be 20 bytes)
     _self->_version = (_version << 4) + 5;
 }
 
-void IpHeader_setDifferentiatedServiceField(IpHeader* _self, u_int8_t _dsf)
+void IpHeader_setDifferentiatedServiceField(IpHeader* _self, const u_int8_t _dsf)
 {
     _self->_dsf = _dsf;
 }
 
-void IpHeader_setTotalLength(IpHeader* _self, u_int16_t _total_length)
+void IpHeader_setTotalLength(IpHeader* _self, const u_int16_t _total_length)
 {
     _self->_tlength = _total_length;
 }
 
-void IpHeader_setIdentfication(IpHeader* _self, u_int16_t _identification)
+void IpHeader_setIdentfication(IpHeader* _self, const u_int16_t _identification)
 {
     _self->_id = _identification;
 }
 
-void IpHeader_setFlagOffField(IpHeader* _self, u_int16_t _flagoff)
+void IpHeader_setFlagOffField(IpHeader* _self, const u_int16_t _flagoff)
 {
     _self->_flag_off = _flagoff;
 }
 
-void IpHeader_setTimeToLive(IpHeader* _self, u_int8_t _time_to_live)
+void IpHeader_setTimeToLive(IpHeader* _self, const u_int8_t _time_to_live)
 {
     _self->_ttl = _time_to_live;
 }
 
-void IpHeader_setProtocol(IpHeader* _self, u_int8_t _protocol)
+void IpHeader_setProtocol(IpHeader* _self, const u_int8_t _protocol)
 {
     _self->_protocol = _protocol;
 }
 
-void IpHeader_setHeaderChecksum(IpHeader* _self, u_int16_t _checksum)
+void IpHeader_setHeaderChecksum(IpHeader* _self, const u_int16_t _checksum)
 {
     _self->_hdr_chksum = _checksum;
 }
 
-void IpHeader_setSourceAddress(IpHeader* _self, u_int32_t _srcaddress)
+void IpHeader_setSourceAddress(IpHeader* _self, const u_int32_t _srcaddress)
 {
     _self->_srcaddr = _srcaddress;
 }
 
-void IpHeader_setDestinationAddress(IpHeader* _self, u_int32_t _dstaddress)
+void IpHeader_setDestinationAddress(IpHeader* _self, const u_int32_t _dstaddress)
 {
     _self->_dstaddr = _dstaddress;
 }
@@ -641,42 +641,42 @@ u_int16_t computeFlagOff(int _x, int _d, int _m, int _offset)
     return (IP_HEADER_FLAG(_x, _d, _m) << 13) + _offset;
 }
 
-u_int8_t computeDifferentiatedServiceField(int _dscp, int _ecn)
+u_int8_t computeDifferentiatedServiceField(const int _dscp, const int _ecn)
 {
     return (_dscp << 2) + _ecn;
 }
 
-u_int8_t IpHeader_getVersion(IpHeader* _self)
+u_int8_t IpHeader_getVersion(const IpHeader* _self)
 {
     return (_self->_version >> 4);
 }
 
-u_int8_t IpHeader_getInternetHeaderLength(IpHeader* _self)
+u_int8_t IpHeader_getInternetHeaderLength(const IpHeader* _self)
 {
     return _self->_version & ~(IpHeader_getVersion(_self) << 4);
 }
 
-u_int8_t IpHeader_getDSCP(IpHeader* _self)
+u_int8_t IpHeader_getDSCP(const IpHeader* _self)
 {
     return (_self->_dsf >> 2);
 }
 
-u_int8_t IpHeader_getECN(IpHeader* _self)
+u_int8_t IpHeader_getECN(const IpHeader* _self)
 {
     return _self->_dsf & ~(IpHeader_getDSCP(_self) << 2);
 }
 
-u_int8_t IpHeader_getFlags(IpHeader* _self)
+u_int8_t IpHeader_getFlags(const IpHeader* _self)
 {
     return (_self->_flag_off >> 13);
 }
 
-u_int8_t IpHeader_getFragmentOffset(IpHeader* _self)
+u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self)
 {
     return _self->_flag_off & ~(IpHeader_getFlags(_self) << 13);
 }
 
-char* convertFlagToBin(u_int8_t _flags)
+char* convertFlagToBin(const u_int8_t _flags)
 {
     int _x = ((_flags >> 2) & 1);
     int _d = ((_flags >> 1) & 1);
@@ -688,7 +688,7 @@ char* convertFlagToBin(u_int8_t _flags)
     return flags;
 }
 
-char* addressNumberToString(u_int32_t _addr, bool _be)
+char* addressNumberToString(u_int32_t _addr, const bool _be)
 {
     // If it is in Little-Endian, then convert it to Big-Endian
     if (!_be) _addr = htonl(_addr);
@@ -699,7 +699,7 @@ char* addressNumberToString(u_int32_t _addr, bool _be)
     return addr_str;
 }
 
-void IpHeader_printInfo(IpHeader* _self)
+void IpHeader_printInfo(const IpHeader* _self)
 {
     char *flag = convertFlagToBin(IpHeader_getFlags(_self));
     char *srcaddr = addressNumberToString(_self->_srcaddr, false);
@@ -726,7 +726,7 @@ void IpHeader_printInfo(IpHeader* _self)
     free(dstaddr);
 }
 
-void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer)
+void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
@@ -740,7 +740,7 @@ void IpHeader_encode(IpHeader* _self, ByteBuffer* _buffer)
     ByteBuffer_putInt(_buffer, htonl(_self->_dstaddr));
 }
 
-ByteBuffer* IpHeader_encode_v2(IpHeader* _self)
+ByteBuffer* IpHeader_encode_v2(const IpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_tlength);
     IpHeader_encode(_self, buff);
@@ -807,9 +807,9 @@ void IpPacket_setHeader(IpPacket *_self, IpHeader *_iphdr)
 }
 
 void IpPacket_fillHeader(
-    IpPacket* _self,     u_int8_t  _version, u_int8_t  _dsf, u_int16_t _tlen,
-    u_int16_t _id,       u_int16_t _flagoff, u_int8_t  _ttl, u_int8_t  _protocol, 
-    u_int16_t _checksum, u_int32_t _srcaddr, u_int32_t _dstaddr
+    IpPacket*       _self,     const u_int8_t  _version, const u_int8_t  _dsf, const u_int16_t _tlen,
+    const u_int16_t _id,       const u_int16_t _flagoff, const u_int8_t  _ttl, const u_int8_t  _protocol, 
+    const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr
 ) {
     IpHeader_setVersion(_self->_iphdr, _version);
     IpHeader_setDifferentiatedServiceField(_self->_iphdr, _dsf);
@@ -823,7 +823,7 @@ void IpPacket_fillHeader(
     IpHeader_setDestinationAddress(_self->_iphdr, _dstaddr);
 }
 
-void IpPacket_fillPayload(IpPacket *_self, char *_data, size_t _datasize)
+void IpPacket_fillPayload(IpPacket *_self, const char *_data, const size_t _datasize)
 {
     memcpy(_self->_payload, _data, _datasize);
     
@@ -832,12 +832,12 @@ void IpPacket_fillPayload(IpPacket *_self, char *_data, size_t _datasize)
     IpHeader_setTotalLength(_self->_iphdr, new_tlen);
 }
 
-u_int16_t IpPacket_getPayloadSize(IpPacket *_self)
+u_int16_t IpPacket_getPayloadSize(const IpPacket *_self)
 {
     return _self->_iphdr->_tlength - IP_HEADER_SIZE;
 }
 
-IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self)
+IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self)
 {
     u_int16_t icmp_size = IpPacket_getPayloadSize(_self);
     ByteBuffer *buffer = ByteBuffer_new_v2(_self->_payload, icmp_size);
@@ -846,7 +846,7 @@ IcmpPacket* IpPacket_getIcmpPacket(IpPacket *_self)
     return pckt;
 }
 
-ByteBuffer* IpPacket_encode(IpPacket* _self)
+ByteBuffer* IpPacket_encode(const IpPacket* _self)
 {
     ByteBuffer* buff = IpHeader_encode_v2(_self->_iphdr);
     ByteBuffer_putBuffer(buff, _self->_payload, (size_t)IpPacket_getPayloadSize(_self));

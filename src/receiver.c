@@ -2,7 +2,7 @@
 
 void * process(char* _buff) { return NULL; }
 
-Receiver* Receiver_new(char* _addr, u_int16_t _port, char* _proto)
+Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto)
 {
     struct sockaddr_in addr;
     int socketfd;
@@ -28,7 +28,7 @@ Receiver* Receiver_new(char* _addr, u_int16_t _port, char* _proto)
     recv->_proto = proto;
     recv->_socket = socketfd;
     recv->_running = false;
-    recv->__process_fn = process;
+    recv->__process_fn = NULL;
 
     return recv;
 }

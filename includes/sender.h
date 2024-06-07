@@ -46,7 +46,7 @@ typedef struct
 
 /* Creates and returns a new RawSender. */
 extern RawSender* RawSender_new(
-    char *_srcaddr, char* _dstaddr, char* _gateway, u_int16_t _dstport, char* _proto
+    char *_srcaddr, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
 ) __returns_nonnull __attribute__((nonnull));
 
 /* Free the memory allocated for the input RawSender */
@@ -54,7 +54,7 @@ extern void RawSender_delete(RawSender* _self) __attribute__((nonnull));
 
 /* Send the input IP Packet */
 extern void  RawSender_sendto(RawSender* _self, const IpPacket* _pckt) __attribute__((nonnull));
-extern void __RawSender_sendto_v2(RawSender* _self, char* _buffer, size_t _size) __attribute__((nonnull));
+extern void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _size) __attribute__((nonnull));
 
 /* Continuously send the input IP Packet */
 extern void  RawSender_sendc(RawSender* _self, const IpPacket* _pckt) __attribute__((nonnull));
