@@ -37,7 +37,8 @@ typedef struct
    a port and the protocol. This function binds the newly created socket
    using this input values.
 */
-extern Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto) __attribute__((nonnull)) __returns_nonnull;
+extern Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto) 
+   __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input Receiver */
 extern void Receiver_delete(Receiver* _self) __attribute__((nonnull));

@@ -47,7 +47,7 @@ typedef struct
 /* Creates and returns a new RawSender. */
 extern RawSender* RawSender_new(
     char *_srcaddr, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
-) __returns_nonnull __attribute__((nonnull));
+) __attribute__((returns_nonnull)) __attribute__((nonnull));
 
 /* Free the memory allocated for the input RawSender */
 extern void RawSender_delete(RawSender* _self) __attribute__((nonnull));
@@ -63,19 +63,19 @@ extern void  RawSender_sendc(RawSender* _self, const IpPacket* _pckt) __attribut
 extern void  RawSender_printInfo(const RawSender* _self) __attribute__((nonnull));
 
 /* Returns the string containing the destination IP */
-extern char* RawSender_getDestinationIP(const RawSender* _self) __attribute__((nonnull)) __returns_nonnull;
+extern char* RawSender_getDestinationIP(const RawSender* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an IP Packet with some informations from the current Sender */
-extern IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id) __attribute__((nonnull)) __returns_nonnull;
+extern IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an ICMP Packet with some informations from the current sender */
 extern IcmpPacket* RawSender_createIcmpPacket(
-    RawSender* _self, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull)) __returns_nonnull;
+    RawSender* _self, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an UDP Packet with some informations from the current sender */
 extern UdpPacket* RawSender_createUdpPacket(
     RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size
-) __attribute__((nonnull)) __returns_nonnull;
+) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Craft and send an ICMP Packet */
 extern void RawSender_sendIcmp(

@@ -77,7 +77,7 @@ extern char* ByteBuffer_getBuffer(ByteBuffer* _self, const size_t _size) __attri
 /* Return a buffer of input size from a given starting position
    and set the current position to the starting position plus the input size */
 extern char* ByteBuffer_getBufferFrom(
-    ByteBuffer* _self, const size_t _start, const size_t _size) __attribute__((nonnull)) __returns_nonnull;
+    ByteBuffer* _self, const size_t _start, const size_t _size) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Reset the current position to 0 */
 extern void ByteBuffer_resetPosition(ByteBuffer* _self) __attribute__((nonnull));

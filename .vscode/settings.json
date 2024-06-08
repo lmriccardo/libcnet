@@ -1,8 +1,10 @@
 {
     "files.associations": {
+        "*.tsv": "tsv",
         "in.h": "c",
         "stdlib.h": "c",
         "socket.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "receiver.h": "c"
     }
 }

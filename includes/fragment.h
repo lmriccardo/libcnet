@@ -21,7 +21,7 @@ extern int computeNumberOfFragments(const size_t _size);
    the list with all pointer to fragmented Ip packets and its size 
 */
 extern struct FragmentList* createFragments(const IpPacket* _pckt) 
-    __attribute__((nonnull)) __returns_nonnull;
+    __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the fragment list */
 extern void FragmentList_delete(struct FragmentList* _fraglist) __attribute__((nonnull));

@@ -5,7 +5,7 @@
 
 void *process_recv(char *buff)
 {
-    printf("Processing ...");
+    printf("Processing ...\n");
     return NULL;
 }
 
