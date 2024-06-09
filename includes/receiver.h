@@ -25,11 +25,11 @@ __BEGIN_DECLS
 typedef struct 
 {
 
-    struct protoent*   _proto;      /* The protocol used */
-    struct sockaddr_in _address;    /* The IP address on which we are binded */
-    int                _socket;     /* File descriptor for the created socket */
-    bool               _running;    /* If the receiver in receiving or not */
-    void *(*__process_fn) (char *); /* Function to process the response */
+    struct protoent*   _proto;              /* The protocol used */
+    struct sockaddr_in _address;            /* The IP address on which we are binded */
+    int                _socket;             /* File descriptor for the created socket */
+    bool               _running;            /* If the receiver in receiving or not */
+    void *(*__process_fn) (char *, size_t); /* Function to process the response */
 
 } Receiver;
 
@@ -44,7 +44,7 @@ extern Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const ch
 extern void Receiver_delete(Receiver* _self) __attribute__((nonnull));
 
 /* Start a new Receiver thread */
-extern void  Receiver_start(Receiver* _self, void *(*__process_fn) (char *)) __attribute__((nonnull));
+extern void  Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t)) __attribute__((nonnull));
 
 /* The function the Receiver thread will always execute. This function is called by
    `Receiver_start` and passed to the newly created thread. It jobs is to receiving
@@ -57,7 +57,7 @@ extern void  Receiver_stop(Receiver* _self) __attribute__((nonnull));
 
 /* Just a template process function. This function does nothing and should be
    replaced by a user defined function. */
-extern void* process(char* _buff) __attribute__((nonnull)) __attribute__((deprecated));
+extern void* __process(char* _buff, size_t _len) __attribute__((nonnull)) __attribute__((deprecated));
 
 __END_DECLS
 

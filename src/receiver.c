@@ -1,6 +1,6 @@
 #include "receiver.h"
 
-void * process(char* _buff) { return NULL; }
+void * __process(char* _buff, size_t _len) { return NULL; }
 
 Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto)
 {
@@ -35,6 +35,7 @@ Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _pr
 
 void Receiver_delete(Receiver* _self)
 {
+    shutdown(_self->_socket, 2);
     free(_self);
 }
 
@@ -63,7 +64,7 @@ void *Receiver_run(void* _self)
         if (retval < 0) continue;
         printf("[*] %s Receiver received %ld bytes\n", pname, retval);
 
-        ((Receiver*)_self)->__process_fn(buff);
+        ((Receiver*)_self)->__process_fn(buff, retval);
     }
 
     free(buff);
@@ -71,7 +72,7 @@ void *Receiver_run(void* _self)
     return NULL;
 }
 
-void Receiver_start(Receiver* _self, void *(*__process_fn) (char *))
+void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t))
 {
     _self->_running = true;
     _self->__process_fn = __process_fn;

@@ -11,8 +11,6 @@
 #include <stdio.h>
 #include "buffer.h"
 
-// #define __attribute__((nonnull)) __nonnull(())
-
 __BEGIN_DECLS
 
 /******************************* ICMP PACKET ******************************/

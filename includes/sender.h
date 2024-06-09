@@ -47,7 +47,7 @@ typedef struct
 /* Creates and returns a new RawSender. */
 extern RawSender* RawSender_new(
     char *_srcaddr, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
-) __attribute__((returns_nonnull)) __attribute__((nonnull));
+) __attribute__((returns_nonnull)) __attribute__((nonnull(1, 2, 5)));
 
 /* Free the memory allocated for the input RawSender */
 extern void RawSender_delete(RawSender* _self) __attribute__((nonnull));

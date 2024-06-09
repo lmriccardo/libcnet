@@ -11,9 +11,14 @@ unsigned short x1 = htons(0x1234); // --> x = 0x3412
 memcpy(buf, &x, 2); // --> buf = 0x1234
 ```
 
-In current implementation of the sender-receiver paradigm, once the sender has finished
-sending the message, we need to wait 1 seconds in order to the receiver being able to
-receive the response. 
+> In current implementation of the sender-receiver paradigm, once the sender has finished
+> sending the message, we need to wait 1 seconds in order to the receiver being able to
+> receive the response. 
+
+> **PROBLEM 1**: It happens that, when calling `getInterfaceIp` (or in general any other function returning
+> a pointer to a static portion of memory) and `getHostnameIp` in this sequence, the content
+> of value from the first call is overwritten by the second function. It is also discussed
+> in the documentation of `gethostbyname`. 
 
 
 ## Todo
@@ -36,6 +41,7 @@ receive the response.
 - [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
+- [] Find a way to handle the problem above (**PROBLEM 1**)
 
 Legend:
 
@@ -45,4 +51,4 @@ Legend:
 
 ### Advanced Development
 
-- [] Implement custom ping message
+- [?] Implement custom ping message
