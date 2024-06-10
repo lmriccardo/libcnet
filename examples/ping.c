@@ -12,13 +12,15 @@ int ping(const char* address)
 {
     char *remote = getHostnameIP(address);
 
-    printf("[*] Request a ping to %s (%s)\n", address, remote);
+    printf("[*] Requested a ping to %s (%s)\n", address, remote);
 
-    Receiver* recv = Receiver_new("eth0", 0, "icmp");
+    Receiver* recv = Receiver_new("eth0", 0, "icmp", false);
     Receiver_start(recv, process);
 
-    RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp");
+    RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);
+    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 20, 1.0);
 
+    Receiver_stop(recv);
     RawSender_delete(pinger);
     Receiver_delete(recv);
 
