@@ -1,1 +1,0 @@
-docker run --rm --mount type=bind,source=C:\Users\ricca\Desktop\Projects\cnetworking,target=/cnetip/ compiler
