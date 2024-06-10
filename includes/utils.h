@@ -27,9 +27,18 @@ extern void getInterfaceIp(const char* _interface, char *_addr)
 
 /* Converts the input address number into a string. The second argument is used
    to specify whether the input address number is in LE or BE format.
+
+   The returns of this function is dynamically allocated, hence it must be freed.
 */
 extern char* addressNumberToString(u_int32_t _addr, const bool _be) 
     __attribute__((returns_nonnull));
+
+/* Converts the input address number into a string. The third argument is used
+   to specify whether the input address number is in LE or BE format. The result
+   of the operation will be saved into the _out input buffer.
+*/
+extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be) 
+    __attribute__((nonnull));
 
 __END_DECLS
 

@@ -11,13 +11,13 @@ void *process(char *response, size_t len)
     IcmpPacket* icmppckt = IpPacket_getIcmpPacket(ippckt);
     IcmpHeader* icmphdr = icmppckt->_icmphdr;
 
-    char* addr = addressNumberToString(ippckt->_iphdr->_srcaddr, false);
+    char addr[INET_ADDRSTRLEN];
+    addressNumberToString_s(ippckt->_iphdr->_srcaddr, addr, false);
 
     printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu\n", 
            ippckt->_iphdr->_tlength, addr, icmphdr->_rest->_echo._seqnum,
            ippckt->_iphdr->_ttl);
 
-    free(addr);
     IcmpPacket_delete(icmppckt);
     ByteBuffer_delete(buffer);
     IpPacket_delete(ippckt);

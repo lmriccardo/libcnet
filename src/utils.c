@@ -25,6 +25,13 @@ char* addressNumberToString(u_int32_t _addr, const bool _be)
     return addr_str;
 }
 
+void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be)
+{
+    // If it is in Little-Endian, then convert it to Big-Endian
+    if (!_be) _addr = htonl(_addr);
+    inet_ntop(AF_INET, &_addr, _out, INET_ADDRSTRLEN);
+}
+
 void getInterfaceIp(const char* _interface, char* _addr)
 {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
