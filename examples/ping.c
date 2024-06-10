@@ -3,6 +3,9 @@
 #include "receiver.h"
 #include "utils.h"
 
+static int received_packets = 0;
+static int errors = 0;
+
 void *process(char *response, size_t len)
 {
     ByteBuffer* buffer = ByteBuffer_new_v2(response, len);
@@ -14,9 +17,25 @@ void *process(char *response, size_t len)
     char addr[INET_ADDRSTRLEN];
     addressNumberToString_s(ippckt->_iphdr->_srcaddr, addr, false);
 
-    printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu\n", 
+    // Check the ICMP type of the reply
+    if (icmphdr->_type == ICMP_ECHO_REPLY_TYPE)
+    {
+        printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu\n", 
            ippckt->_iphdr->_tlength, addr, icmphdr->_rest->_echo._seqnum,
            ippckt->_iphdr->_ttl);
+
+        received_packets++;
+    }
+    
+    if (icmphdr->_type == ICMP_DESTINATION_UNREACHABLE_TYPE)
+    {
+        printf(
+            "From %s icmp_seq=%hu Destination Host Unreachable\n", 
+            addr, icmphdr->_rest->_echo._seqnum
+        );
+
+        errors++;
+    }
 
     IcmpPacket_delete(icmppckt);
     ByteBuffer_delete(buffer);
@@ -39,6 +58,14 @@ int ping(const char* address)
     Receiver_stop(recv);
     RawSender_delete(pinger);
     Receiver_delete(recv);
+
+    double packet_loss = (pinger->_icmpsn - 1 - received_packets) / (pinger->_icmpsn - 1) * 100.0;
+
+    printf("\n--- %s ping statistics ---\n", address);
+    printf(
+        "%d packets transmitted, %d received, %.2f%% packet loss\n",
+        (pinger->_icmpsn - 1), received_packets, packet_loss
+    );
 
     return 0;
 }
