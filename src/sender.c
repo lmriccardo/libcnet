@@ -140,7 +140,7 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, c
             _type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, ++_self->_icmpsn);
+        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
     }
 
     fprintf(stderr, "[RawSender_createIcmpPacket] Undefined ICMP type %c\n", _type);
@@ -164,7 +164,7 @@ void RawSender_sendIcmp(
 
     while (counter > 0 || _n == -1)
     {
-        IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, ++_self->_icmpsn);
+        IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, _self->_icmpsn++);
 
         // Compute the checksum of the ICMP header
         ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
