@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "neto.h"
+#include "utils.h"
 
 __BEGIN_DECLS
 
@@ -36,8 +37,11 @@ typedef struct
 /* Creates a new Receiver given as input the string containing an IP address,
    a port and the protocol. This function binds the newly created socket
    using this input values.
+
+   The first argument is the interface to which bind the receiver, for example
+   eth0. Given the interface, it takes the associated IP address.
 */
-extern Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto) 
+extern Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char* _proto) 
    __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input Receiver */

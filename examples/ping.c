@@ -10,15 +10,14 @@ void *process(char *response, size_t len)
 
 int ping(const char* address)
 {
-    char *local = getInterfaceIp("eth0\0");
     char *remote = getHostnameIP(address);
 
-    printf("[*] Request a ping to %s (%s) from %s\n", address, remote, local);
+    printf("[*] Request a ping to %s (%s)\n", address, remote);
 
-    Receiver* recv = Receiver_new(local, 0, "icmp");
+    Receiver* recv = Receiver_new("eth0", 0, "icmp");
     Receiver_start(recv, process);
 
-    RawSender* pinger = RawSender_new(local, remote, NULL, 0, "icmp");
+    RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp");
 
     RawSender_delete(pinger);
     Receiver_delete(recv);

@@ -2,11 +2,12 @@
 
 void * __process(char* _buff, size_t _len) { return NULL; }
 
-Receiver* Receiver_new(const char* _addr, const u_int16_t _port, const char* _proto)
+Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char* _proto)
 {
     struct sockaddr_in addr;
     int socketfd;
     struct protoent *proto = getprotobyname(_proto);
+    char *_addr = getInterfaceIp(_interface);
 
     socketfd = socket(AF_INET, SOCK_RAW, proto->p_proto);
     if (socketfd == -1) handle_error("socket");

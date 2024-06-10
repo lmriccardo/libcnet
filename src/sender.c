@@ -2,7 +2,7 @@
 
 
 RawSender* RawSender_new(
-    char *_srcaddr, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
+    char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
 ) {
     struct sockaddr_in dst;
     int socketfd;
@@ -21,7 +21,7 @@ RawSender* RawSender_new(
     inet_pton(AF_INET, _dstaddr, &dst.sin_addr);
 
     RawSender *sender = (RawSender*)malloc(sizeof(RawSender));
-    sender->_srcaddress = _srcaddr;
+    sender->_srcaddress = getInterfaceIp(_interface);
     sender->_dstaddress = dst;
     sender->_gateway = _gateway;
     sender->_socket = socketfd;
