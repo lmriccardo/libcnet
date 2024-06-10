@@ -14,7 +14,18 @@ char* getHostnameIP(const char* _hostname)
     return ip;
 }
 
-char* getInterfaceIp(const char* _interface)
+char* addressNumberToString(u_int32_t _addr, const bool _be)
+{
+    // If it is in Little-Endian, then convert it to Big-Endian
+    if (!_be) _addr = htonl(_addr);
+
+    char *addr_str = (char *)malloc(INET_ADDRSTRLEN * sizeof(char));
+    inet_ntop(AF_INET, &_addr, addr_str, INET_ADDRSTRLEN);
+
+    return addr_str;
+}
+
+void getInterfaceIp(const char* _interface, char* _addr)
 {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     struct ifreq ifr;
@@ -22,8 +33,8 @@ char* getInterfaceIp(const char* _interface)
     ifr.ifr_addr.sa_family = AF_INET;
     strncpy(ifr.ifr_name , _interface , IFNAMSIZ - 1);
     ioctl(sockfd, SIOCGIFADDR, &ifr);
-    shutdown(sockfd, 2);
+    close(sockfd);
 
-    char* _address = inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr);
-    return _address;
+    u_int32_t _addr_i = ( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr.s_addr;
+    inet_ntop(AF_INET, &_addr_i, _addr, INET_ADDRSTRLEN);
 }

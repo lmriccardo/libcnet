@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "buffer.h"
+#include "utils.h"
 
 __BEGIN_DECLS
 
@@ -459,11 +460,6 @@ extern u_int8_t computeDifferentiatedServiceField(const int _dscp, const int _ec
 
 /* Converts the IP Header flags into a binary string (i.e., 2 -> 010) */
 extern char* convertFlagToBin(const u_int8_t _flags) __attribute__((returns_nonnull));
-
-/* Converts the input address number into a string. The second argument is used
-   to specify whether the input address number is in LE or BE format.
-*/
-extern char* addressNumberToString(u_int32_t _addr, const bool _be) __attribute__((returns_nonnull));
 
 /* Create and returns a new instance of IP Packet */
 extern IpPacket* IpPacket_new() __attribute__((returns_nonnull));

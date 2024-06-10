@@ -2,12 +2,15 @@
 
 void * __process(char* _buff, size_t _len) { return NULL; }
 
-Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char* _proto)
-{
+Receiver* Receiver_new(
+    const char* _interface, const u_int16_t _port, const char* _proto, const bool _verbose
+) {
     struct sockaddr_in addr;
     int socketfd;
     struct protoent *proto = getprotobyname(_proto);
-    char *_addr = getInterfaceIp(_interface);
+
+    char *_addr = (char*)malloc(INET_ADDRSTRLEN * sizeof(char));
+    getInterfaceIp(_interface, _addr);
 
     socketfd = socket(AF_INET, SOCK_RAW, proto->p_proto);
     if (socketfd == -1) handle_error("socket");
@@ -22,7 +25,10 @@ Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char
         handle_error("bind");
     }
 
-    printf("[*] %s Receiver binded on (%s, %hu)\n", proto->p_name, _addr, _port);
+    if (_verbose)
+    {
+        printf("[*] %s Receiver binded on (%s, %hu)\n", proto->p_name, _addr, _port);
+    }
 
     Receiver* recv = (Receiver*)malloc(sizeof(Receiver));
     recv->_address = addr;
@@ -30,6 +36,9 @@ Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char
     recv->_socket = socketfd;
     recv->_running = false;
     recv->__process_fn = NULL;
+    recv->_verbose = _verbose;
+
+    free(_addr);
 
     return recv;
 }
@@ -47,7 +56,12 @@ void *Receiver_run(void* _self)
     char* pname = ((Receiver*)_self)->_proto->p_name;
 
     char* addr = addressNumberToString(addrn, true);
-    printf("[*] %s Receiver starting on (%s, %hu)\n", pname, addr, ntohs(port));
+    
+    if (((Receiver*)_self)->_verbose) 
+    {
+        printf("[*] %s Receiver starting on (%s, %hu)\n", pname, addr, ntohs(port));
+    }
+
     free(addr);
 
     size_t ip_size = (IP_PAYLOAD_MAX_SIZE + IP_HEADER_SIZE);
@@ -63,13 +77,12 @@ void *Receiver_run(void* _self)
         );
         
         if (retval < 0) continue;
-        printf("[*] %s Receiver received %ld bytes\n", pname, retval);
-
+        if (((Receiver*)_self)->_verbose) printf("[*] %s Receiver received %ld bytes\n", pname, retval);
         ((Receiver*)_self)->__process_fn(buff, retval);
     }
 
     free(buff);
-    printf("[*] Receiver stopped\n");
+    if (((Receiver*)_self)->_verbose)  printf("[*] Receiver stopped\n");
     return NULL;
 }
 
@@ -86,4 +99,5 @@ void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t))
 void Receiver_stop(Receiver* _self)
 {
     _self->_running = false;
+    sleep(0.75);
 }

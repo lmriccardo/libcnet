@@ -22,7 +22,7 @@ shared: $(OBJECTS)
 	rm -f $(OBJECTS)
 
 $(OBJECTS): %.o: src/%.c
-	sudo $(CC) -I./includes/ $(LIBS) -fPIC -c -o $@ $<
+	sudo $(CC) -I./includes/ $(LIBS) -fPIC -g -c -o $@ $<
 
 clean:
 	rm -f $(OBJECTS)

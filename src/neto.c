@@ -724,17 +724,6 @@ char* convertFlagToBin(const u_int8_t _flags)
     return flags;
 }
 
-char* addressNumberToString(u_int32_t _addr, const bool _be)
-{
-    // If it is in Little-Endian, then convert it to Big-Endian
-    if (!_be) _addr = htonl(_addr);
-
-    char *addr_str = (char *)malloc(INET_ADDRSTRLEN * sizeof(char));
-    inet_ntop(AF_INET, &_addr, addr_str, INET_ADDRSTRLEN);
-
-    return addr_str;
-}
-
 void IpHeader_printInfo(const IpHeader* _self)
 {
     char *flag = convertFlagToBin(IpHeader_getFlags(_self));

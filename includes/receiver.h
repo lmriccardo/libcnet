@@ -26,11 +26,12 @@ __BEGIN_DECLS
 typedef struct 
 {
 
-    struct protoent*   _proto;              /* The protocol used */
-    struct sockaddr_in _address;            /* The IP address on which we are binded */
-    int                _socket;             /* File descriptor for the created socket */
-    bool               _running;            /* If the receiver in receiving or not */
-    void *(*__process_fn) (char *, size_t); /* Function to process the response */
+   struct protoent*   _proto;              /* The protocol used */
+   struct sockaddr_in _address;            /* The IP address on which we are binded */
+   int                _socket;             /* File descriptor for the created socket */
+   bool               _running;            /* If the receiver in receiving or not */
+   bool               _verbose;            /* Enable verbosity */
+   void *(*__process_fn) (char *, size_t); /* Function to process the response */
 
 } Receiver;
 
@@ -41,7 +42,8 @@ typedef struct
    The first argument is the interface to which bind the receiver, for example
    eth0. Given the interface, it takes the associated IP address.
 */
-extern Receiver* Receiver_new(const char* _interface, const u_int16_t _port, const char* _proto) 
+extern Receiver* Receiver_new(
+   const char* _interface, const u_int16_t _port, const char* _proto, const bool _verbose)
    __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input Receiver */

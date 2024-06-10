@@ -42,12 +42,14 @@ typedef struct
     u_int16_t          _lastid;      /* Last used IP Packet identifier */
     u_int16_t          _lsticmpid;   /* Last used ICMP Packet identifier */
     u_int16_t          _icmpsn;      /* ICMP Message Sequence Number */
+    bool               _verbose;     /* Enable verbosity */
 
 } RawSender;
 
 /* Creates and returns a new RawSender. */
 extern RawSender* RawSender_new(
-    char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, const char* _proto
+    char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
+    const char* _proto, const bool _verbose
 ) __attribute__((returns_nonnull)) __attribute__((nonnull(1, 2, 5)));
 
 /* Free the memory allocated for the input RawSender */
@@ -80,7 +82,8 @@ extern UdpPacket* RawSender_createUdpPacket(
 
 /* Craft and send an ICMP Packet */
 extern void RawSender_sendIcmp(
-    RawSender* _self, const u_int8_t _type, const u_int8_t _code, const int _n) __attribute__((nonnull));
+    RawSender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
+) __attribute__((nonnull));
 
 /* Craft and send an UDP Packet */
 extern void RawSender_sendUdp(
