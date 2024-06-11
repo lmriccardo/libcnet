@@ -37,6 +37,7 @@ Receiver* Receiver_new(
     recv->_running = false;
     recv->__process_fn = NULL;
     recv->_verbose = _verbose;
+    recv->_timer = NULL;
 
     free(_addr);
 
@@ -45,6 +46,7 @@ Receiver* Receiver_new(
 
 void Receiver_delete(Receiver* _self)
 {
+    if (_self->_timer != NULL) free(_self->_timer);
     shutdown(_self->_socket, 2);
     free(_self);
 }
@@ -100,4 +102,9 @@ void Receiver_stop(Receiver* _self)
 {
     _self->_running = false;
     sleep(0.75);
+}
+
+void Receviver_setTimer(Receiver* _self, struct Timer* _timer)
+{
+    _self->_timer = _timer;
 }

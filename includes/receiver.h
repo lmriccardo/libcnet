@@ -7,6 +7,7 @@
 #include <netdb.h>
 #include <pthread.h>
 #include <unistd.h>
+
 #include "neto.h"
 #include "utils.h"
 
@@ -31,6 +32,7 @@ typedef struct
    int                _socket;             /* File descriptor for the created socket */
    bool               _running;            /* If the receiver in receiving or not */
    bool               _verbose;            /* Enable verbosity */
+   struct Timer*      _timer;              /* An optional Timer */
    void *(*__process_fn) (char *, size_t); /* Function to process the response */
 
 } Receiver;
@@ -60,6 +62,9 @@ extern void* Receiver_run(void* _self) __attribute__((nonnull));
 
 /* Stop the Receiver Thread */
 extern void  Receiver_stop(Receiver* _self) __attribute__((nonnull));
+
+/* Set a new timer into the receiver */
+extern void Receviver_setTimer(Receiver* _self, struct Timer* _timer) __attribute__((nonnull));
 
 /* Just a template process function. This function does nothing and should be
    replaced by a user defined function. */
