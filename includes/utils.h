@@ -14,6 +14,9 @@
 #include <sys/ioctl.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
+#include <pthread.h>
+#include <semaphore.h>
 
 __BEGIN_DECLS
 
@@ -39,6 +42,56 @@ extern char* addressNumberToString(u_int32_t _addr, const bool _be)
 */
 extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be) 
     __attribute__((nonnull));
+
+/* Struct representing a simple timer. It can be used to time the elapsed time
+   between the message being sent and the response being received by the receiver.
+   The timer starts by calling the corresponding `Timer_start` function. 
+   
+   The means of the fields is the following:
+   - `_start` the time when the Timer is created
+   - `_elapsed` the elapsed time between start and current
+   - `_current` the current time everytime updated
+   - `_previous` the time when the `Timer_getTime` function is called
+*/
+struct Timer 
+{
+    clock_t _start;
+    clock_t _elapsed;
+    clock_t _current;
+    clock_t _previous;
+    bool    _running;
+    sem_t   _mutex;
+};
+
+/* Create and returns new Timer. This function does dynamic allocation
+   which means that, it must be freed using the corresponding 
+   Timer_delete function. 
+*/
+extern struct Timer* Timer_new() __attribute__((returns_nonnull));
+
+/* Free the memory allocated for the input Timer */
+extern void Timer_delete(struct Timer* _self) __attribute__((nonnull));
+
+/* Start the timer starting the corresponding thread */
+extern void Timer_start(struct Timer* _self) __attribute__((nonnull));
+
+/* Iteratively update the timer */
+extern void* Timer_run(void* _self) __attribute__((nonnull));
+
+/* Stop the timer thread */
+extern void Timer_stop(struct Timer* _self) __attribute__((nonnull));
+
+/* Returns the difference between the current time and the previous time.
+   Every time this function is called, computes the delta, updates the previous 
+   time with the value of the current time and returns the delta time.
+*/
+extern clock_t Timer_getDeltaTime(struct Timer* _self) __attribute__((nonnull));
+
+extern void __semaphore_init(
+    sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
+
+extern void __semaphore_wait(sem_t* _sem, const char* _fname) __attribute__((nonnull));
+extern void __semaphore_post(sem_t* _sem, const char* _fname) __attribute__((nonnull));
 
 __END_DECLS
 
