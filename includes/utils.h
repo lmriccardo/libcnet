@@ -87,6 +87,14 @@ extern void Timer_stop(struct Timer* _self) __attribute__((nonnull));
 */
 extern double Timer_getDeltaTime(struct Timer* _self) __attribute__((nonnull));
 
+/* Returns the elapsed time in seconds. We need to make a function since it access
+   concurrent region, hence we need to semaphore it.
+*/
+extern double Timer_getElapsedTime(struct Timer* _self) __attribute__((nonnull));
+
+/* Reset the start value to the current time */
+extern void Timer_reset(struct Timer* _self) __attribute__((nonnull));
+
 extern void __semaphore_init(
     sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
 

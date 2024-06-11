@@ -71,14 +71,14 @@ void* Timer_run(void* _self)
     {
         
         // Wait for the semphore
-        // __semaphore_wait(&((struct Timer*)_self)->_mutex, "Timer_run");
+        __semaphore_wait(&((struct Timer*)_self)->_mutex, "Timer_run");
 
         // Update all the values
         ((struct Timer*)_self)->_current = clock();
         ((struct Timer*)_self)->_elapsed = clock() - ((struct Timer*)_self)->_start;
 
         // Release the semaphore
-        // __semaphore_post(&((struct Timer*)_self)->_mutex, "Timer_run");
+        __semaphore_post(&((struct Timer*)_self)->_mutex, "Timer_run");
 
     }
 
@@ -96,14 +96,30 @@ void Timer_start(struct Timer* _self)
 
 double Timer_getDeltaTime(struct Timer* _self)
 {
-    // __semaphore_wait(&_self->_mutex, "Timer_getDeltaTime");
-    
-    clock_t delta = clock() - _self->_previous;
-    _self->_previous = clock();
+    __semaphore_wait(&_self->_mutex, "Timer_getDeltaTime");
 
-    // __semaphore_post(&_self->_mutex, "Timer_getDeltaTime");
+    clock_t delta = _self->_current - _self->_previous;
+    _self->_previous = _self->_current;
+
+    __semaphore_post(&_self->_mutex, "Timer_getDeltaTime");
 
     return (double)delta / CLOCKS_PER_SEC;
+}
+
+double Timer_getElapsedTime(struct Timer* _self)
+{
+    __semaphore_wait(&_self->_mutex, "Timer_getElapsedTime");
+    clock_t elapsed = _self->_elapsed;
+    __semaphore_post(&_self->_mutex, "Timer_getElapsedTime");
+
+    return (double)elapsed / CLOCKS_PER_SEC;
+}
+
+void Timer_reset(struct Timer* _self)
+{
+    __semaphore_wait(&_self->_mutex, "Timer_reset");
+    _self->_start = clock();
+    __semaphore_post(&_self->_mutex, "Timer_reset");
 }
 
 void Timer_stop(struct Timer* _self)

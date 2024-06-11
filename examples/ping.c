@@ -3,10 +3,11 @@
 #include "receiver.h"
 #include "utils.h"
 
-static int received_packets = 0;
-static int errors = 0;
+static int    received_packets = 0;
+static int    errors           = 0;
+static double tot_time         = 0.0;
 
-void *process(char *response, size_t len, double rtt)
+void *process(char *response, size_t len, double time)
 {
     ByteBuffer* buffer = ByteBuffer_new_v2(response, len);
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
@@ -20,9 +21,9 @@ void *process(char *response, size_t len, double rtt)
     // Check the ICMP type of the reply
     if (icmphdr->_type == ICMP_ECHO_REPLY_TYPE)
     {
-        printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu rtt=%.2f\n", 
+        printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu\n", 
            ippckt->_iphdr->_tlength, addr, icmphdr->_rest->_echo._seqnum,
-           ippckt->_iphdr->_ttl, rtt);
+           ippckt->_iphdr->_ttl);
 
         received_packets++;
     }
@@ -36,6 +37,8 @@ void *process(char *response, size_t len, double rtt)
 
         errors++;
     }
+
+    tot_time = tot_time + time;
 
     IcmpPacket_delete(icmppckt);
     ByteBuffer_delete(buffer);
@@ -56,7 +59,7 @@ int ping(const char* address)
     Receiver_start(recv, process);
 
     RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);
-    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 4, 1.0);
+    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 4, 0.2);
 
     Receiver_stop(recv);
     RawSender_delete(pinger);
@@ -66,8 +69,8 @@ int ping(const char* address)
 
     printf("\n--- %s ping statistics ---\n", address);
     printf(
-        "%d packets transmitted, %d received, %.2f%% packet loss\n",
-        (pinger->_icmpsn - 1), received_packets, packet_loss
+        "%d packets transmitted, %d received, %.2f%% packet loss, %.3f sec\n",
+        (pinger->_icmpsn - 1), received_packets, packet_loss, tot_time
     );
 
     return 0;

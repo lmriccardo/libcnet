@@ -162,6 +162,9 @@ void RawSender_sendIcmp(
     IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
     int counter = _n;
 
+    struct Timer* timer = Timer_new();
+    Timer_start(timer);
+
     while (counter > 0 || _n == -1)
     {
         IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, _self->_icmpsn++);
@@ -183,8 +186,21 @@ void RawSender_sendIcmp(
 
         // Then send the packet
         RawSender_sendto(_self, ippckt);
-        sleep(_delay);
+        
+        // Sleep using the created timer
+        Timer_reset(timer);
+        clock_t eta;
+        int cnt = 0;
+        do 
+        {
+            eta = Timer_getElapsedTime(timer);
+            cnt++;
+            
+        } while (eta < _delay);
 
+        // Once the sleep is finished we need to reset the Timer
+        Timer_reset(timer);
+        printf("%d\n", cnt);
         counter--;
     }
 
