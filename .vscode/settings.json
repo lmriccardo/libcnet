@@ -5,6 +5,8 @@
         "stdlib.h": "c",
         "socket.h": "c",
         "types.h": "c",
-        "receiver.h": "c"
-    }
+        "receiver.h": "c",
+        "utils.h": "c"
+    },
+    "editor.fontSize": 17
 }

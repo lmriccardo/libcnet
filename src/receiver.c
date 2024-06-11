@@ -1,6 +1,6 @@
 #include "receiver.h"
 
-void * __process(char* _buff, size_t _len) { return NULL; }
+void * __process(char* _buff, size_t _len, double _rtt) { return NULL; }
 
 Receiver* Receiver_new(
     const char* _interface, const u_int16_t _port, const char* _proto, const bool _verbose
@@ -69,6 +69,8 @@ void *Receiver_run(void* _self)
     size_t ip_size = (IP_PAYLOAD_MAX_SIZE + IP_HEADER_SIZE);
     socklen_t socklen = sizeof(((Receiver*) _self)->_address);
     char* buff = (char*)malloc(ip_size * sizeof(char));
+    
+    double rtt;
 
     while (((Receiver*)_self)->_running)
     {
@@ -80,7 +82,9 @@ void *Receiver_run(void* _self)
         
         if (retval < 0) continue;
         if (((Receiver*)_self)->_verbose) printf("[*] %s Receiver received %ld bytes\n", pname, retval);
-        ((Receiver*)_self)->__process_fn(buff, retval);
+
+        rtt = ((Receiver*)_self)->_timer != NULL ? Timer_getDeltaTime(((Receiver*)_self)->_timer) : 0.0;
+        ((Receiver*)_self)->__process_fn(buff, retval, rtt);
     }
 
     free(buff);
@@ -88,10 +92,13 @@ void *Receiver_run(void* _self)
     return NULL;
 }
 
-void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t))
+void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, double))
 {
     _self->_running = true;
     _self->__process_fn = __process_fn;
+
+    // Start the timer if is not NULL
+    if (_self->_timer != NULL) Timer_start(_self->_timer);
 
     pthread_t recv_thread;
     pthread_create(&recv_thread, NULL, Receiver_run, _self);
@@ -102,9 +109,12 @@ void Receiver_stop(Receiver* _self)
 {
     _self->_running = false;
     sleep(0.75);
+    
+    // we need to stop also the Timer
+    if (_self->_timer != NULL) Timer_stop(_self->_timer);
 }
 
-void Receviver_setTimer(Receiver* _self, struct Timer* _timer)
+void Receiver_setTimer(Receiver* _self, struct Timer* _timer)
 {
     _self->_timer = _timer;
 }

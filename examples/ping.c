@@ -6,7 +6,7 @@
 static int received_packets = 0;
 static int errors = 0;
 
-void *process(char *response, size_t len)
+void *process(char *response, size_t len, double rtt)
 {
     ByteBuffer* buffer = ByteBuffer_new_v2(response, len);
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
@@ -20,9 +20,9 @@ void *process(char *response, size_t len)
     // Check the ICMP type of the reply
     if (icmphdr->_type == ICMP_ECHO_REPLY_TYPE)
     {
-        printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu\n", 
+        printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu rtt=%.2f\n", 
            ippckt->_iphdr->_tlength, addr, icmphdr->_rest->_echo._seqnum,
-           ippckt->_iphdr->_ttl);
+           ippckt->_iphdr->_ttl, rtt);
 
         received_packets++;
     }
@@ -48,8 +48,11 @@ int ping(const char* address)
     char *remote = getHostnameIP(address);
 
     printf("PING to %s (%s)\n", address, remote);
+    
+    struct Timer *timer = Timer_new();
 
     Receiver* recv = Receiver_new("eth0", 0, "icmp", false);
+    Receiver_setTimer(recv, timer);
     Receiver_start(recv, process);
 
     RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);

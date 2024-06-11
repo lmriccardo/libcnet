@@ -85,7 +85,7 @@ extern void Timer_stop(struct Timer* _self) __attribute__((nonnull));
    Every time this function is called, computes the delta, updates the previous 
    time with the value of the current time and returns the delta time.
 */
-extern clock_t Timer_getDeltaTime(struct Timer* _self) __attribute__((nonnull));
+extern double Timer_getDeltaTime(struct Timer* _self) __attribute__((nonnull));
 
 extern void __semaphore_init(
     sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
