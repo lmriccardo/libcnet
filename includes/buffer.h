@@ -8,11 +8,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-__BEGIN_DECLS
-
 #define BYTE_SIZE  1
 #define SHORT_SIZE 2
 #define INT_SIZE   4
+
+__BEGIN_DECLS
 
 /**
  * ByteBuffer struct created to holds a buffer of bytes. It has been created

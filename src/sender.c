@@ -35,6 +35,7 @@ RawSender* RawSender_new(
     sender->_icmpsn = 0;
     sender->_lsticmpid = 1;
     sender->_verbose = _verbose;
+    sender->_timer = NULL;
 
     return sender;
 }
@@ -44,6 +45,11 @@ void RawSender_delete(RawSender* _self)
     shutdown(_self->_socket, 2);
     free(_self->_srcaddress);
     free(_self);
+}
+
+void RawSender_setTimer(RawSender* _self, struct Timer* _timer)
+{
+    _self->_timer = _timer;
 }
 
 void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _size)
@@ -184,26 +190,27 @@ void RawSender_sendIcmp(
             IcmpHeader_printInfo(icmppckt->_icmphdr);
         }
 
+        if (_self->_timer != NULL) Timer_resetPrevious(_self->_timer);
+
         // Then send the packet
         RawSender_sendto(_self, ippckt);
-
-        Timer_reset(timer);
         
         // Sleep using the created timer
         double eta;
         do 
         {
             eta = Timer_getElapsedTime(timer);
-            // printf("%.6f\n", eta);
             
-        } while (eta < _delay);
+        } while (eta < _delay * 1e9);
 
         // Once the sleep is finished we need to reset the Timer
-        printf("%.2f\n", eta);
+        Timer_reset(timer);
 
         counter--;
     }
 
+    Timer_stop(timer);
+    Timer_delete(timer);
     IcmpPacket_delete(icmppckt);
     IpPacket_delete(ippckt);
 }

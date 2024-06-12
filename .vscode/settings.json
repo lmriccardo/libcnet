@@ -6,7 +6,11 @@
         "socket.h": "c",
         "types.h": "c",
         "receiver.h": "c",
-        "utils.h": "c"
+        "utils.h": "c",
+        "netdb.h": "c",
+        "unistd.h": "c",
+        "time.h": "c",
+        "stdbool.h": "c"
     },
     "editor.fontSize": 17
 }

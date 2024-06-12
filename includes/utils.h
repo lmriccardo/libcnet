@@ -18,6 +18,14 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+#ifndef __USE_POSIX199309
+    #define CLOCK_REALTIME 0
+#endif
+
+#define _POSIX_C_SOURCE 200809L
+
+#define NS_PER_SECOND 1000000000
+
 __BEGIN_DECLS
 
 /* Returns the IP address of the input host */
@@ -43,6 +51,9 @@ extern char* addressNumberToString(u_int32_t _addr, const bool _be)
 extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be) 
     __attribute__((nonnull));
 
+/* Compute the difference between two timespec t2 and t1 and returns the value in seconds */
+extern double computeElapsedTime(struct timespec t1, struct timespec t2);
+
 /* Struct representing a simple timer. It can be used to time the elapsed time
    between the message being sent and the response being received by the receiver.
    The timer starts by calling the corresponding `Timer_start` function. 
@@ -55,12 +66,12 @@ extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be)
 */
 struct Timer 
 {
-    clock_t _start;
-    double  _elapsed;
-    clock_t _current;
-    clock_t _previous;
-    bool    _running;
-    sem_t   _mutex;
+    struct timespec _start;
+    struct timespec _current;
+    struct timespec _previous;
+    double          _elapsed;
+    bool            _running;
+    sem_t           _mutex;
 };
 
 /* Create and returns new Timer. This function does dynamic allocation
@@ -95,11 +106,17 @@ extern double Timer_getElapsedTime(struct Timer* _self) __attribute__((nonnull))
 /* Reset the start value to the current time */
 extern void Timer_reset(struct Timer* _self) __attribute__((nonnull));
 
+/* Reset the previous value with the current time */
+extern void Timer_resetPrevious(struct Timer* _self) __attribute__((nonnull));
+
 extern void __semaphore_init(
     sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
 
 extern void __semaphore_wait(sem_t* _sem, const char* _fname) __attribute__((nonnull));
 extern void __semaphore_post(sem_t* _sem, const char* _fname) __attribute__((nonnull));
+
+extern void synchronizeRTT(void* _sender, void* _recv, struct Timer* _timer)
+    __attribute__((nonnull));
 
 __END_DECLS
 

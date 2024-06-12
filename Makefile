@@ -1,6 +1,6 @@
 CC=gcc -Wall -O3
 OBJECTS=$(patsubst src/%.c,bin/%.o,$(wildcard src/*.c))
-LIBS=-lpthread
+LIBS=-lpthread -lrt
 SRC=$(wildcard src/*.c)
 
 # the last operation executed by the makefile is to set the SUID

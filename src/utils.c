@@ -1,4 +1,6 @@
 #include "utils.h"
+#include "sender.h"
+#include "receiver.h"
 
 char* getHostnameIP(const char* _hostname)
 {
@@ -46,10 +48,16 @@ void getInterfaceIp(const char* _interface, char* _addr)
     inet_ntop(AF_INET, &_addr_i, _addr, INET_ADDRSTRLEN);
 }
 
+double computeElapsedTime(struct timespec start, struct timespec end)
+{
+    return NS_PER_SECOND * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
+}
+
 struct Timer* Timer_new()
 {
     struct Timer *timer = (struct Timer*)malloc(sizeof(struct Timer));
-    timer->_start = clock();
+    clock_gettime(CLOCK_REALTIME, &timer->_start);
+
     timer->_elapsed = 0.0;
     timer->_current = timer->_start;
     timer->_previous = timer->_start;
@@ -67,19 +75,19 @@ void Timer_delete(struct Timer* _self)
 
 void* Timer_run(void* _self)
 {
-    while (((struct Timer*)_self)->_running)
+    while (1)
     {
         
         // Wait for the semphore
-        __semaphore_wait(&((struct Timer*)_self)->_mutex, "Timer_run");
+        // __semaphore_wait(&((struct Timer*)_self)->_mutex, "Timer_run");
+
+        if (!((struct Timer*)_self)->_running) break;
 
         // Update all the values
-        ((struct Timer*)_self)->_current = clock();
-        ((struct Timer*)_self)->_elapsed = 
-            ((struct Timer*)_self)->_current - ((struct Timer*)_self)->_start;
+        clock_gettime(CLOCK_REALTIME, &((struct Timer*)_self)->_current);
 
         // Release the semaphore
-        __semaphore_post(&((struct Timer*)_self)->_mutex, "Timer_run");
+        // __semaphore_post(&((struct Timer*)_self)->_mutex, "Timer_run");
 
     }
 
@@ -97,30 +105,38 @@ void Timer_start(struct Timer* _self)
 
 double Timer_getDeltaTime(struct Timer* _self)
 {
-    __semaphore_wait(&_self->_mutex, "Timer_getDeltaTime");
+    // __semaphore_wait(&_self->_mutex, "Timer_getDeltaTime");
 
-    double delta = _self->_current - _self->_previous;
+    double eta = computeElapsedTime(_self->_previous, _self->_current);
     _self->_previous = _self->_current;
 
-    __semaphore_post(&_self->_mutex, "Timer_getDeltaTime");
+    // __semaphore_post(&_self->_mutex, "Timer_getDeltaTime");
 
-    return (double)delta / CLOCKS_PER_SEC;
+    return eta / 1e9;
 }
 
 double Timer_getElapsedTime(struct Timer* _self)
 {
-    __semaphore_wait(&_self->_mutex, "Timer_getElapsedTime");
-    double elapsed = _self->_elapsed;
-    __semaphore_post(&_self->_mutex, "Timer_getElapsedTime");
+    // __semaphore_wait(&_self->_mutex, "Timer_getElapsedTime");
 
-    return (double)elapsed / CLOCKS_PER_SEC;
+    double elapsed = computeElapsedTime(_self->_start, _self->_current);
+    _self->_elapsed = elapsed;
+
+    // __semaphore_post(&_self->_mutex, "Timer_getElapsedTime");
+
+    return elapsed;
 }
 
 void Timer_reset(struct Timer* _self)
 {
-    __semaphore_wait(&_self->_mutex, "Timer_reset");
-    _self->_start = clock();
-    __semaphore_post(&_self->_mutex, "Timer_reset");
+    // __semaphore_wait(&_self->_mutex, "Timer_reset");
+    clock_gettime(CLOCK_REALTIME, &_self->_start);
+    // __semaphore_post(&_self->_mutex, "Timer_reset");
+}
+
+void Timer_resetPrevious(struct Timer* _self)
+{
+    clock_gettime(CLOCK_REALTIME, &_self->_previous);
 }
 
 void Timer_stop(struct Timer* _self)
@@ -157,4 +173,10 @@ void __semaphore_post(sem_t* _sem, const char* _fname)
         printf("[%s] call to sem_post failed\n", _fname); 
         exit(EXIT_FAILURE);
     }
+}
+
+void synchronizeRTT(void* _sender, void* _recv, struct Timer* _timer)
+{
+    RawSender_setTimer((RawSender*)_sender, _timer);
+    Receiver_setTimer((Receiver*)_recv, _timer);
 }

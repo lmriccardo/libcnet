@@ -12,10 +12,6 @@
 #include "buffer.h"
 #include "utils.h"
 
-__BEGIN_DECLS
-
-/******************************* ICMP PACKET ******************************/
-
 #define ICMP_HEADER_MAX_SIZE 0x08
 
 // Summary of ICMP Message Types
@@ -40,6 +36,70 @@ __BEGIN_DECLS
 #define ICMP_ECHO_CODE 0x0
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 
+#define UDP_HEADER_SIZE             0x08
+#define UDP_PAYLOAD_MAX_SIZE        0xffe3
+#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
+
+#define IPv4 0x4
+#define IPv6 0x6
+#define IP_HEADER_SIZE 0x14
+
+/* IP Header Flags */
+#define X_FLAG_NOT_SET 0
+#define D_FLAG_NOT_SET 0
+#define M_FLAG_NOT_SET 0
+#define D_FLAG_SET     0x02
+#define M_FLAG_SET     0x01
+
+#define IP_HEADER_FLAG(_x, _d, _m) (_x + _d + _m)
+
+/* IP Differentiated Service Code Points */
+#define IP_HEADER_DSCP_CS0         0x00
+#define IP_HEADER_DSCP_CS1         0x08
+#define IP_HEADER_DSCP_CS2         0x10
+#define IP_HEADER_DSCP_CS3         0x18
+#define IP_HEADER_DSCP_CS4         0x20
+#define IP_HEADER_DSCP_CS5         0x28
+#define IP_HEADER_DSCP_CS6         0x30
+#define IP_HEADER_DSCP_CS7         0x38
+#define IP_HEADER_DSCP_AF11        0x0a
+#define IP_HEADER_DSCP_AF12        0x0c
+#define IP_HEADER_DSCP_AF13        0x0e
+#define IP_HEADER_DSCP_AF21        0x12
+#define IP_HEADER_DSCP_AF22        0x14
+#define IP_HEADER_DSCP_AF23        0x16
+#define IP_HEADER_DSCP_AF31        0x1a
+#define IP_HEADER_DSCP_AF32        0x1c
+#define IP_HEADER_DSCP_AF33        0x1e
+#define IP_HEADER_DSCP_AF41        0x22
+#define IP_HEADER_DSCP_AF42        0x24
+#define IP_HEADER_DSCP_AF43        0x26
+#define IP_HEADER_DSCP_EF          0x2e
+#define IP_HEADER_DSCP_VOICE_ADMIT 0x2c
+
+/* IP Explicit Congestion Notification Codes */
+#define IP_HEADER_ECN_NECT 0x00 // Not-ECT (Not-ECN Capable Transport)
+#define IP_HEADER_ECN_ECT1 0x01 // ECN-Capable Transport (1) - Experimental Only
+#define IP_HEADER_ECN_ECT0 0x02 // ECN-Capable Transport (0)
+#define IP_HEADER_ECN_CE   0x03 // Congestion Experienced
+
+/* Some IP Header Protocol Codes */
+#define IP_HEADER_ICMP_PROTOCOL_CODE 0x01
+#define IP_HEADER_UDP_PROTOCOL_CODE  0x11
+#define IP_HEADER_TCP_PROTOCOL_CODE  0x06
+
+/* TTL values */
+#ifndef _WIN32
+    #define TTL_DEFAULT_VALUE 0x80
+#elif __linux__
+    #define TTL_DEFAULT_VALUE 0x40
+#endif
+
+#define IP_PAYLOAD_MAX_SIZE 65515 // Max dimension of the payload of an IP Packet
+
+__BEGIN_DECLS
+
+/******************************* ICMP PACKET ******************************/
 
 struct h_echo_t 
 {
@@ -191,10 +251,6 @@ extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer) __attribute__((nonnull
 
 /******************************* UDP PACKET ******************************/
 
-#define UDP_HEADER_SIZE             0x08
-#define UDP_PAYLOAD_MAX_SIZE        0xffe3
-#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
-
 /* Struct representing the UDP Header of the UDP Packet. It consists of the
    classical 8 bytes divided into: (optional) Source port (16 bits),
    Destination port (16 bits), Total length (16 bits) and Checksum (16 bits)
@@ -290,63 +346,6 @@ extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnu
 extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /******************************* IP PACKET ******************************/
-
-#define IPv4 0x4
-#define IPv6 0x6
-#define IP_HEADER_SIZE 0x14
-
-/* IP Header Flags */
-#define X_FLAG_NOT_SET 0
-#define D_FLAG_NOT_SET 0
-#define M_FLAG_NOT_SET 0
-#define D_FLAG_SET     0x02
-#define M_FLAG_SET     0x01
-
-#define IP_HEADER_FLAG(_x, _d, _m) (_x + _d + _m)
-
-/* IP Differentiated Service Code Points */
-#define IP_HEADER_DSCP_CS0         0x00
-#define IP_HEADER_DSCP_CS1         0x08
-#define IP_HEADER_DSCP_CS2         0x10
-#define IP_HEADER_DSCP_CS3         0x18
-#define IP_HEADER_DSCP_CS4         0x20
-#define IP_HEADER_DSCP_CS5         0x28
-#define IP_HEADER_DSCP_CS6         0x30
-#define IP_HEADER_DSCP_CS7         0x38
-#define IP_HEADER_DSCP_AF11        0x0a
-#define IP_HEADER_DSCP_AF12        0x0c
-#define IP_HEADER_DSCP_AF13        0x0e
-#define IP_HEADER_DSCP_AF21        0x12
-#define IP_HEADER_DSCP_AF22        0x14
-#define IP_HEADER_DSCP_AF23        0x16
-#define IP_HEADER_DSCP_AF31        0x1a
-#define IP_HEADER_DSCP_AF32        0x1c
-#define IP_HEADER_DSCP_AF33        0x1e
-#define IP_HEADER_DSCP_AF41        0x22
-#define IP_HEADER_DSCP_AF42        0x24
-#define IP_HEADER_DSCP_AF43        0x26
-#define IP_HEADER_DSCP_EF          0x2e
-#define IP_HEADER_DSCP_VOICE_ADMIT 0x2c
-
-/* IP Explicit Congestion Notification Codes */
-#define IP_HEADER_ECN_NECT 0x00 // Not-ECT (Not-ECN Capable Transport)
-#define IP_HEADER_ECN_ECT1 0x01 // ECN-Capable Transport (1) - Experimental Only
-#define IP_HEADER_ECN_ECT0 0x02 // ECN-Capable Transport (0)
-#define IP_HEADER_ECN_CE   0x03 // Congestion Experienced
-
-/* Some IP Header Protocol Codes */
-#define IP_HEADER_ICMP_PROTOCOL_CODE 0x01
-#define IP_HEADER_UDP_PROTOCOL_CODE  0x11
-#define IP_HEADER_TCP_PROTOCOL_CODE  0x06
-
-/* TTL values */
-#ifndef _WIN32
-    #define TTL_DEFAULT_VALUE 0x80
-#elif __linux__
-    #define TTL_DEFAULT_VALUE 0x40
-#endif
-
-#define IP_PAYLOAD_MAX_SIZE 65515 // Max dimension of the payload of an IP Packet
 
 /* Struct representing the IP Header of the IP Packet. It consists of classical
    28 bytes divided into: IP Protocol Version + IHL (8 bits), Type of service (8 bits),

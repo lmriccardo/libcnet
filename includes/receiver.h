@@ -11,9 +11,10 @@
 #include "neto.h"
 #include "utils.h"
 
+#define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
 __BEGIN_DECLS
 
-#define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
 /* Struct representing a Receiver. Essentially, it is an always running thread
    listening for incoming packets on a defined protocol on a given port.

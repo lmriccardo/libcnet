@@ -41,7 +41,7 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
-- [] Find a way to handle the problem above (**PROBLEM 1**)
+- [x] Find a way to handle the problem above (**PROBLEM 1**)
 
 Legend:
 
@@ -51,4 +51,4 @@ Legend:
 
 ### Advanced Development
 
-- [?] Implement custom ping message
+- [x] Implement custom ping message

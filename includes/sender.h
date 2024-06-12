@@ -13,10 +13,10 @@
 #include "crafter.h"
 #include "utils.h"
 
-__BEGIN_DECLS
-
 #define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define LOOPBACK "127.0.0.1"
+
+__BEGIN_DECLS
 
 /* Struct representing a RawSender. It is called Raw since it uses the SOCK_RAW
    option when creating a new socket. This structure has the following fields:
@@ -43,6 +43,7 @@ typedef struct
     u_int16_t          _lsticmpid;   /* Last used ICMP Packet identifier */
     u_int16_t          _icmpsn;      /* ICMP Message Sequence Number */
     bool               _verbose;     /* Enable verbosity */
+    struct Timer*      _timer;       /* A timer synchronized with the receiver */
 
 } RawSender;
 
@@ -54,6 +55,9 @@ extern RawSender* RawSender_new(
 
 /* Free the memory allocated for the input RawSender */
 extern void RawSender_delete(RawSender* _self) __attribute__((nonnull));
+
+/* Set a timer into the sender */
+extern void RawSender_setTimer(RawSender* _self, struct Timer* _timer) __attribute__((nonnull));
 
 /* Send the input IP Packet */
 extern void  RawSender_sendto(RawSender* _self, const IpPacket* _pckt) __attribute__((nonnull));

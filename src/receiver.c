@@ -46,7 +46,6 @@ Receiver* Receiver_new(
 
 void Receiver_delete(Receiver* _self)
 {
-    if (_self->_timer != NULL) free(_self->_timer);
     shutdown(_self->_socket, 2);
     free(_self);
 }
@@ -87,6 +86,8 @@ void *Receiver_run(void* _self)
         ((Receiver*)_self)->__process_fn(buff, retval, rtt);
     }
 
+    if (((Receiver*)_self)->_timer != NULL) Timer_stop(((Receiver*)_self)->_timer);
+
     free(buff);
     if (((Receiver*)_self)->_verbose)  printf("[*] Receiver stopped\n");
     return NULL;
@@ -109,9 +110,6 @@ void Receiver_stop(Receiver* _self)
 {
     _self->_running = false;
     sleep(0.75);
-    
-    // we need to stop also the Timer
-    if (_self->_timer != NULL) Timer_stop(_self->_timer);
 }
 
 void Receiver_setTimer(Receiver* _self, struct Timer* _timer)
