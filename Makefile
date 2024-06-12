@@ -1,5 +1,5 @@
 CC=gcc -Wall -O3
-OBJECTS=$(patsubst src/%.c,./%.o,$(wildcard src/*.c))
+OBJECTS=$(patsubst src/%.c,bin/%.o,$(wildcard src/*.c))
 LIBS=-lpthread
 SRC=$(wildcard src/*.c)
 
@@ -7,7 +7,7 @@ SRC=$(wildcard src/*.c)
 # bit to the main executable file. In this way, even if it is 
 # executed by a low-level privileged user, it gains root privileges.
 
-all: main clean
+all: main
 
 main: $(OBJECTS)
 	sudo $(CC) -I./includes $(LIBS) -o $@ main.c $^
@@ -15,13 +15,11 @@ main: $(OBJECTS)
 
 static: $(OBJECTS)
 	ar rcsv dist/static/libcnet.a $^
-	rm -f $(OBJECTS)
 
 shared: $(OBJECTS) 
 	$(CC) -shared -o dist/shared/libcnet.so $^
-	rm -f $(OBJECTS)
 
-$(OBJECTS): %.o: src/%.c
+$(OBJECTS): bin/%.o: src/%.c
 	sudo $(CC) -I./includes/ $(LIBS) -fPIC -g -c -o $@ $<
 
 clean:

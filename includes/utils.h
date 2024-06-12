@@ -56,7 +56,7 @@ extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be)
 struct Timer 
 {
     clock_t _start;
-    clock_t _elapsed;
+    double  _elapsed;
     clock_t _current;
     clock_t _previous;
     bool    _running;

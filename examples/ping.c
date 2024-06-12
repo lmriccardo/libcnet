@@ -59,17 +59,17 @@ int ping(const char* address)
     Receiver_start(recv, process);
 
     RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);
-    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 4, 0.2);
+    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 4, 0.5);
 
     Receiver_stop(recv);
     RawSender_delete(pinger);
     Receiver_delete(recv);
 
-    double packet_loss = (pinger->_icmpsn - 1 - received_packets) / (pinger->_icmpsn - 1) * 100.0;
+    double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) / (double)(pinger->_icmpsn - 1) * 100.0;
 
     printf("\n--- %s ping statistics ---\n", address);
     printf(
-        "%d packets transmitted, %d received, %.2f%% packet loss, %.3f sec\n",
+        "%d packets transmitted, %d received, %.1f %% packet loss, %.3f sec\n",
         (pinger->_icmpsn - 1), received_packets, packet_loss, tot_time
     );
 
