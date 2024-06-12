@@ -104,7 +104,7 @@ double Timer_getDeltaTime(struct Timer* _self)
 
     __semaphore_post(&_self->_mutex, "Timer_getDeltaTime");
 
-    return delta / CLOCKS_PER_SEC;
+    return (double)delta / CLOCKS_PER_SEC;
 }
 
 double Timer_getElapsedTime(struct Timer* _self)

@@ -59,7 +59,7 @@ int ping(const char* address)
     Receiver_start(recv, process);
 
     RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);
-    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 4, 0.5);
+    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 1, 2.0);
 
     Receiver_stop(recv);
     RawSender_delete(pinger);

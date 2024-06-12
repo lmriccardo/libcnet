@@ -186,18 +186,20 @@ void RawSender_sendIcmp(
 
         // Then send the packet
         RawSender_sendto(_self, ippckt);
+
+        Timer_reset(timer);
         
         // Sleep using the created timer
         double eta;
         do 
         {
             eta = Timer_getElapsedTime(timer);
+            // printf("%.6f\n", eta);
             
         } while (eta < _delay);
 
         // Once the sleep is finished we need to reset the Timer
         printf("%.2f\n", eta);
-        Timer_reset(timer);
 
         counter--;
     }
