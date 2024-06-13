@@ -31,7 +31,7 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [x] Create a crafter for IP and ICMP packet
 - [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
 - [] TCP Packet (Header + Payload)
-- [?] UDP Packet (Header + Payload)
+- [x] UDP Packet (Header + Payload)
 - [x] Decoder for already implemented Packets
 - [?] Update the crafter for TCP and UDP
 - [?] Update the sender to TCP and UDP
@@ -42,6 +42,7 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
 - [x] Find a way to handle the problem above (**PROBLEM 1**)
+- [x] Create a simple Linked List
 
 Legend:
 
