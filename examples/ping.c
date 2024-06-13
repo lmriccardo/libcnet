@@ -1,7 +1,7 @@
-#include "neto.h"
-#include "sender.h"
-#include "receiver.h"
-#include "utils.h"
+#include <ip.h>
+#include <sender.h>
+#include <receiver.h>
+#include <utils/timer.h>
 
 static int    received_packets = 0;
 static int    errors           = 0;

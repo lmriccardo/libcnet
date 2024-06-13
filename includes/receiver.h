@@ -8,8 +8,8 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#include "neto.h"
-#include "utils.h"
+#include "ip.h"
+#include "utils/timer.h"
 
 #define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 

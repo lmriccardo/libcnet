@@ -1,5 +1,5 @@
-#ifndef _NETO_H
-#define _NETO_H
+#ifndef _IP_H
+#define _IP_H
 
 #include <sys/cdefs.h>
 #include <sys/types.h>
@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "buffer.h"
-#include "utils.h"
+#include "utils/net.h"
 
 #define ICMP_HEADER_MAX_SIZE 0x08
 

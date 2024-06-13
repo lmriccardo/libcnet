@@ -4,7 +4,7 @@
 #include <sys/cdefs.h>
 #include <sys/types.h>
 #include <math.h>
-#include "neto.h"
+#include "ip.h"
 
 __BEGIN_DECLS
 

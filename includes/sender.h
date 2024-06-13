@@ -9,9 +9,9 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "neto.h"
+#include "ip.h"
 #include "crafter.h"
-#include "utils.h"
+#include "utils/timer.h"
 
 #define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define LOOPBACK "127.0.0.1"

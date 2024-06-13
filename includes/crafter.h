@@ -2,7 +2,7 @@
 #define _CRAFTER_H
 
 #include <sys/cdefs.h>
-#include "neto.h"
+#include "ip.h"
 
 __BEGIN_DECLS
 
