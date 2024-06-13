@@ -1,6 +1,6 @@
 CC=gcc -Wall -O3
-INCLUDES=../includes/
-LIB=../dist/static/
+INCLUDES=../../includes/
+LIB=../../dist/static/
 LIBS=-lpthread -lrt -lcnet
 
 all: clean ping

@@ -7,12 +7,6 @@ SRC=$(wildcard src/*.c)
 # bit to the main executable file. In this way, even if it is 
 # executed by a low-level privileged user, it gains root privileges.
 
-all: main
-
-main: $(OBJECTS)
-	sudo $(CC) -I./includes $(LIBS) -o $@ main.c $^
-	sudo chmod u+s $@
-
 static: $(OBJECTS)
 	ar rcsv dist/static/libcnet.a $^
 
