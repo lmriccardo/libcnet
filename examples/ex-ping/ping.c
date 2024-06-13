@@ -59,7 +59,7 @@ int ping(const char* address)
     synchronizeRTT(pinger, recv, timer);
 
     Receiver_start(recv, process);
-    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 2, 1.0);
+    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2);
 
     double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) \
         / (double)(pinger->_icmpsn - 1) * 100.0;
