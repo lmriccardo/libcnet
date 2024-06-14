@@ -567,11 +567,11 @@ void UdpPacket_setHeader(UdpPacket* _self, UdpHeader* _hdr)
 
 void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size)
 {
-    if (_size > UDP_PAYLOAD_MAX_SIZE)
-    {
-        fprintf(stderr, "[UdpPacket_fillPayload] Given UDP Payload size %ld > %d", _size, UDP_PAYLOAD_MAX_SIZE);
-        exit(EXIT_FAILURE);
-    }
+    // if (_size > UDP_PAYLOAD_MAX_SIZE)
+    // {
+    //     fprintf(stderr, "[UdpPacket_fillPayload] Given UDP Payload size %ld > %d", _size, UDP_PAYLOAD_MAX_SIZE);
+    //     exit(EXIT_FAILURE);
+    // }
 
     if (_self->_hdr->_length - UDP_HEADER_SIZE > _size)
     {

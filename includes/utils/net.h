@@ -41,7 +41,10 @@ extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be)
     __attribute__((nonnull));
 
 /* Fill the input buffer with a given number of random bytes */
-void generateRandomData(const size_t _size, unsigned char* _dst) __attribute__((nonnull));
+extern void generateRandomData(const size_t _size, char* _dst) __attribute__((nonnull));
+
+/* Returns the MTU (Maximum Transmission Unit) for the given input interface */
+extern int getInterfaceMTU(const char* _interface) __attribute__((nonnull));
 
 __END_DECLS
 

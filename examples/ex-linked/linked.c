@@ -7,7 +7,7 @@ void test_addv_pop(void)
 
     for (int i = 0; i < 4; i++)
     {
-        LinkedList_addv(ll, &i, sizeof(int));
+        LinkedList_appendv(ll, &i, sizeof(int));
     }
 
     printf("Linked List Size: %ld\n", ll->_size);
@@ -47,7 +47,7 @@ void test_pushv_popi(void)
 
 int main(int argc, char **argv)
 {
-    printf("[*] Testing LinkedList_addv and LinkedList_pop\n");
+    printf("[*] Testing LinkedList_appendv and LinkedList_pop\n");
     test_addv_pop();
 
     printf("[*] Testing LinkedList_pushv and LinkedList_popi\n");

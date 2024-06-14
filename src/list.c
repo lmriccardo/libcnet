@@ -42,7 +42,7 @@ void LinkedList_delete(LinkedList* _self)
     free(_self);
 }
 
-void LinkedList_add(LinkedList* _self, struct Node* _node)
+void LinkedList_append(LinkedList* _self, struct Node* _node)
 {
     if (_self->_head == NULL)
     {
@@ -59,10 +59,10 @@ void LinkedList_add(LinkedList* _self, struct Node* _node)
     _self->_size++;
 }
 
-void LinkedList_addv(LinkedList* _self, void* _value, size_t _vsize) 
+void LinkedList_appendv(LinkedList* _self, void* _value, size_t _vsize) 
 {
     struct Node* node = Node_new(_value, _vsize);
-    LinkedList_add(_self, node);
+    LinkedList_append(_self, node);
 }
 
 void LinkedList_push(LinkedList* _self, struct Node* _node)

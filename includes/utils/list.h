@@ -52,10 +52,10 @@ extern LinkedList* LinkedList_new() __attribute__((returns_nonnull));
 extern void LinkedList_delete(LinkedList* _self) __attribute__((nonnull));
 
 /* Append the input Node into the Linked List */
-extern void LinkedList_add(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
+extern void LinkedList_append(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
 
 /* Create and append a new Node, given the input value and value size, to the Linked List */
-extern void LinkedList_addv(LinkedList* _self, void* _value, size_t _vsize) 
+extern void LinkedList_appendv(LinkedList* _self, void* _value, size_t _vsize) 
     __attribute__((nonnull));
 
 /* Add the input node at the head of the list  */

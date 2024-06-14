@@ -48,10 +48,28 @@ void getInterfaceIp(const char* _interface, char* _addr)
     inet_ntop(AF_INET, &_addr_i, _addr, INET_ADDRSTRLEN);
 }
 
-void generateRandomData(const size_t _size, unsigned char* _dst)
+void generateRandomData(const size_t _size, char* _dst)
 {
     for (int i = 0; i < _size; i++)
     {
         *(_dst + i) = rand();
     }
+}
+
+int getInterfaceMTU(const char* _interface)
+{
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    struct ifreq ifr;
+
+    ifr.ifr_addr.sa_family = AF_INET;
+    strncpy(ifr.ifr_name , _interface ,IFNAMSIZ - 1);
+    if (ioctl(sockfd, SIOCSIFMTU, &ifr) < 0)
+    {
+        fprintf(stderr, "[getInterfaceMTU] Error setting MTU for given interface");
+        exit(EXIT_FAILURE);
+    }
+
+    close(sockfd);
+
+    return ifr.ifr_ifru.ifru_mtu;
 }
