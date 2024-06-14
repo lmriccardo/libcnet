@@ -47,3 +47,11 @@ void getInterfaceIp(const char* _interface, char* _addr)
     u_int32_t _addr_i = ( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr.s_addr;
     inet_ntop(AF_INET, &_addr_i, _addr, INET_ADDRSTRLEN);
 }
+
+void generateRandomData(const size_t _size, unsigned char* _dst)
+{
+    for (int i = 0; i < _size; i++)
+    {
+        *(_dst + i) = rand();
+    }
+}

@@ -40,6 +40,9 @@ extern char* addressNumberToString(u_int32_t _addr, const bool _be)
 extern void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be) 
     __attribute__((nonnull));
 
+/* Fill the input buffer with a given number of random bytes */
+void generateRandomData(const size_t _size, unsigned char* _dst) __attribute__((nonnull));
+
 __END_DECLS
 
 #endif

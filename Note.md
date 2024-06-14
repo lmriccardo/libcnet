@@ -43,6 +43,7 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [?] Add Documentation Strings to Function declaration in .h files
 - [x] Find a way to handle the problem above (**PROBLEM 1**)
 - [x] Create a simple Linked List
+- [] Change all the functions returning char pointers to function taking a destination buffer
 
 Legend:
 
@@ -53,3 +54,5 @@ Legend:
 ### Advanced Development
 
 - [x] Implement custom ping message
+- [?] Test Fragmentation
+- [x] Test Linked List

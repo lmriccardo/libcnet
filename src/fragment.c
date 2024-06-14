@@ -6,38 +6,26 @@ int computeNumberOfFragments(const size_t _size)
     return (int)floorf(num_of_frag) + 1;
 }
 
-struct FragmentList* createFragments(const IpPacket* _pckt)
+struct FragmentList* createFragments(const char* _buff, const size_t _size)
 {
-    struct FragmentList *fraglist = (struct FragmentList*)malloc(sizeof(struct FragmentList));
-    int num_of_frags = computeNumberOfFragments(_pckt->_iphdr->_tlength - IP_HEADER_SIZE);
-    IpPacket** frags = (IpPacket**)malloc(num_of_frags * sizeof(IpPacket));
+    struct FragmentList* fraglist = (struct FragmentList*)malloc(sizeof(struct FragmentList));
+    int nfrags = computeNumberOfFragments(_size);
+    fraglist->_frags = (unsigned char **)malloc(nfrags * sizeof(char *));
+    unsigned char frags[nfrags][IP_PAYLOAD_MAX_SIZE];
+    size_t offset = 0;
     
-    char payload[IP_PAYLOAD_MAX_SIZE];
-    memset(payload, 0, IP_PAYLOAD_MAX_SIZE);
-
-    for (int fi = 0; fi < num_of_frags; fi++)
+    for (int i = 0; i < nfrags; i++)
     {
-        IpHeader* hdr = IpHeader_new();
-        memcpy(hdr, _pckt->_iphdr, IP_HEADER_SIZE);
-
-        int offset = fi * IP_PAYLOAD_MAX_SIZE;
-        int _m = fi < num_of_frags - 1 ? M_FLAG_SET : M_FLAG_NOT_SET;
-        int _d = fi < num_of_frags - 1 ? D_FLAG_NOT_SET : D_FLAG_SET;
-        u_int16_t flagoff = computeFlagOff(X_FLAG_NOT_SET, _d, _m, offset);
-        IpHeader_setFlagOffField(hdr, flagoff);
-
-        IpPacket* pckt = IpPacket_new();
-        IpPacket_setHeader(pckt, hdr);
-
-        memcpy(payload, _pckt->_payload + offset, IP_PAYLOAD_MAX_SIZE);
-        IpPacket_fillPayload(pckt, payload, IP_PAYLOAD_MAX_SIZE);
-
-        *(frags + fi) = pckt;
+        size_t fragsize = (i < nfrags - 1) ? IP_PAYLOAD_MAX_SIZE : _size - i * IP_PAYLOAD_MAX_SIZE;
+        strncpy(frags[i], _buff + offset, fragsize);
+        
+        *(fraglist->_frags + i) = (unsigned char*)malloc(fragsize * sizeof(char));
+        memcpy(*(fraglist->_frags + i), frags[i], fragsize);
+        offset = offset + IP_PAYLOAD_MAX_SIZE;
     }
-
-    fraglist->_frags = frags;
-    fraglist->_size  = num_of_frags;
-
+    
+    fraglist->_size = nfrags;
+    
     return fraglist;
 }
 

@@ -156,7 +156,7 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, c
 UdpPacket* RawSender_createUdpPacket(RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
-    u_int16_t length = _size + UDP_HEADER_SIZE;
+    u_int16_t length = (_size > UDP_PAYLOAD_MAX_SIZE ? UDP_PAYLOAD_MAX_SIZE : _size) + UDP_HEADER_SIZE;
     UdpPacket* pckt = craftUdpPacket(_srcport, dstport, length, 0x0, _payload, _size);
     return pckt;
 }

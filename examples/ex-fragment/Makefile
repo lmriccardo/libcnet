@@ -2,7 +2,7 @@ CC=gcc -Wall -O3
 INCLUDES=../../includes/
 LIB=../../dist/static/
 LIBS=-lpthread -lrt -lcnet
-TARGET=fragment
+TARGET=frag
 
 all: clean $(TARGET)
 
