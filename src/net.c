@@ -63,13 +63,13 @@ int getInterfaceMTU(const char* _interface)
 
     ifr.ifr_addr.sa_family = AF_INET;
     strncpy(ifr.ifr_name , _interface ,IFNAMSIZ - 1);
-    if (ioctl(sockfd, SIOCSIFMTU, &ifr) < 0)
+    if (ioctl(sockfd, SIOCGIFMTU, &ifr) < 0)
     {
-        fprintf(stderr, "[getInterfaceMTU] Error setting MTU for given interface");
+        fprintf(stderr, "[getInterfaceMTU] Error setting MTU for given interface\n");
         exit(EXIT_FAILURE);
     }
 
     close(sockfd);
 
-    return ifr.ifr_ifru.ifru_mtu;
+    return ifr.ifr_mtu;
 }
