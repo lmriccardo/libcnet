@@ -38,6 +38,7 @@ IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code)
     }
 
     IcmpHeader_setType(hdr, _type);
+    IcmpHeader_setCode(hdr, _code);
 
     return hdr;
 }
@@ -398,26 +399,28 @@ void IcmpPacket_delete(IcmpPacket* _self)
     free(_self);
 }
 
-void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int8_t _code)
+void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int16_t _checksum)
 {
-    IcmpHeader_setCode(_self->_icmphdr, _code);
-    IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
+    IcmpHeader_setChecksum(_self->_icmphdr, _checksum);
 }
 
-void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int8_t _code, const u_int32_t _gateway)
+void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
 {
-    IcmpHeader_setCode(_self->_icmphdr, _code);
-    IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
+    IcmpHeader_setChecksum(_self->_icmphdr, _checksum);
     IcmpHeader_setGateway(_self->_icmphdr, _gateway);
 }
 
-void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, const u_int8_t _code, const u_int16_t _id, const u_int16_t _seqnum
-) {
-    IcmpHeader_setCode(_self->_icmphdr, _code);
-    IcmpHeader_setChecksum(_self->_icmphdr, (u_int16_t)0);
+void IcmpPacket_fillHeader_v3(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
+{
+    IcmpHeader_setChecksum(_self->_icmphdr, _checksum);
     IcmpHeader_setIdentifier(_self->_icmphdr, _id);
     IcmpHeader_setSequenceNumber(_self->_icmphdr, _seqnum);
+}
+
+void IcmpPacket_fillHeader_v4(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
+{
+    IcmpHeader_setChecksum(_self->_icmphdr, _checksum);
+    IcmpHeader_setNextHopMtu(_self->_icmphdr, _data);
 }
 
 void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size)

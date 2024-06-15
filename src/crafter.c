@@ -39,8 +39,7 @@ IpPacket* craftIpPacket_withData(
 IcmpPacket* craftIcmpPacket_Unused(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum)
 {
     IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, _code, 0x0);
-    IcmpHeader_setCode(icmppckt->_icmphdr, _code);
-    IcmpHeader_setChecksum(icmppckt->_icmphdr, _checksum);
+    IcmpPacket_fillHeader_v1(icmppckt->_icmphdr, _checksum);
     return icmppckt;
 }
 
@@ -49,8 +48,7 @@ IcmpPacket* craftIcmpPacket_Echo(
     const u_int16_t _id,   const u_int16_t _seqnum
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
-    IcmpHeader_setIdentifier(icmppckt->_icmphdr, _id);
-    IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, _seqnum);
+    IcmpPacket_fillHeader_v3(icmppckt->_icmphdr, _checksum, _id, _seqnum);
     return icmppckt;
 }
 
@@ -58,7 +56,14 @@ IcmpPacket* craftIcmpPacket_Redirect(
     const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
-    IcmpHeader_setGateway(icmppckt->_icmphdr, inet_network(_gateway));
+    IcmpPacket_fillHeader_v2(icmppckt->_icmphdr, _checksum, inet_network(_gateway));
+    return icmppckt;
+}
+
+IcmpPacket* craftIcmpPacket_Mtu(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu)
+{
+    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
+    IcmpPacket_fillHeader_v4(icmppckt->_icmphdr, _checksum, _mtu);
     return icmppckt;
 }
 

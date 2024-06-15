@@ -37,6 +37,10 @@ extern IcmpPacket* craftIcmpPacket_Redirect(
     const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway
 ) __attribute__((returns_nonnull)) __attribute__((nonnull));
 
+/* Craft an ICMP Packet with the MTU Field */
+extern IcmpPacket* craftIcmpPacket_Mtu(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu) 
+    __attribute__((returns_nonnull)) __attribute__((nonnull));
+
 /* Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet */
 extern UdpPacket* craftUdpPacket(
     const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum,

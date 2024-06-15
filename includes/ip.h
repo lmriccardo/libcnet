@@ -230,19 +230,23 @@ extern void IcmpPacket_delete(IcmpPacket* _self) __attribute__((nonnull));
 /* Fill the Header of the ICMP Packet with the Code. This version of the
    `fillHeader` function is reserved for ICMP Header with 32 bits unused
 */
-extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int8_t _code) __attribute__((nonnull));
+extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
 /* Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the
    `fillHeader` function is reserved for ICMP Header with 32 bits for the gateway address
 */
-extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int8_t _code, const u_int32_t _gateway) __attribute__((nonnull));
+extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway) __attribute__((nonnull));
 
 /* Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. 
    This version of the `fillHeader` function is reserved for ICMP Header with 32 bits 
    divided into Identifier (16 bits) and Sequence Number (16 bits).
 */
-extern void IcmpPacket_fillHeader_v3(
-    IcmpPacket* _self, const u_int8_t _code, const u_int16_t _id, const u_int16_t _seqnum) __attribute__((nonnull));
+extern void IcmpPacket_fillHeader_v3(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) __attribute__((nonnull));
+
+/* Fill the header of the ICMP with 32 of Optinal datas divided into: 16 unused (zeros) bits
+   and remaining 16 bits used for some generic purpose, like MTU Path Discovery.
+*/
+extern void IcmpPacket_fillHeader_v4(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data) __attribute__((nonnull));
 
 /* Set a new Header for the ICMP Packet. The input headers will be copied into
    a new header of the ICMP Packet, and the memory for the input header will
