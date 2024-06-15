@@ -2,7 +2,7 @@
 
 /* --------------------------------------------- ICMP HEADER --------------------------------------------- */
 
-IcmpHeader* IcmpHeader_new(const u_int8_t _type)
+IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code)
 {
     IcmpHeader* hdr = (IcmpHeader*)malloc(sizeof(IcmpHeader));
     union h_data_t* rest = (union h_data_t*)malloc(sizeof(union h_data_t));
@@ -11,6 +11,11 @@ IcmpHeader* IcmpHeader_new(const u_int8_t _type)
     switch (_type)
     {
         case ICMP_DESTINATION_UNREACHABLE_TYPE:
+            if ( _code == ICMP_FRAGMENTATION_NEEDED_CODE )
+            {
+                __IcmpHeader_createHeader_v4(hdr);
+                break;
+            }
         case ICMP_SOURCE_QUENCH_TYPE:
         case ICMP_TIME_EXCEEEDED_TYPE:
             __IcmpHeader_createHeader_v1(hdr);
@@ -59,13 +64,25 @@ void __IcmpHeader_createHeader_v2(IcmpHeader* _self)
 
 void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
 {
-    // The second version of the header consists of Type, code
+    // The third version of the header consists of Type, code
     // checksum, identification and sequence number.
     struct h_echo_t echo_s;
     echo_s._id = 0;
     echo_s._seqnum = 0;
 
     _self->_rest->_echo = echo_s;
+}
+
+void __IcmpHeader_createHeader_v4(IcmpHeader* _self)
+{
+    // The fourth version of the header is used for MTU
+    // Path Discovery. It has 16 bits set to zero, and
+    // remaining 16 bits contains the MTU of the next hop
+    struct h_mtu_t mtu_s;
+    mtu_s._unused = 0x0;
+    mtu_s._mtu = 0x0;
+
+    _self->_rest->_mtu = mtu_s;
 }
 
 void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type)
@@ -146,6 +163,28 @@ void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum)
     _self->_rest->_echo._seqnum = _seqnum;
 }
 
+void IcmpHeader_setNextHopMtu(IcmpHeader* _self, const u_int16_t _mtu)
+{
+    if (
+        (
+            _self->_type != ICMP_DESTINATION_UNREACHABLE_TYPE ||
+            _self->_code != ICMP_FRAGMENTATION_NEEDED_CODE
+        )
+    ) {
+        fprintf(stderr, "[IcmpHeader_setNextHopMtu] To set Next Hop MTU header field ");
+
+        fprintf(
+            stderr, "an ICMP Message of Type %d and Code %d is required. ",
+            ICMP_DESTINATION_UNREACHABLE_TYPE, ICMP_FRAGMENTATION_NEEDED_CODE
+        );
+
+        fprintf(stderr, "Current Type and Code are: t=%d, c=%d\n", _self->_type, _self->_code);
+        exit(EXIT_FAILURE);
+    }
+
+    _self->_rest->_mtu._mtu = _mtu;
+}
+
 void IcmpHeader_printInfo(const IcmpHeader* _self)
 {
     printf("[*] Printing Information of the ICMP Header\n");
@@ -169,6 +208,15 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
         IcmpHeader_printInfo_v3(_self);
     }
 
+    if (
+        (
+            _self->_type == ICMP_DESTINATION_UNREACHABLE_TYPE &&
+            _self->_code == ICMP_FRAGMENTATION_NEEDED_CODE
+        )
+    ) {
+        IcmpHeader_printInfo_v4(_self);
+    }
+
     printf("\n");
 }
 
@@ -181,6 +229,11 @@ void IcmpHeader_printInfo_v3(const IcmpHeader* _self)
 {
     printf("ICMP Header Identifier: %d\n", _self->_rest->_echo._id);
     printf("ICMP Header Sequence Number: %d\n", _self->_rest->_echo._seqnum);
+}
+
+void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
+{
+    printf("ICMP Next Hop MTU: %hu\n", _self->_rest->_mtu._mtu);
 }
 
 u_int16_t computeIcmpChecksum(const char* _buff)
@@ -210,7 +263,20 @@ void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
             _self->_type == ICMP_TIME_EXCEEEDED_TYPE
         )
     ) {
-        ByteBuffer_putInt(_buffer, htonl(_self->_rest->_unused));
+        // Check for Code in case of Destination Unreachable type
+        if (
+            (
+                _self->_type == ICMP_DESTINATION_UNREACHABLE_TYPE &&
+                _self->_code == ICMP_FRAGMENTATION_NEEDED_CODE
+            )
+        ) {
+            ByteBuffer_putShort(_buffer, htons(_self->_rest->_mtu._unused));
+            ByteBuffer_putShort(_buffer, htons(_self->_rest->_mtu._mtu));
+        }
+        else
+        {
+            ByteBuffer_putInt(_buffer, htonl(_self->_rest->_unused));
+        }
     }
 
     if (_self->_type == ICMP_REDIRECT_TYPE)
@@ -244,7 +310,7 @@ IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer)
     u_int8_t code      = ByteBuffer_get(_buffer);
     u_int16_t checksum = ByteBuffer_getShort(_buffer);
 
-    IcmpHeader* hdr = IcmpHeader_new(type);
+    IcmpHeader* hdr = IcmpHeader_new(type, code);
     IcmpHeader_setCode(hdr, code);
     IcmpHeader_setChecksum(hdr, ntohs(checksum));
 
@@ -255,8 +321,24 @@ IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer)
             hdr->_type == ICMP_TIME_EXCEEEDED_TYPE
         )
     ) {
-        ByteBuffer_position(_buffer, _buffer->_position + INT_SIZE);
-        hdr->_rest->_unused = 0x0;
+        // Check for Code in case of Destination Unreachable type
+        if (
+            (
+                hdr->_type == ICMP_DESTINATION_UNREACHABLE_TYPE &&
+                hdr->_code == ICMP_FRAGMENTATION_NEEDED_CODE
+            )
+        ) {
+            ByteBuffer_position(_buffer, _buffer->_position + SHORT_SIZE);
+            u_int16_t mtu = ByteBuffer_getShort(_buffer);
+
+            hdr->_rest->_mtu._unused = 0x0;
+            IcmpHeader_setNextHopMtu(hdr, ntohs(mtu));
+        }
+        else
+        {
+            ByteBuffer_position(_buffer, _buffer->_position + INT_SIZE);
+            hdr->_rest->_unused = 0x0;
+        }
     }
 
     if (hdr->_type == ICMP_REDIRECT_TYPE)
@@ -285,12 +367,12 @@ IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer)
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
-IcmpPacket* IcmpPacket_new(const u_int8_t _type)
+IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code)
 {
-    return IcmpPacket_new_v2(_type, ICMP_PAYLOAD_MAXIMUM_SIZE);
+    return IcmpPacket_new_v2(_type, _code, ICMP_PAYLOAD_MAXIMUM_SIZE);
 }
 
-IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const size_t _size)
+IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const u_int8_t _code, const size_t _size)
 {
     // Check if the given size is out of bound
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
@@ -300,7 +382,7 @@ IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const size_t _size)
     }
 
     IcmpPacket* pckt = (IcmpPacket*)malloc(sizeof(IcmpPacket));
-    IcmpHeader* hdr = IcmpHeader_new(_type);
+    IcmpHeader* hdr = IcmpHeader_new(_type, _code);
     
     pckt->_icmphdr = hdr;
     pckt->_payload = (char *)malloc(_size * sizeof(char));
@@ -395,13 +477,22 @@ void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr)
         memcpy(&_self->_icmphdr->_rest->_echo, &_hdr->_rest->_echo, 4);
     }
 
+    if (
+        (
+            _hdr->_type == ICMP_DESTINATION_UNREACHABLE_TYPE &&
+            _hdr->_code == ICMP_FRAGMENTATION_NEEDED_CODE
+        )
+    ) {
+        memcpy(&_self->_icmphdr->_rest->_mtu, &_hdr->_rest->_mtu, 4);
+    }
+
     IcmpHeader_delete(_hdr);
 }
 
 IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer)
 {
     IcmpHeader* hdr  = IcmpHeader_decode(_buffer);
-    IcmpPacket* pckt = IcmpPacket_new(hdr->_type);
+    IcmpPacket* pckt = IcmpPacket_new(hdr->_type, hdr->_code);
     
     IcmpPacket_setHeader(pckt, hdr);
 
@@ -882,7 +973,7 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
 {
     IpHeader* hdr = IpHeader_decode(_buffer);
     IpPacket* pckt = IpPacket_new();
-
+    
     IpPacket_setHeader(pckt, hdr);
 
     IcmpPacket* icmppckt = IcmpPacket_decode(_buffer);

@@ -38,7 +38,7 @@ IpPacket* craftIpPacket_withData(
 
 IcmpPacket* craftIcmpPacket_Unused(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum)
 {
-    IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, 0x0);
+    IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, _code, 0x0);
     IcmpHeader_setCode(icmppckt->_icmphdr, _code);
     IcmpHeader_setChecksum(icmppckt->_icmphdr, _checksum);
     return icmppckt;

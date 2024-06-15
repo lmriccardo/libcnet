@@ -18,8 +18,7 @@
 __BEGIN_DECLS
 
 /* Returns the IP address of the input host */
-extern char* getHostnameIP(const char* _hostname) 
-    __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern void getHostnameIP(const char* _hostname, char* _out) __attribute__((nonnull));
 
 /* Returns the IP address of the given input interface */
 extern void getInterfaceIp(const char* _interface, char *_addr)

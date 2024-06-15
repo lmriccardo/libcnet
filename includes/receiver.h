@@ -11,7 +11,7 @@
 #include "ip.h"
 #include "utils/timer.h"
 
-#define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
+#define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 
 __BEGIN_DECLS
 

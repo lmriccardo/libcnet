@@ -2,7 +2,7 @@
 #include "sender.h"
 #include "receiver.h"
 
-char* getHostnameIP(const char* _hostname)
+void getHostnameIP(const char* _hostname, char* _out)
 {
     struct hostent *hostentry = gethostbyname(_hostname);
     if (hostentry == NULL)
@@ -11,9 +11,7 @@ char* getHostnameIP(const char* _hostname)
         exit(EXIT_FAILURE);
     }
 
-    char *ip = inet_ntoa(*((struct in_addr*) hostentry->h_addr_list[0]));
-
-    return ip;
+    addressNumberToString_s((*((struct in_addr*) hostentry->h_addr_list[0])).s_addr, _out, true);
 }
 
 char* addressNumberToString(u_int32_t _addr, const bool _be)

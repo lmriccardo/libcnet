@@ -109,11 +109,18 @@ struct h_echo_t
 
 };
 
+struct h_mtu_t
+{
+    u_int16_t _unused; // Set to zeros
+    u_int16_t _mtu;    // Next hop MTU
+};
+
 union h_data_t 
 {
 
     u_int32_t       _unused;  // 32 bit of unused data
     u_int32_t       _gateway; // 32 bit for gateway internet address
+    struct h_mtu_t  _mtu;     // Used for MTU Path Discovery
     struct h_echo_t _echo;    // Echo and other message headers
     
 };
@@ -148,7 +155,7 @@ typedef struct
 } IcmpPacket;
 
 /* Return a pointer to an IcmpHeader struct initialized given the input type */
-extern IcmpHeader* IcmpHeader_new(const u_int8_t _type) __attribute__((returns_nonnull));
+extern IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
 
 /* Free the memory of the previously allocated IcmpHeader */
 extern void IcmpHeader_delete(IcmpHeader* _self) __attribute__((nonnull));
@@ -180,14 +187,19 @@ extern void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id) __a
 */
 extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum) __attribute__((nonnull));
 
+/* Set the Next Hop MTU for Destination Unreachable message with Fragmentation Needed */
+extern void IcmpHeader_setNextHopMtu(IcmpHeader* _self, const u_int16_t _mtu) __attribute__((nonnull));
+
 /* Print all the Header fields with corresponding values */
 extern void IcmpHeader_printInfo(const IcmpHeader* _self) __attribute__((nonnull));
 extern void IcmpHeader_printInfo_v2(const IcmpHeader* _self) __attribute__((nonnull));
 extern void IcmpHeader_printInfo_v3(const IcmpHeader* _self) __attribute__((nonnull));
+extern void IcmpHeader_printInfo_v4(const IcmpHeader* _self) __attribute__((nonnull));
 
 extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self) __attribute__((nonnull));
 extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __attribute__((nonnull));
 extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __attribute__((nonnull));
+extern void __IcmpHeader_createHeader_v4(IcmpHeader* _self) __attribute__((nonnull));
 
 /* Compute the ICMP Checksum as defined in the Corresponding RFC 792.
    The input buffer parameter is the header encoded into a buffer of bytes.
@@ -207,10 +219,10 @@ extern ByteBuffer* IcmpHeader_encode_v2(const IcmpHeader *_self) __attribute__((
 extern IcmpHeader* IcmpHeader_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create a new ICMP Packet initialized according to input Type */
-extern IcmpPacket* IcmpPacket_new(const u_int8_t _type) __attribute__((returns_nonnull));
+extern IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
 
 /* Create a new ICMP Packet initialized according to input Type and Payload Size */
-extern IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const size_t _size) __attribute__((returns_nonnull));
+extern IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const u_int8_t _code, const size_t _size) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the ICMP Packet */
 extern void IcmpPacket_delete(IcmpPacket* _self) __attribute__((nonnull));

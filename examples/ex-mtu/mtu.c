@@ -1,9 +1,81 @@
 #include <utils/net.h>
+#include <receiver.h>
+#include <sender.h>
+
+#define BUFF_SIZE 1472
 
 void test_get_local_mtu(const char* interface)
 {
     int lmtu = getInterfaceMTU(interface);
     printf("%s MTU is %d bytes\n", interface, lmtu);
+}
+
+int mtu;
+
+void *processResponse(char *buffer, size_t size, double time)
+{
+    ByteBuffer* bbuffer = ByteBuffer_new_v2(buffer, size);
+    ByteBuffer_writeToFile(bbuffer, "recv.bin");
+    
+    IpPacket* ippcket = IpPacket_decodeIcmp(bbuffer);
+    IcmpPacket* icmppcket = IpPacket_getIcmpPacket(ippcket);
+    IcmpHeader* icmphdr = icmppcket->_icmphdr;
+
+    IpHeader_printInfo(ippcket->_iphdr);
+    IcmpHeader_printInfo(icmphdr);
+
+    IcmpPacket_delete(icmppcket);
+    IpPacket_delete(ippcket);
+    ByteBuffer_delete(bbuffer);
+
+    return NULL;
+}
+
+void test_pmtud(const char* interface, const char* hostname)
+{
+    char remote[INET_ADDRSTRLEN];
+    getHostnameIP(hostname, remote);
+
+    printf("Remote Address: %s\n", remote);
+
+    // Get the initial MTU
+    mtu = getInterfaceMTU(interface);
+
+    // Let's define a receiver and a sender
+    Receiver *recv = Receiver_new(interface, 0, "icmp", false);
+    RawSender *sender = RawSender_new(interface, remote, NULL, 0, "icmp", false);
+
+    // Then we can start the receiver
+    Receiver_start(recv, processResponse);
+
+    // Let's create the IP and the ICMP Packets
+    IpPacket* ippckt = RawSender_createIpPacket(sender, sender->_lastid++);
+    IcmpPacket* icmppckt = RawSender_createIcmpPacket(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE);
+    IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, sender->_icmpsn++);
+
+    // Compute the checksum of the ICMP header
+    ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
+    u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer);
+    IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
+    ByteBuffer_delete(icmphdrbuff);
+
+    char *payload = (char *)malloc(BUFF_SIZE * sizeof(char));
+    generateRandomData(BUFF_SIZE, payload);
+    IcmpPacket_fillPayload(icmppckt, payload, BUFF_SIZE);
+
+    // Wrap the ICMP packet inside the IP packet
+    IpPacket_wrapIcmp(ippckt, icmppckt);
+    IpHeader_printInfo(ippckt->_iphdr);
+
+    // Send the IP Packet
+    RawSender_sendto(sender, ippckt);
+    sleep(1.0);
+
+    Receiver_stop(recv);
+    IpPacket_delete(ippckt);
+    IcmpPacket_delete(icmppckt);
+    Receiver_delete(recv);
+    RawSender_delete(sender);
 }
 
 int main(int argc, char** argv)
@@ -22,6 +94,14 @@ int main(int argc, char** argv)
 
     if (strncmp(argv[1], "pmtu", 4) == 0)
     {
+        // Check that both values are given
+        if (argc < 4)
+        {
+            fprintf(stderr, "Usage: ./mtu pmtu [interface] [hostname]\n");
+            exit(EXIT_FAILURE);
+        }
+
+        test_pmtud(argv[2], argv[3]);
         return 0;
     }
 

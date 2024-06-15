@@ -13,7 +13,7 @@ Receiver* Receiver_new(
     getInterfaceIp(_interface, _addr);
 
     socketfd = socket(AF_INET, SOCK_RAW, proto->p_proto);
-    if (socketfd == -1) handle_error("socket");
+    if (socketfd == -1) handle_error("socket", socketfd);
 
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
@@ -22,7 +22,7 @@ Receiver* Receiver_new(
 
     if (bind(socketfd, (const struct sockaddr*)&addr, sizeof(addr)) < 0) 
     {
-        handle_error("bind");
+        handle_error("bind", socketfd);
     }
 
     if (_verbose)

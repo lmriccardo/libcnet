@@ -13,7 +13,7 @@
 #include "crafter.h"
 #include "utils/timer.h"
 
-#define handle_error(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
+#define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 #define LOOPBACK "127.0.0.1"
 
 __BEGIN_DECLS
@@ -49,7 +49,7 @@ typedef struct
 
 /* Creates and returns a new RawSender. */
 extern RawSender* RawSender_new(
-    char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
+    const char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
     const char* _proto, const bool _verbose
 ) __attribute__((returns_nonnull)) __attribute__((nonnull(1, 2, 5)));
 

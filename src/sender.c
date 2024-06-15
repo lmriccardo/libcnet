@@ -2,7 +2,7 @@
 
 
 RawSender* RawSender_new(
-    char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
+    const char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
     const char* _proto, const bool _verbose
 ) {
     struct sockaddr_in dst;
@@ -10,7 +10,7 @@ RawSender* RawSender_new(
 
     struct protoent *proto = getprotobyname(_proto);
     socketfd = socket(AF_INET, SOCK_RAW, proto->p_proto);
-    if (socketfd == -1) handle_error("socket");
+    if (socketfd == -1) handle_error("socket", socketfd);
 
     int value = 1;
     setsockopt(socketfd, IPPROTO_IP, IP_HDRINCL, &value, sizeof(value));
@@ -63,7 +63,7 @@ void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _
             (struct sockaddr *)&_self->_dstaddress, dstlen
         ) < 0
     ) {
-        handle_error("sendto");
+        handle_error("sendto", _self->_socket);
     }
 
     if (_self->_verbose) printf("[*] Sent %ld bytes of IP Packet\n", _size);
