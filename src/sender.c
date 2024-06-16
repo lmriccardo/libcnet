@@ -92,6 +92,19 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
     
     __Sender_sendto_v2(_self, buffer->_buffer, buffer->_size);
     _self->_msgcnt += 1;
+
+    if (_self->_verbose)
+    {
+        char *filename = (char*)malloc(100 * sizeof(char));
+
+        snprintf(
+            filename, 60, "sent_%hu_%d_%s.bin", _self->_lastid, 
+            _self->_msgcnt, _self->_proto->p_name
+        );
+        
+        ByteBuffer_writeToFile(buffer, filename);
+        free(filename);
+    }
     
     ByteBuffer_delete(buffer);
 

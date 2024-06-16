@@ -3,6 +3,8 @@
 
 #define BUFF_SIZE 64
 
+#define DEBUG
+
 // Assume argv[1] -> interface (like eth0)
 // Assume argv[2] -> hostname (like google.com)
 int main(int argc, char **argv)
