@@ -11,6 +11,7 @@
 
 __BEGIN_DECLS
 
+/* Just a single node inside a Linked List. */
 struct Node
 {
 
@@ -20,12 +21,14 @@ struct Node
 
 };
 
+/* A simple Linked List with following values: `_head`, `_last`, `_size` and `_max` */ 
 typedef struct
 {
 
-    struct Node* _head; // The first value of the list
-    struct Node* _last; // The last value of the list
-    size_t       _size; // The number of elements in the list
+    struct Node* _head;      // The first value of the list
+    struct Node* _last;      // The last value of the list
+    size_t       _size;      // The number of elements in the list
+    size_t       _capacity;  // The maximum number of elements of the list
 
 } LinkedList;
 
@@ -46,7 +49,7 @@ extern void Node_delete(struct Node* _self) __attribute__((nonnull));
    this means that the corresponding object must be deleted using the 
    LinkedList_delete() function.  
 */
-extern LinkedList* LinkedList_new() __attribute__((returns_nonnull));
+extern LinkedList* LinkedList_new(const size_t _capacity) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the entire linked list (including nodes) */
 extern void LinkedList_delete(LinkedList* _self) __attribute__((nonnull));
@@ -69,8 +72,12 @@ extern void LinkedList_pushv(LinkedList* _self, void* _value, size_t _vsize)
 extern struct Node* LinkedList_pop(LinkedList* _self) __attribute__((nonnull)) 
     __attribute__((returns_nonnull));
 
-extern struct Node* LinkedList_popi(LinkedList* _self, int _i) __attribute__((nonnull)) 
+/* Returns the element of the list corresponding to input index */
+extern struct Node* LinkedList_remove(LinkedList* _self, int _i) __attribute__((nonnull)) 
     __attribute__((returns_nonnull));
+
+/* Checks if the linked list is empty or not */
+extern bool LinkedList_isEmpty(LinkedList* _self) __attribute__((nonnull));
 
 
 __END_DECLS

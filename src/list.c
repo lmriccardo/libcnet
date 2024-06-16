@@ -18,12 +18,13 @@ void Node_delete(struct Node* _self)
     free(_self);
 }
 
-LinkedList* LinkedList_new()
+LinkedList* LinkedList_new(const size_t _capacity)
 {
     LinkedList* ll = (LinkedList*)malloc(sizeof(LinkedList));
-    ll->_head = NULL;
-    ll->_last = NULL;
-    ll->_size = 0;
+    ll->_head     = NULL;
+    ll->_last     = NULL;
+    ll->_size     = 0;
+    ll->_capacity = _capacity;
 
     return ll;
 }
@@ -52,6 +53,14 @@ void LinkedList_append(LinkedList* _self, struct Node* _node)
         return;
     }
 
+    if (_self->_size + 1 > _self->_capacity)
+    {
+        // We have reached max capacity. In this case we are going
+        // to remove the first element of the list
+        struct Node* first = LinkedList_remove(_self, 0);
+        Node_delete(first);
+    }
+
     struct Node* _last = _self->_last;
     _last->_next = _node;
     _node->_prev = _last;
@@ -73,6 +82,14 @@ void LinkedList_push(LinkedList* _self, struct Node* _node)
         _self->_last = _node;
         _self->_size++;
         return;
+    }
+
+    if (_self->_size + 1 > _self->_capacity)
+    {
+        // We have reached max capacity. In this case we are going
+        // to remove the last element of the list
+        struct Node* first = LinkedList_pop(_self);
+        Node_delete(first);
     }
 
     struct Node* _head = _self->_head;
@@ -111,11 +128,11 @@ struct Node* LinkedList_pop(LinkedList* _self)
     return _node;
 }
 
-struct Node* LinkedList_popi(LinkedList* _self, int _i)
+struct Node* LinkedList_remove(LinkedList* _self, int _i)
 {
-    if (_self->_last == NULL)
+    if (LinkedList_isEmpty(_self))
     {
-        fprintf(stderr, "[LinkedList_popi] Cannot remove the item, the list is empty.\n");
+        fprintf(stderr, "[LinkedList_remove] Cannot remove the item, the list is empty.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -128,16 +145,32 @@ struct Node* LinkedList_popi(LinkedList* _self, int _i)
         // If it is not the index we are looking for, continue
         if (i != _i) continue;
 
+        // If it is the last element of the list
+        if (_self->_size == 1)
+        {
+            _self->_head = NULL;
+            _self->_last = NULL;
+            break;
+        }
+        
+        // Otherwise if it is the first element
+        if (i == 0)
+        {
+            _self->_head = node->_next;
+            _self->_head->_prev = NULL;
+            break;
+        }
+
         // Otherwise we have to take the node and change all
         // the links in the Linked List
         if (node->_prev != NULL)
         {
             node->_prev->_next = node->_next;
-            
-            if (node->_next != NULL)
-            {
-                node->_next->_prev = node->_prev;
-            }
+        }
+
+        if (node->_next != NULL)
+        {
+            node->_next->_prev = node->_prev;
         }
 
         break;
@@ -146,4 +179,9 @@ struct Node* LinkedList_popi(LinkedList* _self, int _i)
     _self->_size--;
     
     return node;
+}
+
+bool LinkedList_isEmpty(LinkedList* _self)
+{
+    return _self->_size == 0;
 }

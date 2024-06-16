@@ -149,7 +149,6 @@ Once you have all the pre-requisites installed, then you can proceed with the in
 ```
 $ git clone https://github.com/lmriccardo/libcnet.git
 $ cd libcnet
-$ mkdir build
 $ sudo ./scripts/build.sh
 ```
 

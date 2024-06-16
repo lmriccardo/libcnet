@@ -1,9 +1,10 @@
 #include <utils/list.h>
+#include <receiver.h>
 #include <string.h>
 
 void test_addv_pop(void)
 {
-    LinkedList* ll = LinkedList_new();
+    LinkedList* ll = LinkedList_new(10);
 
     for (int i = 0; i < 4; i++)
     {
@@ -25,14 +26,14 @@ void test_addv_pop(void)
 
 void test_pushv_popi(void)
 {
-    LinkedList* ll = LinkedList_new();
+    LinkedList* ll = LinkedList_new(10);
 
     for (int i = 0; i < 4; i++)
     {
         LinkedList_pushv(ll, &i, sizeof(int));
     }
 
-    struct Node* node = LinkedList_popi(ll, 1);
+    struct Node* node = LinkedList_remove(ll, 0);
     printf("Node value %d\n", *(int*)node->_value);
     Node_delete(node);
 
@@ -50,7 +51,7 @@ int main(int argc, char **argv)
     printf("[*] Testing LinkedList_appendv and LinkedList_pop\n");
     test_addv_pop();
 
-    printf("[*] Testing LinkedList_pushv and LinkedList_popi\n");
+    printf("[*] Testing LinkedList_pushv and LinkedList_remove\n");
     test_pushv_popi();
 
     return 0;

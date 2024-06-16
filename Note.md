@@ -20,6 +20,12 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 > of value from the first call is overwritten by the second function. It is also discussed
 > in the documentation of `gethostbyname`. 
 
+> **PROBLEM 2**: The `process` function cause the library to loose some degrees of freedom, forcing the user to create `process` functions
+> with restricted input types. Moreover, implementing various algorithms inside the library using this paradigm appears
+> to be difficult and requires some strange tricks that might leads to an increasing and unwanted complexity. This is something
+> that I would not like to have in this project. On the other hand, using a message queue shared between the receiver and the
+> user program, makes things simpler. In this case the user may or may not define a process function.
+
 
 ## Todo
 
@@ -30,20 +36,21 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [x] Create a Sender which sends the packet
 - [x] Create a crafter for IP and ICMP packet
 - [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
-- [] TCP Packet (Header + Payload)
+- [ ] TCP Packet (Header + Payload)
 - [x] UDP Packet (Header + Payload)
 - [x] Decoder for already implemented Packets
 - [?] Update the crafter for TCP and UDP
 - [?] Update the sender to TCP and UDP
-- [?] Create a receiver
+- [x] Create a receiver
 - [?] Check for memory safetiness using Valgrind
-- [] Maybe we should create a Thread also for the sender
+- [ ] Maybe we should create a Thread also for the sender
 - [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
 - [x] Find a way to handle the problem above (**PROBLEM 1**)
 - [x] Create a simple Linked List
-- [] Change all the functions returning char pointers to function taking a destination buffer
+- [x] Change all the functions returning char pointers to function taking a destination buffer
+- [ ] Change the receiver so that it uses a Message Queue instead of `process` function (**PROBLEM 2**)
 
 Legend:
 
@@ -56,3 +63,5 @@ Legend:
 - [x] Implement custom ping message
 - [?] Test Fragmentation
 - [x] Test Linked List
+- [ ] Test UDP
+- [?] Path MTU Discovery

@@ -7,3 +7,4 @@ main-vg
 sent.bin
 test.c
 main.c
+build/

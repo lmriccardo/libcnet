@@ -11,14 +11,24 @@
 #include "ip.h"
 #include "utils/timer.h"
 #include "utils/net.h"
+#include "utils/list.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
+
+typedef LinkedList MessageQueue;
+
+#define MessageQueue_new()         (LinkedList_new())
+#define MessageQueue_delete(x)     (LinkedList_delete(x))
+#define MessageQueue_push(x, y, z) (LinkedList_pushv(x, y, z))
+#define MessageQueue_pop(x)        (LinkedList_pop(x))
+#define MessageQueue_isEmpty(x)    (LinkedList_isEmpty(x))
 
 __BEGIN_DECLS
 
 
 /* Struct representing a Receiver. Essentially, it is an always running thread
    listening for incoming packets on a defined protocol on a given port.
+   
    It has the following fields:
    - `_proto` is a pointer to a `protoent` structure defining which protocol is used
    - `_address` is a `sockaddr_in` value containing the IP address on which the receiver is binded
@@ -40,8 +50,18 @@ typedef struct
    struct Timer*      _timer;                      /* An optional Timer */
    sem_t*             _mutex;                      /* A semaphore to synchronize with the Sender */
    void *(*__process_fn) (char *, size_t, double); /* Function to process the response */
+   MessageQueue*      _queue;                      /* The message queue, essentially a linked list */
 
 } Receiver;
+
+struct Response
+{
+
+   char*  _buffer; /* The buffer containing the received IP Packet */
+   size_t _size;   /* The length of the entire buffer */
+   double _time;   /* Essentially the Round-Trip-Time */
+
+};
 
 /* Creates a new Receiver given as input the string containing an IP address,
    a port and the protocol. This function binds the newly created socket
