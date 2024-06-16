@@ -110,3 +110,68 @@ $ xxd sent_41251_1_udp.bin
 00000040: 3158 a35a 255d 0517 58e9 5ed4 abb2 cdc6  1X.Z%]..X.^.....
 00000050: 9bb4 5411 0e82 7441 213d dc87            ..T...tA!=..
 ```
+
+> **The most important thing you need to remember when using this library is, when creating "objects" using the**
+> **corresponding _new_ function, at the bottom of the program must always be the corresponding _delete_ function**
+> **in order to freed the memory previously allocated.**
+
+One last important note is the `sudo` prefix when running an executable using this library. Under the hood, since
+we are crafting from zero IP packets, meaning the header and payload, the sockets of the sender and the receiver
+are created using the `SOCK_RAW` option, which requires to the calling user the `CAP_NET_ADMIN` or `CAP_NET_RAW` 
+capabilities. The fastest way to obtain this capility is being root, here it comes the `sudo` command. However, 
+there are two more possibilities:
+
+1. Set the SUID bit to the `udp` executable, using `sudo chmod u+s udp`
+2. Set either the `CAP_NET_ADMIN` or `CAT_NET_RAW` capability for the current user when running.
+
+In general, setting the SUID bit is not a good idea in terms of security, since it can leads to easy lateral
+movement, once an attacker has gained access to your machine as a non-privileged user. 
+
+This was just a simple example, you can find more complex ones into the `example` folder.
+
+## Installation
+
+The installation is quite easy since no third-party libraries are used, just the default ones. These are the requirements
+
+- `git` to download this repository with the source code
+- `gcc` to compile the source and create the libraries
+- `make` to run `Makefile`s
+
+Before installing, please run the following commands:
+
+```
+sudo apt-get update && apt-get install -y build-essential
+sudo apt-get install -y git make gcc
+```
+
+Once you have all the pre-requisites installed, then you can proceed with the installation
+
+```
+$ git clone https://github.com/lmriccardo/libcnet.git
+$ cd libcnet
+$ mkdir build
+$ sudo ./scripts/build.sh
+```
+
+The previous command will populate the `build` folder with
+
+- `include` folder with all the header files
+- `bin` with all the object files
+- `static` containing the static library `libcnet.a`
+- `shared` containing the shared library `libcnet.so`
+
+## References
+
+[1] [RFC 792](https://datatracker.ietf.org/doc/html/rfc792) for ICMP Packets
+
+[2] [RFC 768](https://datatracker.ietf.org/doc/html/rfc768) for UDP Packets
+
+[3] [RFC 791](https://datatracker.ietf.org/doc/html/rfc791) and [RFC 2474](https://datatracker.ietf.org/doc/html/rfc2474) for IP Packets
+
+[4] [RFC 1191](https://datatracker.ietf.org/doc/html/rfc1191) for vanilla Path MTU Discovery Implementation
+
+[5] *Linux Man Page* for various functionality with sockets, threads and so on.
+
+## Conclusions
+
+I hope that you like this library. Please free to test it and giving me feedback. If you like this library, please leave a star.
