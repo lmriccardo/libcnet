@@ -48,18 +48,19 @@ void *process(char *response, size_t len, double time)
 
 int ping(const char* address)
 {
-    char *remote = getHostnameIP(address);
+    char remote[INET_ADDRSTRLEN];
+    getHostnameIP(address, remote);
 
     printf("PING to %s (%s)\n", address, remote);
     
     struct Timer *timer = Timer_new();
 
     Receiver* recv = Receiver_new("eth0", 0, "icmp", false);
-    RawSender* pinger = RawSender_new("eth0", remote, NULL, 0, "icmp", false);
+    Sender* pinger = Sender_new("eth0", remote, NULL, 0, "icmp", false);
     synchronizeRTT(pinger, recv, timer);
 
     Receiver_start(recv, process);
-    RawSender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2);
+    Sender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2);
 
     double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) \
         / (double)(pinger->_icmpsn - 1) * 100.0;
@@ -71,7 +72,7 @@ int ping(const char* address)
     );
 
     Receiver_stop(recv);
-    RawSender_delete(pinger);
+    Sender_delete(pinger);
     Receiver_delete(recv);
     Timer_delete(timer);
 

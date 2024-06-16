@@ -2,8 +2,6 @@
 #include <receiver.h>
 #include <sender.h>
 
-#define BUFF_SIZE 1472
-
 void test_get_local_mtu(const char* interface)
 {
     int lmtu = getInterfaceMTU(interface);
@@ -39,18 +37,19 @@ void test_pmtud(const char* interface, const char* hostname)
     printf("Remote Address: %s\n", remote);
 
     // Get the initial MTU
-    mtu = getInterfaceMTU(interface);
+    mtu = getInterfaceMTU(interface) - 28;
 
     // Let's define a receiver and a sender
     Receiver *recv = Receiver_new(interface, 0, "icmp", false);
-    RawSender *sender = RawSender_new(interface, remote, NULL, 0, "icmp", false);
+    Sender *sender = Sender_new(interface, remote, NULL, 0, "icmp", false);
+    syncrhonizeSendReceive(sender, recv);
 
     // Then we can start the receiver
     Receiver_start(recv, processResponse);
 
     // Let's create the IP and the ICMP Packets
-    IpPacket* ippckt = RawSender_createIpPacket(sender, sender->_lastid++);
-    IcmpPacket* icmppckt = RawSender_createIcmpPacket(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE);
+    IpPacket* ippckt = Sender_createIpPacket(sender, sender->_lastid++);
+    IcmpPacket* icmppckt = Sender_createIcmpPacket(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE);
     IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, sender->_icmpsn++);
 
     // Compute the checksum of the ICMP header
@@ -59,23 +58,23 @@ void test_pmtud(const char* interface, const char* hostname)
     IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
     ByteBuffer_delete(icmphdrbuff);
 
-    char *payload = (char *)malloc(BUFF_SIZE * sizeof(char));
-    generateRandomData(BUFF_SIZE, payload);
-    IcmpPacket_fillPayload(icmppckt, payload, BUFF_SIZE);
+    char *payload = (char *)malloc(mtu * sizeof(char));
+    generateRandomData(mtu, payload);
+    IcmpPacket_fillPayload(icmppckt, payload, mtu);
 
     // Wrap the ICMP packet inside the IP packet
     IpPacket_wrapIcmp(ippckt, icmppckt);
     IpHeader_printInfo(ippckt->_iphdr);
 
     // Send the IP Packet
-    RawSender_sendto(sender, ippckt);
+    Sender_sendto(sender, ippckt);
     sleep(1.0);
 
     Receiver_stop(recv);
     IpPacket_delete(ippckt);
     IcmpPacket_delete(icmppckt);
     Receiver_delete(recv);
-    RawSender_delete(sender);
+    Sender_delete(sender);
 }
 
 int main(int argc, char** argv)

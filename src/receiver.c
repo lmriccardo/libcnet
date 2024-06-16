@@ -38,6 +38,7 @@ Receiver* Receiver_new(
     recv->__process_fn = NULL;
     recv->_verbose = _verbose;
     recv->_timer = NULL;
+    recv->_mutex = NULL;
 
     free(_addr);
 
@@ -73,17 +74,37 @@ void *Receiver_run(void* _self)
 
     while (((Receiver*)_self)->_running)
     {
+
+        if (((Receiver*)_self)->_mutex != NULL)
+        {
+            __semaphore_wait(((Receiver*)_self)->_mutex, "Receiver_run");
+        }
+
         // Receive a message from the socket
         ssize_t retval = recvfrom(
             ((Receiver*) _self)->_socket, buff, ip_size, MSG_DONTWAIT,
             (struct sockaddr*)&((Receiver*) _self)->_address, &socklen
         );
         
-        if (retval < 0) continue;
+        if (retval < 0)
+        {
+            if (((Receiver*)_self)->_mutex != NULL)
+            {
+                __semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
+            }
+
+            continue;
+        }
+
         if (((Receiver*)_self)->_verbose) printf("[*] %s Receiver received %ld bytes\n", pname, retval);
 
         rtt = ((Receiver*)_self)->_timer != NULL ? Timer_getDeltaTime(((Receiver*)_self)->_timer) : 0.0;
         ((Receiver*)_self)->__process_fn(buff, retval, rtt);
+
+        if (((Receiver*)_self)->_mutex != NULL)
+        {
+            __semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
+        }
     }
 
     if (((Receiver*)_self)->_timer != NULL) Timer_stop(((Receiver*)_self)->_timer);
@@ -115,4 +136,9 @@ void Receiver_stop(Receiver* _self)
 void Receiver_setTimer(Receiver* _self, struct Timer* _timer)
 {
     _self->_timer = _timer;
+}
+
+void Receiver_setSemaphore(Receiver* _self, sem_t* _mutex)
+{
+    _self->_mutex = _mutex;
 }

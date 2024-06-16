@@ -41,7 +41,6 @@ struct Timer
     struct timespec _previous;  // The time when the `Timer_getTime` function is called
     double          _elapsed;   // The total elapsed time from the start
     bool            _running;   // Is true if the corresponding thread is running
-    sem_t           _mutex;
 };
 
 /* Create and returns new Timer. This function does dynamic allocation
@@ -78,16 +77,6 @@ extern void Timer_reset(struct Timer* _self) __attribute__((nonnull));
 
 /* Reset the previous value with the current time */
 extern void Timer_resetPrevious(struct Timer* _self) __attribute__((nonnull));
-
-extern void __semaphore_init(
-    sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
-
-extern void __semaphore_wait(sem_t* _sem, const char* _fname) __attribute__((nonnull));
-extern void __semaphore_post(sem_t* _sem, const char* _fname) __attribute__((nonnull));
-
-/* Synchronize a sender and a receiver with the same timer */
-extern void synchronizeRTT(void* _sender, void* _recv, struct Timer* _timer)
-    __attribute__((nonnull));
 
 __END_DECLS
 

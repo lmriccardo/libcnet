@@ -12,13 +12,14 @@
 #include "ip.h"
 #include "crafter.h"
 #include "utils/timer.h"
+#include "utils/net.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 #define LOOPBACK "127.0.0.1"
 
 __BEGIN_DECLS
 
-/* Struct representing a RawSender. It is called Raw since it uses the SOCK_RAW
+/* Struct representing a Sender. It is called Raw since it uses the SOCK_RAW
    option when creating a new socket. This structure has the following fields:
    - `_srcaddress` The IP address sending the packets (type `char*`)
    - `_dstaddress` The host receiving the packet (type `struct sockaddr_in`)
@@ -29,6 +30,11 @@ __BEGIN_DECLS
    - `_lastid` The last used IP Packet Identifier (type `u_int16_t`)
    - `_lasticmpid` The last used ICMP Packet Identifier (type `u_int16_t`)
    - `_icmpsn` The last ICMP Message Sequence Number (type `u_int16_t`)
+   - `_timer` A Timer shared with the Receiver
+   - `_mtu` The Maximum Transmission Unit
+   - `_mutex` A simple Mutex to syncrhonize with the receiver
+   - `_synch` A boolean flag to indicate the syncrhonization
+   - `_sent` A boolean flag to help avoid deadlock when synchronizing
 */
 typedef struct 
 {
@@ -44,54 +50,61 @@ typedef struct
     u_int16_t          _icmpsn;      /* ICMP Message Sequence Number */
     bool               _verbose;     /* Enable verbosity */
     struct Timer*      _timer;       /* A timer synchronized with the receiver */
+    int                _mtu;         /* The maximum transmission unit */
+    sem_t              _mutex;       /* A semaphore to synchronize with the Receiver */
+    bool               _synch;       /* Set to true when it is synchronized with the Receiver */
+    bool               _sent;        /* Another variable to syncrhonize with the Receiver */
 
-} RawSender;
+} Sender;
 
-/* Creates and returns a new RawSender. */
-extern RawSender* RawSender_new(
+/* Creates and returns a new Sender. */
+extern Sender* Sender_new(
     const char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
     const char* _proto, const bool _verbose
 ) __attribute__((returns_nonnull)) __attribute__((nonnull(1, 2, 5)));
 
-/* Free the memory allocated for the input RawSender */
-extern void RawSender_delete(RawSender* _self) __attribute__((nonnull));
+/* Free the memory allocated for the input Sender */
+extern void Sender_delete(Sender* _self) __attribute__((nonnull));
 
 /* Set a timer into the sender */
-extern void RawSender_setTimer(RawSender* _self, struct Timer* _timer) __attribute__((nonnull));
+extern void Sender_setTimer(Sender* _self, struct Timer* _timer) __attribute__((nonnull));
+
+/* Set the Maximum Transmission Unit into the Sender */
+extern void Sender_setMtu(Sender* _self, const int _mtu) __attribute__((nonnull));
 
 /* Send the input IP Packet */
-extern void  RawSender_sendto(RawSender* _self, const IpPacket* _pckt) __attribute__((nonnull));
-extern void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _size) __attribute__((nonnull));
+extern void  Sender_sendto(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
+extern void __Sender_sendto_v2(Sender* _self, const char* _buffer, const size_t _size) __attribute__((nonnull));
 
 /* Continuously send the input IP Packet */
-extern void  RawSender_sendc(RawSender* _self, const IpPacket* _pckt) __attribute__((nonnull));
+extern void  Sender_sendc(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
 
 /* Print some informations about the input Sender */
-extern void  RawSender_printInfo(const RawSender* _self) __attribute__((nonnull));
+extern void  Sender_printInfo(const Sender* _self) __attribute__((nonnull));
 
 /* Returns the string containing the destination IP */
-extern char* RawSender_getDestinationIP(const RawSender* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern char* Sender_getDestinationIP(const Sender* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an IP Packet with some informations from the current Sender */
-extern IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an ICMP Packet with some informations from the current sender */
-extern IcmpPacket* RawSender_createIcmpPacket(
-    RawSender* _self, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern IcmpPacket* Sender_createIcmpPacket(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Create an UDP Packet with some informations from the current sender */
-extern UdpPacket* RawSender_createUdpPacket(
-    RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size
+extern UdpPacket* Sender_createUdpPacket(
+    Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size
 ) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Craft and send an ICMP Packet */
-extern void RawSender_sendIcmp(
-    RawSender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
+extern void Sender_sendIcmp(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
 ) __attribute__((nonnull));
 
 /* Craft and send an UDP Packet */
-extern void RawSender_sendUdp(
-    RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size) __attribute__((nonnull));
+extern void Sender_sendUdp(
+    Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size) __attribute__((nonnull));
 
 __END_DECLS
 

@@ -1,7 +1,7 @@
 #include "sender.h"
 
 
-RawSender* RawSender_new(
+Sender* Sender_new(
     const char *_interface, const char* _dstaddr, char* _gateway, const u_int16_t _dstport, 
     const char* _proto, const bool _verbose
 ) {
@@ -21,7 +21,7 @@ RawSender* RawSender_new(
     dst.sin_port = htons(_dstport);
     inet_pton(AF_INET, _dstaddr, &dst.sin_addr);
 
-    RawSender *sender = (RawSender*)malloc(sizeof(RawSender));
+    Sender *sender = (Sender*)malloc(sizeof(Sender));
 
     sender->_srcaddress = (char*)malloc(INET_ADDRSTRLEN * sizeof(char));
     getInterfaceIp(_interface, sender->_srcaddress);
@@ -36,23 +36,33 @@ RawSender* RawSender_new(
     sender->_lsticmpid = 1;
     sender->_verbose = _verbose;
     sender->_timer = NULL;
+    sender->_mtu = getInterfaceMTU(_interface);
+    sender->_synch = false;
+    sender->_sent = false;
 
     return sender;
 }
 
-void RawSender_delete(RawSender* _self)
+void Sender_delete(Sender* _self)
 {
+    if (_self->_synch) sem_destroy(&_self->_mutex);
+
     shutdown(_self->_socket, 2);
     free(_self->_srcaddress);
     free(_self);
 }
 
-void RawSender_setTimer(RawSender* _self, struct Timer* _timer)
+void Sender_setTimer(Sender* _self, struct Timer* _timer)
 {
     _self->_timer = _timer;
 }
 
-void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _size)
+void Sender_setMtu(Sender* _self, const int _mtu)
+{
+    _self->_mtu	= _mtu;
+}
+
+void __Sender_sendto_v2(Sender* _self, const char* _buffer, const size_t _size)
 {
     socklen_t dstlen;
     dstlen = sizeof(struct sockaddr_in);
@@ -69,44 +79,57 @@ void __RawSender_sendto_v2(RawSender* _self, const char* _buffer, const size_t _
     if (_self->_verbose) printf("[*] Sent %ld bytes of IP Packet\n", _size);
 }
 
-void RawSender_sendto(RawSender* _self, const IpPacket* _pckt)
+void Sender_sendto(Sender* _self, const IpPacket* _pckt)
 {
+    _self->_sent = false;
+
+    if (_self->_synch)
+    {
+        __semaphore_wait(&_self->_mutex, "Sender_sendto");
+    }
+
     ByteBuffer* buffer = IpPacket_encode(_pckt);
-    // ByteBuffer_writeToFile(buffer, "sent.bin");
     
-    __RawSender_sendto_v2(_self, buffer->_buffer, buffer->_size);
+    __Sender_sendto_v2(_self, buffer->_buffer, buffer->_size);
     _self->_msgcnt += 1;
     
     ByteBuffer_delete(buffer);
+
+    _self->_sent = true;
+
+    if (_self->_synch)
+    {
+        __semaphore_post(&_self->_mutex, "Sender_sendto");
+    }
 }
 
-void RawSender_printInfo(const RawSender* _self)
+void Sender_printInfo(const Sender* _self)
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
-    char *dstaddr = RawSender_getDestinationIP(_self);
+    char *dstaddr = Sender_getDestinationIP(_self);
 
     printf("[*] Sending To %s:%d\n", dstaddr, dstport);
 
     free(dstaddr);
 }
 
-char* RawSender_getDestinationIP(const RawSender* _self)
+char* Sender_getDestinationIP(const Sender* _self)
 {
     char *dstaddr = addressNumberToString(_self->_dstaddress.sin_addr.s_addr, true);
     return dstaddr;
 }
 
-void RawSender_sendc(RawSender* _self, const IpPacket* _pckt)
+void Sender_sendc(Sender* _self, const IpPacket* _pckt)
 {
-    RawSender_printInfo(_self);
+    Sender_printInfo(_self);
 
     while (1)
     {
-        RawSender_sendto(_self, _pckt);
+        Sender_sendto(_self, _pckt);
     }
 }
 
-IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id)
+IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id)
 {
     u_int8_t proto = _self->_proto->p_proto;
     u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
@@ -121,7 +144,7 @@ IpPacket* RawSender_createIpPacket(RawSender *_self, const u_int16_t _id)
     return ippckt;
 }
 
-IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, const u_int8_t _code)
+IcmpPacket* Sender_createIcmpPacket(Sender* _self, const u_int8_t _type, const u_int8_t _code)
 {
     if (
         (
@@ -130,6 +153,15 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, c
             _type == ICMP_TIME_EXCEEEDED_TYPE  
         )
     ) {
+        if (
+            (
+                _type == ICMP_DESTINATION_UNREACHABLE_TYPE &&
+                _code == ICMP_FRAGMENTATION_NEEDED_CODE
+            )
+        ) {
+            return craftIcmpPacket_Mtu(_type, _code, 0x0, _self->_mtu);
+        }
+
         return craftIcmpPacket_Unused(_type, _code, 0x0);
     }
 
@@ -149,11 +181,11 @@ IcmpPacket* RawSender_createIcmpPacket(RawSender* _self, const u_int8_t _type, c
         return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
     }
 
-    fprintf(stderr, "[RawSender_createIcmpPacket] Undefined ICMP type %c\n", _type);
+    fprintf(stderr, "[Sender_createIcmpPacket] Undefined ICMP type %c\n", _type);
     exit(EXIT_FAILURE);
 }
 
-UdpPacket* RawSender_createUdpPacket(RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
+UdpPacket* Sender_createUdpPacket(Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
     u_int16_t length = (_size > UDP_PAYLOAD_MAX_SIZE ? UDP_PAYLOAD_MAX_SIZE : _size) + UDP_HEADER_SIZE;
@@ -161,11 +193,11 @@ UdpPacket* RawSender_createUdpPacket(RawSender* _self, const u_int16_t _srcport,
     return pckt;
 }
 
-void RawSender_sendIcmp(
-    RawSender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
+void Sender_sendIcmp(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
 ) {
-    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid++);
-    IcmpPacket* icmppckt = RawSender_createIcmpPacket(_self, _type, _code);
+    IpPacket* ippckt = Sender_createIpPacket(_self, _self->_lastid++);
+    IcmpPacket* icmppckt = Sender_createIcmpPacket(_self, _type, _code);
     int counter = _n;
 
     struct Timer* timer = Timer_new();
@@ -193,7 +225,7 @@ void RawSender_sendIcmp(
         if (_self->_timer != NULL) Timer_resetPrevious(_self->_timer);
 
         // Then send the packet
-        RawSender_sendto(_self, ippckt);
+        Sender_sendto(_self, ippckt);
         
         // Sleep using the created timer
         double eta;
@@ -215,10 +247,10 @@ void RawSender_sendIcmp(
     IpPacket_delete(ippckt);
 }
 
-void RawSender_sendUdp(RawSender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
+void Sender_sendUdp(Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
 {
-    IpPacket* ippckt = RawSender_createIpPacket(_self, _self->_lastid++);
-    UdpPacket* udppckt = RawSender_createUdpPacket(_self, _srcport, _payload, _size);
+    IpPacket* ippckt = Sender_createIpPacket(_self, _self->_lastid++);
+    UdpPacket* udppckt = Sender_createUdpPacket(_self, _srcport, _payload, _size);
 
     // Compute the checksum of the UDP header
     ByteBuffer* buff = ByteBuffer_new(UDP_HEADER_PLUS_PSEUDO_SIZE);
@@ -241,7 +273,7 @@ void RawSender_sendUdp(RawSender* _self, const u_int16_t _srcport, const char* _
     UdpHeader_printInfo(udppckt->_hdr);
 
     // Finally, send the packet
-    RawSender_sendto(_self, ippckt);
+    Sender_sendto(_self, ippckt);
 
     UdpPacket_delete(udppckt);
     IpPacket_delete(ippckt);

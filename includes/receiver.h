@@ -10,6 +10,7 @@
 
 #include "ip.h"
 #include "utils/timer.h"
+#include "utils/net.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 
@@ -23,7 +24,10 @@ __BEGIN_DECLS
    - `_address` is a `sockaddr_in` value containing the IP address on which the receiver is binded
    - `_socket` is just the file descriptor of the created socket
    - `_running` a boolean indicating if the receiver is running or not
-   - `__process_fn` a function that process a received packet 
+   - `__process_fn` a function that process a received packet
+   - `_verbose` A flag to enable verbosity
+   - `_timer` A timer shared with the Sender
+   - `_mutex` A simple Mutex to syncrhonize with the sender
 */
 typedef struct 
 {
@@ -34,6 +38,7 @@ typedef struct
    bool               _running;                    /* If the receiver in receiving or not */
    bool               _verbose;                    /* Enable verbosity */
    struct Timer*      _timer;                      /* An optional Timer */
+   sem_t*             _mutex;                      /* A semaphore to synchronize with the Sender */
    void *(*__process_fn) (char *, size_t, double); /* Function to process the response */
 
 } Receiver;
@@ -66,6 +71,9 @@ extern void  Receiver_stop(Receiver* _self) __attribute__((nonnull));
 
 /* Set a new timer into the receiver */
 extern void Receiver_setTimer(Receiver* _self, struct Timer* _timer) __attribute__((nonnull));
+
+/* Set the input semaphore into the receiver */
+extern void Receiver_setSemaphore(Receiver* _self, sem_t* _mutex) __attribute__((nonnull));
 
 /* Just a template process function. This function does nothing and should be
    replaced by a user defined function. */
