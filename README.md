@@ -15,6 +15,8 @@ As I already said, the main goal of this library, despite IP and socket programm
 as possible, which means no deeply technical knowledge is required. However, also more low-level functionalities are
 provided. In other words, you can let us decide or do it in your own. 
 
+Please, take a look at [Notes On Development](Note.md) for the state of the project and future development.
+
 ## A simple example
 
 Here is a simple example on how, you can create and sent an UDP message
