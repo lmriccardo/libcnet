@@ -85,7 +85,7 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
 
     if (_self->_synch)
     {
-        __semaphore_wait(&_self->_mutex, "Sender_sendto");
+        semaphore_wait(&_self->_mutex, "Sender_sendto");
     }
 
     ByteBuffer* buffer = IpPacket_encode(_pckt);
@@ -112,7 +112,7 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
 
     if (_self->_synch)
     {
-        __semaphore_post(&_self->_mutex, "Sender_sendto");
+        semaphore_post(&_self->_mutex, "Sender_sendto");
     }
 }
 
@@ -245,6 +245,7 @@ void Sender_sendIcmp(
         do 
         {
             eta = Timer_getElapsedTime(timer);
+            // printf("%.3f -- \n", eta);
             
         } while (eta < _delay * 1e9);
 

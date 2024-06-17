@@ -13,6 +13,7 @@
 #include "crafter.h"
 #include "utils/timer.h"
 #include "utils/net.h"
+#include "utils/synch.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 #define LOOPBACK "127.0.0.1"

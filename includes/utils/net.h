@@ -14,7 +14,6 @@
 #include <sys/ioctl.h>
 #include <string.h>
 #include <stdbool.h>
-#include <semaphore.h>
 
 __BEGIN_DECLS
 
@@ -45,17 +44,6 @@ extern void generateRandomData(const size_t _size, char* _dst) __attribute__((no
 
 /* Returns the MTU (Maximum Transmission Unit) for the given input interface */
 extern int getInterfaceMTU(const char* _interface) __attribute__((nonnull));
-
-/* Synchronize a sender and a receiver with the same timer */
-extern void synchronizeRTT(void* _sender, void* _recv, void* _timer)
-    __attribute__((nonnull));
-
-/* Synchronize the sender and the receiver setting a semaphore */
-extern void syncrhonizeSendReceive(void* _sender, void* _recv) __attribute__((nonnull));
-
-extern void __semaphore_init(sem_t* _sem, int _phsared, unsigned int _value, const char* _fname) __attribute__((nonnull));
-extern void __semaphore_wait(sem_t* _sem, const char* _fname) __attribute__((nonnull));
-extern void __semaphore_post(sem_t* _sem, const char* _fname) __attribute__((nonnull));
 
 
 __END_DECLS

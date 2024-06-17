@@ -26,6 +26,8 @@ LinkedList* LinkedList_new(const size_t _capacity)
     ll->_size     = 0;
     ll->_capacity = _capacity;
 
+    semaphore_init(&ll->_mutex, 0, 1, "LinkedList_new");
+
     return ll;
 }
 
@@ -41,6 +43,13 @@ void LinkedList_delete(LinkedList* _self)
     }
 
     free(_self);
+}
+
+void LinkedList_deletet(LinkedList* _self)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_delete");
+    LinkedList_delete(_self);
+    semaphore_post(&_self->_mutex, "LinkedList_delete");
 }
 
 void LinkedList_append(LinkedList* _self, struct Node* _node)
@@ -68,10 +77,23 @@ void LinkedList_append(LinkedList* _self, struct Node* _node)
     _self->_size++;
 }
 
+void LinkedList_appendt(LinkedList* _self, struct Node* _node)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_append");
+    LinkedList_append(_self, _node);
+    semaphore_post(&_self->_mutex, "LinkedList_append");
+}
+
 void LinkedList_appendv(LinkedList* _self, void* _value, size_t _vsize) 
 {
     struct Node* node = Node_new(_value, _vsize);
     LinkedList_append(_self, node);
+}
+
+void LinkedList_appendvt(LinkedList* _self, void* _value, size_t _vsize)
+{
+    struct Node* node = Node_new(_value, _vsize);
+    LinkedList_appendt(_self, node);
 }
 
 void LinkedList_push(LinkedList* _self, struct Node* _node)
@@ -99,14 +121,37 @@ void LinkedList_push(LinkedList* _self, struct Node* _node)
     _self->_size++;
 }
 
+void LinkedList_pusht(LinkedList* _self, struct Node* _node)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_push");
+    LinkedList_push(_self, _node);
+    semaphore_post(&_self->_mutex, "LinkedList_push");
+}
+
 void LinkedList_pushv(LinkedList* _self, void* _value, size_t _vsize) 
 {
     struct Node* node = Node_new(_value, _vsize);
     LinkedList_push(_self, node);
 }
 
+void LinkedList_pushvt(LinkedList* _self, void* _value, size_t _vsize)
+{
+    struct Node* node = Node_new(_value, _vsize);
+    LinkedList_pusht(_self, node);
+}
+
+struct Node* LinkedList_popt(LinkedList* _self)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_pop");
+    struct Node* node = LinkedList_pop(_self);
+    semaphore_post(&_self->_mutex, "LinkedList_pop");
+
+    return node;
+}
+
 struct Node* LinkedList_pop(LinkedList* _self)
 {
+
     if (_self->_last == NULL)
     {
         fprintf(stderr, "[LinkedList_pop] Cannot pop, the list is empty.\n");
@@ -177,11 +222,42 @@ struct Node* LinkedList_remove(LinkedList* _self, int _i)
     }
 
     _self->_size--;
-    
+
+    return node;
+}
+
+struct Node* LinkedList_removet(LinkedList* _self, int _i)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_remove");
+    struct Node* node = LinkedList_remove(_self, _i);
+    semaphore_post(&_self->_mutex, "LinkedList_remove");
+
     return node;
 }
 
 bool LinkedList_isEmpty(LinkedList* _self)
 {
     return _self->_size == 0;
+}
+
+bool LinkedList_isEmptyt(LinkedList* _self)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_isEmpty");
+    bool isEmpty = LinkedList_isEmpty(_self);
+    semaphore_post(&_self->_mutex, "LinkedList_isEmpty");
+
+    return isEmpty;
+}
+
+size_t LinkedList_getSize(LinkedList* _self)
+{
+    return _self->_size;
+}
+
+size_t LinkedList_getSizet(LinkedList* _self)
+{
+    semaphore_wait(&_self->_mutex, "LinkedList_getSize");
+    size_t size = _self->_size;
+    semaphore_post(&_self->_mutex, "LinkedList_getSize");
+    return size;
 }

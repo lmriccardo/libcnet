@@ -12,16 +12,18 @@
 #include "utils/timer.h"
 #include "utils/net.h"
 #include "utils/list.h"
+#include "utils/synch.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 
 typedef LinkedList MessageQueue;
 
-#define MessageQueue_new()         (LinkedList_new())
-#define MessageQueue_delete(x)     (LinkedList_delete(x))
-#define MessageQueue_push(x, y, z) (LinkedList_pushv(x, y, z))
-#define MessageQueue_pop(x)        (LinkedList_pop(x))
-#define MessageQueue_isEmpty(x)    (LinkedList_isEmpty(x))
+#define MessageQueue_new(x)        (LinkedList_new(x))
+#define MessageQueue_delete(x)     (LinkedList_deletet(x))
+#define MessageQueue_push(x, y, z) (LinkedList_pushvt(x, y, z))
+#define MessageQueue_pop(x)        (LinkedList_popt(x))
+#define MessageQueue_isEmpty(x)    (LinkedList_isEmptyt(x))
+#define MessageQueue_getSize(x)    (LinkedList_getSizet(x))
 
 __BEGIN_DECLS
 
@@ -59,7 +61,7 @@ struct Response
 
    char*  _buffer; /* The buffer containing the received IP Packet */
    size_t _size;   /* The length of the entire buffer */
-   double _time;   /* Essentially the Round-Trip-Time */
+   double _rtt;    /* Essentially the Round-Trip-Time */
 
 };
 
@@ -78,7 +80,8 @@ extern Receiver* Receiver_new(
 extern void Receiver_delete(Receiver* _self) __attribute__((nonnull));
 
 /* Start a new Receiver thread */
-extern void  Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, double)) __attribute__((nonnull));
+// extern void  Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, double)) __attribute__((nonnull));
+extern void  Receiver_start(Receiver* _self) __attribute__((nonnull));
 
 /* The function the Receiver thread will always execute. This function is called by
    `Receiver_start` and passed to the newly created thread. It jobs is to receiving

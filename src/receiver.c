@@ -39,6 +39,7 @@ Receiver* Receiver_new(
     recv->_verbose = _verbose;
     recv->_timer = NULL;
     recv->_mutex = NULL;
+    recv->_queue = MessageQueue_new(100);
 
     free(_addr);
 
@@ -48,6 +49,7 @@ Receiver* Receiver_new(
 void Receiver_delete(Receiver* _self)
 {
     shutdown(_self->_socket, 2);
+    MessageQueue_delete(_self->_queue);
     free(_self);
 }
 
@@ -56,20 +58,21 @@ void *Receiver_run(void* _self)
     u_int32_t addrn = ((Receiver*)_self)->_address.sin_addr.s_addr;
     u_int16_t port = ((Receiver*)_self)->_address.sin_port;
     char* pname = ((Receiver*)_self)->_proto->p_name;
-
-    char* addr = addressNumberToString(addrn, true);
+    
+    char addr[INET_ADDRSTRLEN];
+    addressNumberToString_s(addrn, addr, true);
     
     if (((Receiver*)_self)->_verbose) 
     {
         printf("[*] %s Receiver starting on (%s, %hu)\n", pname, addr, ntohs(port));
     }
 
-    free(addr);
-
     size_t ip_size = (IP_PAYLOAD_MAX_SIZE + IP_HEADER_SIZE);
     socklen_t socklen = sizeof(((Receiver*) _self)->_address);
     char* buff = (char*)malloc(ip_size * sizeof(char));
-    
+
+    struct Response *resp = (struct Response*)malloc(sizeof(struct Response));
+    resp->_buffer = (char *)malloc(ip_size * sizeof(char));
     double rtt;
 
     while (((Receiver*)_self)->_running)
@@ -77,7 +80,7 @@ void *Receiver_run(void* _self)
 
         if (((Receiver*)_self)->_mutex != NULL)
         {
-            __semaphore_wait(((Receiver*)_self)->_mutex, "Receiver_run");
+            semaphore_wait(((Receiver*)_self)->_mutex, "Receiver_run");
         }
 
         // Receive a message from the socket
@@ -90,34 +93,62 @@ void *Receiver_run(void* _self)
         {
             if (((Receiver*)_self)->_mutex != NULL)
             {
-                __semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
+                semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
             }
 
             continue;
         }
 
-        if (((Receiver*)_self)->_verbose) printf("[*] %s Receiver received %ld bytes\n", pname, retval);
+        if (((Receiver*)_self)->_verbose) 
+        {
+            printf("[*] %s Receiver received %ld bytes\n", pname, retval);
+        }
 
         rtt = ((Receiver*)_self)->_timer != NULL ? Timer_getDeltaTime(((Receiver*)_self)->_timer) : 0.0;
-        ((Receiver*)_self)->__process_fn(buff, retval, rtt);
+        // ((Receiver*)_self)->__process_fn(buff, retval, rtt);
+
+        // Create the response
+        memcpy(resp->_buffer, buff, retval);
+        resp->_rtt = rtt;
+        resp->_size = retval;
+
+        // Push the response in the message queue
+        MessageQueue_push(((Receiver*)_self)->_queue, &resp, sizeof(struct Response));
 
         if (((Receiver*)_self)->_mutex != NULL)
         {
-            __semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
+            semaphore_post(((Receiver*)_self)->_mutex, "Receiver_run");
         }
     }
 
-    if (((Receiver*)_self)->_timer != NULL) Timer_stop(((Receiver*)_self)->_timer);
+    if (((Receiver*)_self)->_timer != NULL)
+    {
+        Timer_stop(((Receiver*)_self)->_timer);
+    }
 
     free(buff);
+    free(resp);
+
     if (((Receiver*)_self)->_verbose)  printf("[*] Receiver stopped\n");
     return NULL;
 }
 
-void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, double))
+// void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, double))
+// {
+//     _self->_running = true;
+//     _self->__process_fn = __process_fn;
+
+//     // Start the timer if is not NULL
+//     if (_self->_timer != NULL) Timer_start(_self->_timer);
+
+//     pthread_t recv_thread;
+//     pthread_create(&recv_thread, NULL, Receiver_run, _self);
+//     pthread_detach(recv_thread);
+// }
+
+void Receiver_start(Receiver* _self)
 {
     _self->_running = true;
-    _self->__process_fn = __process_fn;
 
     // Start the timer if is not NULL
     if (_self->_timer != NULL) Timer_start(_self->_timer);
@@ -130,7 +161,7 @@ void Receiver_start(Receiver* _self, void *(*__process_fn) (char *, size_t, doub
 void Receiver_stop(Receiver* _self)
 {
     _self->_running = false;
-    sleep(0.75);
+    sleep(1.0);
 }
 
 void Receiver_setTimer(Receiver* _self, struct Timer* _timer)

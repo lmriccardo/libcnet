@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
+#include <utils/synch.h>
 
 __BEGIN_DECLS
 
@@ -29,6 +30,7 @@ typedef struct
     struct Node* _last;      // The last value of the list
     size_t       _size;      // The number of elements in the list
     size_t       _capacity;  // The maximum number of elements of the list
+    sem_t        _mutex;     // We need to be thread safe
 
 } LinkedList;
 
@@ -54,30 +56,60 @@ extern LinkedList* LinkedList_new(const size_t _capacity) __attribute__((returns
 /* Free the memory allocated for the entire linked list (including nodes) */
 extern void LinkedList_delete(LinkedList* _self) __attribute__((nonnull));
 
+/* Free the memory allocated for the entire linked list (including nodes, Thread Safe) */
+extern void LinkedList_deletet(LinkedList* _self) __attribute__((nonnull));
+
 /* Append the input Node into the Linked List */
 extern void LinkedList_append(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
 
+/* Append the input Node into the Linked List (Thread safe) */
+extern void LinkedList_appendt(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
+
 /* Create and append a new Node, given the input value and value size, to the Linked List */
-extern void LinkedList_appendv(LinkedList* _self, void* _value, size_t _vsize) 
-    __attribute__((nonnull));
+extern void LinkedList_appendv(LinkedList* _self, void* _value, size_t _vsize) __attribute__((nonnull));
+
+/* Create and append a new Node, given the input value and value size, to the Linked List (Thread Safe) */
+extern void LinkedList_appendvt(LinkedList* _self, void* _value, size_t _vsize) __attribute__((nonnull));
 
 /* Add the input node at the head of the list  */
 extern void LinkedList_push(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
 
+/* Add the input node at the head of the list (Thread Safe) */
+extern void LinkedList_pusht(LinkedList* _self, struct Node* _node) __attribute__((nonnull));
+
 /* Create and add a new Node at the head of the list */
-extern void LinkedList_pushv(LinkedList* _self, void* _value, size_t _vsize) 
-    __attribute__((nonnull));
+extern void LinkedList_pushv(LinkedList* _self, void* _value, size_t _vsize) __attribute__((nonnull));
+
+/* Create and add a new Node at the head of the list (Thread safe) */
+extern void LinkedList_pushvt(LinkedList* _self, void* _value, size_t _vsize) __attribute__((nonnull));
 
 /* Returns the last node of the Linked List */
 extern struct Node* LinkedList_pop(LinkedList* _self) __attribute__((nonnull)) 
+    __attribute__((returns_nonnull));
+
+/* Returns the last node of the Linked List (Thread safe) */
+extern struct Node* LinkedList_popt(LinkedList* _self) __attribute__((nonnull)) 
     __attribute__((returns_nonnull));
 
 /* Returns the element of the list corresponding to input index */
 extern struct Node* LinkedList_remove(LinkedList* _self, int _i) __attribute__((nonnull)) 
     __attribute__((returns_nonnull));
 
+/* Returns the element of the list corresponding to input index (Thread-safe) */
+extern struct Node* LinkedList_removet(LinkedList* _self, int _i) __attribute__((nonnull)) 
+    __attribute__((returns_nonnull));
+
 /* Checks if the linked list is empty or not */
 extern bool LinkedList_isEmpty(LinkedList* _self) __attribute__((nonnull));
+
+/* Checks if the linked list is empty or not (Thread-safe) */
+extern bool LinkedList_isEmptyt(LinkedList* _self) __attribute__((nonnull));
+
+/* Returns the actual size of the linked List */
+extern size_t LinkedList_getSize(LinkedList* _self) __attribute__((nonnull));
+
+/* Returns the actual size of the linked List (Thread safe) */
+extern size_t LinkedList_getSizet(LinkedList* _self) __attribute__((nonnull));
 
 
 __END_DECLS
