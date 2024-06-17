@@ -36,33 +36,44 @@ IpPacket* craftIpPacket_withData(
     return ippckt;
 }
 
-IcmpPacket* craftIcmpPacket_Unused(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum)
-{
+IcmpPacket* craftIcmpPacket_Unused(
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _payload, const size_t _size
+) {
     IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, _code, 0x0);
     IcmpPacket_fillHeader_v1(icmppckt, _checksum);
+    
+    if (_payload != NULL && _size > 0)
+    {
+        IcmpPacket_fillPayload(icmppckt, _payload, _size);
+    }
+
     return icmppckt;
 }
 
 IcmpPacket* craftIcmpPacket_Echo(
     const u_int8_t  _type, const u_int8_t  _code, const u_int16_t _checksum, 
-    const u_int16_t _id,   const u_int16_t _seqnum
+    const u_int16_t _id,   const u_int16_t _seqnum, const char* _payload, 
+    const size_t _size
 ) {
-    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
+    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
     IcmpPacket_fillHeader_v3(icmppckt, _checksum, _id, _seqnum);
     return icmppckt;
 }
 
 IcmpPacket* craftIcmpPacket_Redirect(
-    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway,
+    const char* _payload, const size_t _size
 ) {
-    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
+    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
     IcmpPacket_fillHeader_v2(icmppckt, _checksum, inet_network(_gateway));
     return icmppckt;
 }
 
-IcmpPacket* craftIcmpPacket_Mtu(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu)
-{
-    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum);
+IcmpPacket* craftIcmpPacket_Mtu(
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu,
+    const char* _payload, const size_t _size
+) {
+    IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
     IcmpPacket_fillHeader_v4(icmppckt, _checksum, _mtu);
     return icmppckt;
 }

@@ -113,7 +113,7 @@ void *Receiver_run(void* _self)
         resp->_size = retval;
 
         // Push the response in the message queue
-        MessageQueue_push(((Receiver*)_self)->_queue, &resp, sizeof(struct Response));
+        MessageQueue_push(((Receiver*)_self)->_queue, resp, sizeof(struct Response));
 
         if (((Receiver*)_self)->_mutex != NULL)
         {

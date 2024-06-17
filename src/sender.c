@@ -157,8 +157,9 @@ IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id)
     return ippckt;
 }
 
-IcmpPacket* Sender_createIcmpPacket(Sender* _self, const u_int8_t _type, const u_int8_t _code)
-{
+IcmpPacket* Sender_createIcmpPacket(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
+) {
     if (
         (
             _type == ICMP_DESTINATION_UNREACHABLE_TYPE ||
@@ -172,15 +173,15 @@ IcmpPacket* Sender_createIcmpPacket(Sender* _self, const u_int8_t _type, const u
                 _code == ICMP_FRAGMENTATION_NEEDED_CODE
             )
         ) {
-            return craftIcmpPacket_Mtu(_type, _code, 0x0, _self->_mtu);
+            return craftIcmpPacket_Mtu(_type, _code, 0x0, _self->_mtu, _payload, _size);
         }
 
-        return craftIcmpPacket_Unused(_type, _code, 0x0);
+        return craftIcmpPacket_Unused(_type, _code, 0x0, _payload, _size);
     }
 
     if (_type == ICMP_REDIRECT_TYPE)
     {
-        return craftIcmpPacket_Redirect(_type, _code, 0x0, _self->_gateway);
+        return craftIcmpPacket_Redirect(_type, _code, 0x0, _self->_gateway, _payload, _size);
     }
 
     if (
@@ -191,7 +192,7 @@ IcmpPacket* Sender_createIcmpPacket(Sender* _self, const u_int8_t _type, const u
             _type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
+        return craftIcmpPacket_Echo(_type, _code, 0x0, _self->_lsticmpid++, _self->_icmpsn++, _payload, _size);
     }
 
     fprintf(stderr, "[Sender_createIcmpPacket] Undefined ICMP type %c\n", _type);
@@ -207,10 +208,11 @@ UdpPacket* Sender_createUdpPacket(Sender* _self, const u_int16_t _srcport, const
 }
 
 void Sender_sendIcmp(
-    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, 
+    const double _delay, const char* _payload, const size_t _size
 ) {
     IpPacket* ippckt = Sender_createIpPacket(_self, _self->_lastid++);
-    IcmpPacket* icmppckt = Sender_createIcmpPacket(_self, _type, _code);
+    IcmpPacket* icmppckt = Sender_createIcmpPacket(_self, _type, _code, _payload, _size);
     int counter = _n;
 
     struct Timer* timer = Timer_new();

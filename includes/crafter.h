@@ -24,28 +24,33 @@ extern IpPacket* craftIpPacket_withData(
 
 /* Craft an ICMP Packet with Unused fields */
 extern IcmpPacket* craftIcmpPacket_Unused(
-    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum) __attribute__((returns_nonnull));
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _payload, const size_t _size
+) __attribute__((returns_nonnull));
 
 /* Craft an ICMP Packet with ID and Sequence Number fields */
 extern IcmpPacket* craftIcmpPacket_Echo(
     const u_int8_t  _type, const u_int8_t  _code, const u_int16_t _checksum, 
-    const u_int16_t _id,   const u_int16_t _seqnum
+    const u_int16_t _id,   const u_int16_t _seqnum, const char* _payload, 
+    const size_t _size
 ) __attribute__((returns_nonnull));
 
 /* Craft an ICMP Packet with the Gateway field */
 extern IcmpPacket* craftIcmpPacket_Redirect(
-    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway
-) __attribute__((returns_nonnull)) __attribute__((nonnull));
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _gateway,
+    const char* _payload, const size_t _size
+) __attribute__((returns_nonnull)) __attribute__((nonnull(4)));
 
 /* Craft an ICMP Packet with the MTU Field */
-extern IcmpPacket* craftIcmpPacket_Mtu(const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu) 
-    __attribute__((returns_nonnull)) __attribute__((nonnull));
+extern IcmpPacket* craftIcmpPacket_Mtu(
+    const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu,
+    const char* _payload, const size_t _size
+)  __attribute__((returns_nonnull));
 
 /* Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet */
 extern UdpPacket* craftUdpPacket(
     const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum,
     const char*     _payload, const size_t    _size
-) __attribute__((returns_nonnull)) __attribute__((nonnull));
+) __attribute__((returns_nonnull));
 
 __END_DECLS
 

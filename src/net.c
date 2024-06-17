@@ -47,7 +47,7 @@ void getInterfaceIp(const char* _interface, char* _addr)
     inet_ntop(AF_INET, &_addr_i, _addr, INET_ADDRSTRLEN);
 }
 
-void generateRandomData(const size_t _size, char* _dst)
+void generateRandomData(char* _dst, const size_t _size)
 {
     for (int i = 0; i < _size; i++)
     {

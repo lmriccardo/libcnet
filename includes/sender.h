@@ -91,7 +91,8 @@ extern IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id) __att
 
 /* Create an ICMP Packet with some informations from the current sender */
 extern IcmpPacket* Sender_createIcmpPacket(
-    Sender* _self, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull)) __attribute__((returns_nonnull));
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
+) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
 
 /* Create an UDP Packet with some informations from the current sender */
 extern UdpPacket* Sender_createUdpPacket(
@@ -100,8 +101,8 @@ extern UdpPacket* Sender_createUdpPacket(
 
 /* Craft and send an ICMP Packet */
 extern void Sender_sendIcmp(
-    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay
-) __attribute__((nonnull));
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay, 
+    const char* _payload, const size_t _size ) __attribute__((nonnull(1)));
 
 /* Craft and send an UDP Packet */
 extern void Sender_sendUdp(
