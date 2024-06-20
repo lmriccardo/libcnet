@@ -237,20 +237,6 @@ void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest->_mtu._mtu);
 }
 
-u_int16_t computeIcmpChecksum(const char* _buff)
-{
-    u_int16_t x1, x2, x3, checksum, sum;
-    x1 = (*(_buff) << 8) + *(_buff + 1);
-
-    memcpy(&x2, _buff + 4, 2);
-    memcpy(&x3, _buff + 6, 2);
-
-    sum = x1 + htons(x2) + htons(x3);
-    checksum = 0xFFFF - sum;
-
-    return checksum;
-}
-
 void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_type);
@@ -554,34 +540,6 @@ void UdpHeader_printInfo(const UdpHeader* _self)
     printf("Length: %hu\n", _self->_length);
     printf("Checksum: %hu\n", _self->_checksum);
     printf("\n");
-}
-
-u_int16_t computeUDPChecksum(const char* _buff)
-{
-    // one's complement of the 16-bit complemeted sum of the
-    // header and the pseudo-header, which is already
-    // included into the buffer
-
-    u_int16_t x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, sum, checksum;
-
-    // Get the content of the UDP header
-    memcpy(&x1,  _buff,      2);
-    memcpy(&x2,  _buff + 2,  2);
-    memcpy(&x3,  _buff + 4,  2);
-    memcpy(&x4,  _buff + 6,  2);
-    memcpy(&x5,  _buff + 8,  2);
-    memcpy(&x6,  _buff + 10, 2);
-    memcpy(&x7,  _buff + 12, 2);
-    memcpy(&x8,  _buff + 14, 2);
-    memcpy(&x9,  _buff + 16, 2);
-    memcpy(&x10, _buff + 18, 2);
-
-    sum = htons(x1) + htons(x2) + htons(x3) + x4 + htons(x5) + \
-          htons(x6) + htons(x7) + htons(x8) + x9 + htons(x10);
-    
-    checksum = 0xFFFF - sum;
-
-    return checksum;
 }
 
 void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer)

@@ -60,6 +60,8 @@ int main(int argc, char** argv)
         {
             struct Node* node = MessageQueue_pop(recv->_queue);
             int mtu_next_hop = processResponse((struct Response*)node->_value);
+            Node_delete(node);
+
             if (mtu_next_hop == -1) break;
 
             buffer_size = mtu_next_hop;

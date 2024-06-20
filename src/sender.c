@@ -223,10 +223,10 @@ void Sender_sendIcmp(
         IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, _self->_icmpsn++);
 
         // Compute the checksum of the ICMP header
-        ByteBuffer *icmphdrbuff = IcmpHeader_encode_v2(icmppckt->_icmphdr);
-        u_int16_t chksum = computeIcmpChecksum(icmphdrbuff->_buffer);
+        ByteBuffer *icmpbuff = IcmpPacket_encode(icmppckt);
+        u_int16_t chksum = computeChecksum((unsigned char*)icmpbuff->_buffer, icmpbuff->_size);
         IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
-        ByteBuffer_delete(icmphdrbuff);
+        ByteBuffer_delete(icmpbuff);
 
         // Wrap the ICMP packet inside the IP packet
         IpPacket_wrapIcmp(ippckt, icmppckt);
@@ -279,7 +279,7 @@ void Sender_sendUdp(Sender* _self, const u_int16_t _srcport, const char* _payloa
     ByteBuffer_put(buff, (u_int8_t)_self->_proto->p_proto);
     ByteBuffer_putShort(buff, htons(udppckt->_hdr->_length));
 
-    u_int16_t checksum = computeUDPChecksum(buff->_buffer);
+    u_int16_t checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
     UdpHeader_setChecksum(udppckt->_hdr, checksum);
     ByteBuffer_delete(buff);
 

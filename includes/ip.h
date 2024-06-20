@@ -201,11 +201,6 @@ extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __attribute__((nonnu
 extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __attribute__((nonnull));
 extern void __IcmpHeader_createHeader_v4(IcmpHeader* _self) __attribute__((nonnull));
 
-/* Compute the ICMP Checksum as defined in the Corresponding RFC 792.
-   The input buffer parameter is the header encoded into a buffer of bytes.
-*/
-extern u_int16_t computeIcmpChecksum(const char* _buff) __attribute__((nonnull));
-
 /* Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.
    Notice that all the elements with size grater than 1 are converted
    from little-endian into big-endian (network byte order)
@@ -314,9 +309,6 @@ extern void UdpHeader_setChecksum(UdpHeader* _self, const u_int16_t _checksum) _
 
 /* Print all the Header fields with current values */
 extern void UdpHeader_printInfo(const UdpHeader* _self) __attribute__((nonnull));
-
-/* Compute the UDP Checksum according to its RFC */
-extern u_int16_t computeUDPChecksum(const char* _buff) __attribute__((nonnull));
 
 /* Encode the UDP Header into a ByteBuffer */
 extern void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
