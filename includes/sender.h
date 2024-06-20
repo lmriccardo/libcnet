@@ -20,6 +20,16 @@
 
 __BEGIN_DECLS
 
+/* Struct containing some parameters not configurable when sending Packets
+   Notice that D flag and M flag are mutually exclusive.
+*/
+struct IpParameters
+{
+    int _xf;    // The X flag (not used so it must be always 0)
+    int _df;    // Don't Fragment Flag
+    int _mf;    // More Fragment Flag
+};
+
 /* Struct representing a Sender. It is called Raw since it uses the SOCK_RAW
    option when creating a new socket. This structure has the following fields:
    - `_srcaddress` The IP address sending the packets (type `char*`)
@@ -36,25 +46,27 @@ __BEGIN_DECLS
    - `_mutex` A simple Mutex to syncrhonize with the receiver
    - `_synch` A boolean flag to indicate the syncrhonization
    - `_sent` A boolean flag to help avoid deadlock when synchronizing
+   - `_params` Some additional parameters for IP Packets
 */
 typedef struct 
 {
 
-    char*              _srcaddress;  /* Source Address */
-    struct sockaddr_in _dstaddress;  /* The Host receiving the packet */
-    char*              _gateway;     /* The gateway address of the current Source Address */
-    int                _socket;      /* File descriptor for the created socket */
-    int                _msgcnt;      /* Current Message Number */
-    struct protoent*   _proto;       /* The protocol used */
-    u_int16_t          _lastid;      /* Last used IP Packet identifier */
-    u_int16_t          _lsticmpid;   /* Last used ICMP Packet identifier */
-    u_int16_t          _icmpsn;      /* ICMP Message Sequence Number */
-    bool               _verbose;     /* Enable verbosity */
-    struct Timer*      _timer;       /* A timer synchronized with the receiver */
-    int                _mtu;         /* The maximum transmission unit */
-    sem_t              _mutex;       /* A semaphore to synchronize with the Receiver */
-    bool               _synch;       /* Set to true when it is synchronized with the Receiver */
-    bool               _sent;        /* Another variable to syncrhonize with the Receiver */
+    char*               _srcaddress;  /* Source Address */
+    struct sockaddr_in  _dstaddress;  /* The Host receiving the packet */
+    char*               _gateway;     /* The gateway address of the current Source Address */
+    int                 _socket;      /* File descriptor for the created socket */
+    int                 _msgcnt;      /* Current Message Number */
+    struct protoent*    _proto;       /* The protocol used */
+    u_int16_t           _lastid;      /* Last used IP Packet identifier */
+    u_int16_t           _lsticmpid;   /* Last used ICMP Packet identifier */
+    u_int16_t           _icmpsn;      /* ICMP Message Sequence Number */
+    bool                _verbose;     /* Enable verbosity */
+    struct Timer*       _timer;       /* A timer synchronized with the receiver */
+    int                 _mtu;         /* The maximum transmission unit */
+    sem_t               _mutex;       /* A semaphore to synchronize with the Receiver */
+    bool                _synch;       /* Set to true when it is synchronized with the Receiver */
+    bool                _sent;        /* Another variable to syncrhonize with the Receiver */
+    struct IpParameters _params;      /* Some additional parameters for IP Packets */
 
 } Sender;
 
@@ -72,6 +84,9 @@ extern void Sender_setTimer(Sender* _self, struct Timer* _timer) __attribute__((
 
 /* Set the Maximum Transmission Unit into the Sender */
 extern void Sender_setMtu(Sender* _self, const int _mtu) __attribute__((nonnull));
+
+/* Set the flags to the Ip Parameters structure */
+extern void Sender_setIpFlags(Sender* _self, int _d, int _m) __attribute__((nonnull));
 
 /* Send the input IP Packet */
 extern void  Sender_sendto(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
@@ -98,6 +113,14 @@ extern IcmpPacket* Sender_createIcmpPacket(
 extern UdpPacket* Sender_createUdpPacket(
     Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size
 ) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Craft a complete Ip Packet containing an ICMP Packet */
+extern IpPacket* Sender_craftIcmpPacket(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
+) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
+
+/* Send the input icmp packet */
+extern void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay) __attribute__((nonnull));
 
 /* Craft and send an ICMP Packet */
 extern void Sender_sendIcmp(

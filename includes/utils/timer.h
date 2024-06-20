@@ -78,6 +78,9 @@ extern void Timer_reset(struct Timer* _self) __attribute__((nonnull));
 /* Reset the previous value with the current time */
 extern void Timer_resetPrevious(struct Timer* _self) __attribute__((nonnull));
 
+/* Custom Sleep function which accepts floating delay values */
+extern void Timer_sleep(const double _delay) __attribute__((nonnull));
+
 __END_DECLS
 
 

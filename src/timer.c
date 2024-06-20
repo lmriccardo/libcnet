@@ -81,3 +81,20 @@ void Timer_stop(struct Timer* _self)
     _self->_running = false;
     sleep(0.75);
 }
+
+void Timer_sleep(const double _delay)
+{
+    double eta;
+    struct timespec start;
+    struct timespec current;
+
+    clock_gettime(CLOCK_REALTIME, &start);
+
+    do 
+    {
+        clock_gettime(CLOCK_REALTIME, &current);
+        eta = computeElapsedTime(start, current);
+
+    } while (eta < _delay * 1e9);
+
+}

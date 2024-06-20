@@ -40,6 +40,11 @@ Sender* Sender_new(
     sender->_synch = false;
     sender->_sent = false;
 
+    // Set default values for Parameters structure
+    sender->_params._df = D_FLAG_SET;
+    sender->_params._mf = M_FLAG_NOT_SET;
+    sender->_params._xf = X_FLAG_NOT_SET;
+
     return sender;
 }
 
@@ -60,6 +65,27 @@ void Sender_setTimer(Sender* _self, struct Timer* _timer)
 void Sender_setMtu(Sender* _self, const int _mtu)
 {
     _self->_mtu	= _mtu;
+}
+
+void Sender_setIpFlags(Sender* _self, int _d, int _m)
+{
+    if (_d == D_FLAG_SET && _m == M_FLAG_SET)
+    {
+        fprintf(stderr, "[Sender_setIpFlags] Cannot set both D and M flags to 1. ");
+        fprintf(stderr, "Program will not terminate but flags will not be set.\n");
+    }
+
+    if (
+        (_d != D_FLAG_NOT_SET && _d != D_FLAG_SET) &&
+        (_m != M_FLAG_NOT_SET && _m != M_FLAG_SET)
+    ) {
+        fprintf(stderr, "[Sender_setIpFlags] M and D flags must have correct values\n");
+        fprintf(stderr, "Program will not terminate but flags will not be set.\n");
+    }
+
+    _self->_params._xf = X_FLAG_NOT_SET;
+    _self->_params._df = _d;
+    _self->_params._mf = _m;
 }
 
 void __Sender_sendto_v2(Sender* _self, const char* _buffer, const size_t _size)
@@ -83,19 +109,20 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
 {
     _self->_sent = false;
 
+    ByteBuffer* buffer = IpPacket_encode(_pckt);
+
     if (_self->_synch)
     {
         semaphore_wait(&_self->_mutex, "Sender_sendto");
     }
-
-    ByteBuffer* buffer = IpPacket_encode(_pckt);
     
     __Sender_sendto_v2(_self, buffer->_buffer, buffer->_size);
+
     _self->_msgcnt += 1;
 
     if (_self->_verbose)
     {
-        char *filename = (char*)malloc(100 * sizeof(char));
+        char filename[100];
 
         snprintf(
             filename, 60, "sent_%hu_%d_%s.bin", _self->_lastid, 
@@ -103,7 +130,6 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
         );
         
         ByteBuffer_writeToFile(buffer, filename);
-        free(filename);
     }
     
     ByteBuffer_delete(buffer);
@@ -148,10 +174,13 @@ IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id)
     u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
     u_int32_t srcaddr = inet_network(_self->_srcaddress);
 
+    int _m = _self->_params._mf;
+    int _d = _self->_params._df;
+    int _x = _self->_params._xf;
+
     IpPacket* ippckt = craftIpPacket(
-        IPv4, 0x0, 0x0, IP_HEADER_SIZE, _id, X_FLAG_NOT_SET, D_FLAG_SET,
-        M_FLAG_NOT_SET, 0x0, TTL_DEFAULT_VALUE, proto, 0x0,
-        srcaddr, dstaddr
+        IPv4, 0x0, 0x0, IP_HEADER_SIZE, _id, _x, _d, _m, 
+        0x0, TTL_DEFAULT_VALUE, proto, 0x0, srcaddr, dstaddr
     );
 
     return ippckt;
@@ -293,4 +322,36 @@ void Sender_sendUdp(Sender* _self, const u_int16_t _srcport, const char* _payloa
 
     UdpPacket_delete(udppckt);
     IpPacket_delete(ippckt);
+}
+
+IpPacket* Sender_craftIcmpPacket(
+    Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
+) {
+    IpPacket* ippckt = Sender_createIpPacket(_self, _self->_lastid++);
+    IcmpPacket* icmppckt = Sender_createIcmpPacket(_self, _type, _code, _payload, _size);
+    IcmpHeader_setSequenceNumber(icmppckt->_icmphdr, _self->_icmpsn++);
+
+    // Compute the checksum of the ICMP header
+    ByteBuffer *icmpbuff = IcmpPacket_encode(icmppckt);
+    u_int16_t chksum = computeChecksum((unsigned char*)icmpbuff->_buffer, icmpbuff->_size);
+    IcmpHeader_setChecksum(icmppckt->_icmphdr, chksum);
+    ByteBuffer_delete(icmpbuff);
+
+    // Wrap the ICMP packet inside the IP packet
+    IpPacket_wrapIcmp(ippckt, icmppckt);
+
+    IcmpPacket_delete(icmppckt);
+    
+    return ippckt;
+}
+
+void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay)
+{
+    if (_self->_timer != NULL) Timer_resetPrevious(_self->_timer);
+
+    // Then send the packet
+    Sender_sendto(_self, _pckt);
+    
+    // Sleep using the created timer
+    Timer_sleep(_delay);
 }

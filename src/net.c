@@ -104,8 +104,8 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
     getHostnameIP(_hostname, remote);
 
     // Create the Receiver and Sender ICMP
-    Receiver *recv = Receiver_new(_interface, INADDR_ANY, "icmp", true);
-    Sender *sender = Sender_new(_interface, remote, NULL, INADDR_ANY, "icmp", true);
+    Receiver *recv = Receiver_new(_interface, INADDR_ANY, "icmp", false);
+    Sender *sender = Sender_new(_interface, remote, NULL, INADDR_ANY, "icmp", false);
 
     // Start the receiver thread
     Receiver_start(recv);

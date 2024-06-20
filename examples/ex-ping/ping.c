@@ -8,8 +8,12 @@ static int    received_packets = 0;
 static int    errors           = 0;
 static double tot_time         = 0.0;
 
-void *process(char *response, size_t len, double time)
+void *process(struct Response* resp)
 {
+    char *response = resp->_buffer;
+    size_t len = resp->_size;
+    double time = resp->_rtt;
+
     ByteBuffer* buffer = ByteBuffer_new_v2(response, len);
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
     
@@ -60,8 +64,8 @@ int ping(const char* address)
     Sender* pinger = Sender_new("eth0", remote, NULL, 0, "icmp", false);
     synchronizeRTT(pinger, recv, timer);
 
-    Receiver_start(recv, process);
-    Sender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2);
+    Receiver_start(recv);
+    Sender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2, NULL, 0);
 
     double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) \
         / (double)(pinger->_icmpsn - 1) * 100.0;
