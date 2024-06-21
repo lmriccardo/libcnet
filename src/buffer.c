@@ -79,6 +79,7 @@ void ByteBuffer_writeToFile(const ByteBuffer* _self, const char *_file)
 {
     FILE *fptr = fopen(_file, "wb");
     fwrite(_self->_buffer, _self->_size, 1, fptr);
+    fflush(fptr);
     fclose(fptr);
 }
 
