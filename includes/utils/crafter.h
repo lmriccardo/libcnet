@@ -14,14 +14,6 @@ extern IpPacket* craftIpPacket(
     const u_int32_t _srcaddr, const u_int32_t _dstaddr
 ) __attribute__((returns_nonnull));
 
-/* Craft an IP Packet given the fields of the IP header and the payload with size */
-extern IpPacket* craftIpPacket_withData(
-    const u_int8_t  _version, const int       _dscp,    const int      _ecn,   const u_int16_t _tlen,
-    const u_int16_t _id,      const int       _xf,      const int      _df,    const int       _mf, 
-    const int       _offset,  const u_int8_t  _ttl,     const u_int8_t _proto, const u_int16_t _checksum, 
-    const u_int32_t _srcaddr, const u_int32_t _dstaddr, char*          _payload
-) __attribute__((returns_nonnull)) __attribute__((nonnull));
-
 /* Craft an ICMP Packet with Unused fields */
 extern IcmpPacket* craftIcmpPacket_Unused(
     const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _payload, const size_t _size

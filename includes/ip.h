@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "buffer.h"
+#include "utils/buffer.h"
 #include "utils/net.h"
 
 #define ICMP_HEADER_MAX_SIZE 0x08
@@ -202,19 +202,20 @@ extern void __IcmpHeader_createHeader_v4(IcmpHeader* _self) __attribute__((nonnu
    Notice that all the elements with size grater than 1 are converted
    from little-endian into big-endian (network byte order)
 */
-extern void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Perform the encoding as the `IcmpHeader_encode` function and also returns the ByteBuffer */
-extern ByteBuffer* IcmpHeader_encode_v2(const IcmpHeader *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern ByteBuffer* IcmpHeader_encode(const IcmpHeader *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Decode the input bytes into an ICMP Header */
 extern void IcmpHeader_decode(IcmpHeader* _hdr, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Create a new ICMP Packet initialized according to input Type */
-extern IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
+extern IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
 
 /* Create a new ICMP Packet initialized according to input Type and Payload Size */
-extern IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const u_int8_t _code, const size_t _size) __attribute__((returns_nonnull));
+extern IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code, const size_t _size) 
+   __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the ICMP Packet */
 extern void IcmpPacket_delete(IcmpPacket* _self) __attribute__((nonnull));
@@ -252,10 +253,10 @@ extern void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const s
 extern size_t IcmpPacket_getPacketSize(const IcmpPacket* _self) __attribute__((nonnull));
 
 /* Encodes the entire ICMP Packet into a ByteBuffer */
-extern void IcmpPacket_encode(const IcmpPacket *_self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void IcmpPacket_encode__(const IcmpPacket *_self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Creates and Encodes the entire ICMP Packet into a ByteBuffer */
-extern ByteBuffer* IcmpPacket_encode_v2(const IcmpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Decode the input ByteBuffer into a ICMP Packet */
 extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
@@ -399,12 +400,6 @@ typedef struct
 
 } IpPacket;
 
-/* Creates and returns a new IP Header */
-extern IpHeader* IpHeader_new() __attribute__((returns_nonnull));
-
-/* Free the memory allocated for the input IP Header */
-extern void IpHeader_delete(IpHeader* _self) __attribute__((nonnull));
-
 /* Set the IP Version field and the IHL (always 5) field */
 extern void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version) __attribute__((nonnull));
 
@@ -454,10 +449,10 @@ extern u_int8_t IpHeader_getFlags(const IpHeader* _self) __attribute__((nonnull)
 extern u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self) __attribute__((nonnull));
 
 /* Encode the IP header into a ByteBuffer */
-extern void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Encode the IP header into a ByteBuffer and returns the ByteBuffer */
-extern ByteBuffer* IpHeader_encode_v2(const IpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern ByteBuffer* IpHeader_encode(const IpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Decode the input ByteBuffer into an IP Header */
 extern void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
@@ -475,10 +470,13 @@ extern u_int16_t computeFlagOff(const int _x, const int _d, const int _m, const 
 extern u_int8_t computeDifferentiatedServiceField(const int _dscp, const int _ecn);
 
 /* Converts the IP Header flags into a binary string (i.e., 2 -> 010) */
-extern char* convertFlagToBin(const u_int8_t _flags) __attribute__((returns_nonnull));
+extern void convertFlagToBin(const u_int8_t _flags, char *_out) __attribute__((nonnull));
+
+extern IpPacket* IpPacket_new() __attribute__((returns_nonnull));
 
 /* Create and returns a new instance of IP Packet */
-extern IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
+extern IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, const size_t _size) 
+   __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input IP Packet */
 extern void IpPacket_delete(IpPacket* _self) __attribute__((nonnull));

@@ -1,4 +1,4 @@
-#include "crafter.h"
+#include "utils/crafter.h"
 
 
 IpPacket* craftIpPacket(
@@ -20,26 +20,10 @@ IpPacket* craftIpPacket(
     return ippckt;
 }
 
-IpPacket* craftIpPacket_withData(
-    const u_int8_t  _version, const int       _dscp,    const int      _ecn,   const u_int16_t _tlen,
-    const u_int16_t _id,      const int       _xf,      const int      _df,    const int       _mf, 
-    const int       _offset,  const u_int8_t  _ttl,     const u_int8_t _proto, const u_int16_t _checksum, 
-    const u_int32_t _srcaddr, const u_int32_t _dstaddr, char*          _payload
-){
-    IpPacket* ippckt = craftIpPacket(
-        _version, _dscp, _ecn, _tlen, _id, _xf, _df, _mf, _offset,
-        _ttl, _proto, _checksum, _srcaddr, _dstaddr
-    );
-
-    IpPacket_fillPayload(ippckt, _payload, IpPacket_getPayloadSize(ippckt));
-
-    return ippckt;
-}
-
 IcmpPacket* craftIcmpPacket_Unused(
     const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _payload, const size_t _size
 ) {
-    IcmpPacket* icmppckt = IcmpPacket_new_v2(_type, _code, 0x0);
+    IcmpPacket* icmppckt = IcmpPacket_new(_type, _code, 0x0);
     IcmpPacket_fillHeader_v1(icmppckt, _checksum);
     
     if (_payload != NULL && _size > 0)

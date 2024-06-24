@@ -1,33 +1,30 @@
+#include <sender.h>
 #include <ip.h>
 
 int main(void)
 {
-    IpPacket* pckt = IpPacket_newIcmp(ICMP_ECHO_TYPE, ICMP_ECHO_CODE);
+    char *remote = "google.com";
+    char raddr[INET_ADDRSTRLEN];
+    getHostnameIP(remote, raddr);
 
-    printf("IpHeader Protocol: %d\n", pckt->_iphdr._protocol);
+    char payload[18];
+    generateRandomData(payload, 18);
     
-    IcmpHeader_setIdentifier(&pckt->_payload._icmp->_icmphdr, 12);
-    IcmpHeader_printInfo(&pckt->_payload._icmp->_icmphdr);
+    bool verbose = true;
 
-    IcmpHeader hdr;
-    hdr._type = 8;
-    hdr._code = 0;
-    hdr._checksum = 0;
-    hdr._rest._echo._id = 10;
-    hdr._rest._echo._seqnum = 11;
+    Sender *sender = Sender_new("eth0", raddr, NULL, INADDR_ANY, "icmp", verbose);
+    IpPacket* pckt = Sender_craftIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, payload, 18);
 
-    IcmpPacket_setHeader(pckt->_payload._icmp, &hdr);
-    IcmpHeader_printInfo(&pckt->_payload._icmp->_icmphdr);
+    if (verbose)
+    {
+        IpHeader_printInfo(&pckt->_iphdr);
+        IcmpHeader_printInfo(&pckt->_payload._icmp->_icmphdr);
+    }
 
-    ByteBuffer* bbuff = ByteBuffer_new(9);
-    IcmpHeader_encode(&pckt->_payload._icmp->_icmphdr, bbuff);
-    // ByteBuffer_writeToFile(bbuff, "icmp.bin");
+    Sender_send(sender, pckt, 0.0);
 
-    ByteBuffer_resetPosition(bbuff);
-    IcmpHeader_decode(&pckt->_payload._icmp->_icmphdr, bbuff);
-    IcmpHeader_printInfo(&pckt->_payload._icmp->_icmphdr);
-
-    IpPacket_v2_delete(pckt);
+    Sender_delete(sender);
+    IpPacket_delete(pckt);
 
     return 0;
 }

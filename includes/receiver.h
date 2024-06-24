@@ -98,9 +98,8 @@ extern void Receiver_setTimer(Receiver* _self, struct Timer* _timer) __attribute
 /* Set the input semaphore into the receiver */
 extern void Receiver_setSemaphore(Receiver* _self, sem_t* _mutex) __attribute__((nonnull));
 
-/* Just a template process function. This function does nothing and should be
-   replaced by a user defined function. */
-extern void* __process(char* _buff, size_t _len, double _rtt) __attribute__((nonnull)) __attribute__((deprecated));
+/* Free the memory allocated for the response */
+extern void Response_free(struct Response* _self) __attribute__((nonnull));
 
 __END_DECLS
 

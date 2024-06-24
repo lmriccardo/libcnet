@@ -12,21 +12,10 @@ void getHostnameIP(const char* _hostname, char* _out)
         exit(EXIT_FAILURE);
     }
 
-    addressNumberToString_s((*((struct in_addr*) hostentry->h_addr_list[0])).s_addr, _out, true);
+    addressNumberToString((*((struct in_addr*) hostentry->h_addr_list[0])).s_addr, _out, true);
 }
 
-char* addressNumberToString(u_int32_t _addr, const bool _be)
-{
-    // If it is in Little-Endian, then convert it to Big-Endian
-    if (!_be) _addr = htonl(_addr);
-
-    char *addr_str = (char *)malloc(INET_ADDRSTRLEN * sizeof(char));
-    inet_ntop(AF_INET, &_addr, addr_str, INET_ADDRSTRLEN);
-
-    return addr_str;
-}
-
-void addressNumberToString_s(u_int32_t _addr, char *_out, const bool _be)
+void addressNumberToString(u_int32_t _addr, char *_out, const bool _be)
 {
     // If it is in Little-Endian, then convert it to Big-Endian
     if (!_be) _addr = htonl(_addr);
@@ -118,13 +107,15 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
     int next_hop_mtu;
     ByteBuffer* bbuffer = ByteBuffer_new(mtu);
 
+    IpPacket* pckt = Sender_craftIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, payload, buffer_size);
+
     while (true)
     {
         memset(payload, 0, buffer_size);
         generateRandomData(payload, buffer_size);
 
         // Send the ICMP Message with the random generated payload
-        Sender_sendIcmp(sender, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 1, 0.2, payload, buffer_size);
+        Sender_send(sender, pckt, 0.2);
         
         // There must be at least one response inside the message queue
         if (MessageQueue_isEmpty(recv->_queue)) continue;
@@ -137,12 +128,12 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
         ByteBuffer_resetPosition(bbuffer);
         ByteBuffer_putBuffer(bbuffer, resp->_buffer, resp->_size);
         ByteBuffer_resetPosition(bbuffer);
-        
-        IpPacket* pckt = IpPacket_decodeIcmp(bbuffer);
+
+        IpPacket* rpckt = IpPacket_decodeIcmp(bbuffer);
         IcmpPacket* icmppckt = IpPacket_getIcmpPacket(pckt);
 
-        u_int8_t type = icmppckt->_icmphdr->_type;
-        u_int8_t code = icmppckt->_icmphdr->_code;
+        u_int8_t type = icmppckt->_icmphdr._type;
+        u_int8_t code = icmppckt->_icmphdr._code;
 
         if (
             (
@@ -150,24 +141,26 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
                 code == ICMP_FRAGMENTATION_NEEDED_CODE
             )
         ) {
-            next_hop_mtu = icmppckt->_icmphdr->_rest->_mtu._mtu;
+            next_hop_mtu = icmppckt->_icmphdr._rest._mtu._mtu;
         } else {
             next_hop_mtu = -1;
         }
 
-        IpPacket_delete(pckt);
+        IpPacket_delete(rpckt);
         IcmpPacket_delete(icmppckt);
         Node_delete(node);
 
         if (next_hop_mtu == -1) break;
 
         buffer_size = next_hop_mtu;
+        Sender_updateIcmpPacket(sender, pckt);
     }
 
     ByteBuffer_delete(bbuffer);
     Receiver_stop(recv);
     Receiver_delete(recv);
     Sender_delete(sender);
+    IpPacket_delete(pckt);
 
     return buffer_size;
 }

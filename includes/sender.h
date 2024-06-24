@@ -10,7 +10,8 @@
 #include <string.h>
 
 #include "ip.h"
-#include "crafter.h"
+#include "utils/crafter.h"
+#include "utils/buffer.h"
 #include "utils/timer.h"
 #include "utils/net.h"
 #include "utils/synch.h"
@@ -89,8 +90,12 @@ extern void Sender_setMtu(Sender* _self, const int _mtu) __attribute__((nonnull)
 extern void Sender_setIpFlags(Sender* _self, int _d, int _m) __attribute__((nonnull));
 
 /* Send the input IP Packet */
-extern void  Sender_sendto(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
-extern void __Sender_sendto_v2(Sender* _self, const char* _buffer, const size_t _size) __attribute__((nonnull));
+extern void Sender_sendto(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
+
+/* Send the input Buffer of input size. The buffer should be the encoding of the
+   Ip packet previously constructed.
+*/
+extern void Sender_bsendto(Sender* _self, const char* _buffer, const size_t _size) __attribute__((nonnull));
 
 /* Continuously send the input IP Packet */
 extern void  Sender_sendc(Sender* _self, const IpPacket* _pckt) __attribute__((nonnull));
@@ -99,15 +104,19 @@ extern void  Sender_sendc(Sender* _self, const IpPacket* _pckt) __attribute__((n
 extern void  Sender_printInfo(const Sender* _self) __attribute__((nonnull));
 
 /* Returns the string containing the destination IP */
-extern char* Sender_getDestinationIP(const Sender* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern void Sender_getDestinationIP(const Sender* _self, char *_out) __attribute__((nonnull));
 
 /* Create an IP Packet with some informations from the current Sender */
-extern IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id) 
+    __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Create an ICMP Packet with some informations from the current sender */
-extern IcmpPacket* Sender_createIcmpPacket(
-    Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
-) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
+/* Fill the input IP packet header with information from the Sender object */
+extern void Sender_fillIpHeader(Sender* _self, IpPacket* _pckt) __attribute__((nonnull));
+
+/* Fill the input ICMP packet header with information from the Sender object */
+extern void Sender_fillIcmpHeader(
+    Sender* _self, IcmpPacket* _pckt, const u_int8_t _type, const u_int8_t _code
+) __attribute__((nonnull));
 
 /* Create an UDP Packet with some informations from the current sender */
 extern UdpPacket* Sender_createUdpPacket(
@@ -115,21 +124,17 @@ extern UdpPacket* Sender_createUdpPacket(
 ) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Craft a complete Ip Packet containing an ICMP Packet */
-extern IpPacket* Sender_craftIcmpPacket(
+extern IpPacket* Sender_craftIcmp(
     Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
 ) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
 
 /* Send the input icmp packet */
 extern void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay) __attribute__((nonnull));
 
-/* Craft and send an ICMP Packet */
-extern void Sender_sendIcmp(
-    Sender* _self, const u_int8_t _type, const u_int8_t _code, const int _n, const double _delay, 
-    const char* _payload, const size_t _size ) __attribute__((nonnull(1)));
-
-/* Craft and send an UDP Packet */
-extern void Sender_sendUdp(
-    Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size) __attribute__((nonnull));
+/* Update the input Packet identifier. If the Icmp input is for echo requests it also updates
+   the identifier and the sequence number of the icmp header.
+*/
+extern void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt) __attribute__((nonnull));
 
 __END_DECLS
 

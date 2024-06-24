@@ -221,7 +221,7 @@ void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest._mtu._mtu);
 }
 
-void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
+void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_type);
     ByteBuffer_put(_buffer, _self->_code);
@@ -268,10 +268,10 @@ void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
     }
 }
 
-ByteBuffer* IcmpHeader_encode_v2(const IcmpHeader *_self)
+ByteBuffer* IcmpHeader_encode(const IcmpHeader *_self)
 {
     ByteBuffer *buff = ByteBuffer_new(ICMP_HEADER_MAX_SIZE);
-    IcmpHeader_encode(_self, buff);
+    IcmpHeader_encode__(_self, buff);
     return buff;
 }
 
@@ -336,20 +336,13 @@ void IcmpHeader_decode(IcmpHeader* hdr, ByteBuffer* _buffer)
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
-IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code)
+IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code)
 {
-    return IcmpPacket_new_v2(_type, _code, ICMP_PAYLOAD_MAXIMUM_SIZE);
+    return IcmpPacket_new(_type, _code, 0x0);
 }
 
-IcmpPacket* IcmpPacket_new_v2(const u_int8_t _type, const u_int8_t _code, const size_t _size)
+IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code, const size_t _size)
 {
-    // Check if the given size is out of bound
-    if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
-    {
-        fprintf(stderr, "[IcmpPacket_new_v2] Given ICMP Payload size is OOB\n");
-        exit(EXIT_FAILURE);
-    }
-
     IcmpPacket* pckt = (IcmpPacket*)malloc(sizeof(IcmpPacket));
     IcmpHeader_new(&pckt->_icmphdr, _type, _code);
 
@@ -411,16 +404,16 @@ size_t IcmpPacket_getPacketSize(const IcmpPacket* _self)
     return _self->__size + ICMP_HEADER_MAX_SIZE;
 }
 
-void IcmpPacket_encode(const IcmpPacket *_self, ByteBuffer* _buffer)
+void IcmpPacket_encode__(const IcmpPacket *_self, ByteBuffer* _buffer)
 {
-    IcmpHeader_encode(&_self->_icmphdr, _buffer);
+    IcmpHeader_encode__(&_self->_icmphdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
 }
 
-ByteBuffer* IcmpPacket_encode_v2(const IcmpPacket *_self)
+ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self)
 {
     ByteBuffer* buffer = ByteBuffer_new(IcmpPacket_getPacketSize(_self));
-    IcmpPacket_encode(_self, buffer);
+    IcmpPacket_encode__(_self, buffer);
     return buffer;
 }
 
@@ -466,19 +459,17 @@ IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer)
     IcmpHeader hdr;
     IcmpHeader_decode(&hdr, _buffer);
 
-    IcmpPacket* pckt = IcmpPacket_new(hdr._type, hdr._code);
-    IcmpPacket_setHeader(pckt, &hdr);
-
     size_t payload_size = _buffer->_size - _buffer->_position;
 
     // Check that the final payload size is grater than 0
     if (payload_size < 0) payload_size = 0;
 
-    char *payload = ByteBuffer_getBuffer(_buffer, payload_size);
-    IcmpPacket_fillPayload(pckt, payload, payload_size);
+    IcmpPacket* pckt = IcmpPacket_new(hdr._type, hdr._code, payload_size);
+    IcmpPacket_setHeader(pckt, &hdr);
 
-    // Since fillPayload performs memcpy, we can free this memory
-    free(payload);
+    char payload[payload_size];
+    ByteBuffer_getBuffer(_buffer, payload, payload_size);
+    IcmpPacket_fillPayload(pckt, payload, payload_size);
 
     return pckt;
 }
@@ -603,12 +594,6 @@ void UdpPacket_setHeader(UdpPacket* _self, UdpHeader* _hdr)
 
 void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size)
 {
-    // if (_size > UDP_PAYLOAD_MAX_SIZE)
-    // {
-    //     fprintf(stderr, "[UdpPacket_fillPayload] Given UDP Payload size %ld > %d", _size, UDP_PAYLOAD_MAX_SIZE);
-    //     exit(EXIT_FAILURE);
-    // }
-
     if (_self->_hdr->_length - UDP_HEADER_SIZE > _size)
     {
         _self->_payload = (char*)realloc(_self->_payload, _size * sizeof(char));
@@ -636,7 +621,9 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 
     size_t payload_size = hdr->_length - UDP_HEADER_SIZE;
     UdpPacket* pckt = UdpPacket_new_v2(payload_size);
-    char *payload = ByteBuffer_getBuffer(_buffer, payload_size);
+
+    char payload[payload_size];
+    ByteBuffer_getBuffer(_buffer, payload, payload_size);
 
     UdpPacket_setHeader(pckt, hdr);
     UdpPacket_fillPayload(pckt, payload, payload_size);
@@ -645,17 +632,6 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 }
 
 /* --------------------------------------------- IP HEADER --------------------------------------------- */
-
-IpHeader* IpHeader_new()
-{
-    IpHeader *_iphdr = malloc(sizeof(IpHeader));
-    return _iphdr;
-}
-
-void IpHeader_delete(IpHeader* _self)
-{
-    free(_self);
-}
 
 void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version)
 {
@@ -748,23 +724,23 @@ u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self)
     return _self->_flag_off & ~(IpHeader_getFlags(_self) << 13);
 }
 
-char* convertFlagToBin(const u_int8_t _flags)
+void convertFlagToBin(const u_int8_t _flags, char *_out)
 {
     int _x = ((_flags >> 2) & 1);
     int _d = ((_flags >> 1) & 1);
     int _m = (_flags & 1);
 
-    char* flags = (char *)malloc(3 * sizeof(char) + 1);
-    sprintf(flags, "%d%d%d", _x, _d, _m);
-
-    return flags;
+    sprintf(_out, "%d%d%d", _x, _d, _m);
 }
 
 void IpHeader_printInfo(const IpHeader* _self)
 {
-    char *flag = convertFlagToBin(IpHeader_getFlags(_self));
-    char *srcaddr = addressNumberToString(_self->_srcaddr, false);
-    char *dstaddr = addressNumberToString(_self->_dstaddr, false);
+    char flag[4];
+    convertFlagToBin(IpHeader_getFlags(_self), flag);
+
+    char srcaddr[INET_ADDRSTRLEN], dstaddr[INET_ADDRSTRLEN];
+    addressNumberToString(_self->_srcaddr, srcaddr, false);
+    addressNumberToString(_self->_dstaddr, dstaddr, false);
 
     printf("[*] Printing Header Information Fields\n");
     printf("Ip Version: %d\n", IpHeader_getVersion(_self));
@@ -781,13 +757,9 @@ void IpHeader_printInfo(const IpHeader* _self)
     printf("Source Address: %s\n", srcaddr);
     printf("Destination Address: %s\n", dstaddr);
     printf("\n");
-
-    free(flag);
-    free(srcaddr);
-    free(dstaddr);
 }
 
-void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer)
+void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
@@ -801,10 +773,10 @@ void IpHeader_encode(const IpHeader* _self, ByteBuffer* _buffer)
     ByteBuffer_putInt(_buffer, htonl(_self->_dstaddr));
 }
 
-ByteBuffer* IpHeader_encode_v2(const IpHeader* _self)
+ByteBuffer* IpHeader_encode(const IpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_tlength);
-    IpHeader_encode(_self, buff);
+    IpHeader_encode__(_self, buff);
     return buff;
 }
 
@@ -835,10 +807,20 @@ void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer)
 
 /* --------------------------------------------- IP PACKET --------------------------------------------- */
 
-IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code)
+IpPacket* IpPacket_new()
 {
     IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
-    pckt->_payload._icmp = IcmpPacket_new(_type, _code);
+    return pckt;
+}
+
+IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, const size_t _size)
+{
+    size_t size = _size > 0 ? _size : 0;
+
+    IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
+    pckt->_payload._icmp = IcmpPacket_new(_type, _code, _size);
+    IpHeader_setTotalLength(&pckt->_iphdr, IP_HEADER_SIZE + ICMP_HEADER_MAX_SIZE + size);
+
     return pckt;
 }
 
@@ -896,12 +878,12 @@ IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self)
 ByteBuffer* IpPacket_encode(const IpPacket* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_iphdr._tlength);
-    IpHeader_encode(&_self->_iphdr, buff);
+    IpHeader_encode__(&_self->_iphdr, buff);
 
     switch (_self->_iphdr._protocol)
     {
         case IP_HEADER_ICMP_PROTOCOL_CODE:
-            IcmpPacket_encode(_self->_payload._icmp, buff);
+            IcmpPacket_encode__(_self->_payload._icmp, buff);
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
@@ -920,7 +902,11 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
     IpHeader hdr; IpHeader_decode(&hdr, _buffer);
     IcmpPacket* icmppckt = IcmpPacket_decode(_buffer);
 
-    IpPacket* pckt = IpPacket_newIcmp(icmppckt->_icmphdr._type, icmppckt->_icmphdr._code);
+    u_int8_t type = icmppckt->_icmphdr._type;
+    u_int8_t code = icmppckt->_icmphdr._code;
+    size_t   size = icmppckt->__size;
+
+    IpPacket* pckt = IpPacket_newIcmp(type, code, size);
     IpPacket_setHeader(pckt, &hdr);
     IpPacket_wrapIcmp(pckt, icmppckt);
 

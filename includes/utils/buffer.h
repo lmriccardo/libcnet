@@ -72,12 +72,12 @@ extern u_int16_t ByteBuffer_getShort(ByteBuffer* _self) __attribute__((nonnull))
 extern u_int32_t ByteBuffer_getInt(ByteBuffer* _self) __attribute__((nonnull));
 
 /* Return a buffer of input size and increase the position of given size */
-extern char* ByteBuffer_getBuffer(ByteBuffer* _self, const size_t _size) __attribute__((nonnull));
+extern void ByteBuffer_getBuffer(ByteBuffer* _self, char* _out, const size_t _size) __attribute__((nonnull));
 
 /* Return a buffer of input size from a given starting position
    and set the current position to the starting position plus the input size */
-extern char* ByteBuffer_getBufferFrom(
-    ByteBuffer* _self, const size_t _start, const size_t _size) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern void ByteBuffer_getBufferFrom(ByteBuffer* _self, char* _out, const size_t _start, const size_t _size) 
+    __attribute__((nonnull));
 
 /* Reset the current position to 0 */
 extern void ByteBuffer_resetPosition(ByteBuffer* _self) __attribute__((nonnull));
@@ -85,8 +85,15 @@ extern void ByteBuffer_resetPosition(ByteBuffer* _self) __attribute__((nonnull))
 /* Write the content of the buffer into a file */
 extern void ByteBuffer_writeToFile(const ByteBuffer* _self, const char *_file) __attribute__((nonnull));
 
+/* Check if the byte buffer is empty or not */
+extern bool ByteBuffer_isEmpty(const ByteBuffer* _self) __attribute__((nonnull));
+
 /* Check if the input size + position is less than the maximum buffer dimension */
-extern void checkForOOB(const int _position, const size_t _size, const size_t _max);
+extern void checkForOOB(const int _position, const size_t _size, const size_t _max, const char* _func)
+    __attribute__((nonnull));
+
+/* Raise an error if any operation requiring a non-empty buffer operates on an empty one */
+extern void errorIfEmpty(const ByteBuffer* _self, const char* _func) __attribute__((nonnull));
 
 __END_DECLS
 
