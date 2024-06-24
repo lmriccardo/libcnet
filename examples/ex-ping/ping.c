@@ -18,17 +18,17 @@ void *process(struct Response* resp)
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
     
     IcmpPacket* icmppckt = IpPacket_getIcmpPacket(ippckt);
-    IcmpHeader* icmphdr = icmppckt->_icmphdr;
+    IcmpHeader* icmphdr = &icmppckt->_icmphdr;
 
     char addr[INET_ADDRSTRLEN];
-    addressNumberToString_s(ippckt->_iphdr->_srcaddr, addr, false);
+    addressNumberToString(ippckt->_iphdr._srcaddr, addr, false);
 
     // Check the ICMP type of the reply
     if (icmphdr->_type == ICMP_ECHO_REPLY_TYPE)
     {
         printf("%hu bytes from %s: icmp_seq=%hu ttl=%hu rtt=%.3f msec\n", 
-           ippckt->_iphdr->_tlength, addr, icmphdr->_rest->_echo._seqnum,
-           ippckt->_iphdr->_ttl, time * 1e3);
+           ippckt->_iphdr._tlength, addr, icmphdr->_rest._echo._seqnum,
+           ippckt->_iphdr._ttl, time * 1e3);
 
         received_packets++;
     }
@@ -37,7 +37,7 @@ void *process(struct Response* resp)
     {
         printf(
             "From %s icmp_seq=%hu Destination Host Unreachable\n", 
-            addr, icmphdr->_rest->_echo._seqnum
+            addr, icmphdr->_rest._echo._seqnum
         );
 
         errors++;
@@ -45,9 +45,9 @@ void *process(struct Response* resp)
 
     tot_time = tot_time + time * 1e3;
 
-    IcmpPacket_delete(icmppckt);
     ByteBuffer_delete(buffer);
     IpPacket_delete(ippckt);
+
     return NULL;
 }
 
@@ -65,7 +65,28 @@ int ping(const char* address)
     synchronizeRTT(pinger, recv, timer);
 
     Receiver_start(recv);
-    Sender_sendIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, 5, 0.2, NULL, 0);
+    
+    IpPacket* pckt = Sender_craftIcmp(pinger, ICMP_ECHO_TYPE, ICMP_ECHO_CODE, NULL, 0);
+
+    int counter = 5;
+    while (counter > 0)
+    {
+        // Send the ping
+        Sender_send(pinger, pckt, 0.2);
+
+        // Process the response
+        if (!MessageQueue_isEmpty(recv->_queue))
+        {
+            struct Node* node = MessageQueue_pop(recv->_queue);
+            struct Response* resp = (struct Response*)node->_value;
+            process(resp);
+
+            // Update Ip identifier, icmp id and sequence number
+            Sender_updateIcmpPacket(pinger, pckt);
+        }
+
+        counter--;
+    }
 
     double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) \
         / (double)(pinger->_icmpsn - 1) * 100.0;
@@ -80,6 +101,7 @@ int ping(const char* address)
     Sender_delete(pinger);
     Receiver_delete(recv);
     Timer_delete(timer);
+    IpPacket_delete(pckt);
 
     return 0;
 }

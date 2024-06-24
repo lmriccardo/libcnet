@@ -296,4 +296,10 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
         IcmpHeader_setIdentifier(&_pckt->_payload._icmp->_icmphdr, _self->_lsticmpid++);
         IcmpHeader_setSequenceNumber(&_pckt->_payload._icmp->_icmphdr, _self->_icmpsn++);
     }
+
+    // Now, we need to compute the checksum
+    ByteBuffer* bbuff = IcmpPacket_encode(_pckt->_payload._icmp);
+    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    IcmpHeader_setChecksum(&_pckt->_payload._icmp->_icmphdr, chks);
+    ByteBuffer_delete(bbuff);
 }

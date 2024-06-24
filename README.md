@@ -23,7 +23,7 @@ Here is a simple example on how, you can create and sent an ICMP Echo message
 
 ```c
 /*
-    FILENAME: udp.c
+    FILENAME: icmp.c
 */
 
 #include <sender.h>
