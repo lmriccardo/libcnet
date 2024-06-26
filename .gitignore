@@ -1,12 +1,4 @@
-main
-test.bin
 .vscode/
-send.py
-debug
-main-vg
-sent.bin
-test.c
-main.c
 build/
 bin/
 dist/
