@@ -118,15 +118,19 @@ extern void Sender_fillIcmpHeader(
     Sender* _self, IcmpPacket* _pckt, const u_int8_t _type, const u_int8_t _code
 ) __attribute__((nonnull));
 
-/* Create an UDP Packet with some informations from the current sender */
-extern UdpPacket* Sender_createUdpPacket(
-    Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size
-) __attribute__((nonnull)) __attribute__((returns_nonnull));
+/* Fill the header of the input Udp Packet with informations from the Sender object */
+extern void Sender_fillUdpHeader(Sender* _self, UdpPacket* _pckt, const u_int16_t _srcport)
+    __attribute__((nonnull));
 
 /* Craft a complete Ip Packet containing an ICMP Packet */
 extern IpPacket* Sender_craftIcmp(
     Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size
 ) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
+
+/* Craft a complete Ip Packet containing an UDP Packet */
+extern IpPacket* Sender_craftUdp(
+    Sender* _self, const u_int16_t _port, const char* _payload, const size_t _size
+)  __attribute__((nonnull(1))) __attribute__((returns_nonnull));
 
 /* Send the input icmp packet */
 extern void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay) __attribute__((nonnull));
@@ -135,6 +139,9 @@ extern void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay) __a
    the identifier and the sequence number of the icmp header.
 */
 extern void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt) __attribute__((nonnull));
+
+/* Update the input Packet identifier and recompute the checksum */
+extern void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt) __attribute__((nonnull));
 
 __END_DECLS
 

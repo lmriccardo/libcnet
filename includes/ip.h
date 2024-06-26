@@ -285,16 +285,10 @@ typedef struct
 typedef struct
 {
 
-    UdpHeader* _hdr;      // The UDP Header
-    char*      _payload;  // The payload
+    UdpHeader _hdr;      // The UDP Header
+    char*     _payload;  // The payload
 
 } UdpPacket;
-
-/* Creates and returns a new UDP Header instance */
-extern UdpHeader* UdpHeader_new() __attribute__((returns_nonnull));
-
-/* Free the memory allocated for the input UDP Header */
-extern void UdpHeader_delete(UdpHeader* _self) __attribute__((nonnull));
 
 /* Set the Source Port field into the UDP Header */
 extern void UdpHeader_setSourcePort(UdpHeader* _self, const u_int16_t _srcport) __attribute__((nonnull));
@@ -315,16 +309,16 @@ extern void UdpHeader_printInfo(const UdpHeader* _self) __attribute__((nonnull))
 extern void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Encode and returns the ByteBuffer containing the UDP header */
-extern ByteBuffer* UdpHeader_encode_v2(const UdpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern ByteBuffer* UdpHeader_encode__(const UdpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Decode a ByteBuffer into an UDP Header */
-extern UdpHeader* UdpHeader_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
+extern void UdpHeader_decode(UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Creates and returns a new UDP Packet */
 extern UdpPacket* UdpPacket_new() __attribute__((returns_nonnull));
 
 /* Creates and returns a new UDP Packet with the payload initialized with input size */
-extern UdpPacket* UdpPacket_new_v2(const size_t _size) __attribute__((returns_nonnull));
+extern UdpPacket* UdpPacket_new_s(const size_t _size) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input UDP Packet */
 extern void UdpPacket_delete(UdpPacket* _self) __attribute__((nonnull));
@@ -348,8 +342,14 @@ extern void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const siz
 /* Returns the size of the payload inside the input UDP Packet */
 extern size_t UdpPacket_getPayloadSize(const UdpPacket* _self) __attribute__((nonnull));
 
+/* Returns the size of the entire packet */
+extern size_t UdpPacket_getPacketSize(const UdpPacket* _self) __attribute__((nonnull));
+
 /* Encode the UDP Packet into a Byte Buffer */
 extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Encode the UDP Packet into a Byte Buffer given as input */
+extern void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /* Decode a ByteBuffer into a UDP Packet */
 extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
@@ -474,9 +474,12 @@ extern void convertFlagToBin(const u_int8_t _flags, char *_out) __attribute__((n
 
 extern IpPacket* IpPacket_new() __attribute__((returns_nonnull));
 
-/* Create and returns a new instance of IP Packet */
+/* Create and returns a new ICMP Packet */
 extern IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, const size_t _size) 
    __attribute__((returns_nonnull));
+
+/* Create and returns a new UDP packet */
+extern IpPacket* IpPacket_newUdp(const size_t _size) __attribute__((returns_nonnull));
 
 /* Free the memory allocated for the input IP Packet */
 extern void IpPacket_delete(IpPacket* _self) __attribute__((nonnull));

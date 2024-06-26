@@ -240,12 +240,12 @@ void Sender_fillIcmpHeader(
     exit(EXIT_FAILURE);
 }
 
-UdpPacket* Sender_createUdpPacket(Sender* _self, const u_int16_t _srcport, const char* _payload, const size_t _size)
+void Sender_fillUdpHeader(Sender* _self, UdpPacket* _pckt, const u_int16_t _srcport) 
 {
     u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
-    u_int16_t length = (_size > UDP_PAYLOAD_MAX_SIZE ? UDP_PAYLOAD_MAX_SIZE : _size) + UDP_HEADER_SIZE;
-    UdpPacket* pckt = craftUdpPacket(_srcport, dstport, length, 0x0, _payload, _size);
-    return pckt;
+    u_int16_t size = UdpPacket_getPacketSize(_pckt);
+
+    UdpPacket_fillHeader(_pckt, _srcport, dstport, size, 0);
 }
 
 IpPacket* Sender_craftIcmp(
@@ -267,6 +267,27 @@ IpPacket* Sender_craftIcmp(
     IcmpHeader_setChecksum(&pckt->_payload._icmp->_icmphdr, chks);
     ByteBuffer_delete(bbuff);
 
+    return pckt;
+}
+
+IpPacket* Sender_craftUdp(
+    Sender* _self, const u_int16_t _port, const char* _payload, const size_t _size
+) {
+    IpPacket* pckt = IpPacket_newUdp(_size);
+    Sender_fillIpHeader(_self, pckt);
+    Sender_fillUdpHeader(_self, pckt->_payload._udp, _port);
+
+    if (_payload != NULL && _size > 0)
+    {
+        UdpPacket_fillPayload(pckt->_payload._udp, _payload, _size);
+    }
+
+    // Now, we need to compute the checksum
+    ByteBuffer* bbuff = UdpPacket_encode(pckt->_payload._udp);
+    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    UdpHeader_setChecksum(&pckt->_payload._udp->_hdr, chks);
+    ByteBuffer_delete(bbuff);
+    
     return pckt;
 }
 
@@ -301,5 +322,16 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
     ByteBuffer* bbuff = IcmpPacket_encode(_pckt->_payload._icmp);
     u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
     IcmpHeader_setChecksum(&_pckt->_payload._icmp->_icmphdr, chks);
+    ByteBuffer_delete(bbuff);
+}
+
+void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt)
+{
+    IpHeader_setIdentfication(&_pckt->_iphdr, _self->_lastid++);
+    
+    // Now, we need to compute the checksum
+    ByteBuffer* bbuff = UdpPacket_encode(_pckt->_payload._udp);
+    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    UdpHeader_setChecksum(&_pckt->_payload._udp->_hdr, chks);
     ByteBuffer_delete(bbuff);
 }

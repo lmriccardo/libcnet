@@ -476,17 +476,6 @@ IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer)
 
 /* --------------------------------------------- UDP HEADER --------------------------------------------- */
 
-UdpHeader* UdpHeader_new()
-{
-    UdpHeader* hdr = (UdpHeader*)malloc(sizeof(UdpHeader));
-    return hdr;
-}
-
-void UdpHeader_delete(UdpHeader* _self)
-{
-    free(_self);
-}
-
 void UdpHeader_setSourcePort(UdpHeader* _self, const u_int16_t _srcport)
 {
     _self->_srcport = _srcport;
@@ -525,53 +514,47 @@ void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer)
     ByteBuffer_putShort(_buffer, htons(_self->_checksum));
 }
 
-ByteBuffer* UdpHeader_encode_v2(const UdpHeader* _self)
+ByteBuffer* UdpHeader_encode__(const UdpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new(_self->_length);
     UdpHeader_encode(_self, buff);
     return buff;
 }
 
-UdpHeader* UdpHeader_decode(ByteBuffer* _buffer)
+void UdpHeader_decode(UdpHeader *_self, ByteBuffer* _buffer)
 {
     u_int16_t srcport  = ByteBuffer_getShort(_buffer);
     u_int16_t dstport  = ByteBuffer_getShort(_buffer);
     u_int16_t length   = ByteBuffer_getShort(_buffer);
     u_int16_t checksum = ByteBuffer_getShort(_buffer);
 
-    UdpHeader* hdr = UdpHeader_new();
-    UdpHeader_setSourcePort(hdr, ntohs(srcport));
-    UdpHeader_setDestinationPort(hdr, ntohs(dstport));
-    UdpHeader_setLength(hdr, ntohs(length));
-    UdpHeader_setChecksum(hdr, ntohs(checksum));
-
-    return hdr;
+    UdpHeader_setSourcePort(_self, ntohs(srcport));
+    UdpHeader_setDestinationPort(_self, ntohs(dstport));
+    UdpHeader_setLength(_self, ntohs(length));
+    UdpHeader_setChecksum(_self, ntohs(checksum));
 }
 
 /* --------------------------------------------- UDP PACKET --------------------------------------------- */
 
 UdpPacket* UdpPacket_new()
 {
-    return UdpPacket_new_v2(UDP_PAYLOAD_MAX_SIZE);
+    return UdpPacket_new_s(UDP_PAYLOAD_MAX_SIZE);
 }
 
-UdpPacket* UdpPacket_new_v2(const size_t _size)
+UdpPacket* UdpPacket_new_s(const size_t _size)
 {
     char* payload = (char*)malloc(_size * sizeof(char));
 
-    UdpHeader* hdr = UdpHeader_new();
-    UdpHeader_setLength(hdr, _size + UDP_HEADER_SIZE);
-
     UdpPacket* pckt = (UdpPacket*)malloc(sizeof(UdpPacket));
-    pckt->_hdr = hdr;
     pckt->_payload = payload;
+
+    UdpHeader_setLength(&pckt->_hdr, _size + UDP_HEADER_SIZE);
 
     return pckt;
 }
 
 void UdpPacket_delete(UdpPacket* _self)
 {
-    UdpHeader_delete(_self->_hdr);
     free(_self->_payload);
     free(_self);
 }
@@ -580,52 +563,63 @@ void UdpPacket_fillHeader(
     UdpPacket*       _self,   const u_int16_t _srcport, const u_int16_t _dstport,
     const u_int16_t  _length, const u_int16_t _checksum
 ) {
-    UdpHeader_setSourcePort(_self->_hdr, _srcport);
-    UdpHeader_setDestinationPort(_self->_hdr, _dstport);
-    UdpHeader_setLength(_self->_hdr, _length);
-    UdpHeader_setChecksum(_self->_hdr, _checksum);
+    UdpHeader_setSourcePort(&_self->_hdr, _srcport);
+    UdpHeader_setDestinationPort(&_self->_hdr, _dstport);
+    UdpHeader_setLength(&_self->_hdr, _length);
+    UdpHeader_setChecksum(&_self->_hdr, _checksum);
 }
 
 void UdpPacket_setHeader(UdpPacket* _self, UdpHeader* _hdr)
 {
-    memcpy(_self->_hdr, _hdr, UDP_HEADER_SIZE);
-    UdpHeader_delete(_hdr);
+    memcpy(&_self->_hdr, _hdr, UDP_HEADER_SIZE);
 }
 
 void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size)
 {
-    if (_self->_hdr->_length - UDP_HEADER_SIZE > _size)
+    if (_self->_hdr._length - UDP_HEADER_SIZE > _size)
     {
         _self->_payload = (char*)realloc(_self->_payload, _size * sizeof(char));
     }
 
     memcpy(_self->_payload, _data, _size);
-    UdpHeader_setLength(_self->_hdr, _size + UDP_HEADER_SIZE);
+    UdpHeader_setLength(&_self->_hdr, _size + UDP_HEADER_SIZE);
 }
 
 size_t UdpPacket_getPayloadSize(const UdpPacket* _self)
 {
-    return _self->_hdr->_length - UDP_HEADER_SIZE;
+    return _self->_hdr._length - UDP_HEADER_SIZE;
+}
+
+size_t UdpPacket_getPacketSize(const UdpPacket* _self)
+{
+    return _self->_hdr._length;
 }
 
 ByteBuffer* UdpPacket_encode(const UdpPacket* _self)
 {
-    ByteBuffer* buff = UdpHeader_encode_v2(_self->_hdr);
-    ByteBuffer_putBuffer(buff, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
-    return buff;
+    ByteBuffer* bbuff = ByteBuffer_new(_self->_hdr._length);
+    UdpPacket_encode__(_self, bbuff);
+    return bbuff;
+}
+
+void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer)
+{
+    UdpHeader_encode(&_self->_hdr, _buffer);
+    ByteBuffer_putBuffer(_buffer, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
 }
 
 UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 {
-    UdpHeader* hdr = UdpHeader_decode(_buffer);
+    UdpHeader hdr;
+    UdpHeader_decode(&hdr, _buffer);
 
-    size_t payload_size = hdr->_length - UDP_HEADER_SIZE;
+    size_t payload_size = hdr._length - UDP_HEADER_SIZE;
     UdpPacket* pckt = UdpPacket_new_v2(payload_size);
 
     char payload[payload_size];
     ByteBuffer_getBuffer(_buffer, payload, payload_size);
 
-    UdpPacket_setHeader(pckt, hdr);
+    UdpPacket_setHeader(pckt, &hdr);
     UdpPacket_fillPayload(pckt, payload, payload_size);
 
     return pckt;
@@ -824,6 +818,17 @@ IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, const siz
     return pckt;
 }
 
+IpPacket* IpPacket_newUdp(const size_t _size)
+{
+    size_t size = _size > 0 ? _size : 0;
+
+    IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
+    pckt->_payload._udp = UdpPacket_new_s(_size);
+    IpHeader_setTotalLength(&pckt->_iphdr, IP_HEADER_SIZE + UDP_HEADER_SIZE + size);
+
+    return pckt;
+}
+
 void IpPacket_delete(IpPacket* _self)
 {
     switch (_self->_iphdr._protocol)
@@ -887,7 +892,7 @@ ByteBuffer* IpPacket_encode(const IpPacket* _self)
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
-            // UdpPacket_encode(_self->_payload._udp, buff);
+            UdpPacket_encode__(_self->_payload._udp, buff);
             break;
 
         default:
@@ -922,10 +927,8 @@ void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + IcmpPacket_getPacketSize(_icmppckt));
 }
 
-// void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt)
-// {
-//     ByteBuffer* buff = UdpPacket_encode(_udppckt);
-//     IpPacket_fillPayload(_self, buff->_buffer, buff->_size);
-//     IpHeader_setProtocol(_self->_iphdr, IP_HEADER_UDP_PROTOCOL_CODE);
-//     ByteBuffer_delete(buff);
-// }
+void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt)
+{
+   memcpy(_self->_payload._udp, _udppckt, UdpPacket_getPacketSize(_udppckt));
+   IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + UdpPacket_getPacketSize(_udppckt));
+}

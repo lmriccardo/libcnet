@@ -66,7 +66,7 @@ UdpPacket* craftUdpPacket(
     const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum,
     const char*     _payload, const size_t    _size
 ) {
-    UdpPacket* pckt = UdpPacket_new_v2(_size);
+    UdpPacket* pckt = UdpPacket_new_s(_size);
     UdpPacket_fillHeader(pckt, _srcport, _dstport, _length, _checksum);
     UdpPacket_fillPayload(pckt, _payload, _size);
     return pckt;
