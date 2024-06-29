@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "utils/buffer.h"
 #include "utils/net.h"
+#include "utils/version.h"
 
 #define ICMP_HEADER_MAX_SIZE 0x08
 

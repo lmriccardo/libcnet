@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <math.h>
 #include "ip.h"
+#include "utils/version.h"
 
 __BEGIN_DECLS
 

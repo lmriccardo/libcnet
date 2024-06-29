@@ -2,6 +2,7 @@ CC=gcc -Wall -O3
 OBJECTS=$(patsubst src/%.c,bin/%.o,$(wildcard src/*.c))
 LIBS=-lpthread -lrt
 SRC=$(wildcard src/*.c)
+VERSION=v.02.dev
 
 # the last operation executed by the makefile is to set the SUID
 # bit to the main executable file. In this way, even if it is 

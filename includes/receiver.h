@@ -13,6 +13,7 @@
 #include "utils/net.h"
 #include "utils/list.h"
 #include "utils/synch.h"
+#include "utils/version.h"
 
 #define handle_error(msg, fd) do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)
 

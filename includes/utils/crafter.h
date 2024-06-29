@@ -3,6 +3,7 @@
 
 #include <sys/cdefs.h>
 #include "ip.h"
+#include "utils/version.h"
 
 __BEGIN_DECLS
 

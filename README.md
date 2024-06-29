@@ -169,7 +169,9 @@ The previous command will populate the `build` folder with
 
 [4] [RFC 1191](https://datatracker.ietf.org/doc/html/rfc1191) for vanilla Path MTU Discovery Implementation
 
-[5] *Linux Man Page* for various functionality with sockets, threads and so on.
+[5] [RFC 9293](https://www.rfc-editor.org/rfc/rfc9293.html) for TCP Packets
+
+[6] *Linux Man Page* for various functionality with sockets, threads and so on.
 
 ## Conclusions
 

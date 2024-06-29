@@ -6,6 +6,7 @@
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils/version.h"
 
 
 __BEGIN_DECLS

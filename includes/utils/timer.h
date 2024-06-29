@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "utils/version.h"
 
 #ifndef __USE_POSIX199309
     #define CLOCK_REALTIME 0

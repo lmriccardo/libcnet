@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <utils/synch.h>
+#include "utils/version.h"
 
 __BEGIN_DECLS
 

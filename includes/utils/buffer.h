@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "utils/version.h"
 
 #define BYTE_SIZE  1
 #define SHORT_SIZE 2
