@@ -923,10 +923,14 @@ size_t TcpPacket_getPacketSize(TcpPacket* _self)
 ByteBuffer* TcpPacket_encode(TcpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(TcpPacket_getPacketSize(_self));
-    TcpHeader_encode(&_self->_hdr, bbuff);
-    ByteBuffer_putBuffer(bbuff, _self->_payload, _self->__size);
-
+    TcpPacket_encode__(_self, bbuff);
     return bbuff;
+}
+
+void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer)
+{
+    TcpHeader_encode(&_self->_hdr, _buffer);
+    ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
 }
 
 TcpPacket* TcpPacket_decode(ByteBuffer* _buffer)
@@ -1148,6 +1152,21 @@ IpPacket* IpPacket_newUdp(const size_t _size)
     return pckt;
 }
 
+IpPacket* IpPacket_newTcp(const size_t _size)
+{
+    size_t size = _size > 0 ? _size : 0;
+
+    IpPacket* pckt = IpPacket_new();
+    pckt->_payload._tcp = TcpPacket_new_s(_size);
+    IpHeader_setTotalLength(
+        &pckt->_iphdr,  IP_HEADER_SIZE 
+                      + TcpHeader_getHeaderSize(&pckt->_payload._tcp->_hdr) 
+                      + size
+    );
+
+    return pckt;
+}
+
 void IpPacket_delete(IpPacket* _self)
 {
     switch (_self->_iphdr._protocol)
@@ -1158,6 +1177,10 @@ void IpPacket_delete(IpPacket* _self)
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
             UdpPacket_delete(_self->_payload._udp);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            TcpPacket_delete(_self->_payload._tcp);
             break;
 
         default:
@@ -1199,6 +1222,16 @@ IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self)
     return _self->_payload._icmp;
 }
 
+UdpPacket* IpPacket_getUdpPacket(const IpPacket *_self)
+{
+    return _self->_payload._udp;
+}
+
+TcpPacket* IpPacket_getTcpPacket(const IpPacket *_self)
+{
+    return _self->_payload._tcp;
+}
+
 ByteBuffer* IpPacket_encode(const IpPacket* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_iphdr._tlength);
@@ -1212,6 +1245,10 @@ ByteBuffer* IpPacket_encode(const IpPacket* _self)
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
             UdpPacket_encode__(_self->_payload._udp, buff);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            TcpPacket_encode__(_self->_payload._tcp, buff);
             break;
 
         default:
@@ -1240,6 +1277,38 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
     return pckt;
 }
 
+IpPacket* IpPacket_decodeUdp(ByteBuffer* _buffer)
+{
+    IpHeader hdr; IpHeader_decode(&hdr, _buffer);
+    UdpPacket* udppckt = UdpPacket_decode(_buffer);
+
+    size_t size = udppckt->_hdr._length - UDP_HEADER_SIZE;
+    IpPacket* pckt = IpPacket_newUdp(size);
+    IpPacket_setHeader(pckt, &hdr);
+    IpPacket_wrapUdp(pckt, udppckt);
+
+    // Delete the UDP Packet
+    UdpPacket_delete(udppckt);
+
+    return pckt;
+}
+
+IpPacket* IpPacket_decodeTcp(ByteBuffer* _buffer)
+{
+    IpHeader hdr; IpHeader_decode(&hdr, _buffer);
+    TcpPacket* tcppckt = TcpPacket_decode(_buffer);
+
+    size_t size = tcppckt->__size;
+    IpPacket* pckt = IpPacket_newTcp(size);
+    IpPacket_setHeader(pckt, &hdr);
+    IpPacket_wrapTcp(pckt, tcppckt);
+
+    // Delete the TCP Packet
+    TcpPacket_delete(tcppckt);
+
+    return pckt;
+}
+
 void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
 {
     memcpy(_self->_payload._icmp, _icmppckt, IcmpPacket_getPacketSize(_icmppckt));
@@ -1250,4 +1319,10 @@ void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt)
 {
    memcpy(_self->_payload._udp, _udppckt, UdpPacket_getPacketSize(_udppckt));
    IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + UdpPacket_getPacketSize(_udppckt));
+}
+
+void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt)
+{
+    memcpy(_self->_payload._tcp, _tcppckt, TcpPacket_getPacketSize(_tcppckt));
+    IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(_tcppckt));
 }

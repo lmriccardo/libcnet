@@ -541,6 +541,9 @@ extern size_t TcpPacket_getPacketSize(TcpPacket* _self) __attribute__((nonnull))
 /* Encodes the TCP Packet into a ByteBuffer and returns it */
 extern ByteBuffer* TcpPacket_encode(TcpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
+/* Encodes the TCP Packet into the input ByteBuffer */
+extern void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+
 /* Decodes a ByteBuffer into a TCP Packet */
 extern TcpPacket* TcpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
@@ -672,6 +675,9 @@ extern IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, co
 /* Create and returns a new UDP packet */
 extern IpPacket* IpPacket_newUdp(const size_t _size) __attribute__((returns_nonnull));
 
+/* Create and returns a new TCP Packet */
+extern IpPacket* IpPacket_newTcp(const size_t _size) __attribute__((returns_nonnull));
+
 /* Free the memory allocated for the input IP Packet */
 extern void IpPacket_delete(IpPacket* _self) __attribute__((nonnull));
 
@@ -695,17 +701,32 @@ extern u_int16_t IpPacket_getPayloadSize(const IpPacket * _self) __attribute__((
 /* Returns the ICMP Packet encoded into the IP Packet Payload */
 extern IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
+/* Returns the UDP Packet encoded into the IP Packet Payload */
+extern UdpPacket* IpPacket_getUdpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Returns the TCP Packet encoded into the IP Packet Payload */
+extern TcpPacket* IpPacket_getTcpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
 /* Encode the IP Packet into a ByteBuffer */
 extern ByteBuffer* IpPacket_encode(const IpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input ByteBuffer into an IP packet */
+/* Decode the input ICMP ByteBuffer into an ICMP packet */
 extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Decode the input UDP ByteBuffer into an IP packet */
+extern IpPacket* IpPacket_decodeUdp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Decode the input TCP ByteBuffer into an IP packet */
+extern IpPacket* IpPacket_decodeTcp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /* Wrap the input ICMP Packet into the payload of the input IP Packet */
 extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt) __attribute__((nonnull));
 
 /* Wrap the input UDP Packet into the payload of the input IP Packet */
 extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__((nonnull));
+
+/* Wrap the input TCP Packet into the payload of the input IP Packet */
+extern void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt) __attribute__((nonnull));
 
 __END_DECLS
 
