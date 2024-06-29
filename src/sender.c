@@ -214,15 +214,15 @@ void Sender_fillIcmpHeader(
                 _code == ICMP_FRAGMENTATION_NEEDED_CODE
             )
         ) {
-            return IcmpPacket_fillHeader_v4(_pckt, 0x0, _self->_mtu);
+            return IcmpPacket_fillHeader_Mtu(_pckt, 0x0, _self->_mtu);
         }
 
-        return IcmpPacket_fillHeader_v1(_pckt, 0x0);
+        return IcmpPacket_fillHeader_Unused(_pckt, 0x0);
     }
 
     if (_type == ICMP_REDIRECT_TYPE)
     {
-        return IcmpPacket_fillHeader_v2(_pckt, 0x0, inet_network(_self->_gateway));
+        return IcmpPacket_fillHeader_Redirect(_pckt, 0x0, inet_network(_self->_gateway));
     }
 
     if (
@@ -233,7 +233,7 @@ void Sender_fillIcmpHeader(
             _type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        return IcmpPacket_fillHeader_v3(_pckt, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
+        return IcmpPacket_fillHeader_Echo(_pckt, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
     }
 
     fprintf(stderr, "[Sender_createIcmpPacket] Undefined ICMP type %c\n", _type);

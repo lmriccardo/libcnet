@@ -221,7 +221,7 @@ void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest._mtu._mtu);
 }
 
-void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer)
+void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_type);
     ByteBuffer_put(_buffer, _self->_code);
@@ -268,10 +268,10 @@ void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer)
     }
 }
 
-ByteBuffer* IcmpHeader_encode(const IcmpHeader *_self)
+ByteBuffer* IcmpHeader_encode_b(const IcmpHeader *_self)
 {
     ByteBuffer *buff = ByteBuffer_new(ICMP_HEADER_MAX_SIZE);
-    IcmpHeader_encode__(_self, buff);
+    IcmpHeader_encode(_self, buff);
     return buff;
 }
 
@@ -336,7 +336,7 @@ void IcmpHeader_decode(IcmpHeader* hdr, ByteBuffer* _buffer)
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
-IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code)
+IcmpPacket* IcmpPacket_new_tnc(const u_int8_t _type, const u_int8_t _code)
 {
     return IcmpPacket_new(_type, _code, 0x0);
 }
@@ -358,31 +358,31 @@ void IcmpPacket_delete(IcmpPacket* _self)
     free(_self);
 }
 
-void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int16_t _checksum)
+void IcmpPacket_fillHeader_Unused(IcmpPacket* _self, const u_int16_t _checksum)
 {
     IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
 }
 
-void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
+void IcmpPacket_fillHeader_Redirect(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
 {
     IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
     IcmpHeader_setGateway(&_self->_icmphdr, _gateway);
 }
 
-void IcmpPacket_fillHeader_v3(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
+void IcmpPacket_fillHeader_Echo(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
 {
     IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
     IcmpHeader_setIdentifier(&_self->_icmphdr, _id);
     IcmpHeader_setSequenceNumber(&_self->_icmphdr, _seqnum);
 }
 
-void IcmpPacket_fillHeader_v4(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
+void IcmpPacket_fillHeader_Mtu(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
 {
     IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
     IcmpHeader_setNextHopMtu(&_self->_icmphdr, _data);
 }
 
-void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size)
+void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _payload, const size_t _size)
 {
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
     {
@@ -395,7 +395,7 @@ void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _
         _self->_payload = (char*)realloc(_self->_payload, _size * sizeof(char));
     }
 
-    memcpy(_self->_payload, _data, _size);
+    memcpy(_self->_payload, _payload, _size);
     _self->__size = _size;
 }
 
@@ -404,16 +404,16 @@ size_t IcmpPacket_getPacketSize(const IcmpPacket* _self)
     return _self->__size + ICMP_HEADER_MAX_SIZE;
 }
 
-void IcmpPacket_encode__(const IcmpPacket *_self, ByteBuffer* _buffer)
+void IcmpPacket_encode_b(const IcmpPacket *_self, ByteBuffer* _buffer)
 {
-    IcmpHeader_encode__(&_self->_icmphdr, _buffer);
+    IcmpHeader_encode(&_self->_icmphdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
 }
 
 ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self)
 {
     ByteBuffer* buffer = ByteBuffer_new(IcmpPacket_getPacketSize(_self));
-    IcmpPacket_encode__(_self, buffer);
+    IcmpPacket_encode_b(_self, buffer);
     return buffer;
 }
 
@@ -1240,7 +1240,7 @@ ByteBuffer* IpPacket_encode(const IpPacket* _self)
     switch (_self->_iphdr._protocol)
     {
         case IP_HEADER_ICMP_PROTOCOL_CODE:
-            IcmpPacket_encode__(_self->_payload._icmp, buff);
+            IcmpPacket_encode_b(_self->_payload._icmp, buff);
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:

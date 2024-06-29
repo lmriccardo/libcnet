@@ -109,170 +109,219 @@
     #define TTL_DEFAULT_VALUE 0x40
 #endif
 
-#define IP_PAYLOAD_MAX_SIZE 65515 // Max dimension of the payload of an IP Packet
+// Max dimension of the payload of an IP Packet
+#define IP_PAYLOAD_MAX_SIZE 65515
 
 __BEGIN_DECLS
 
 /******************************* ICMP PACKET ******************************/
 
+/**
+ * Part of the ICMP Header reserved for Echo-like requests and responses
+ */
 struct h_echo_t 
 {
     
-    u_int16_t _id; // 16 bit for the identifier of the echo or echo reply
-    u_int16_t _seqnum; // 16 bit for the sequence number
+    u_int16_t _id; //!< 16 bit for the identifier of the echo or echo reply
+    u_int16_t _seqnum; //!< 16 bit for the sequence number
 
 };
 
+/**
+ * Part of the ICMP Header reserved for Maximum Transmission Unit
+ */
 struct h_mtu_t
 {
-    u_int16_t _unused; // Set to zeros
-    u_int16_t _mtu;    // Next hop MTU
+    u_int16_t _unused; //!< Set to zeros
+    u_int16_t _mtu;    //!< Next hop MTU
 };
 
+/**
+ * Part of the ICMP Header containing different options for ICMP Header
+ * last 32 bits. They could remain unused, entirely containing a
+ * gateway address, used for MTU purpouses or ECHO requests/reply.
+ */
 union h_data_t 
 {
 
-    u_int32_t       _unused;  // 32 bit of unused data
-    u_int32_t       _gateway; // 32 bit for gateway internet address
-    struct h_mtu_t  _mtu;     // Used for MTU Path Discovery
-    struct h_echo_t _echo;    // Echo and other message headers
+    u_int32_t       _unused;  //!< 32 bit of unused data
+    u_int32_t       _gateway; //!< 32 bit for gateway internet address
+    struct h_mtu_t  _mtu;     //!< Used for MTU Path Discovery
+    struct h_echo_t _echo;    //!< Echo and other message headers
     
 };
 
-/* Struct representing the ICMP Header of the ICMP Packet. There are the
-   classical 32 bits of ICMP Header: Type, Code and Checksum and the also
-   the remaining 32 bits of Optional header fields like: Identification,
-   Sequence Number, Gateway or Zeros (Unused) according to the given type
-   and ICMP Code.
-   
-   This structure refers to the RFC 792 https://datatracker.ietf.org/doc/html/rfc792 
-*/
+/**
+ * Struct representing the ICMP Header of the ICMP Packet. There are the
+ * classical 32 bits of ICMP Header: Type, Code and Checksum and the also
+ * the remaining 32 bits of Optional header fields like: Identification,
+ * Sequence Number, Gateway or Zeros (Unused) according to the given type
+ * and ICMP Code.
+ * 
+ * This structure refers to the RFC 792 https://datatracker.ietf.org/doc/html/rfc792 
+ */
 typedef struct
 {
 
-    u_int8_t        _type;      // The type of the ICMP Message
-    u_int8_t        _code;      // The code corresponding to the Type
-    u_int16_t       _checksum;  // The checksum for packet validation
-    union h_data_t  _rest;      // Additional data to the header
+    u_int8_t        _type;      //!< The type of the ICMP Message
+    u_int8_t        _code;      //!< The code corresponding to the Type
+    u_int16_t       _checksum;  //!< The checksum for packet validation
+    union h_data_t  _rest;      //!< Additional data to the header
 
 } IcmpHeader;
 
-/* Struct representing the ICMP Packet with 8 bytes of Header and Payload */
+/** 
+ * Struct representing the ICMP Packet with 8 bytes of Header and Payload
+ */
 typedef struct
 {
 
-    IcmpHeader  _icmphdr; // The ICMP Header
-    char       *_payload; // The payload containing all the ICMP data
+    IcmpHeader  _icmphdr; //!< The ICMP Header
+    char       *_payload; //!< The payload containing all the ICMP data
 
-    size_t __size;  // The size of the payload
+    size_t __size;  //!< The size of the payload
 
 } IcmpPacket;
 
-/* Return a pointer to an IcmpHeader struct initialized given the input type */
+/**
+ * Return a pointer to an IcmpHeader struct initialized given the input type
+ */
 extern void IcmpHeader_new(IcmpHeader* _hdr, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull));
 
-/* Set the Type field of the ICMP header with the input Type */
+/**
+ * Set the Type field of the ICMP header with the input Type
+ */
 extern void IcmpHeader_setType(IcmpHeader* _self, const u_int8_t _type) __attribute__((nonnull));
 
-/* Set the Code field of the ICMP header with the input Code */
+/**
+ * Set the Code field of the ICMP header with the input Code
+ */
 extern void IcmpHeader_setCode(IcmpHeader* _self, const u_int8_t _code) __attribute__((nonnull));
 
-/* Set the Checksum field of the ICMP header with the input checksum */
+/**
+ * Set the Checksum field of the ICMP header with the input checksum
+ */
 extern void IcmpHeader_setChecksum(IcmpHeader* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
-/* Set the Gateway field of the ICMP header with the input gateway address
-   if the given ICMP Type corresponds to the correct ICMP Header format.
-   If it is not, then an error is raise and the process exit with failure
-*/
+/**
+ * Set the Gateway field of the ICMP header with the input gateway address
+ * if the given ICMP Type corresponds to the correct ICMP Header format.
+ * If it is not, then an error is raise and the process exit with failure
+ */
 extern void IcmpHeader_setGateway(IcmpHeader* _self, const u_int32_t _gateway) __attribute__((nonnull));
 
-/* Set the Identifier field of the ICMP header with the input identifier
-   if the given ICMP Type corresponds to the correct ICMP Header format.
-   If it is not, then an error is raise and the process exit with failure
-*/
+/**
+ * Set the Identifier field of the ICMP header with the input identifier
+ * if the given ICMP Type corresponds to the correct ICMP Header format.
+ * If it is not, then an error is raise and the process exit with failure
+ */
 extern void IcmpHeader_setIdentifier(IcmpHeader* _self, const u_int16_t _id) __attribute__((nonnull));
 
-/* Set the Sequence Number field of the ICMP header with the input sequence number
-   if the given ICMP Type corresponds to the correct ICMP Header format.
-   If it is not, then an error is raise and the process exit with failure
-*/
+/**
+ * Set the Sequence Number field of the ICMP header with the input sequence number
+ * if the given ICMP Type corresponds to the correct ICMP Header format.
+ * If it is not, then an error is raise and the process exit with failure
+ */
 extern void IcmpHeader_setSequenceNumber(IcmpHeader* _self, const u_int16_t _seqnum) __attribute__((nonnull));
 
-/* Set the Next Hop MTU for Destination Unreachable message with Fragmentation Needed */
+/**
+ * Set the Next Hop MTU for Destination Unreachable message with Fragmentation Needed
+ */
 extern void IcmpHeader_setNextHopMtu(IcmpHeader* _self, const u_int16_t _mtu) __attribute__((nonnull));
 
-/* Print all the Header fields with corresponding values */
+/**
+ * Print all the Header fields with corresponding values
+ */
 extern void IcmpHeader_printInfo(const IcmpHeader* _self) __attribute__((nonnull));
-extern void IcmpHeader_printInfo_v2(const IcmpHeader* _self) __attribute__((nonnull));
-extern void IcmpHeader_printInfo_v3(const IcmpHeader* _self) __attribute__((nonnull));
-extern void IcmpHeader_printInfo_v4(const IcmpHeader* _self) __attribute__((nonnull));
 
-extern void __IcmpHeader_createHeader_v1(IcmpHeader* _self) __attribute__((nonnull));
-extern void __IcmpHeader_createHeader_v2(IcmpHeader* _self) __attribute__((nonnull));
-extern void __IcmpHeader_createHeader_v3(IcmpHeader* _self) __attribute__((nonnull));
-extern void __IcmpHeader_createHeader_v4(IcmpHeader* _self) __attribute__((nonnull));
+/**
+ * Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.
+ * Notice that all the elements with size grater than 1 are converted
+ * from little-endian into big-endian (network byte order)
+ */
+extern void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.
-   Notice that all the elements with size grater than 1 are converted
-   from little-endian into big-endian (network byte order)
-*/
-extern void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer) __attribute__((nonnull));
+/**
+ * Perform the encoding as the `IcmpHeader_encode` function and also returns the ByteBuffer
+ */
+extern ByteBuffer* IcmpHeader_encode_b(const IcmpHeader *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Perform the encoding as the `IcmpHeader_encode` function and also returns the ByteBuffer */
-extern ByteBuffer* IcmpHeader_encode(const IcmpHeader *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
-
-/* Decode the input bytes into an ICMP Header */
+/**
+ * Decode the input bytes into an ICMP Header
+ */
 extern void IcmpHeader_decode(IcmpHeader* _hdr, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Create a new ICMP Packet initialized according to input Type */
-extern IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
+/**
+ * Create a new ICMP Packet initialized according to input Type
+ */
+extern IcmpPacket* IcmpPacket_new_tnc(const u_int8_t _type, const u_int8_t _code) __attribute__((returns_nonnull));
 
-/* Create a new ICMP Packet initialized according to input Type and Payload Size */
+/**
+ * Create a new ICMP Packet initialized according to input Type and Payload Size
+ */
 extern IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code, const size_t _size) 
    __attribute__((returns_nonnull));
 
-/* Free the memory allocated for the ICMP Packet */
+/**
+ * Free the memory allocated for the ICMP Packet
+ */
 extern void IcmpPacket_delete(IcmpPacket* _self) __attribute__((nonnull));
 
-/* Fill the Header of the ICMP Packet with the Code. This version of the
-   `fillHeader` function is reserved for ICMP Header with 32 bits unused
-*/
-extern void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int16_t _checksum) __attribute__((nonnull));
+/**
+ * Fill the Header of the ICMP Packet with the Code. This version of the 
+ * `fillHeader` function is reserved for ICMP Header with 32 bits unused
+ */
+extern void IcmpPacket_fillHeader_Unused(IcmpPacket* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
-/* Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the
-   `fillHeader` function is reserved for ICMP Header with 32 bits for the gateway address
-*/
-extern void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway) __attribute__((nonnull));
+/**
+ * Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the 
+ * `fillHeader` function is reserved for ICMP Header with 32 bits for the gateway address
+ */
+extern void IcmpPacket_fillHeader_Redirect(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway) __attribute__((nonnull));
 
-/* Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. 
-   This version of the `fillHeader` function is reserved for ICMP Header with 32 bits 
-   divided into Identifier (16 bits) and Sequence Number (16 bits).
-*/
-extern void IcmpPacket_fillHeader_v3(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) __attribute__((nonnull));
+/**
+ * Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. 
+ * This version of the `fillHeader` function is reserved for ICMP Header with 32 bits 
+ * divided into Identifier (16 bits) and Sequence Number (16 bits).
+ */
+extern void IcmpPacket_fillHeader_Echo(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) __attribute__((nonnull));
 
-/* Fill the header of the ICMP with 32 of Optinal datas divided into: 16 unused (zeros) bits
-   and remaining 16 bits used for some generic purpose, like MTU Path Discovery.
-*/
-extern void IcmpPacket_fillHeader_v4(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data) __attribute__((nonnull));
+/**
+ * Fill the header of the ICMP with 32 of Optinal datas divided into: 16 unused (zeros) bits
+ * and remaining 16 bits used for some generic purpose, like MTU Path Discovery.
+ * 
+ * @param data Represents the Next Hop MTU
+ */
+extern void IcmpPacket_fillHeader_Mtu(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data) __attribute__((nonnull));
 
-/* Set a new Header for the ICMP Packet. The input headers will be copied into
-   a new header of the ICMP Packet, and the memory for the input header will
-   be freed. This means, that it will be unusable after calling this function */
+/**
+ * Set a new Header for the ICMP Packet.
+ */
 extern void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr) __attribute__((nonnull));
 
-/* Fill the ICMP Packet payload with input buffer and set a new size */
-extern void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size) __attribute__((nonnull));
+/**
+ * Fill the ICMP Packet payload with input buffer and set a new size
+ */
+extern void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _payload, const size_t _size) __attribute__((nonnull));
 
-/* Returns the entire size of the ICMP Packet (Header + Payload) */
+/**
+ * Returns the entire size of the ICMP Packet (Header + Payload)
+ */
 extern size_t IcmpPacket_getPacketSize(const IcmpPacket* _self) __attribute__((nonnull));
 
-/* Encodes the entire ICMP Packet into a ByteBuffer */
-extern void IcmpPacket_encode__(const IcmpPacket *_self, ByteBuffer* _buffer) __attribute__((nonnull));
+/**
+ * Encodes the entire ICMP Packet into a ByteBuffer
+ */
+extern void IcmpPacket_encode_b(const IcmpPacket *_self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Creates and Encodes the entire ICMP Packet into a ByteBuffer */
+/**
+ * Creates and Encodes the entire ICMP Packet into a ByteBuffer
+ */
 extern ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input ByteBuffer into a ICMP Packet */
+/**
+ * Decode the input ByteBuffer into a ICMP Packet
+ */
 extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /******************************* UDP PACKET ******************************/
