@@ -625,6 +625,325 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
     return pckt;
 }
 
+/* --------------------------------------------- TCP HEADER -------------------------------------------- */
+
+void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer)
+{
+    u_int8_t bits = ByteBuffer_get(_buffer);
+
+    _cbits->_cwr = bits & TCP_CWR_SET;
+    _cbits->_ece = bits & TCP_ECE_SET;
+    _cbits->_urg = bits & TCP_URG_SET;
+    _cbits->_ack = bits & TCP_ACK_SET;
+    _cbits->_psh = bits & TCP_PSH_SET;
+    _cbits->_rst = bits & TCP_RST_SET;
+    _cbits->_syn = bits & TCP_SYN_SET;
+    _cbits->_fin = bits & TCP_FIN_SET;
+}
+
+void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
+{
+    int _cwr = ((_cbits->_cwr >> 7) & 1);
+    int _ece = ((_cbits->_ece >> 6) & 1);
+    int _urg = ((_cbits->_urg >> 5) & 1);
+    int _ack = ((_cbits->_ack >> 4) & 1);
+    int _psh = ((_cbits->_psh >> 3) & 1);
+    int _rst = ((_cbits->_rst >> 2) & 1);
+    int _syn = ((_cbits->_syn >> 1) & 1);
+    int _fin = _cbits->_fin;
+
+    snprintf(_out, "%d%d%d%d%d%d%d%d", 9, _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
+}
+
+void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport)
+{
+    _self->_srcport = _srcport;
+}
+
+void TcpHeader_setDestinationPort(TcpHeader* _self, u_int16_t _dstport)
+{
+    _self->_dstport = _dstport;
+}
+
+void TcpHeader_setSequenceNumber(TcpHeader* _self, u_int32_t _seqnum)
+{
+    _self->_seqnum = _seqnum;
+}
+
+void TcpHeader_setAcknowledgmentNumber(TcpHeader* _self, u_int32_t _acknum)
+{
+    _self->_acknum = _acknum;
+}
+
+void TcpHeader_setDataOffset(TcpHeader* _self, u_int8_t _offset)
+{
+    _self->_offset = (_offset << 4);
+}
+
+void TcpHeader_setControlBits(TcpHeader* _self, struct ControlBits _cbits)
+{
+    _self->_flags._cwr = _cbits._cwr;
+    _self->_flags._ece = _cbits._ece;
+    _self->_flags._urg = _cbits._urg;
+    _self->_flags._ack = _cbits._ack;
+    _self->_flags._psh = _cbits._psh;
+    _self->_flags._rst = _cbits._rst;
+    _self->_flags._syn = _cbits._syn;
+    _self->_flags._fin = _cbits._fin;
+}
+
+void TcpHeader_setCongestionWindowReducedFlag(TcpHeader* _self)
+{
+    _self->_flags._cwr = TCP_CWR_SET;
+}
+
+void TcpHeader_unsetCongestionWindowReducedFlag(TcpHeader* _self)
+{
+    _self->_flags._cwr = TCP_NOT_SET;
+}
+
+void TcpHeader_setECNEchoFlag(TcpHeader* _self)
+{
+    _self->_flags._ece = TCP_ECE_SET;
+}
+
+void TcpHeader_unsetECNEchoFlag(TcpHeader* _self)
+{
+    _self->_flags._ece = TCP_NOT_SET;
+}
+
+void TcpHeader_setUrgentPointerFlag(TcpHeader* _self)
+{
+    _self->_flags._urg = TCP_URG_SET;
+}
+
+void TcpHeader_unsetUrgentPointerFlag(TcpHeader* _self)
+{
+    _self->_flags._urg = TCP_NOT_SET;
+}
+
+void TcpHeader_setAcknowledgmentFieldFlag(TcpHeader* _self)
+{
+    _self->_flags._ack = TCP_ACK_SET;
+}
+
+void TcpHeader_unsetAcknowledgmentFieldFlag(TcpHeader* _self)
+{
+    _self->_flags._ack = TCP_NOT_SET;
+}
+
+void TcpHeader_setPushFunctionFlag(TcpHeader* _self)
+{
+    _self->_flags._psh = TCP_PSH_SET;
+}
+
+void TcpHeader_unsetPushFunctionFlag(TcpHeader* _self)
+{
+    _self->_flags._psh = TCP_NOT_SET;
+}
+
+void TcpHeader_setResetConnectionFlag(TcpHeader* _self)
+{
+    _self->_flags._rst = TCP_RST_SET;
+}
+
+void TcpHeader_unsetResetConnectionFlag(TcpHeader* _self)
+{
+    _self->_flags._rst = TCP_NOT_SET;
+}
+
+void TcpHeader_setSynchronizeFlag(TcpHeader* _self)
+{
+    _self->_flags._syn = TCP_SYN_SET;
+}
+
+void TcpHeader_unsetSynchronizeFlag(TcpHeader* _self)
+{
+    _self->_flags._syn = TCP_NOT_SET;
+}
+
+void TcpHeader_setFinFlag(TcpHeader* _self)
+{
+    _self->_flags._fin = TCP_FIN_SET;
+}
+
+void TcpHeader_unsetFinFlag(TcpHeader* _self)
+{
+    _self->_flags._fin = TCP_NOT_SET;
+}
+
+void TcpHeader_setWindowSize(TcpHeader* _self, u_int16_t _window)
+{
+    _self->_window = _window;
+}
+
+void TcpHeader_setChecksum(TcpHeader* _self, u_int16_t _checksum)
+{
+    _self->_checksum = _checksum;
+}
+
+void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr)
+{
+    _self->_urgpntr = _urgpntr;
+}
+
+u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self)
+{
+    u_int8_t cbits = (u_int8_t)(  _self->_flags._cwr 
+                                + _self->_flags._ece
+                                + _self->_flags._urg
+                                + _self->_flags._ack
+                                + _self->_flags._psh
+                                + _self->_flags._rst
+                                + _self->_flags._syn
+                                + _self->_flags._fin
+    );
+
+    return cbits;
+}
+
+void TcpHeader_encode(TcpHeader* _self, ByteBuffer* _buffer)
+{
+    ByteBuffer_putShort(_buffer, htons(_self->_srcport));
+    ByteBuffer_putShort(_buffer, htons(_self->_dstport));
+    ByteBuffer_putInt(_buffer, htonl(_self->_seqnum));
+    ByteBuffer_putInt(_buffer, htonl(_self->_acknum));
+    ByteBuffer_put(_buffer, _self->_offset);
+    ByteBuffer_put(_buffer, TcpHeader_mergeControlBits(_self));
+    ByteBuffer_putShort(_buffer, htons(_self->_window));
+    ByteBuffer_putShort(_buffer, htons(_self->_checksum));
+    ByteBuffer_putShort(_buffer, htons(_self->_urgpntr));
+
+    // TODO: add optional Options
+    // ByteBuffer_putInt(_buffer, htonl(_self->_options));
+}
+
+void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer)
+{
+    TcpHeader_setSourcePort(_self, ntohs(ByteBuffer_getShort(_buffer)));
+    TcpHeader_setDestinationPort(_self, ntohs(ByteBuffer_getShort(_buffer)));
+    TcpHeader_setSequenceNumber(_self, ntohl(ByteBuffer_getInt(_buffer)));
+    TcpHeader_setAcknowledgmentNumber(_self, ntohl(ByteBuffer_getInt(_buffer)));
+    TcpHeader_setDataOffset(_self, ByteBuffer_get(_buffer) >> 4);
+    
+    struct ControlBits cbits;
+    decodeControlBits(&cbits, _buffer);
+    TcpHeader_setControlBits(_self, cbits);
+
+    TcpHeader_setUrgentPointer(_self, ntohs(ByteBuffer_getShort(_buffer)));
+
+    // TODO: We should also need to check for options
+}
+
+void TcpHeader_printInfo(TcpHeader* _self) 
+{
+    char control_bits[9];
+    convertControlBitsToBin(&_self->_flags, control_bits);
+    
+    printf("[*] Printing TCP Header Informations\n");
+    printf("Source Port: %hu\n", _self->_srcport);
+    printf("Destination Port: %hu\n", _self->_dstport);
+    printf("Sequence Number: %hd\n", _self->_seqnum);
+    printf("Acknowledgment Number: %hd\n", _self->_acknum);
+    printf("Data Offset: %d\n", _self->_offset >> 4);
+    printf("Control Bits: %s\n", control_bits);
+    printf("Window Size: %hu\n", _self->_window);
+    printf("Checksum: %hu\n", _self->_checksum);
+    printf("Urgent Pointer: %hu\n", _self->_urgpntr);
+}
+
+size_t TcpHeader_getHeaderSize(TcpHeader* _self)
+{
+    return 24;
+}
+
+/* --------------------------------------------- TCP PACKET -------------------------------------------- */
+
+TcpPacket* TcpPacket_new()
+{
+    return TcpPacket_new_s(IP_PAYLOAD_MAX_SIZE);
+}
+
+TcpPacket* TcpPacket_new_s(const size_t _size)
+{
+    TcpPacket* pckt = (TcpPacket*)malloc(sizeof(TcpPacket));
+    pckt->_payload = (char *)malloc(_size * sizeof(char));
+    pckt->__size = _size;
+
+    return pckt;
+}
+
+void TcpPacket_delete(TcpPacket* _self)
+{
+    free(_self->_payload);
+    free(_self);
+}
+
+void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr)
+{
+    // Given the option field in the header, the header length might change.
+    // For now, I'm just considering the header length to be the default of
+    // 24 bytes, consider 32 bits for the option field filled with zeros.
+    memcpy(&_self->_hdr, &_hdr, TcpHeader_getHeaderSize(_hdr));
+}
+
+void TcpPacket_fillHeader(
+    TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
+    u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
+    u_int16_t  _checksum, u_int16_t _urgpntr
+) {
+    TcpHeader_setSourcePort(&_self->_hdr, _srcport);
+    TcpHeader_setDestinationPort(&_self->_hdr, _dstport);
+    TcpHeader_setSequenceNumber(&_self->_hdr, _seqnum);
+    TcpHeader_setAcknowledgmentNumber(&_self->_hdr, _acknum);
+    TcpHeader_setDataOffset(&_self->_hdr, _offset);
+    TcpHeader_setControlBits(&_self->_hdr, _cbits);
+    TcpHeader_setWindowSize(&_self->_hdr, _window);
+    TcpHeader_setChecksum(&_self->_hdr, _checksum);
+    TcpHeader_setUrgentPointer(&_self->_hdr, _urgpntr);
+}
+
+void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t _size)
+{
+    // Readjust the memory allocated for the payload when first created the TCP Packet
+    if (_size < _self->__size)
+    {
+        _self->_payload = (char *)realloc(_self->_payload, _size);
+    }
+
+    memcpy(_self->_payload, _payload, _size);
+    _self->__size = _size;
+}
+
+size_t TcpPacket_getPacketSize(TcpPacket* _self)
+{
+    return _self->__size + TcpHeader_getHeaderSize(&_self->_hdr);
+}
+
+ByteBuffer* TcpPacket_encode(TcpPacket* _self)
+{
+    ByteBuffer* bbuff = ByteBuffer_new(TcpPacket_getPacketSize(_self));
+    TcpHeader_encode(&_self->_hdr, bbuff);
+    ByteBuffer_putBuffer(bbuff, _self->_payload, _self->__size);
+
+    return bbuff;
+}
+
+TcpPacket* TcpPacket_decode(ByteBuffer* _buffer)
+{
+    TcpPacket* pckt = TcpPacket_new();
+    TcpHeader_decode(&pckt->_hdr, _buffer);
+
+    size_t payload_size = _buffer->_size - _buffer->_position;
+    payload_size = payload_size < 0 ? 0 : payload_size;
+    
+    char payload[payload_size];
+    ByteBuffer_getBuffer(_buffer, payload, payload_size);
+    TcpPacket_fillPayload(pckt, payload, payload_size);
+
+    return pckt;
+}
+
 /* --------------------------------------------- IP HEADER --------------------------------------------- */
 
 void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version)

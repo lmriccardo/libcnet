@@ -40,11 +40,24 @@
 #define UDP_PAYLOAD_MAX_SIZE        0xffe3
 #define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
 
+/* TCP Header Flags */
+#define TCP_NOT_SET 0x00
+#define TCP_FIN_SET 0x01
+#define TCP_SYN_SET 0x02
+#define TCP_RST_SET 0x04
+#define TCP_PSH_SET 0x08
+#define TCP_ACK_SET 0x10
+#define TCP_URG_SET 0x20
+#define TCP_ECE_SET 0x40
+#define TCP_CWR_SET 0x80
+
+#define TCP_PSEUDO_HEADER_SIZE 0x0c
+
+/* IP Header Flags */
 #define IPv4 0x4
 #define IPv6 0x6
 #define IP_HEADER_SIZE 0x14
 
-/* IP Header Flags */
 #define X_FLAG_NOT_SET 0
 #define D_FLAG_NOT_SET 0
 #define M_FLAG_NOT_SET 0
@@ -354,6 +367,183 @@ extern void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer) __at
 /* Decode a ByteBuffer into a UDP Packet */
 extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
+/******************************* TCP PACKET ******************************/
+
+/* Struct containing all control bits of a TCP header */
+struct ControlBits
+{
+    unsigned char _cwr; // Congestion Window Reduced For Explicit Congestion Notification
+    unsigned char _ece; // ECN-Echo for Explicit Congestion Notification
+    unsigned char _urg; // Urgent Point field is significant
+    unsigned char _ack; // Acknowledgment field is significant
+    unsigned char _psh; // Push function
+    unsigned char _rst; // Reset the connection
+    unsigned char _syn; // Synchronize sequence number 
+    unsigned char _fin; // No more data from sender
+};
+
+/**
+ * Struct representing the TCP header of the TCP Packet. It consists of classical
+ * minimum of 20 bytes divided into: source port (2 bytes), destination port (2 bytes), 
+ * sequence number (4 bytes), acknowledgment number (4 bytes), Data Offset + reserved
+ * bits (1 byte), Control bits or flags (1 byte), Receiver Window size (2 bytes),
+ * Checksum (2 bytes), Urgent Pointer (2 bytes), Optional Options (4 bytes).
+ * 
+ * This structure refers to the RFC 9293 https://www.rfc-editor.org/rfc/rfc9293.html
+ */
+typedef struct 
+{
+
+    u_int16_t          _srcport;    // Source port number
+    u_int16_t          _dstport;    // Destination port number
+    u_int32_t          _seqnum;     // Sequence number of first data octet in this segment
+    u_int32_t          _acknum;     // Contains the next sequence the sender of the segment is expecting to receive
+    u_int8_t           _offset;     // This number indicates where the data begins + reserved bits set to 0
+    struct ControlBits _flags;      // A number of control bits for different pourposes
+    u_int16_t          _window;     // The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept
+    u_int16_t          _checksum;   // The checksum
+    u_int16_t          _urgpntr;    // The current value of the urgent pointer as a positive offset from the sequence number in this segment
+    u_int32_t          _options;    // A number of options
+
+} TcpHeader;
+
+/* This structure represents the TCP Packet with the Header and Payload */
+typedef struct 
+{
+
+    TcpHeader _hdr;      // TCP Header
+    char*     _payload;  // TCP Payload
+    size_t    __size;    // TCP Payload size
+
+} TcpPacket;
+
+/* Fill the ControlBit structure with the content of the ByteBuffer */
+extern void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer) __attribute__((nonnull));
+
+/* "Decode" the control bits into a string of binary values */
+extern void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out) __attribute__((nonnull));
+
+/* Set the source port of the input Tcp Header */
+extern void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport) __attribute__((nonnull));
+
+/* Set the destination port of the input Tcp Header */
+extern void TcpHeader_setDestinationPort(TcpHeader* _self, u_int16_t _dstport) __attribute__((nonnull));
+
+/* Set the sequence number of the input Tcp Header */
+extern void TcpHeader_setSequenceNumber(TcpHeader* _self, u_int32_t _seqnum) __attribute__((nonnull));
+
+/* Set the Acknowledgment number of input Tcp Header */
+extern void TcpHeader_setAcknowledgmentNumber(TcpHeader* _self, u_int32_t _acknum) __attribute__((nonnull));
+
+/* Set the Data Offset of the input Tcp Header */
+extern void TcpHeader_setDataOffset(TcpHeader* _self, u_int8_t _srcport) __attribute__((nonnull));
+
+/* Set the Controlbits of the input header from the input Control bits structure */
+extern void TcpHeader_setControlBits(TcpHeader* _self, struct ControlBits _cbits) __attribute__((nonnull));
+
+/* Set the CWR Flag of the input TCP Header */
+extern void TcpHeader_setCongestionWindowReducedFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the CWR Flag of the input TCP Header */
+extern void TcpHeader_unsetCongestionWindowReducedFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the ECE Flag of the input TCP Header */
+extern void TcpHeader_setECNEchoFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the ECE Flag of the input TCP Header */
+extern void TcpHeader_unsetECNEchoFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the URG Flag of the input TCP Header */
+extern void TcpHeader_setUrgentPointerFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the URG Flag of the input TCP Header */
+extern void TcpHeader_unsetUrgentPointerFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the ACK flag of the input TCP Header */
+extern void TcpHeader_setAcknowledgmentFieldFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the ACK flag of the input TCP Header */
+extern void TcpHeader_unsetAcknowledgmentFieldFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the PSH Flag of the input TCP Header */
+extern void TcpHeader_setPushFunctionFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the PSH Flag of the input TCP Header */
+extern void TcpHeader_unsetPushFunctionFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the RST Flag of the input TCP Header */
+extern void TcpHeader_setResetConnectionFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the RST Flag of the input TCP Header */
+extern void TcpHeader_unsetResetConnectionFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the SYN Flag of the input TCP Header */
+extern void TcpHeader_setSynchronizeFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the SYN Flag of the input TCP Header */
+extern void TcpHeader_unsetSynchronizeFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the FIN Flag of the input TCP Header */
+extern void TcpHeader_setFinFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Unset the FIN Flag of the input TCP Header */
+extern void TcpHeader_unsetFinFlag(TcpHeader* _self) __attribute__((nonnull));
+
+/* Set the Window size of the input Tcp Header */
+extern void TcpHeader_setWindowSize(TcpHeader* _self, u_int16_t _window) __attribute__((nonnull));
+
+/* Set the checksum of the input TCP Header */
+extern void TcpHeader_setChecksum(TcpHeader* _self, u_int16_t _checksum) __attribute__((nonnull));
+
+/* Set the urgent pointer field of the input TCP Header */
+extern void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr) __attribute__((nonnull));
+
+/* Sum all the control bits together in an unsigned short value */
+extern u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self) __attribute__((nonnull));
+
+/* Encode the input TCP Header into a ByteBuffer */
+extern void TcpHeader_encode(TcpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+
+/* Decode the input ByteBuffer into a TCP Header */
+extern void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+
+/* Print informations about the header, in particular all the fields */
+extern void TcpHeader_printInfo(TcpHeader* _self) __attribute__((nonnull));
+
+/* Returns the size of the tcp header */
+extern size_t TcpHeader_getHeaderSize(TcpHeader* _self) __attribute__((nonnull));
+
+/* Create and returns a new TCP Packet given the input size */
+extern TcpPacket* TcpPacket_new_s(const size_t _size) __attribute__((returns_nonnull));
+
+/* Create and returns a new TCP Packet */
+extern TcpPacket* TcpPacket_new() __attribute__((returns_nonnull));
+
+/* Free the memory allocated for the TCP Packet */
+extern void TcpPacket_delete(TcpPacket* _self) __attribute__((nonnull));
+
+/* Set a new header to the TCP Packet copying the input one into the packet */
+extern void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr) __attribute__((nonnull));
+
+/* Fill the TCP Packet Header with all values given as input */
+extern void TcpPacket_fillHeader(
+    TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
+    u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
+    u_int16_t  _checksum, u_int16_t _urgpntr
+) __attribute__((nonnull));
+
+/* Fill the TCP Packet payload with the given input data of input size */
+extern void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t _size) __attribute__((nonnull));
+
+/* Returns the size of the packet Header + Payload */
+extern size_t TcpPacket_getPacketSize(TcpPacket* _self) __attribute__((nonnull));
+
+/* Encodes the TCP Packet into a ByteBuffer and returns it */
+extern ByteBuffer* TcpPacket_encode(TcpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
+/* Decodes a ByteBuffer into a TCP Packet */
+extern TcpPacket* TcpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
+
 /******************************* IP PACKET ******************************/
 
 /* Struct representing the IP Header of the IP Packet. It consists of classical
@@ -395,6 +585,7 @@ typedef struct
         
         IcmpPacket *_icmp; // The ICMP Packet
         UdpPacket  *_udp;  // The UDP Packet
+        TcpPacket  *_tcp;  // The TCP Packet
 
     } _payload; 
 
