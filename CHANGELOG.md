@@ -5,3 +5,4 @@
 - Added TCP Header and Packets structure and functions to `ip.h` and `ip.c`
 - Added functions for IP Packets to include TCP Packets into `ip.h` and `ip.c`
 - Added a version header files containing the current version of the library `utils/version.h`
+- Changed `snprintf` into `sprintf` into `convertControlBitsToBin` function of `ip.c`

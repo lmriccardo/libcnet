@@ -614,7 +614,7 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
     UdpHeader_decode(&hdr, _buffer);
 
     size_t payload_size = hdr._length - UDP_HEADER_SIZE;
-    UdpPacket* pckt = UdpPacket_new_v2(payload_size);
+    UdpPacket* pckt = UdpPacket_new_s(payload_size);
 
     char payload[payload_size];
     ByteBuffer_getBuffer(_buffer, payload, payload_size);
@@ -652,7 +652,7 @@ void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
     int _syn = ((_cbits->_syn >> 1) & 1);
     int _fin = _cbits->_fin;
 
-    snprintf(_out, "%d%d%d%d%d%d%d%d", 9, _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
+    sprintf(_out, "%d%d%d%d%d%d%d%d", _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
 }
 
 void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport)
