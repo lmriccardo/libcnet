@@ -1,0 +1,67 @@
+.TH "IcmpHeader" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+IcmpHeader
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int8_t \fB_type\fP"
+.br
+.RI "The type of the ICMP Message\&. "
+.ti -1c
+.RI "u_int8_t \fB_code\fP"
+.br
+.RI "The code corresponding to the Type\&. "
+.ti -1c
+.RI "u_int16_t \fB_checksum\fP"
+.br
+.RI "The checksum for packet validation\&. "
+.ti -1c
+.RI "union \fBh_data_t\fP \fB_rest\fP"
+.br
+.RI "Additional data to the header\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing the ICMP Header of the ICMP Packet\&. There are the classical 32 bits of ICMP Header: Type, Code and Checksum and the also the remaining 32 bits of Optional header fields like: Identification, Sequence Number, Gateway or Zeros (Unused) according to the given type and ICMP Code\&.
+.PP
+This structure refers to the RFC 792 https://datatracker.ietf.org/doc/html/rfc792 
+.PP
+Definition at line \fB163\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int16_t _checksum"
+
+.PP
+The checksum for packet validation\&. 
+.PP
+Definition at line \fB168\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _code"
+
+.PP
+The code corresponding to the Type\&. 
+.PP
+Definition at line \fB167\fP of file \fBip\&.h\fP\&.
+.SS "union \fBh_data_t\fP _rest"
+
+.PP
+Additional data to the header\&. 
+.PP
+Definition at line \fB169\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _type"
+
+.PP
+The type of the ICMP Message\&. 
+.PP
+Definition at line \fB166\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

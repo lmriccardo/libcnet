@@ -1,0 +1,65 @@
+.TH "h_data_t" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+h_data_t
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int32_t \fB_unused\fP"
+.br
+.RI "32 bit of unused data "
+.ti -1c
+.RI "u_int32_t \fB_gateway\fP"
+.br
+.RI "32 bit for gateway internet address "
+.ti -1c
+.RI "struct \fBh_mtu_t\fP \fB_mtu\fP"
+.br
+.RI "Used for MTU Path Discovery\&. "
+.ti -1c
+.RI "struct \fBh_echo_t\fP \fB_echo\fP"
+.br
+.RI "Echo and other message headers\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Part of the ICMP Header containing different options for ICMP Header last 32 bits\&. They could remain unused, entirely containing a gateway address, used for MTU purpouses or ECHO requests/reply\&. 
+.PP
+Definition at line \fB144\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "struct \fBh_echo_t\fP _echo"
+
+.PP
+Echo and other message headers\&. 
+.PP
+Definition at line \fB150\fP of file \fBip\&.h\fP\&.
+.SS "u_int32_t _gateway"
+
+.PP
+32 bit for gateway internet address 
+.PP
+Definition at line \fB148\fP of file \fBip\&.h\fP\&.
+.SS "struct \fBh_mtu_t\fP _mtu"
+
+.PP
+Used for MTU Path Discovery\&. 
+.PP
+Definition at line \fB149\fP of file \fBip\&.h\fP\&.
+.SS "u_int32_t _unused"
+
+.PP
+32 bit of unused data 
+.PP
+Definition at line \fB147\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

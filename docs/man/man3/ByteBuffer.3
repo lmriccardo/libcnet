@@ -1,0 +1,66 @@
+.TH "ByteBuffer" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ByteBuffer
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <buffer\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char * \fB_buffer\fP"
+.br
+.RI "The actual buffer\&. "
+.ti -1c
+.RI "int \fB_position\fP"
+.br
+.RI "The current position into the buffer\&. "
+.ti -1c
+.RI "size_t \fB_size\fP"
+.br
+.RI "The size of the buffer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBByteBuffer\fP struct created to holds a buffer of bytes\&. It has been created in order to easily put and get, bytes, unsigned short and unsigned int\&. It is very similar to the \fBByteBuffer\fP class in Java\&.
+.PP
+It has three 'member':
+.PP
+.IP "\(bu" 2
+\fR_buffer\fP which is a pointer to the buffer of bytes
+.IP "\(bu" 2
+\fR_position\fP the current position inside the buffer
+.IP "\(bu" 2
+\fR_size\fP The total size of the buffer 
+.PP
+
+.PP
+Definition at line \fB29\fP of file \fBbuffer\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "char* _buffer"
+
+.PP
+The actual buffer\&. 
+.PP
+Definition at line \fB32\fP of file \fBbuffer\&.h\fP\&.
+.SS "int _position"
+
+.PP
+The current position into the buffer\&. 
+.PP
+Definition at line \fB33\fP of file \fBbuffer\&.h\fP\&.
+.SS "size_t _size"
+
+.PP
+The size of the buffer\&. 
+.PP
+Definition at line \fB34\fP of file \fBbuffer\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

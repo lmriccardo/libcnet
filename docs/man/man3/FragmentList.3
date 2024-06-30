@@ -1,0 +1,39 @@
+.TH "FragmentList" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FragmentList
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <fragment\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char ** \fB_frags\fP"
+.br
+.ti -1c
+.RI "size_t \fB_size\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This struct holds a number of fragments created from another buffer using the \fRcreateFragments\fP function\&. Each fragment is a portion of the original buffer\&. It represents an ordered lists of fragments, each of them with the same size, except for the last one\&. 
+.PP
+Definition at line \fB18\fP of file \fBfragment\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "char** _frags"
+
+.PP
+Definition at line \fB20\fP of file \fBfragment\&.h\fP\&.
+.SS "size_t _size"
+
+.PP
+Definition at line \fB21\fP of file \fBfragment\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

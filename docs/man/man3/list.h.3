@@ -1,0 +1,151 @@
+.TH "includes/utils/list.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/utils/list.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <stdio\&.h>\fP
+.br
+\fR#include <stdlib\&.h>\fP
+.br
+\fR#include <unistd\&.h>\fP
+.br
+\fR#include <stdbool\&.h>\fP
+.br
+\fR#include <string\&.h>\fP
+.br
+\fR#include <utils/synch\&.h>\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBNode\fP"
+.br
+.ti -1c
+.RI "struct \fBLinkedList\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fBNode\fP * \fBNode_new\fP (void *_value, size_t _vsize) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBNode_delete\fP (struct \fBNode\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "\fBLinkedList\fP * \fBLinkedList_new\fP (const size_t _capacity) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_delete\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_deletet\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_append\fP (\fBLinkedList\fP *_self, struct \fBNode\fP *_node) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_appendt\fP (\fBLinkedList\fP *_self, struct \fBNode\fP *_node) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_appendv\fP (\fBLinkedList\fP *_self, void *_value, size_t _vsize) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_appendvt\fP (\fBLinkedList\fP *_self, void *_value, size_t _vsize) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_push\fP (\fBLinkedList\fP *_self, struct \fBNode\fP *_node) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_pusht\fP (\fBLinkedList\fP *_self, struct \fBNode\fP *_node) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_pushv\fP (\fBLinkedList\fP *_self, void *_value, size_t _vsize) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBLinkedList_pushvt\fP (\fBLinkedList\fP *_self, void *_value, size_t _vsize) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "struct \fBNode\fP * \fBLinkedList_pop\fP (\fBLinkedList\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBNode\fP * \fBLinkedList_popt\fP (\fBLinkedList\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBNode\fP * \fBLinkedList_remove\fP (\fBLinkedList\fP *_self, int _i) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBNode\fP * \fBLinkedList_removet\fP (\fBLinkedList\fP *_self, int _i) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "bool \fBLinkedList_isEmpty\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "bool \fBLinkedList_isEmptyt\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "size_t \fBLinkedList_getSize\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "size_t \fBLinkedList_getSizet\fP (\fBLinkedList\fP *_self) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void LinkedList_append (\fBLinkedList\fP * _self, struct \fBNode\fP * _node)\fR [extern]\fP"
+Append the input \fBNode\fP into the Linked List 
+.SS "void LinkedList_appendt (\fBLinkedList\fP * _self, struct \fBNode\fP * _node)\fR [extern]\fP"
+Append the input \fBNode\fP into the Linked List (Thread safe) 
+.SS "void LinkedList_appendv (\fBLinkedList\fP * _self, void * _value, size_t _vsize)\fR [extern]\fP"
+Create and append a new \fBNode\fP, given the input value and value size, to the Linked List 
+.SS "void LinkedList_appendvt (\fBLinkedList\fP * _self, void * _value, size_t _vsize)\fR [extern]\fP"
+Create and append a new \fBNode\fP, given the input value and value size, to the Linked List (Thread Safe) 
+.SS "void LinkedList_delete (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the entire linked list (including nodes) 
+.SS "void LinkedList_deletet (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the entire linked list (including nodes, Thread Safe) 
+.SS "size_t LinkedList_getSize (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Returns the actual size of the linked List 
+.SS "size_t LinkedList_getSizet (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Returns the actual size of the linked List (Thread safe) 
+.SS "bool LinkedList_isEmpty (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Checks if the linked list is empty or not 
+.SS "bool LinkedList_isEmptyt (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Checks if the linked list is empty or not (Thread-safe) 
+.SS "\fBLinkedList\fP * LinkedList_new (const size_t _capacity)\fR [extern]\fP"
+Initialize an empty Linked List\&. This function dynamically allocate memory, this means that the corresponding object must be deleted using the \fBLinkedList_delete()\fP function\&. 
+.SS "struct \fBNode\fP * LinkedList_pop (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Returns the last node of the Linked List 
+.SS "struct \fBNode\fP * LinkedList_popt (\fBLinkedList\fP * _self)\fR [extern]\fP"
+Returns the last node of the Linked List (Thread safe) 
+.SS "void LinkedList_push (\fBLinkedList\fP * _self, struct \fBNode\fP * _node)\fR [extern]\fP"
+Add the input node at the head of the list 
+.SS "void LinkedList_pusht (\fBLinkedList\fP * _self, struct \fBNode\fP * _node)\fR [extern]\fP"
+Add the input node at the head of the list (Thread Safe) 
+.SS "void LinkedList_pushv (\fBLinkedList\fP * _self, void * _value, size_t _vsize)\fR [extern]\fP"
+Create and add a new \fBNode\fP at the head of the list 
+.SS "void LinkedList_pushvt (\fBLinkedList\fP * _self, void * _value, size_t _vsize)\fR [extern]\fP"
+Create and add a new \fBNode\fP at the head of the list (Thread safe) 
+.SS "struct \fBNode\fP * LinkedList_remove (\fBLinkedList\fP * _self, int _i)\fR [extern]\fP"
+Returns the element of the list corresponding to input index 
+.SS "struct \fBNode\fP * LinkedList_removet (\fBLinkedList\fP * _self, int _i)\fR [extern]\fP"
+Returns the element of the list corresponding to input index (Thread-safe) 
+.SS "void Node_delete (struct \fBNode\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the input \fBNode\fP 
+.SS "struct \fBNode\fP * Node_new (void * _value, size_t _vsize)\fR [extern]\fP"
+Construct and return the pointer to a new \fBNode\fP initialized with given input values\&. Notice that, this function dynamically allocate memory when creating the new \fBNode\fP\&. Hence, the node should be freed using the Node_delete function\&. If the node is in a Linked List, then all nodes will be freed when the Linked List is deleted\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

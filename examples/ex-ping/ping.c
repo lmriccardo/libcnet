@@ -14,7 +14,7 @@ void *process(struct Response* resp)
     size_t len = resp->_size;
     double time = resp->_rtt;
 
-    ByteBuffer* buffer = ByteBuffer_new_v2(response, len);
+    ByteBuffer* buffer = ByteBuffer_new_b(response, len);
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
     
     IcmpPacket* icmppckt = IpPacket_getIcmpPacket(ippckt);

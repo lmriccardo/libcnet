@@ -1,0 +1,26 @@
+var list_8h =
+[
+    [ "Node", "structNode.html", "structNode" ],
+    [ "LinkedList", "structLinkedList.html", "structLinkedList" ],
+    [ "LinkedList_append", "list_8h.html#a3781465c512eccdd239ea34d482f17ef", null ],
+    [ "LinkedList_appendt", "list_8h.html#a801d01fa936fc7a9dfbb3e9aea5bbdfe", null ],
+    [ "LinkedList_appendv", "list_8h.html#a1108d72600508619f56ad75897e1dc0a", null ],
+    [ "LinkedList_appendvt", "list_8h.html#aac624f57195bba0041a097d98d37175d", null ],
+    [ "LinkedList_delete", "list_8h.html#a07bb0b083224eb911aa9765f29919347", null ],
+    [ "LinkedList_deletet", "list_8h.html#a5853ad4a2989533e4c9b024ed56c02bc", null ],
+    [ "LinkedList_getSize", "list_8h.html#aa1e3fb3d1107f94bc6f1aac2befb1501", null ],
+    [ "LinkedList_getSizet", "list_8h.html#add3341f8fdfa0b1aeced17d032da0977", null ],
+    [ "LinkedList_isEmpty", "list_8h.html#a9d9e0b078af0e1a3bd896741ca123310", null ],
+    [ "LinkedList_isEmptyt", "list_8h.html#aeedb703487a17e1305b35c7c2d459ee7", null ],
+    [ "LinkedList_new", "list_8h.html#af2279504ba7b130d7d5ecbb9ebe13950", null ],
+    [ "LinkedList_pop", "list_8h.html#a52252af266b8c33425329597f53d57c6", null ],
+    [ "LinkedList_popt", "list_8h.html#a7876eb6b5fbcc55fa8e80bc100cea821", null ],
+    [ "LinkedList_push", "list_8h.html#a92520ffa8b142648263f1f9db8e15359", null ],
+    [ "LinkedList_pusht", "list_8h.html#a6e14091a2995510bb75da2076ab2cba4", null ],
+    [ "LinkedList_pushv", "list_8h.html#ae4cf094bcedcae2c83e5da069dc3be61", null ],
+    [ "LinkedList_pushvt", "list_8h.html#ac216cac0e6549d6743f7385281881148", null ],
+    [ "LinkedList_remove", "list_8h.html#a4f2cf0177046951f585676707ce30f00", null ],
+    [ "LinkedList_removet", "list_8h.html#a18ad9fcc5a5ed98a706f69c5440e5eab", null ],
+    [ "Node_delete", "list_8h.html#aadba4938d35791c4bf7e1f85c40e0711", null ],
+    [ "Node_new", "list_8h.html#a91dfc67d643fb51d57f175f40f20187a", null ]
+];

@@ -1,0 +1,220 @@
+.TH "Sender" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Sender
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <sender\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char * \fB_srcaddress\fP"
+.br
+.RI "Source Address\&. "
+.ti -1c
+.RI "struct sockaddr_in \fB_dstaddress\fP"
+.br
+.RI "The Host receiving the packet\&. "
+.ti -1c
+.RI "char * \fB_gateway\fP"
+.br
+.RI "The gateway address of the current Source Address\&. "
+.ti -1c
+.RI "int \fB_socket\fP"
+.br
+.RI "File descriptor for the created socket\&. "
+.ti -1c
+.RI "int \fB_msgcnt\fP"
+.br
+.RI "Current Message Number\&. "
+.ti -1c
+.RI "struct protoent * \fB_proto\fP"
+.br
+.RI "The protocol used\&. "
+.ti -1c
+.RI "u_int16_t \fB_lastid\fP"
+.br
+.RI "Last used IP Packet identifier\&. "
+.ti -1c
+.RI "u_int16_t \fB_lsticmpid\fP"
+.br
+.RI "Last used ICMP Packet identifier\&. "
+.ti -1c
+.RI "u_int16_t \fB_icmpsn\fP"
+.br
+.RI "ICMP Message Sequence Number\&. "
+.ti -1c
+.RI "bool \fB_verbose\fP"
+.br
+.RI "Enable verbosity\&. "
+.ti -1c
+.RI "struct \fBTimer\fP * \fB_timer\fP"
+.br
+.RI "A timer synchronized with the receiver\&. "
+.ti -1c
+.RI "int \fB_mtu\fP"
+.br
+.RI "The maximum transmission unit\&. "
+.ti -1c
+.RI "sem_t \fB_mutex\fP"
+.br
+.RI "A semaphore to synchronize with the \fBReceiver\fP\&. "
+.ti -1c
+.RI "bool \fB_synch\fP"
+.br
+.RI "Set to true when it is synchronized with the \fBReceiver\fP\&. "
+.ti -1c
+.RI "bool \fB_sent\fP"
+.br
+.RI "Another variable to syncrhonize with the \fBReceiver\fP\&. "
+.ti -1c
+.RI "struct \fBIpParameters\fP \fB_params\fP"
+.br
+.RI "Some additional parameters for IP Packets\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a \fBSender\fP\&. It is called Raw since it uses the SOCK_RAW option when creating a new socket\&.
+.PP
+This structure has the following fields:
+.PP
+.IP "\(bu" 2
+\fR_srcaddress\fP The IP address sending the packets
+.IP "\(bu" 2
+\fR_dstaddress\fP The host receiving the packet
+.IP "\(bu" 2
+\fR_gateway\fP The gateway address of the current Source address
+.IP "\(bu" 2
+\fR_socket\fP The file descriptor of the created socket
+.IP "\(bu" 2
+\fR_msgcnt\fP The current Message number being sent
+.IP "\(bu" 2
+\fR_proto\fP The protocol used to send the packets
+.IP "\(bu" 2
+\fR_lastid\fP The last used IP Packet Identifier
+.IP "\(bu" 2
+\fR_lasticmpid\fP The last used ICMP Packet Identifier
+.IP "\(bu" 2
+\fR_icmpsn\fP The last ICMP Message Sequence Number
+.IP "\(bu" 2
+\fR_timer\fP A \fBTimer\fP shared with the \fBReceiver\fP
+.IP "\(bu" 2
+\fR_mtu\fP The Maximum Transmission Unit
+.IP "\(bu" 2
+\fR_mutex\fP A simple Mutex to syncrhonize with the receiver
+.IP "\(bu" 2
+\fR_synch\fP A boolean flag to indicate the syncrhonization
+.IP "\(bu" 2
+\fR_sent\fP A boolean flag to help avoid deadlock when synchronizing
+.IP "\(bu" 2
+\fR_params\fP Some additional parameters for IP Packets 
+.PP
+
+.PP
+Definition at line \fB58\fP of file \fBsender\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "struct sockaddr_in _dstaddress"
+
+.PP
+The Host receiving the packet\&. 
+.PP
+Definition at line \fB62\fP of file \fBsender\&.h\fP\&.
+.SS "char* _gateway"
+
+.PP
+The gateway address of the current Source Address\&. 
+.PP
+Definition at line \fB63\fP of file \fBsender\&.h\fP\&.
+.SS "u_int16_t _icmpsn"
+
+.PP
+ICMP Message Sequence Number\&. 
+.PP
+Definition at line \fB69\fP of file \fBsender\&.h\fP\&.
+.SS "u_int16_t _lastid"
+
+.PP
+Last used IP Packet identifier\&. 
+.PP
+Definition at line \fB67\fP of file \fBsender\&.h\fP\&.
+.SS "u_int16_t _lsticmpid"
+
+.PP
+Last used ICMP Packet identifier\&. 
+.PP
+Definition at line \fB68\fP of file \fBsender\&.h\fP\&.
+.SS "int _msgcnt"
+
+.PP
+Current Message Number\&. 
+.PP
+Definition at line \fB65\fP of file \fBsender\&.h\fP\&.
+.SS "int _mtu"
+
+.PP
+The maximum transmission unit\&. 
+.PP
+Definition at line \fB72\fP of file \fBsender\&.h\fP\&.
+.SS "sem_t _mutex"
+
+.PP
+A semaphore to synchronize with the \fBReceiver\fP\&. 
+.PP
+Definition at line \fB73\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBIpParameters\fP _params"
+
+.PP
+Some additional parameters for IP Packets\&. 
+.PP
+Definition at line \fB76\fP of file \fBsender\&.h\fP\&.
+.SS "struct protoent* _proto"
+
+.PP
+The protocol used\&. 
+.PP
+Definition at line \fB66\fP of file \fBsender\&.h\fP\&.
+.SS "bool _sent"
+
+.PP
+Another variable to syncrhonize with the \fBReceiver\fP\&. 
+.PP
+Definition at line \fB75\fP of file \fBsender\&.h\fP\&.
+.SS "int _socket"
+
+.PP
+File descriptor for the created socket\&. 
+.PP
+Definition at line \fB64\fP of file \fBsender\&.h\fP\&.
+.SS "char* _srcaddress"
+
+.PP
+Source Address\&. 
+.PP
+Definition at line \fB61\fP of file \fBsender\&.h\fP\&.
+.SS "bool _synch"
+
+.PP
+Set to true when it is synchronized with the \fBReceiver\fP\&. 
+.PP
+Definition at line \fB74\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBTimer\fP* _timer"
+
+.PP
+A timer synchronized with the receiver\&. 
+.PP
+Definition at line \fB71\fP of file \fBsender\&.h\fP\&.
+.SS "bool _verbose"
+
+.PP
+Enable verbosity\&. 
+.PP
+Definition at line \fB70\fP of file \fBsender\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

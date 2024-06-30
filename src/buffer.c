@@ -9,7 +9,7 @@ ByteBuffer* ByteBuffer_new(const size_t _size)
     return buffer;
 }
 
-ByteBuffer* ByteBuffer_new_v2(const char *_buffer, const size_t _size)
+ByteBuffer* ByteBuffer_new_b(const char *_buffer, const size_t _size)
 {
     ByteBuffer* buffer = (ByteBuffer*)malloc(sizeof(ByteBuffer));
     buffer->_buffer = (char *)malloc(_size * sizeof(char));
