@@ -1,0 +1,75 @@
+.TH "LinkedList" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+LinkedList
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <list\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "struct \fBNode\fP * \fB_head\fP"
+.br
+.RI "The first value of the list\&. "
+.ti -1c
+.RI "struct \fBNode\fP * \fB_last\fP"
+.br
+.RI "The last value of the list\&. "
+.ti -1c
+.RI "size_t \fB_size\fP"
+.br
+.RI "The number of elements in the list\&. "
+.ti -1c
+.RI "size_t \fB_capacity\fP"
+.br
+.RI "The maximum number of elements of the list\&. "
+.ti -1c
+.RI "sem_t \fB_mutex\fP"
+.br
+.RI "We need to be thread safe\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A simple Linked List with following values: \fR_head\fP, \fR_last\fP, \fR_size\fP and \fR_max\fP 
+.PP
+Definition at line \fB31\fP of file \fBlist\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "size_t _capacity"
+
+.PP
+The maximum number of elements of the list\&. 
+.PP
+Definition at line \fB37\fP of file \fBlist\&.h\fP\&.
+.SS "struct \fBNode\fP* _head"
+
+.PP
+The first value of the list\&. 
+.PP
+Definition at line \fB34\fP of file \fBlist\&.h\fP\&.
+.SS "struct \fBNode\fP* _last"
+
+.PP
+The last value of the list\&. 
+.PP
+Definition at line \fB35\fP of file \fBlist\&.h\fP\&.
+.SS "sem_t _mutex"
+
+.PP
+We need to be thread safe\&. 
+.PP
+Definition at line \fB38\fP of file \fBlist\&.h\fP\&.
+.SS "size_t _size"
+
+.PP
+The number of elements in the list\&. 
+.PP
+Definition at line \fB36\fP of file \fBlist\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

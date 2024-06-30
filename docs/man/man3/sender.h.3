@@ -1,0 +1,171 @@
+.TH "includes/sender.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/sender.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/socket\&.h>\fP
+.br
+\fR#include <stdlib\&.h>\fP
+.br
+\fR#include <stdio\&.h>\fP
+.br
+\fR#include <netdb\&.h>\fP
+.br
+\fR#include <unistd\&.h>\fP
+.br
+\fR#include <string\&.h>\fP
+.br
+\fR#include 'ip\&.h'\fP
+.br
+\fR#include 'utils/crafter\&.h'\fP
+.br
+\fR#include 'utils/buffer\&.h'\fP
+.br
+\fR#include 'utils/timer\&.h'\fP
+.br
+\fR#include 'utils/net\&.h'\fP
+.br
+\fR#include 'utils/synch\&.h'\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBIpParameters\fP"
+.br
+.ti -1c
+.RI "struct \fBSender\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBhandle_error\fP(msg,  fd)   do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBLOOPBACK\fP   '127\&.0\&.0\&.1'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBSender\fP * \fBSender_new\fP (const char *_interface, const char *_dstaddr, char *_gateway, const u_int16_t _dstport, const char *_proto, const bool _verbose) __attribute__((returns_nonnull)) __attribute__((nonnull(1"
+.br
+.ti -1c
+.RI "\fBSender\fP void \fBSender_delete\fP (\fBSender\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_setTimer\fP (\fBSender\fP *_self, struct \fBTimer\fP *_timer) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_setMtu\fP (\fBSender\fP *_self, const int _mtu) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_setIpFlags\fP (\fBSender\fP *_self, int _d, int _m) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_sendto\fP (\fBSender\fP *_self, const \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_bsendto\fP (\fBSender\fP *_self, const char *_buffer, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_sendc\fP (\fBSender\fP *_self, const \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_printInfo\fP (const \fBSender\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_getDestinationIP\fP (const \fBSender\fP *_self, char *_out) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "\fBIpPacket\fP * \fBSender_createIpPacket\fP (\fBSender\fP *_self, const u_int16_t _id) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_fillIpHeader\fP (\fBSender\fP *_self, \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_fillIcmpHeader\fP (\fBSender\fP *_self, \fBIcmpPacket\fP *_pckt, const u_int8_t _type, const u_int8_t _code) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_fillUdpHeader\fP (\fBSender\fP *_self, \fBUdpPacket\fP *_pckt, const u_int16_t _srcport) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "\fBIpPacket\fP * \fBSender_craftIcmp\fP (\fBSender\fP *_self, const u_int8_t _type, const u_int8_t _code, const char *_payload, const size_t _size) __attribute__((nonnull(1))) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBIpPacket\fP * \fBSender_craftUdp\fP (\fBSender\fP *_self, const u_int16_t _port, const char *_payload, const size_t _size) __attribute__((nonnull(1))) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_send\fP (\fBSender\fP *_self, \fBIpPacket\fP *_pckt, const double _delay) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_updateIcmpPacket\fP (\fBSender\fP *_self, \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_updateUdpPacket\fP (\fBSender\fP *_self, \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define handle_error( msg,  fd)   do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)"
+
+.PP
+Definition at line \fB20\fP of file \fBsender\&.h\fP\&.
+.SS "#define LOOPBACK   '127\&.0\&.0\&.1'"
+
+.PP
+Definition at line \fB21\fP of file \fBsender\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void Sender_bsendto (\fBSender\fP * _self, const char * _buffer, const size_t _size)\fR [extern]\fP"
+Send the input Buffer of input size\&. The buffer should be the encoding of the Ip packet previously constructed\&. 
+.SS "\fBIpPacket\fP * Sender_craftIcmp (\fBSender\fP * _self, const u_int8_t _type, const u_int8_t _code, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft a complete Ip Packet containing an ICMP Packet 
+.SS "\fBIpPacket\fP * Sender_craftUdp (\fBSender\fP * _self, const u_int16_t _port, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft a complete Ip Packet containing an UDP Packet 
+.SS "\fBIpPacket\fP * Sender_createIpPacket (\fBSender\fP * _self, const u_int16_t _id)\fR [extern]\fP"
+Create an IP Packet with some informations from the current \fBSender\fP 
+.SS "\fBSender\fP void Sender_delete (\fBSender\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the input \fBSender\fP 
+.SS "void Sender_fillIcmpHeader (\fBSender\fP * _self, \fBIcmpPacket\fP * _pckt, const u_int8_t _type, const u_int8_t _code)\fR [extern]\fP"
+Fill the input ICMP packet header with information from the \fBSender\fP object 
+.SS "void Sender_fillIpHeader (\fBSender\fP * _self, \fBIpPacket\fP * _pckt)\fR [extern]\fP"
+Fill the input IP packet header with information from the \fBSender\fP object 
+.SS "void Sender_fillUdpHeader (\fBSender\fP * _self, \fBUdpPacket\fP * _pckt, const u_int16_t _srcport)\fR [extern]\fP"
+Fill the header of the input Udp Packet with informations from the \fBSender\fP object 
+.SS "void Sender_getDestinationIP (const \fBSender\fP * _self, char * _out)\fR [extern]\fP"
+Returns the string containing the destination IP 
+.SS "\fBSender\fP * Sender_new (const char * _interface, const char * _dstaddr, char * _gateway, const u_int16_t _dstport, const char * _proto, const bool _verbose)\fR [extern]\fP"
+Creates and returns a new \fBSender\fP\&. Notice that the \fR_gateway\fP parameter can be NULL\&. 
+.SS "void Sender_printInfo (const \fBSender\fP * _self)\fR [extern]\fP"
+Print some informations about the input \fBSender\fP 
+.SS "void Sender_send (\fBSender\fP * _self, \fBIpPacket\fP * _pckt, const double _delay)\fR [extern]\fP"
+Send the input icmp packet 
+.SS "void Sender_sendc (\fBSender\fP * _self, const \fBIpPacket\fP * _pckt)\fR [extern]\fP"
+Continuously send the input IP Packet 
+.SS "void Sender_sendto (\fBSender\fP * _self, const \fBIpPacket\fP * _pckt)\fR [extern]\fP"
+Send the input IP Packet 
+.SS "void Sender_setIpFlags (\fBSender\fP * _self, int _d, int _m)\fR [extern]\fP"
+Set the flags to the Ip Parameters structure 
+.SS "void Sender_setMtu (\fBSender\fP * _self, const int _mtu)\fR [extern]\fP"
+Set the Maximum Transmission Unit into the \fBSender\fP 
+.SS "void Sender_setTimer (\fBSender\fP * _self, struct \fBTimer\fP * _timer)\fR [extern]\fP"
+Set a timer into the sender 
+.SS "void Sender_updateIcmpPacket (\fBSender\fP * _self, \fBIpPacket\fP * _pckt)\fR [extern]\fP"
+Update the input Packet identifier\&. If the Icmp input is for echo requests it also updates the identifier and the sequence number of the icmp header\&. 
+.SS "void Sender_updateUdpPacket (\fBSender\fP * _self, \fBIpPacket\fP * _pckt)\fR [extern]\fP"
+Update the input Packet identifier and recompute the checksum 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

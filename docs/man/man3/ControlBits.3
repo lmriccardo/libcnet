@@ -1,0 +1,105 @@
+.TH "ControlBits" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ControlBits
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "unsigned char \fB_cwr\fP"
+.br
+.RI "Congestion Window Reduced For Explicit Congestion Notification\&. "
+.ti -1c
+.RI "unsigned char \fB_ece\fP"
+.br
+.RI "ECN-Echo for Explicit Congestion Notification\&. "
+.ti -1c
+.RI "unsigned char \fB_urg\fP"
+.br
+.RI "Urgent Point field is significant\&. "
+.ti -1c
+.RI "unsigned char \fB_ack\fP"
+.br
+.RI "Acknowledgment field is significant\&. "
+.ti -1c
+.RI "unsigned char \fB_psh\fP"
+.br
+.RI "Push function\&. "
+.ti -1c
+.RI "unsigned char \fB_rst\fP"
+.br
+.RI "Reset the connection\&. "
+.ti -1c
+.RI "unsigned char \fB_syn\fP"
+.br
+.RI "Synchronize sequence number\&. "
+.ti -1c
+.RI "unsigned char \fB_fin\fP"
+.br
+.RI "No more data from sender\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct containing all control bits of a TCP header 
+.PP
+Definition at line \fB465\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "unsigned char _ack"
+
+.PP
+Acknowledgment field is significant\&. 
+.PP
+Definition at line \fB470\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _cwr"
+
+.PP
+Congestion Window Reduced For Explicit Congestion Notification\&. 
+.PP
+Definition at line \fB467\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _ece"
+
+.PP
+ECN-Echo for Explicit Congestion Notification\&. 
+.PP
+Definition at line \fB468\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _fin"
+
+.PP
+No more data from sender\&. 
+.PP
+Definition at line \fB474\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _psh"
+
+.PP
+Push function\&. 
+.PP
+Definition at line \fB471\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _rst"
+
+.PP
+Reset the connection\&. 
+.PP
+Definition at line \fB472\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _syn"
+
+.PP
+Synchronize sequence number\&. 
+.PP
+Definition at line \fB473\fP of file \fBip\&.h\fP\&.
+.SS "unsigned char _urg"
+
+.PP
+Urgent Point field is significant\&. 
+.PP
+Definition at line \fB469\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

@@ -290,7 +290,7 @@ extern void IcmpPacket_fillHeader_Echo(IcmpPacket* _self, const u_int16_t _check
  * Fill the header of the ICMP with 32 of Optinal datas divided into: 16 unused (zeros) bits
  * and remaining 16 bits used for some generic purpose, like MTU Path Discovery.
  * 
- * @param data Represents the Next Hop MTU
+ * @param _data Represents the Next Hop MTU
  */
 extern void IcmpPacket_fillHeader_Mtu(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data) __attribute__((nonnull));
 
@@ -326,456 +326,679 @@ extern IcmpPacket* IcmpPacket_decode(ByteBuffer *_buffer) __attribute__((nonnull
 
 /******************************* UDP PACKET ******************************/
 
-/* Struct representing the UDP Header of the UDP Packet. It consists of the
-   classical 8 bytes divided into: (optional) Source port (16 bits),
-   Destination port (16 bits), Total length (16 bits) and Checksum (16 bits)
-    
-   This structure refers to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
-*/
+/**
+ * Struct representing the UDP Header of the UDP Packet. It consists of the
+ * classical 8 bytes divided into: 
+ * 
+ * - `_srcport`, (optional) Source port (16 bits),
+ * - `_dstport`, Destination port (16 bits)
+ * - `_length`, Total length (16 bits)
+ * - `_checksum`, Checksum (16 bits)
+ *  
+ * This structure refers to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
+ */
 typedef struct
 {
 
-    u_int16_t _srcport;   // The optional Source Port 
-    u_int16_t _dstport;   // The Desination Port
-    u_int16_t _length;    // The total length of the UDP Packet
-    u_int16_t _checksum;  // The checksum
+    u_int16_t _srcport;   //!< The optional Source Port 
+    u_int16_t _dstport;   //!< The Desination Port
+    u_int16_t _length;    //!< The total length of the UDP Packet
+    u_int16_t _checksum;  //!< The checksum
 
 } UdpHeader;
 
-/* This struct represents the entire UDP Packet (Header + Payload)
-   as according to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
-*/
+/**
+ * This struct represents the entire UDP Packet (Header + Payload)
+ * as according to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768
+ */
 typedef struct
 {
 
-    UdpHeader _hdr;      // The UDP Header
-    char*     _payload;  // The payload
+    UdpHeader _hdr;      //!< The UDP Header
+    char*     _payload;  //!< The payload
 
 } UdpPacket;
 
-/* Set the Source Port field into the UDP Header */
+/**
+ * Set the Source Port field into the UDP Header
+ */
 extern void UdpHeader_setSourcePort(UdpHeader* _self, const u_int16_t _srcport) __attribute__((nonnull));
 
-/* Set the Destination Port field into the UDP Header */
+/**
+ * Set the Destination Port field into the UDP Header
+ */
 extern void UdpHeader_setDestinationPort(UdpHeader* _self, const u_int16_t _dstport) __attribute__((nonnull));
 
-/* Set the Length field into the UDP Header */
+/**
+ * Set the Length field into the UDP Header
+ */
 extern void UdpHeader_setLength(UdpHeader* _self, const u_int16_t _length ) __attribute__((nonnull));
 
-/* Set the Checksum field into the UDP Header */
+/**
+ * Set the Checksum field into the UDP Header
+ */
 extern void UdpHeader_setChecksum(UdpHeader* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
-/* Print all the Header fields with current values */
+/**
+ * Print all the Header fields with current values
+ */
 extern void UdpHeader_printInfo(const UdpHeader* _self) __attribute__((nonnull));
 
-/* Encode the UDP Header into a ByteBuffer */
+/**
+ * Encode the UDP Header into a ByteBuffer
+ */
 extern void UdpHeader_encode(const UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Encode and returns the ByteBuffer containing the UDP header */
+/**
+ * Encode and returns the ByteBuffer containing the UDP header
+ */
 extern ByteBuffer* UdpHeader_encode__(const UdpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode a ByteBuffer into an UDP Header */
+/**
+ * Decode a ByteBuffer into an UDP Header
+ */
 extern void UdpHeader_decode(UdpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Creates and returns a new UDP Packet */
+/**
+ * Creates and returns a new UDP Packet
+ */
 extern UdpPacket* UdpPacket_new() __attribute__((returns_nonnull));
 
-/* Creates and returns a new UDP Packet with the payload initialized with input size */
+/**
+ * Creates and returns a new UDP Packet with the payload initialized with input size
+ */
 extern UdpPacket* UdpPacket_new_s(const size_t _size) __attribute__((returns_nonnull));
 
-/* Free the memory allocated for the input UDP Packet */
+/**
+ * Free the memory allocated for the input UDP Packet
+ */
 extern void UdpPacket_delete(UdpPacket* _self) __attribute__((nonnull));
 
-/* Fill the header of the input UDP Packet given all its fields */
+/**
+ * Fill the header of the input UDP Packet given all its fields
+ */
 extern void UdpPacket_fillHeader(
     UdpPacket*       _self,   const u_int16_t _srcport, const u_int16_t _dstport,
     const u_int16_t  _length, const u_int16_t _checksum
 ) __attribute__((nonnull));
 
-/* Set the header of the udp packet. Notice that the entire header is
-   copied into the header of the input UDP Packet. Finally, the memory
-   location of the input Header is freed. This means that, once the function
-   finished it will not be reachable anymore. 
-*/
+/**
+ * Set the header of the udp packet.
+ */
 extern void UdpPacket_setHeader(UdpPacket* _self, UdpHeader* _hdr) __attribute__((nonnull));
 
-/* Fill the payload of the UDP Packet with the input buffer of input size */
+/**
+ * Fill the payload of the UDP Packet with the input buffer of input size
+ */
 extern void UdpPacket_fillPayload(UdpPacket* _self, const char* _data, const size_t _size) __attribute__((nonnull));
 
-/* Returns the size of the payload inside the input UDP Packet */
+/**
+ * Returns the size of the payload inside the input UDP Packet
+ */
 extern size_t UdpPacket_getPayloadSize(const UdpPacket* _self) __attribute__((nonnull));
 
-/* Returns the size of the entire packet */
+/**
+ * Returns the size of the entire packet
+ */
 extern size_t UdpPacket_getPacketSize(const UdpPacket* _self) __attribute__((nonnull));
 
-/* Encode the UDP Packet into a Byte Buffer */
+/**
+ * Encode the UDP Packet into a Byte Buffer
+ */
 extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Encode the UDP Packet into a Byte Buffer given as input */
+/**
+ * Encode the UDP Packet into a Byte Buffer given as input
+ */
 extern void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Decode a ByteBuffer into a UDP Packet */
+/**
+ * Decode a ByteBuffer into a UDP Packet
+ */
 extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /******************************* TCP PACKET ******************************/
 
-/* Struct containing all control bits of a TCP header */
+/**
+ * Struct containing all control bits of a TCP header
+ */
 struct ControlBits
 {
-    unsigned char _cwr; // Congestion Window Reduced For Explicit Congestion Notification
-    unsigned char _ece; // ECN-Echo for Explicit Congestion Notification
-    unsigned char _urg; // Urgent Point field is significant
-    unsigned char _ack; // Acknowledgment field is significant
-    unsigned char _psh; // Push function
-    unsigned char _rst; // Reset the connection
-    unsigned char _syn; // Synchronize sequence number 
-    unsigned char _fin; // No more data from sender
+    unsigned char _cwr; //!< Congestion Window Reduced For Explicit Congestion Notification
+    unsigned char _ece; //!< ECN-Echo for Explicit Congestion Notification
+    unsigned char _urg; //!< Urgent Point field is significant
+    unsigned char _ack; //!< Acknowledgment field is significant
+    unsigned char _psh; //!< Push function
+    unsigned char _rst; //!< Reset the connection
+    unsigned char _syn; //!< Synchronize sequence number 
+    unsigned char _fin; //!< No more data from sender
 };
 
 /**
  * Struct representing the TCP header of the TCP Packet. It consists of classical
- * minimum of 20 bytes divided into: source port (2 bytes), destination port (2 bytes), 
- * sequence number (4 bytes), acknowledgment number (4 bytes), Data Offset + reserved
- * bits (1 byte), Control bits or flags (1 byte), Receiver Window size (2 bytes),
- * Checksum (2 bytes), Urgent Pointer (2 bytes), Optional Options (4 bytes).
+ * minimum of 20 bytes divided into: 
+ * 
+ * - `_srcport`, source port (2 bytes)
+ * - `_dstport`, destination port (2 bytes), 
+ * - `_seqnum`, sequence number (4 bytes)
+ * - `_acknum`, acknowledgment number (4 bytes)
+ * - `_offset`, Data Offset + reserved bits (1 byte)
+ * - `_flags`, Control bits or flags (1 byte)
+ * - `_window`, Receiver Window size (2 bytes),
+ * - `_checksum`, Checksum (2 bytes)
+ * - `_urgpntr`, Urgent Pointer (2 bytes)
+ * - `_options`, Optional Options (4 bytes).
  * 
  * This structure refers to the RFC 9293 https://www.rfc-editor.org/rfc/rfc9293.html
  */
 typedef struct 
 {
 
-    u_int16_t          _srcport;    // Source port number
-    u_int16_t          _dstport;    // Destination port number
-    u_int32_t          _seqnum;     // Sequence number of first data octet in this segment
-    u_int32_t          _acknum;     // Contains the next sequence the sender of the segment is expecting to receive
-    u_int8_t           _offset;     // This number indicates where the data begins + reserved bits set to 0
-    struct ControlBits _flags;      // A number of control bits for different pourposes
-    u_int16_t          _window;     // The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept
-    u_int16_t          _checksum;   // The checksum
-    u_int16_t          _urgpntr;    // The current value of the urgent pointer as a positive offset from the sequence number in this segment
-    u_int32_t          _options;    // A number of options
+    u_int16_t          _srcport;    //!< Source port number
+    u_int16_t          _dstport;    //!< Destination port number
+    u_int32_t          _seqnum;     //!< Sequence number of first data octet in this segment
+    u_int32_t          _acknum;     //!< Contains the next sequence the sender of the segment is expecting to receive
+    u_int8_t           _offset;     //!< This number indicates where the data begins + reserved bits set to 0
+    struct ControlBits _flags;      //!< A number of control bits for different pourposes
+    u_int16_t          _window;     //!< The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept
+    u_int16_t          _checksum;   //!< The checksum
+    u_int16_t          _urgpntr;    //!< The current value of the urgent pointer as a positive offset from the sequence number in this segment
+    u_int32_t          _options;    //!< A number of options
 
 } TcpHeader;
 
-/* This structure represents the TCP Packet with the Header and Payload */
+/**
+ * This structure represents the TCP Packet with the Header and Payload
+ */
 typedef struct 
 {
 
-    TcpHeader _hdr;      // TCP Header
-    char*     _payload;  // TCP Payload
-    size_t    __size;    // TCP Payload size
+    TcpHeader _hdr;      //!< TCP Header
+    char*     _payload;  //!< TCP Payload
+    size_t    __size;    //!< TCP Payload size
 
 } TcpPacket;
 
-/* Fill the ControlBit structure with the content of the ByteBuffer */
+/**
+ * Fill the ControlBit structure with the content of the ByteBuffer
+ */
 extern void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* "Decode" the control bits into a string of binary values */
+/**
+ * Converts the control bits into a string of binary values
+ */
 extern void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out) __attribute__((nonnull));
 
-/* Set the source port of the input Tcp Header */
+/**
+ * Set the source port of the input Tcp Header
+ */
 extern void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport) __attribute__((nonnull));
 
-/* Set the destination port of the input Tcp Header */
+/**
+ * Set the destination port of the input Tcp Header
+ */
 extern void TcpHeader_setDestinationPort(TcpHeader* _self, u_int16_t _dstport) __attribute__((nonnull));
 
-/* Set the sequence number of the input Tcp Header */
+/**
+ * Set the sequence number of the input Tcp Header
+ */
 extern void TcpHeader_setSequenceNumber(TcpHeader* _self, u_int32_t _seqnum) __attribute__((nonnull));
 
-/* Set the Acknowledgment number of input Tcp Header */
+/**
+ * Set the Acknowledgment number of input Tcp Header
+ */
 extern void TcpHeader_setAcknowledgmentNumber(TcpHeader* _self, u_int32_t _acknum) __attribute__((nonnull));
 
-/* Set the Data Offset of the input Tcp Header */
+/**
+ * Set the Data Offset of the input Tcp Header
+ */
 extern void TcpHeader_setDataOffset(TcpHeader* _self, u_int8_t _srcport) __attribute__((nonnull));
 
-/* Set the Controlbits of the input header from the input Control bits structure */
+/**
+ * Set the Controlbits of the input header from the input Control bits structure
+ */
 extern void TcpHeader_setControlBits(TcpHeader* _self, struct ControlBits _cbits) __attribute__((nonnull));
 
-/* Set the CWR Flag of the input TCP Header */
+/**
+ * Set the CWR Flag of the input TCP Header
+ */
 extern void TcpHeader_setCongestionWindowReducedFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the CWR Flag of the input TCP Header */
+/**
+ * Unset the CWR Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetCongestionWindowReducedFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the ECE Flag of the input TCP Header */
+/**
+ * Set the ECE Flag of the input TCP Header
+ */
 extern void TcpHeader_setECNEchoFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the ECE Flag of the input TCP Header */
+/**
+ * Unset the ECE Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetECNEchoFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the URG Flag of the input TCP Header */
+/**
+ * Set the URG Flag of the input TCP Header
+ */
 extern void TcpHeader_setUrgentPointerFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the URG Flag of the input TCP Header */
+/**
+ * Unset the URG Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetUrgentPointerFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the ACK flag of the input TCP Header */
+/**
+ * Set the ACK flag of the input TCP Header
+ */
 extern void TcpHeader_setAcknowledgmentFieldFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the ACK flag of the input TCP Header */
+/**
+ * Unset the ACK flag of the input TCP Header
+ */
 extern void TcpHeader_unsetAcknowledgmentFieldFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the PSH Flag of the input TCP Header */
+/**
+ * Set the PSH Flag of the input TCP Header
+ */
 extern void TcpHeader_setPushFunctionFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the PSH Flag of the input TCP Header */
+/**
+ * Unset the PSH Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetPushFunctionFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the RST Flag of the input TCP Header */
+/**
+ * Set the RST Flag of the input TCP Header
+ */
 extern void TcpHeader_setResetConnectionFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the RST Flag of the input TCP Header */
+/**
+ * Unset the RST Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetResetConnectionFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the SYN Flag of the input TCP Header */
+/**
+ * Set the SYN Flag of the input TCP Header
+ */
 extern void TcpHeader_setSynchronizeFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the SYN Flag of the input TCP Header */
+/**
+ * Unset the SYN Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetSynchronizeFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the FIN Flag of the input TCP Header */
+/**
+ * Set the FIN Flag of the input TCP Header
+ */
 extern void TcpHeader_setFinFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Unset the FIN Flag of the input TCP Header */
+/**
+ * Unset the FIN Flag of the input TCP Header
+ */
 extern void TcpHeader_unsetFinFlag(TcpHeader* _self) __attribute__((nonnull));
 
-/* Set the Window size of the input Tcp Header */
+/**
+ * Set the Window size of the input Tcp Header
+ */
 extern void TcpHeader_setWindowSize(TcpHeader* _self, u_int16_t _window) __attribute__((nonnull));
 
-/* Set the checksum of the input TCP Header */
+/**
+ * Set the checksum of the input TCP Header
+ */
 extern void TcpHeader_setChecksum(TcpHeader* _self, u_int16_t _checksum) __attribute__((nonnull));
 
-/* Set the urgent pointer field of the input TCP Header */
+/**
+ * Set the urgent pointer field of the input TCP Header
+ */
 extern void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr) __attribute__((nonnull));
 
-/* Sum all the control bits together in an unsigned short value */
+/**
+ * Sum all the control bits together in an unsigned short value
+ */
 extern u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self) __attribute__((nonnull));
 
-/* Encode the input TCP Header into a ByteBuffer */
+/**
+ * Encode the input TCP Header into a ByteBuffer
+ */
 extern void TcpHeader_encode(TcpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Decode the input ByteBuffer into a TCP Header */
+/**
+ * Decode the input ByteBuffer into a TCP Header
+ */
 extern void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Print informations about the header, in particular all the fields */
+/**
+ * Print informations about the header, in particular all the fields
+ */
 extern void TcpHeader_printInfo(TcpHeader* _self) __attribute__((nonnull));
 
-/* Returns the size of the tcp header */
+/**
+ * Returns the size of the tcp header
+ */
 extern size_t TcpHeader_getHeaderSize(TcpHeader* _self) __attribute__((nonnull));
 
-/* Create and returns a new TCP Packet given the input size */
+/**
+ * Create and returns a new TCP Packet given the input size
+ */
 extern TcpPacket* TcpPacket_new_s(const size_t _size) __attribute__((returns_nonnull));
 
-/* Create and returns a new TCP Packet */
+/**
+ * Create and returns a new TCP Packet
+ */
 extern TcpPacket* TcpPacket_new() __attribute__((returns_nonnull));
 
-/* Free the memory allocated for the TCP Packet */
+/**
+ * Free the memory allocated for the TCP Packet
+ */
 extern void TcpPacket_delete(TcpPacket* _self) __attribute__((nonnull));
 
-/* Set a new header to the TCP Packet copying the input one into the packet */
+/**
+ * Set a new header to the TCP Packet copying the input one into the packet
+ */
 extern void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr) __attribute__((nonnull));
 
-/* Fill the TCP Packet Header with all values given as input */
+/**
+ * Fill the TCP Packet Header with all values given as input
+ */
 extern void TcpPacket_fillHeader(
     TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
     u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
     u_int16_t  _checksum, u_int16_t _urgpntr
 ) __attribute__((nonnull));
 
-/* Fill the TCP Packet payload with the given input data of input size */
+/**
+ * Fill the TCP Packet payload with the given input data of input size
+ */
 extern void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t _size) __attribute__((nonnull));
 
-/* Returns the size of the packet Header + Payload */
+/**
+ * Returns the size of the packet Header + Payload
+ */
 extern size_t TcpPacket_getPacketSize(TcpPacket* _self) __attribute__((nonnull));
 
-/* Encodes the TCP Packet into a ByteBuffer and returns it */
+/**
+ * Encodes the TCP Packet into a ByteBuffer and returns it
+ */
 extern ByteBuffer* TcpPacket_encode(TcpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Encodes the TCP Packet into the input ByteBuffer */
+/**
+ * Encodes the TCP Packet into the input ByteBuffer
+ */
 extern void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Decodes a ByteBuffer into a TCP Packet */
+/**
+ * Decodes a ByteBuffer into a TCP Packet
+ */
 extern TcpPacket* TcpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /******************************* IP PACKET ******************************/
 
-/* Struct representing the IP Header of the IP Packet. It consists of classical
-   28 bytes divided into: IP Protocol Version + IHL (8 bits), Type of service (8 bits),
-   Total length (16 bits), Identification (16 bits), Flags and Fragment Offset (16 bits),
-   Time to Live (8 bits), IP Protocol (8 bits), Checksum (16 bits), Source Address
-   (32 bits) and Destination Address (32 bits). 
-   
-   This structure refers to the RFC 791 https://datatracker.ietf.org/doc/html/rfc791
-   The TOS field has been subtituted with the Differentiated Service Field
-   according to the RFC 2474 https://datatracker.ietf.org/doc/html/rfc2474
-*/
+/**
+ * Struct representing the IP Header of the IP Packet. It consists of classical
+ * 28 bytes divided into: 
+ * 
+ * - `_version`, IP Protocol Version + IHL (8 bits)
+ * - `_dsf`, Type of service (8 bits)
+ * - `_tlength`, Total length (16 bits)
+ * - `_id`, Identification (16 bits)
+ * - `_flag_off`, Flags and Fragment Offset (16 bits)
+ * - `_ttl`, Time to Live (8 bits)
+ * - `_protocol`, IP Protocol (8 bits)
+ * - `_hdr_chksum`, Checksum (16 bits)
+ * - `_srcaddr`, Source Address (32 bits)
+ * - `_dstaddr`, Destination Address (32 bits). 
+ * 
+ * This structure refers to the RFC 791 https://datatracker.ietf.org/doc/html/rfc791
+ * The TOS field has been subtituted with the Differentiated Service Field
+ * according to the RFC 2474 https://datatracker.ietf.org/doc/html/rfc2474
+ */
 typedef struct
 {
 
-    u_int8_t  _version;    /* Version of IP protocol */
-    u_int8_t  _dsf;        /* Differentiated Service Field */
-    u_int16_t _tlength;    /* Total len of IP datagram or IP fragment */
-    u_int16_t _id;         /* Unique fragment identifier */
-    u_int16_t _flag_off;   /* IP Flags and Fragment Offset */
-    u_int8_t  _ttl;        /* Time To Live */
-    u_int8_t  _protocol;   /* Protocol */
-    u_int16_t _hdr_chksum; /* Header Checksum */
-    u_int32_t _srcaddr;    /* Source Address */
-    u_int32_t _dstaddr;    /* Destination Address */
+    u_int8_t  _version;    //!< Version of IP protocol
+    u_int8_t  _dsf;        //!< Differentiated Service Field
+    u_int16_t _tlength;    //!< Total len of IP datagram or IP fragment
+    u_int16_t _id;         //!< Unique fragment identifier
+    u_int16_t _flag_off;   //!< IP Flags and Fragment Offset
+    u_int8_t  _ttl;        //!< Time To Live
+    u_int8_t  _protocol;   //!< Protocol
+    u_int16_t _hdr_chksum; //!< Header Checksum
+    u_int32_t _srcaddr;    //!< Source Address
+    u_int32_t _dstaddr;    //!< Destination Address
 
 } IpHeader;
 
-/* This struct refers to the entire IP Packet (Header + Payload) */
+/**
+ * This struct refers to the entire IP Packet (Header + Payload)
+ */
 typedef struct
 {
 
-    IpHeader _iphdr;  // The IP Header
+    IpHeader _iphdr;  //!< The IP Header
 
-    // The payload of an IP packet is either an ICMP Packet, or an
-    // UDP Packet, or a TCP Packet. For now ...
     union 
     {
         
-        IcmpPacket *_icmp; // The ICMP Packet
-        UdpPacket  *_udp;  // The UDP Packet
-        TcpPacket  *_tcp;  // The TCP Packet
+        IcmpPacket *_icmp; //!< The ICMP Packet
+        UdpPacket  *_udp;  //!< The UDP Packet
+        TcpPacket  *_tcp;  //!< The TCP Packet
 
     } _payload; 
 
 } IpPacket;
 
-/* Set the IP Version field and the IHL (always 5) field */
+/**
+ * Set the IP Version field and the IHL (always 5) field
+ */
 extern void IpHeader_setVersion(IpHeader* _self, const u_int8_t _version) __attribute__((nonnull));
 
-/* Set the differentiated Service field In the IP Header */
+/**
+ * Set the differentiated Service field In the IP Header
+ */
 extern void IpHeader_setDifferentiatedServiceField(IpHeader* _self, const u_int8_t _dsf) __attribute__((nonnull));
 
-/* Set the Total Length field of the IP Header */
+/**
+ * Set the Total Length field of the IP Header
+ */
 extern void IpHeader_setTotalLength(IpHeader* _self, const u_int16_t _total_length) __attribute__((nonnull));
 
-/* Set the Identification field of the IP Header */
+/**
+ * Set the Identification field of the IP Header
+ */
 extern void IpHeader_setIdentfication(IpHeader* _self, const u_int16_t _identification) __attribute__((nonnull));
 
-/* Set the Flag and the Fragment Offset field */
+/**
+ * Set the Flag and the Fragment Offset field
+ */
 extern void IpHeader_setFlagOffField(IpHeader* _self, const u_int16_t _flagoff) __attribute__((nonnull));
 
-/* Set the TTL Field */
+/**
+ * Set the TTL Field
+ */
 extern void IpHeader_setTimeToLive(IpHeader* _self, const u_int8_t _time_to_live) __attribute__((nonnull));
 
-/* Set the Protocol Field */
+/**
+ * Set the Protocol Field
+ */
 extern void IpHeader_setProtocol(IpHeader* _self, const u_int8_t _protocol) __attribute__((nonnull));
 
-/* Set the Checksum of the Header */
+/**
+ * Set the Checksum of the Header
+ */
 extern void IpHeader_setHeaderChecksum(IpHeader* _self, const u_int16_t _checksum) __attribute__((nonnull));
 
-/* Set the source Address field of the IP Header */
+/**
+ * Set the source Address field of the IP Header
+ */
 extern void IpHeader_setSourceAddress(IpHeader* _self, const u_int32_t _srcaddres) __attribute__((nonnull));
 
-/* Set the Destination Address field of the IP Header */
+/**
+ * Set the Destination Address field of the IP Header
+ */
 extern void IpHeader_setDestinationAddress(IpHeader* _self, const u_int32_t _dstaddress) __attribute__((nonnull));
 
-/* Returns the version of the IP */
+/**
+ * Returns the version of the IP
+ */
 extern u_int8_t IpHeader_getVersion(const IpHeader* _self) __attribute__((nonnull));
 
-/* Returns the IHL Value from the IP Header */
+/**
+ * Returns the IHL Value from the IP Header
+ */
 extern u_int8_t IpHeader_getInternetHeaderLength(const IpHeader* _self) __attribute__((nonnull));
 
-/* Returns the Differentiated Service Code Point from the DSF field */
+/**
+ * Returns the Differentiated Service Code Point from the DSF field
+ */
 extern u_int8_t IpHeader_getDSCP(const IpHeader* _self) __attribute__((nonnull));
 
-/* Returns the Explicit Congestion Notification value from the DSF field */
+/**
+ * Returns the Explicit Congestion Notification value from the DSF field
+ */
 extern u_int8_t IpHeader_getECN(const IpHeader* _self) __attribute__((nonnull));
 
-/* Returns the Flags value from the IP Header */
+/**
+ * Returns the Flags value from the IP Header
+ */
 extern u_int8_t IpHeader_getFlags(const IpHeader* _self) __attribute__((nonnull));
 
-/* Returns the Fragment Offset value from the IP Header */
+/**
+ * Returns the Fragment Offset value from the IP Header
+ */
 extern u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self) __attribute__((nonnull));
 
-/* Encode the IP header into a ByteBuffer */
+/**
+ * Encode the IP header into a ByteBuffer
+ */
 extern void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Encode the IP header into a ByteBuffer and returns the ByteBuffer */
+/**
+ * Encode the IP header into a ByteBuffer and returns the ByteBuffer
+ */
 extern ByteBuffer* IpHeader_encode(const IpHeader* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input ByteBuffer into an IP Header */
+/**
+ * Decode the input ByteBuffer into an IP Header
+ */
 extern void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
-/* Prints the IP Header fields and values */
+/**
+ * Prints the IP Header fields and values
+ */
 extern void IpHeader_printInfo(const IpHeader* _self) __attribute__((nonnull));
 
-/* Compute the value for the Flags + Fragment Offset field by combining the
-   three input flags into a single value and then combining this single value
-   with the input fragment offset into the final value
-*/
+/**
+ * Compute the value for the Flags + Fragment Offset field by combining the
+ * three input flags into a single value and then combining this single value
+ * with the input fragment offset into the final value
+ */
 extern u_int16_t computeFlagOff(const int _x, const int _d, const int _m, const int _offset);
 
-/* Compute the value for the DSF Field by combining the input DSCP and ECN values */
+/**
+ * Compute the value for the DSF Field by combining the input DSCP and ECN values
+ */
 extern u_int8_t computeDifferentiatedServiceField(const int _dscp, const int _ecn);
 
-/* Converts the IP Header flags into a binary string (i.e., 2 -> 010) */
+/**
+ * Converts the IP Header flags into a binary string (i.e., 2 -> 010)
+ */
 extern void convertFlagToBin(const u_int8_t _flags, char *_out) __attribute__((nonnull));
 
+/**
+ * Creates and returns a new empty IP packet
+ */
 extern IpPacket* IpPacket_new() __attribute__((returns_nonnull));
 
-/* Create and returns a new ICMP Packet */
+/**
+ * Create and returns a new ICMP Packet
+ */
 extern IpPacket* IpPacket_newIcmp(const u_int8_t _type, const u_int8_t _code, const size_t _size) 
    __attribute__((returns_nonnull));
 
-/* Create and returns a new UDP packet */
+/**
+ * Create and returns a new UDP packet
+ */
 extern IpPacket* IpPacket_newUdp(const size_t _size) __attribute__((returns_nonnull));
 
-/* Create and returns a new TCP Packet */
+/**
+ * Create and returns a new TCP Packet
+ */
 extern IpPacket* IpPacket_newTcp(const size_t _size) __attribute__((returns_nonnull));
 
-/* Free the memory allocated for the input IP Packet */
+/**
+ * Free the memory allocated for the input IP Packet
+ */
 extern void IpPacket_delete(IpPacket* _self) __attribute__((nonnull));
 
-/* Set a new header for the IP Packet. Notice that the conten of the new header is entirely copied 
-   inside the header of the input packet. Once all the content has been copied, the memory allocated 
-   for the  input header will be freed. This means that, once this function ends the memory location 
-   of the input IP Header is no longer accessible.
-*/
+/**
+ * Set a new header for the IP Packet. 
+ */
 extern void IpPacket_setHeader(IpPacket * _self, IpHeader * _iphdr) __attribute__((nonnull));
 
-/* Fill the header of the input IP Packet with all the values given as input */
+/**
+ * Fill the header of the input IP Packet with all the values given as input
+ */
 extern void IpPacket_fillHeader(
     IpPacket*       _self,     const u_int8_t  _version, const u_int8_t  _dsf, const u_int16_t _tlen,
     const u_int16_t _id,       const u_int16_t _flagoff, const u_int8_t  _ttl, const u_int8_t  _protocol, 
     const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr
 ) __attribute__((nonnull));
 
-/* Returns the payload size of the input IP Packet */
+/**
+ * Returns the payload size of the input IP Packet
+ */
 extern u_int16_t IpPacket_getPayloadSize(const IpPacket * _self) __attribute__((nonnull));
 
-/* Returns the ICMP Packet encoded into the IP Packet Payload */
+/**
+ * Returns the ICMP Packet encoded into the IP Packet Payload
+ */
 extern IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Returns the UDP Packet encoded into the IP Packet Payload */
+/**
+ * Returns the UDP Packet encoded into the IP Packet Payload
+ */
 extern UdpPacket* IpPacket_getUdpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Returns the TCP Packet encoded into the IP Packet Payload */
+/**
+ * Returns the TCP Packet encoded into the IP Packet Payload
+ */
 extern TcpPacket* IpPacket_getTcpPacket(const IpPacket *_self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Encode the IP Packet into a ByteBuffer */
+/**
+ * Encode the IP Packet into a ByteBuffer
+ */
 extern ByteBuffer* IpPacket_encode(const IpPacket* _self) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input ICMP ByteBuffer into an ICMP packet */
+/**
+ * Decode the input ICMP ByteBuffer into an ICMP packet
+ */
 extern IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input UDP ByteBuffer into an IP packet */
+/**
+ * Decode the input UDP ByteBuffer into an IP packet
+ */
 extern IpPacket* IpPacket_decodeUdp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Decode the input TCP ByteBuffer into an IP packet */
+/**
+ * Decode the input TCP ByteBuffer into an IP packet
+ */
 extern IpPacket* IpPacket_decodeTcp(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
-/* Wrap the input ICMP Packet into the payload of the input IP Packet */
+/**
+ * Wrap the input ICMP Packet into the payload of the input IP Packet
+ */
 extern void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt) __attribute__((nonnull));
 
-/* Wrap the input UDP Packet into the payload of the input IP Packet */
+/**
+ * Wrap the input UDP Packet into the payload of the input IP Packet
+ */
 extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__((nonnull));
 
-/* Wrap the input TCP Packet into the payload of the input IP Packet */
+/**
+ * Wrap the input TCP Packet into the payload of the input IP Packet
+ */
 extern void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt) __attribute__((nonnull));
 
 __END_DECLS

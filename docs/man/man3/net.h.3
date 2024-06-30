@@ -1,0 +1,81 @@
+.TH "includes/utils/net.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/utils/net.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <stdio\&.h>\fP
+.br
+\fR#include <stdlib\&.h>\fP
+.br
+\fR#include <unistd\&.h>\fP
+.br
+\fR#include <netdb\&.h>\fP
+.br
+\fR#include <arpa/inet\&.h>\fP
+.br
+\fR#include <netinet/in\&.h>\fP
+.br
+\fR#include <linux/if\&.h>\fP
+.br
+\fR#include <sys/socket\&.h>\fP
+.br
+\fR#include <sys/ioctl\&.h>\fP
+.br
+\fR#include <string\&.h>\fP
+.br
+\fR#include <stdbool\&.h>\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "__BEGIN_DECLS void \fBgetHostnameIP\fP (const char *_hostname, char *_out) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBgetInterfaceIp\fP (const char *_interface, char *_addr) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBaddressNumberToString\fP (u_int32_t _addr, char *_out, const bool _be) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBgenerateRandomData\fP (char *_dst, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "int \fBgetInterfaceMTU\fP (const char *_interface) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int16_t \fBcomputeChecksum\fP (const unsigned char *buffer, const size_t size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "int \fBpathMtuDiscovery\fP (const char *_interface, const char *_hostname) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void addressNumberToString (u_int32_t _addr, char * _out, const bool _be)\fR [extern]\fP"
+Converts the input address number into a string\&. The third argument is used to specify whether the input address number is in LE or BE format\&. The result of the operation will be saved into the \fR_out\fP input buffer\&. 
+.SS "u_int16_t computeChecksum (const unsigned char * buffer, const size_t size)\fR [extern]\fP"
+Compute the checksum of an IP Packet as described in the corresponding RFC 
+.SS "void generateRandomData (char * _dst, const size_t _size)\fR [extern]\fP"
+Fill the input buffer with a given number of random bytes 
+.SS "__BEGIN_DECLS void getHostnameIP (const char * _hostname, char * _out)\fR [extern]\fP"
+Fill the \fR_out\fP parameter with the IP address of the input host 
+.SS "void getInterfaceIp (const char * _interface, char * _addr)\fR [extern]\fP"
+
+.SS "int getInterfaceMTU (const char * _interface)\fR [extern]\fP"
+Returns the MTU (Maximum Transmission Unit) for the given input interface 
+.SS "int pathMtuDiscovery (const char * _interface, const char * _hostname)\fR [extern]\fP"
+Performs Path MTU Discovery Search 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.
