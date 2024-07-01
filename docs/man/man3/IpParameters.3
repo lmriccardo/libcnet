@@ -1,4 +1,4 @@
-.TH "IpParameters" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "IpParameters" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -23,12 +23,16 @@ IpParameters
 .RI "int \fB_mf\fP"
 .br
 .RI "More Fragment Flag\&. "
+.ti -1c
+.RI "u_int16_t \fB_id\fP"
+.br
+.RI "The identification number to put into the IP Packet\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
 Struct containing some parameters not configurable when sending Packets Notice that D flag and M flag are mutually exclusive\&. 
 .PP
-Definition at line \fB29\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB48\fP of file \fBsender\&.h\fP\&.
 .SH "Field Documentation"
 .PP 
 .SS "int _df"
@@ -36,19 +40,25 @@ Definition at line \fB29\fP of file \fBsender\&.h\fP\&.
 .PP
 Don't Fragment Flag\&. 
 .PP
-Definition at line \fB32\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB51\fP of file \fBsender\&.h\fP\&.
+.SS "u_int16_t _id"
+
+.PP
+The identification number to put into the IP Packet\&. 
+.PP
+Definition at line \fB53\fP of file \fBsender\&.h\fP\&.
 .SS "int _mf"
 
 .PP
 More Fragment Flag\&. 
 .PP
-Definition at line \fB33\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB52\fP of file \fBsender\&.h\fP\&.
 .SS "int _xf"
 
 .PP
 The X flag (not used so it must be always 0) 
 .PP
-Definition at line \fB31\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB50\fP of file \fBsender\&.h\fP\&.
 
 .SH "Author"
 .PP 

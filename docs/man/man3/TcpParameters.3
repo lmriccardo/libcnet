@@ -1,0 +1,55 @@
+.TH "TcpParameters" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TcpParameters
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <sender\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int32_t \fB_sn\fP"
+.br
+.RI "The Sequence number to put into the TCP Packet\&. "
+.ti -1c
+.RI "u_int32_t \fB_an\fP"
+.br
+.RI "The acknowledgment number to put into the TCP Packet\&. "
+.ti -1c
+.RI "struct \fBControlBits\fP \fB_cbits\fP"
+.br
+.RI "Control Bits\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct containing some parameters, like sequence and acknowledgment number useful when constructing TCP Packets from the sender 
+.PP
+Definition at line \fB70\fP of file \fBsender\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int32_t _an"
+
+.PP
+The acknowledgment number to put into the TCP Packet\&. 
+.PP
+Definition at line \fB73\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBControlBits\fP _cbits"
+
+.PP
+Control Bits\&. 
+.PP
+Definition at line \fB74\fP of file \fBsender\&.h\fP\&.
+.SS "u_int32_t _sn"
+
+.PP
+The Sequence number to put into the TCP Packet\&. 
+.PP
+Definition at line \fB72\fP of file \fBsender\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

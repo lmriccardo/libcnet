@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v02.01d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -125,15 +125,6 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ad9d7a9a1188c503671a81f989582f997" id="r_ad9d7a9a1188c503671a81f989582f997"><td class="memItemLeft" align="right" valign="top">struct protoent *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9d7a9a1188c503671a81f989582f997">_proto</a></td></tr>
 <tr class="memdesc:ad9d7a9a1188c503671a81f989582f997"><td class="mdescLeft">&#160;</td><td class="mdescRight">The protocol used.  <br /></td></tr>
 <tr class="separator:ad9d7a9a1188c503671a81f989582f997"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8aad0d776cf9c8742ef8ebf3ddc956c8" id="r_a8aad0d776cf9c8742ef8ebf3ddc956c8"><td class="memItemLeft" align="right" valign="top">u_int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aad0d776cf9c8742ef8ebf3ddc956c8">_lastid</a></td></tr>
-<tr class="memdesc:a8aad0d776cf9c8742ef8ebf3ddc956c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last used IP Packet identifier.  <br /></td></tr>
-<tr class="separator:a8aad0d776cf9c8742ef8ebf3ddc956c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad66a5f2dbffb40239a16ba37cd0ef469" id="r_ad66a5f2dbffb40239a16ba37cd0ef469"><td class="memItemLeft" align="right" valign="top">u_int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad66a5f2dbffb40239a16ba37cd0ef469">_lsticmpid</a></td></tr>
-<tr class="memdesc:ad66a5f2dbffb40239a16ba37cd0ef469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last used ICMP Packet identifier.  <br /></td></tr>
-<tr class="separator:ad66a5f2dbffb40239a16ba37cd0ef469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac688bbccbcc19a8190fe7ec31aa725b" id="r_aac688bbccbcc19a8190fe7ec31aa725b"><td class="memItemLeft" align="right" valign="top">u_int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac688bbccbcc19a8190fe7ec31aa725b">_icmpsn</a></td></tr>
-<tr class="memdesc:aac688bbccbcc19a8190fe7ec31aa725b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICMP Message Sequence Number.  <br /></td></tr>
-<tr class="separator:aac688bbccbcc19a8190fe7ec31aa725b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a350251bf0dbeb6a343c649789df9f572" id="r_a350251bf0dbeb6a343c649789df9f572"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a350251bf0dbeb6a343c649789df9f572">_verbose</a></td></tr>
 <tr class="memdesc:a350251bf0dbeb6a343c649789df9f572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable verbosity.  <br /></td></tr>
 <tr class="separator:a350251bf0dbeb6a343c649789df9f572"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,9 +143,15 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ae92c912d5246b5255b13e73da8736709" id="r_ae92c912d5246b5255b13e73da8736709"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae92c912d5246b5255b13e73da8736709">_sent</a></td></tr>
 <tr class="memdesc:ae92c912d5246b5255b13e73da8736709"><td class="mdescLeft">&#160;</td><td class="mdescRight">Another variable to syncrhonize with the <a class="el" href="structReceiver.html">Receiver</a>.  <br /></td></tr>
 <tr class="separator:ae92c912d5246b5255b13e73da8736709"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a341740fac1b20d60fe746e29cb00bb31" id="r_a341740fac1b20d60fe746e29cb00bb31"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structIpParameters.html">IpParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a341740fac1b20d60fe746e29cb00bb31">_params</a></td></tr>
-<tr class="memdesc:a341740fac1b20d60fe746e29cb00bb31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some additional parameters for IP Packets.  <br /></td></tr>
-<tr class="separator:a341740fac1b20d60fe746e29cb00bb31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e51a97975d53d239ae1d8c75d14241" id="r_ae4e51a97975d53d239ae1d8c75d14241"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structIpParameters.html">IpParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4e51a97975d53d239ae1d8c75d14241">_ipp</a></td></tr>
+<tr class="memdesc:ae4e51a97975d53d239ae1d8c75d14241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some additional parameters for IP Packets.  <br /></td></tr>
+<tr class="separator:ae4e51a97975d53d239ae1d8c75d14241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8f94acc1d5f473bfc4273f6524d5312" id="r_aa8f94acc1d5f473bfc4273f6524d5312"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structIcmpParameters.html">IcmpParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8f94acc1d5f473bfc4273f6524d5312">_icmpp</a></td></tr>
+<tr class="memdesc:aa8f94acc1d5f473bfc4273f6524d5312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some parameters used for ICMP Packets.  <br /></td></tr>
+<tr class="separator:aa8f94acc1d5f473bfc4273f6524d5312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41cc0cec8859d3a4647d054ee61aa39" id="r_ab41cc0cec8859d3a4647d054ee61aa39"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpParameters.html">TcpParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab41cc0cec8859d3a4647d054ee61aa39">_tcpp</a></td></tr>
+<tr class="memdesc:ab41cc0cec8859d3a4647d054ee61aa39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some parameters used for TCP Packets.  <br /></td></tr>
+<tr class="separator:ab41cc0cec8859d3a4647d054ee61aa39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct representing a <a class="el" href="structSender.html">Sender</a>. It is called Raw since it uses the SOCK_RAW option when creating a new socket.</p>
@@ -177,7 +174,7 @@ Data Fields</h2></td></tr>
 <li><code>_params</code> Some additional parameters for IP Packets </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00058">58</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00099">99</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="af4dafdbf703a9a362443d2bdd764264d" name="af4dafdbf703a9a362443d2bdd764264d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4dafdbf703a9a362443d2bdd764264d">&#9670;&#160;</a></span>_dstaddress</h2>
@@ -193,7 +190,7 @@ Data Fields</h2></td></tr>
 
 <p>The Host receiving the packet. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00062">62</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00103">103</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -211,61 +208,43 @@ Data Fields</h2></td></tr>
 
 <p>The gateway address of the current Source Address. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00063">63</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00104">104</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
-<a id="aac688bbccbcc19a8190fe7ec31aa725b" name="aac688bbccbcc19a8190fe7ec31aa725b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac688bbccbcc19a8190fe7ec31aa725b">&#9670;&#160;</a></span>_icmpsn</h2>
+<a id="aa8f94acc1d5f473bfc4273f6524d5312" name="aa8f94acc1d5f473bfc4273f6524d5312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8f94acc1d5f473bfc4273f6524d5312">&#9670;&#160;</a></span>_icmpp</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u_int16_t _icmpsn</td>
+          <td class="memname">struct <a class="el" href="structIcmpParameters.html">IcmpParameters</a> _icmpp</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>ICMP Message Sequence Number. </p>
+<p>Some parameters used for ICMP Packets. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00069">69</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00115">115</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
-<a id="a8aad0d776cf9c8742ef8ebf3ddc956c8" name="a8aad0d776cf9c8742ef8ebf3ddc956c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aad0d776cf9c8742ef8ebf3ddc956c8">&#9670;&#160;</a></span>_lastid</h2>
+<a id="ae4e51a97975d53d239ae1d8c75d14241" name="ae4e51a97975d53d239ae1d8c75d14241"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4e51a97975d53d239ae1d8c75d14241">&#9670;&#160;</a></span>_ipp</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">u_int16_t _lastid</td>
+          <td class="memname">struct <a class="el" href="structIpParameters.html">IpParameters</a> _ipp</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Last used IP Packet identifier. </p>
+<p>Some additional parameters for IP Packets. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00067">67</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
-
-</div>
-</div>
-<a id="ad66a5f2dbffb40239a16ba37cd0ef469" name="ad66a5f2dbffb40239a16ba37cd0ef469"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad66a5f2dbffb40239a16ba37cd0ef469">&#9670;&#160;</a></span>_lsticmpid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">u_int16_t _lsticmpid</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Last used ICMP Packet identifier. </p>
-
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00068">68</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00114">114</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +262,7 @@ Data Fields</h2></td></tr>
 
 <p>Current Message Number. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00065">65</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00106">106</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +280,7 @@ Data Fields</h2></td></tr>
 
 <p>The maximum transmission unit. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00072">72</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00110">110</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -319,25 +298,7 @@ Data Fields</h2></td></tr>
 
 <p>A semaphore to synchronize with the <a class="el" href="structReceiver.html">Receiver</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00073">73</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
-
-</div>
-</div>
-<a id="a341740fac1b20d60fe746e29cb00bb31" name="a341740fac1b20d60fe746e29cb00bb31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a341740fac1b20d60fe746e29cb00bb31">&#9670;&#160;</a></span>_params</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structIpParameters.html">IpParameters</a> _params</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Some additional parameters for IP Packets. </p>
-
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00076">76</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00111">111</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +316,7 @@ Data Fields</h2></td></tr>
 
 <p>The protocol used. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00066">66</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00107">107</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -373,7 +334,7 @@ Data Fields</h2></td></tr>
 
 <p>Another variable to syncrhonize with the <a class="el" href="structReceiver.html">Receiver</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00075">75</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00113">113</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +352,7 @@ Data Fields</h2></td></tr>
 
 <p>File descriptor for the created socket. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00064">64</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00105">105</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -409,7 +370,7 @@ Data Fields</h2></td></tr>
 
 <p>Source Address. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00061">61</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00102">102</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -427,7 +388,25 @@ Data Fields</h2></td></tr>
 
 <p>Set to true when it is synchronized with the <a class="el" href="structReceiver.html">Receiver</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00074">74</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00112">112</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+
+</div>
+</div>
+<a id="ab41cc0cec8859d3a4647d054ee61aa39" name="ab41cc0cec8859d3a4647d054ee61aa39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41cc0cec8859d3a4647d054ee61aa39">&#9670;&#160;</a></span>_tcpp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpParameters.html">TcpParameters</a> _tcpp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Some parameters used for TCP Packets. </p>
+
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00116">116</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +424,7 @@ Data Fields</h2></td></tr>
 
 <p>A timer synchronized with the receiver. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00071">71</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00109">109</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -463,7 +442,7 @@ Data Fields</h2></td></tr>
 
 <p>Enable verbosity. </p>
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00070">70</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00108">108</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>

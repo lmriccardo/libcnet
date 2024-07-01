@@ -1,4 +1,4 @@
-.TH "TcpHeader" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "TcpHeader" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -80,7 +80,7 @@ Struct representing the TCP header of the TCP Packet\&. It consists of classical
 .PP
 This structure refers to the RFC 9293 https://www.rfc-editor.org/rfc/rfc9293.html 
 .PP
-Definition at line \fB494\fP of file \fBip\&.h\fP\&.
+Definition at line \fB552\fP of file \fBip\&.h\fP\&.
 .SH "Field Documentation"
 .PP 
 .SS "u_int32_t _acknum"
@@ -88,61 +88,61 @@ Definition at line \fB494\fP of file \fBip\&.h\fP\&.
 .PP
 Contains the next sequence the sender of the segment is expecting to receive\&. 
 .PP
-Definition at line \fB500\fP of file \fBip\&.h\fP\&.
+Definition at line \fB558\fP of file \fBip\&.h\fP\&.
 .SS "u_int16_t _checksum"
 
 .PP
 The checksum\&. 
 .PP
-Definition at line \fB504\fP of file \fBip\&.h\fP\&.
+Definition at line \fB562\fP of file \fBip\&.h\fP\&.
 .SS "u_int16_t _dstport"
 
 .PP
 Destination port number\&. 
 .PP
-Definition at line \fB498\fP of file \fBip\&.h\fP\&.
+Definition at line \fB556\fP of file \fBip\&.h\fP\&.
 .SS "struct \fBControlBits\fP _flags"
 
 .PP
 A number of control bits for different pourposes\&. 
 .PP
-Definition at line \fB502\fP of file \fBip\&.h\fP\&.
+Definition at line \fB560\fP of file \fBip\&.h\fP\&.
 .SS "u_int8_t _offset"
 
 .PP
 This number indicates where the data begins + reserved bits set to 0\&. 
 .PP
-Definition at line \fB501\fP of file \fBip\&.h\fP\&.
+Definition at line \fB559\fP of file \fBip\&.h\fP\&.
 .SS "u_int32_t _options"
 
 .PP
 A number of options\&. 
 .PP
-Definition at line \fB506\fP of file \fBip\&.h\fP\&.
+Definition at line \fB564\fP of file \fBip\&.h\fP\&.
 .SS "u_int32_t _seqnum"
 
 .PP
 Sequence number of first data octet in this segment\&. 
 .PP
-Definition at line \fB499\fP of file \fBip\&.h\fP\&.
+Definition at line \fB557\fP of file \fBip\&.h\fP\&.
 .SS "u_int16_t _srcport"
 
 .PP
 Source port number\&. 
 .PP
-Definition at line \fB497\fP of file \fBip\&.h\fP\&.
+Definition at line \fB555\fP of file \fBip\&.h\fP\&.
 .SS "u_int16_t _urgpntr"
 
 .PP
 The current value of the urgent pointer as a positive offset from the sequence number in this segment\&. 
 .PP
-Definition at line \fB505\fP of file \fBip\&.h\fP\&.
+Definition at line \fB563\fP of file \fBip\&.h\fP\&.
 .SS "u_int16_t _window"
 
 .PP
 The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept\&. 
 .PP
-Definition at line \fB503\fP of file \fBip\&.h\fP\&.
+Definition at line \fB561\fP of file \fBip\&.h\fP\&.
 
 .SH "Author"
 .PP 

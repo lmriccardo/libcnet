@@ -1,4 +1,4 @@
-.TH "includes/receiver.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "includes/receiver.h" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -106,37 +106,37 @@ includes/receiver.h
 .SS "#define handle_error( msg,  fd)   do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)"
 
 .PP
-Definition at line \fB18\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB36\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_delete( x)   (\fBLinkedList_deletet\fP(x))"
 
 .PP
-Definition at line \fB23\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB41\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_getSize( x)   (\fBLinkedList_getSizet\fP(x))"
 
 .PP
-Definition at line \fB27\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB45\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_isEmpty( x)   (\fBLinkedList_isEmptyt\fP(x))"
 
 .PP
-Definition at line \fB26\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB44\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_new( x)   (\fBLinkedList_new\fP(x))"
 
 .PP
-Definition at line \fB22\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB40\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_pop( x)   (\fBLinkedList_popt\fP(x))"
 
 .PP
-Definition at line \fB25\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB43\fP of file \fBreceiver\&.h\fP\&.
 .SS "#define MessageQueue_push( x,  y,  z)   (\fBLinkedList_pushvt\fP(x, y, z))"
 
 .PP
-Definition at line \fB24\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB42\fP of file \fBreceiver\&.h\fP\&.
 .SH "Typedef Documentation"
 .PP 
 .SS "typedef \fBLinkedList\fP \fBMessageQueue\fP"
 
 .PP
-Definition at line \fB20\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB38\fP of file \fBreceiver\&.h\fP\&.
 .SH "Function Documentation"
 .PP 
 .SS "void Receiver_delete (\fBReceiver\fP * _self)\fR [extern]\fP"

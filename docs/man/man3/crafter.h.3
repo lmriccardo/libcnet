@@ -1,4 +1,4 @@
-.TH "includes/utils/crafter.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "includes/utils/crafter.h" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -34,6 +34,9 @@ includes/utils/crafter.h
 .ti -1c
 .RI "\fBUdpPacket\fP * \fBcraftUdpPacket\fP (const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
 .br
+.ti -1c
+.RI "\fBTcpPacket\fP * \fBcraftTcpPacket\fP (const u_int16_t _srcport, const u_int16_t _dstport, const u_int32_t _seqnum, const u_int32_t _acknum, const u_int8_t _offset, const struct \fBControlBits\fP _cbits, const u_int16_t _window, const u_int16_t _checksum, const u_int16_t _urgpntr, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
 .in -1c
 .SH "Function Documentation"
 .PP 
@@ -47,6 +50,8 @@ Craft an ICMP Packet with the Gateway field
 Craft an ICMP Packet with Unused fields 
 .SS "__BEGIN_DECLS \fBIpPacket\fP * craftIpPacket (const u_int8_t _version, const int _dscp, const int _ecn, const u_int16_t _tlen, const u_int16_t _id, const int _xf, const int _df, const int _mf, const int _offset, const u_int8_t _ttl, const u_int8_t _proto, const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr)\fR [extern]\fP"
 Craft an IP Packet given the fields of the IP header 
+.SS "\fBTcpPacket\fP * craftTcpPacket (const u_int16_t _srcport, const u_int16_t _dstport, const u_int32_t _seqnum, const u_int32_t _acknum, const u_int8_t _offset, const struct \fBControlBits\fP _cbits, const u_int16_t _window, const u_int16_t _checksum, const u_int16_t _urgpntr, const char * _payload, const size_t _size)\fR [extern]\fP"
+Create a TCP Packet given the fields of the TCP header and the payload of the TCP Packet 
 .SS "\fBUdpPacket\fP * craftUdpPacket (const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum, const char * _payload, const size_t _size)\fR [extern]\fP"
 Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet 
 .SH "Author"

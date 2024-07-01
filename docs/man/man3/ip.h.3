@@ -1,4 +1,4 @@
-.TH "includes/ip.h" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "includes/ip.h" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -61,6 +61,9 @@ includes/ip.h
 .br
 .ti -1c
 .RI "struct \fBTcpPacket\fP"
+.br
+.ti -1c
+.RI "struct \fBPseudoHeader\fP"
 .br
 .ti -1c
 .RI "struct \fBIpHeader\fP"
@@ -133,7 +136,7 @@ includes/ip.h
 .RI "#define \fBUDP_PAYLOAD_MAX_SIZE\fP   0xffe3"
 .br
 .ti -1c
-.RI "#define \fBUDP_HEADER_PLUS_PSEUDO_SIZE\fP   0x14"
+.RI "#define \fBUDP_PSEUDO_HEADER_SIZE\fP   0x0c"
 .br
 .ti -1c
 .RI "#define \fBTCP_NOT_SET\fP   0x00"
@@ -317,6 +320,27 @@ includes/ip.h
 .RI "void \fBIcmpHeader_printInfo\fP (const \fBIcmpHeader\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
+.RI "void \fBIcmpHeader_printInfo_Unused\fP (const \fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_printInfo_Redirect\fP (const \fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_printInfo_Mtu\fP (const \fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_createHeader_Unused\fP (\fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_createHeader_Redirect\fP (\fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_createHeader_Echo\fP (\fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBIcmpHeader_createHeader_Mtu\fP (\fBIcmpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
 .RI "void \fBIcmpHeader_encode\fP (const \fBIcmpHeader\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
@@ -426,6 +450,9 @@ includes/ip.h
 .br
 .ti -1c
 .RI "void \fBconvertControlBitsToBin\fP (const struct \fBControlBits\fP *_cbits, char *_out) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBconvertIntToControlBits\fP (const u_int8_t _bits, struct \fBControlBits\fP *_cbits) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBTcpHeader_setSourcePort\fP (\fBTcpHeader\fP *_self, u_int16_t _srcport) __attribute__((nonnull))"
@@ -546,6 +573,12 @@ includes/ip.h
 .br
 .ti -1c
 .RI "\fBTcpPacket\fP * \fBTcpPacket_decode\fP (\fBByteBuffer\fP *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBPseudoHeader_create\fP (const \fBIpPacket\fP *_pckt, struct \fBPseudoHeader\fP *_ph, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBPseudoHeader_encode\fP (const struct \fBPseudoHeader\fP *_ph, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBIpHeader_setVersion\fP (\fBIpHeader\fP *_self, const u_int8_t _version) __attribute__((nonnull))"
@@ -670,293 +703,302 @@ includes/ip.h
 .ti -1c
 .RI "void \fBIpPacket_wrapTcp\fP (\fBIpPacket\fP *_self, \fBTcpPacket\fP *_tcppckt) __attribute__((nonnull))"
 .br
+.ti -1c
+.RI "u_int16_t \fBIpPacket_computeIcmpChecksum\fP (\fBIpPacket\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int16_t \fBIpPacket_computeUdpChecksum\fP (\fBIpPacket\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int16_t \fBIpPacket_computeTcpChecksum\fP (\fBIpPacket\fP *_self) __attribute__((nonnull))"
+.br
 .in -1c
 .SH "Macro Definition Documentation"
 .PP 
 .SS "#define D_FLAG_NOT_SET   0"
 
 .PP
-Definition at line \fB63\fP of file \fBip\&.h\fP\&.
+Definition at line \fB83\fP of file \fBip\&.h\fP\&.
 .SS "#define D_FLAG_SET   0x02"
 
 .PP
-Definition at line \fB65\fP of file \fBip\&.h\fP\&.
+Definition at line \fB85\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_DESTINATION_UNREACHABLE_TYPE   0x03"
 
 .PP
-Definition at line \fB20\fP of file \fBip\&.h\fP\&.
+Definition at line \fB40\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_ECHO_CODE   0x0"
 
 .PP
-Definition at line \fB37\fP of file \fBip\&.h\fP\&.
+Definition at line \fB57\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_ECHO_REPLY_TYPE   0x00"
 
 .PP
-Definition at line \fB19\fP of file \fBip\&.h\fP\&.
+Definition at line \fB39\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_ECHO_TYPE   0x08"
 
 .PP
-Definition at line \fB23\fP of file \fBip\&.h\fP\&.
+Definition at line \fB43\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_FRAGMENTATION_NEEDED_CODE   0x04"
 
 .PP
-Definition at line \fB34\fP of file \fBip\&.h\fP\&.
+Definition at line \fB54\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_HEADER_MAX_SIZE   0x08"
 
 .PP
-Definition at line \fB16\fP of file \fBip\&.h\fP\&.
+Definition at line \fB36\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_HOST_UNREACHABLE_CODE   0x01"
 
 .PP
-Definition at line \fB31\fP of file \fBip\&.h\fP\&.
+Definition at line \fB51\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_INFORMATION_REPLY_TYPE   0x10"
 
 .PP
-Definition at line \fB27\fP of file \fBip\&.h\fP\&.
+Definition at line \fB47\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_INFORMATION_REQUEST_TYPE   0x0f"
 
 .PP
-Definition at line \fB26\fP of file \fBip\&.h\fP\&.
+Definition at line \fB46\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_NET_UNREACHABLE_CODE   0x00"
 
 .PP
-Definition at line \fB30\fP of file \fBip\&.h\fP\&.
+Definition at line \fB50\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_PARAMETER_PROBLEM_TYPE   0x0c"
 
 .PP
-Definition at line \fB25\fP of file \fBip\&.h\fP\&.
+Definition at line \fB45\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_PAYLOAD_MAXIMUM_SIZE   0xffe3"
 
 .PP
-Definition at line \fB38\fP of file \fBip\&.h\fP\&.
+Definition at line \fB58\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_PORT_UNREACHABLE_CODE   0x03"
 
 .PP
-Definition at line \fB33\fP of file \fBip\&.h\fP\&.
+Definition at line \fB53\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_PROTOCOL_UNREACHABLE_CODE   0x02"
 
 .PP
-Definition at line \fB32\fP of file \fBip\&.h\fP\&.
+Definition at line \fB52\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_REDIRECT_TYPE   0x05"
 
 .PP
-Definition at line \fB22\fP of file \fBip\&.h\fP\&.
+Definition at line \fB42\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_SOURCE_QUENCH_TYPE   0x04"
 
 .PP
-Definition at line \fB21\fP of file \fBip\&.h\fP\&.
+Definition at line \fB41\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_SOURCE_ROUTE_FAILED_CODE   0x05"
 
 .PP
-Definition at line \fB35\fP of file \fBip\&.h\fP\&.
+Definition at line \fB55\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_TIME_EXCEEEDED_TYPE   0x0b"
 
 .PP
-Definition at line \fB24\fP of file \fBip\&.h\fP\&.
+Definition at line \fB44\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF11   0x0a"
 
 .PP
-Definition at line \fB79\fP of file \fBip\&.h\fP\&.
+Definition at line \fB99\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF12   0x0c"
 
 .PP
-Definition at line \fB80\fP of file \fBip\&.h\fP\&.
+Definition at line \fB100\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF13   0x0e"
 
 .PP
-Definition at line \fB81\fP of file \fBip\&.h\fP\&.
+Definition at line \fB101\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF21   0x12"
 
 .PP
-Definition at line \fB82\fP of file \fBip\&.h\fP\&.
+Definition at line \fB102\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF22   0x14"
 
 .PP
-Definition at line \fB83\fP of file \fBip\&.h\fP\&.
+Definition at line \fB103\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF23   0x16"
 
 .PP
-Definition at line \fB84\fP of file \fBip\&.h\fP\&.
+Definition at line \fB104\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF31   0x1a"
 
 .PP
-Definition at line \fB85\fP of file \fBip\&.h\fP\&.
+Definition at line \fB105\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF32   0x1c"
 
 .PP
-Definition at line \fB86\fP of file \fBip\&.h\fP\&.
+Definition at line \fB106\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF33   0x1e"
 
 .PP
-Definition at line \fB87\fP of file \fBip\&.h\fP\&.
+Definition at line \fB107\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF41   0x22"
 
 .PP
-Definition at line \fB88\fP of file \fBip\&.h\fP\&.
+Definition at line \fB108\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF42   0x24"
 
 .PP
-Definition at line \fB89\fP of file \fBip\&.h\fP\&.
+Definition at line \fB109\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF43   0x26"
 
 .PP
-Definition at line \fB90\fP of file \fBip\&.h\fP\&.
+Definition at line \fB110\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS0   0x00"
 
 .PP
-Definition at line \fB71\fP of file \fBip\&.h\fP\&.
+Definition at line \fB91\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS1   0x08"
 
 .PP
-Definition at line \fB72\fP of file \fBip\&.h\fP\&.
+Definition at line \fB92\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS2   0x10"
 
 .PP
-Definition at line \fB73\fP of file \fBip\&.h\fP\&.
+Definition at line \fB93\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS3   0x18"
 
 .PP
-Definition at line \fB74\fP of file \fBip\&.h\fP\&.
+Definition at line \fB94\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS4   0x20"
 
 .PP
-Definition at line \fB75\fP of file \fBip\&.h\fP\&.
+Definition at line \fB95\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS5   0x28"
 
 .PP
-Definition at line \fB76\fP of file \fBip\&.h\fP\&.
+Definition at line \fB96\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS6   0x30"
 
 .PP
-Definition at line \fB77\fP of file \fBip\&.h\fP\&.
+Definition at line \fB97\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS7   0x38"
 
 .PP
-Definition at line \fB78\fP of file \fBip\&.h\fP\&.
+Definition at line \fB98\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_EF   0x2e"
 
 .PP
-Definition at line \fB91\fP of file \fBip\&.h\fP\&.
+Definition at line \fB111\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_VOICE_ADMIT   0x2c"
 
 .PP
-Definition at line \fB92\fP of file \fBip\&.h\fP\&.
+Definition at line \fB112\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_CE   0x03"
 
 .PP
-Definition at line \fB98\fP of file \fBip\&.h\fP\&.
+Definition at line \fB118\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_ECT0   0x02"
 
 .PP
-Definition at line \fB97\fP of file \fBip\&.h\fP\&.
+Definition at line \fB117\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_ECT1   0x01"
 
 .PP
-Definition at line \fB96\fP of file \fBip\&.h\fP\&.
+Definition at line \fB116\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_NECT   0x00"
 
 .PP
-Definition at line \fB95\fP of file \fBip\&.h\fP\&.
+Definition at line \fB115\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_FLAG( _x,  _d,  _m)   (_x + _d + _m)"
 
 .PP
-Definition at line \fB68\fP of file \fBip\&.h\fP\&.
+Definition at line \fB88\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ICMP_PROTOCOL_CODE   0x01"
 
 .PP
-Definition at line \fB101\fP of file \fBip\&.h\fP\&.
+Definition at line \fB121\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_SIZE   0x14"
 
 .PP
-Definition at line \fB60\fP of file \fBip\&.h\fP\&.
+Definition at line \fB80\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_TCP_PROTOCOL_CODE   0x06"
 
 .PP
-Definition at line \fB103\fP of file \fBip\&.h\fP\&.
+Definition at line \fB123\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_UDP_PROTOCOL_CODE   0x11"
 
 .PP
-Definition at line \fB102\fP of file \fBip\&.h\fP\&.
+Definition at line \fB122\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_PAYLOAD_MAX_SIZE   65515"
 
 .PP
-Definition at line \fB113\fP of file \fBip\&.h\fP\&.
+Definition at line \fB133\fP of file \fBip\&.h\fP\&.
 .SS "#define IPv4   0x4"
 
 .PP
-Definition at line \fB58\fP of file \fBip\&.h\fP\&.
+Definition at line \fB78\fP of file \fBip\&.h\fP\&.
 .SS "#define IPv6   0x6"
 
 .PP
-Definition at line \fB59\fP of file \fBip\&.h\fP\&.
+Definition at line \fB79\fP of file \fBip\&.h\fP\&.
 .SS "#define M_FLAG_NOT_SET   0"
 
 .PP
-Definition at line \fB64\fP of file \fBip\&.h\fP\&.
+Definition at line \fB84\fP of file \fBip\&.h\fP\&.
 .SS "#define M_FLAG_SET   0x01"
 
 .PP
-Definition at line \fB66\fP of file \fBip\&.h\fP\&.
+Definition at line \fB86\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_ACK_SET   0x10"
 
 .PP
-Definition at line \fB50\fP of file \fBip\&.h\fP\&.
+Definition at line \fB70\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_CWR_SET   0x80"
 
 .PP
-Definition at line \fB53\fP of file \fBip\&.h\fP\&.
+Definition at line \fB73\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_ECE_SET   0x40"
 
 .PP
-Definition at line \fB52\fP of file \fBip\&.h\fP\&.
+Definition at line \fB72\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_FIN_SET   0x01"
 
 .PP
-Definition at line \fB46\fP of file \fBip\&.h\fP\&.
+Definition at line \fB66\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_NOT_SET   0x00"
 
 .PP
-Definition at line \fB45\fP of file \fBip\&.h\fP\&.
+Definition at line \fB65\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_PSEUDO_HEADER_SIZE   0x0c"
 
 .PP
-Definition at line \fB55\fP of file \fBip\&.h\fP\&.
+Definition at line \fB75\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_PSH_SET   0x08"
 
 .PP
-Definition at line \fB49\fP of file \fBip\&.h\fP\&.
+Definition at line \fB69\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_RST_SET   0x04"
 
 .PP
-Definition at line \fB48\fP of file \fBip\&.h\fP\&.
+Definition at line \fB68\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_SYN_SET   0x02"
 
 .PP
-Definition at line \fB47\fP of file \fBip\&.h\fP\&.
+Definition at line \fB67\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_URG_SET   0x20"
 
 .PP
-Definition at line \fB51\fP of file \fBip\&.h\fP\&.
+Definition at line \fB71\fP of file \fBip\&.h\fP\&.
 .SS "#define TTL_DEFAULT_VALUE   0x80"
 
 .PP
-Definition at line \fB107\fP of file \fBip\&.h\fP\&.
-.SS "#define UDP_HEADER_PLUS_PSEUDO_SIZE   0x14"
-
-.PP
-Definition at line \fB42\fP of file \fBip\&.h\fP\&.
+Definition at line \fB127\fP of file \fBip\&.h\fP\&.
 .SS "#define UDP_HEADER_SIZE   0x08"
 
 .PP
-Definition at line \fB40\fP of file \fBip\&.h\fP\&.
+Definition at line \fB60\fP of file \fBip\&.h\fP\&.
 .SS "#define UDP_PAYLOAD_MAX_SIZE   0xffe3"
 
 .PP
-Definition at line \fB41\fP of file \fBip\&.h\fP\&.
-.SS "#define X_FLAG_NOT_SET   0"
+Definition at line \fB61\fP of file \fBip\&.h\fP\&.
+.SS "#define UDP_PSEUDO_HEADER_SIZE   0x0c"
 
 .PP
 Definition at line \fB62\fP of file \fBip\&.h\fP\&.
+.SS "#define X_FLAG_NOT_SET   0"
+
+.PP
+Definition at line \fB82\fP of file \fBip\&.h\fP\&.
 .SH "Function Documentation"
 .PP 
 .SS "u_int8_t computeDifferentiatedServiceField (const int _dscp, const int _ecn)\fR [extern]\fP"
@@ -967,8 +1009,29 @@ Compute the value for the Flags + Fragment Offset field by combining the three i
 Converts the control bits into a string of binary values 
 .SS "void convertFlagToBin (const u_int8_t _flags, char * _out)\fR [extern]\fP"
 Converts the IP Header flags into a binary string (i\&.e\&., 2 -> 010) 
+.SS "void convertIntToControlBits (const u_int8_t _bits, struct \fBControlBits\fP * _cbits)\fR [extern]\fP"
+Converts the input integer into \fBControlBits\fP\&. For example, consider that the Control Bits field is 8 bit long, which means that the greatest number that can fit in is 2^8 - 1\&. Consdering any number between [0, 2^8), it is possible to convert it into flags just by converting it into binary\&.
+.PP
+Hence, this function fills each field of the input structure \fR_cbits\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI_bits\fP a value between 0 and 2^8 - 1 
+.br
+\fI_cbits\fP a poiter to a \fBControlBits\fP structure 
+.RE
+.PP
+
 .SS "void decodeControlBits (struct \fBControlBits\fP * _cbits, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Fill the ControlBit structure with the content of the \fBByteBuffer\fP 
+.SS "void IcmpHeader_createHeader_Echo (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Creates and fill the header with the Identification and Sequence Number fields 
+.SS "void IcmpHeader_createHeader_Mtu (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Creates and fill the header with the Next Hop MTU field 
+.SS "void IcmpHeader_createHeader_Redirect (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Creates and fill the header with the gateway field 
+.SS "void IcmpHeader_createHeader_Unused (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Creates and fill the header with Unused bytes 
 .SS "void IcmpHeader_decode (\fBIcmpHeader\fP * _hdr, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decode the input bytes into an ICMP Header 
 .SS "void IcmpHeader_encode (const \fBIcmpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
@@ -979,6 +1042,12 @@ Perform the encoding as the \fRIcmpHeader_encode\fP function and also returns th
 Return a pointer to an \fBIcmpHeader\fP struct initialized given the input type 
 .SS "void IcmpHeader_printInfo (const \fBIcmpHeader\fP * _self)\fR [extern]\fP"
 Print all the Header fields with corresponding values 
+.SS "void IcmpHeader_printInfo_Mtu (const \fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Prints header information in the case the Mtu format is chosen\&. This function is already called in IcmpHeader_printInfo 
+.SS "void IcmpHeader_printInfo_Redirect (const \fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Prints header information in the case the Echo Req/Rep format is chosen\&. This function is already called in IcmpHeader_printInfo 
+.SS "void IcmpHeader_printInfo_Unused (const \fBIcmpHeader\fP * _self)\fR [extern]\fP"
+Prints header information in the case the Redirect header format is chosen\&. This function is already called in IcmpHeader_printInfo 
 .SS "void IcmpHeader_setChecksum (\fBIcmpHeader\fP * _self, const u_int16_t _checksum)\fR [extern]\fP"
 Set the Checksum field of the ICMP header with the input checksum 
 .SS "void IcmpHeader_setCode (\fBIcmpHeader\fP * _self, const u_int8_t _code)\fR [extern]\fP"
@@ -1066,6 +1135,12 @@ Set the TTL Field
 Set the Total Length field of the IP Header 
 .SS "void IpHeader_setVersion (\fBIpHeader\fP * _self, const u_int8_t _version)\fR [extern]\fP"
 Set the IP Version field and the IHL (always 5) field 
+.SS "u_int16_t IpPacket_computeIcmpChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
+Compute the checksum for an ICMP Packet 
+.SS "u_int16_t IpPacket_computeTcpChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
+Compute the checksum for a TCP Packet 
+.SS "u_int16_t IpPacket_computeUdpChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
+Compute the checksum for an UDP Packet 
 .SS "\fBIpPacket\fP * IpPacket_decodeIcmp (\fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decode the input ICMP \fBByteBuffer\fP into an ICMP packet 
 .SS "\fBIpPacket\fP * IpPacket_decodeTcp (\fBByteBuffer\fP * _buffer)\fR [extern]\fP"
@@ -1102,6 +1177,10 @@ Wrap the input ICMP Packet into the payload of the input IP Packet
 Wrap the input TCP Packet into the payload of the input IP Packet 
 .SS "void IpPacket_wrapUdp (\fBIpPacket\fP * _self, \fBUdpPacket\fP * _udppckt)\fR [extern]\fP"
 Wrap the input UDP Packet into the payload of the input IP Packet 
+.SS "void PseudoHeader_create (const \fBIpPacket\fP * _pckt, struct \fBPseudoHeader\fP * _ph, const size_t _size)\fR [extern]\fP"
+Fill the pseudo header with the information from the Ip Packet Header and a size value, corresponding of the size of the entire underlying packet\&. 
+.SS "void PseudoHeader_encode (const struct \fBPseudoHeader\fP * _ph, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+Fill the input \fBByteBuffer\fP with informations from the Pseudo Header 
 .SS "void TcpHeader_decode (\fBTcpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decode the input \fBByteBuffer\fP into a TCP Header 
 .SS "void TcpHeader_encode (\fBTcpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"

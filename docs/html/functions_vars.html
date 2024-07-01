@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v02.01d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -104,15 +104,17 @@ $(function(){initNavTree('functions_vars.html',''); initResizable(true); });
 <li>_ack&#160;:&#160;<a class="el" href="structControlBits.html#ac450d0b2b82f5d1f98fa7c6232129f90">ControlBits</a></li>
 <li>_acknum&#160;:&#160;<a class="el" href="structTcpHeader.html#afa33303d18db9a5ce0f98d58f0daafd4">TcpHeader</a></li>
 <li>_address&#160;:&#160;<a class="el" href="structReceiver.html#af241297155e6cd0eef8fdaa4010309b8">Receiver</a></li>
+<li>_an&#160;:&#160;<a class="el" href="structTcpParameters.html#a125a456b90a667885a1764d1c33c4db5">TcpParameters</a></li>
 <li>_buffer&#160;:&#160;<a class="el" href="structByteBuffer.html#af076ed3307ccc419f46ed857bb321a2f">ByteBuffer</a>, <a class="el" href="structResponse.html#af076ed3307ccc419f46ed857bb321a2f">Response</a></li>
 <li>_capacity&#160;:&#160;<a class="el" href="structLinkedList.html#a1ab19118d95ead89c86cc27bd950d34a">LinkedList</a></li>
+<li>_cbits&#160;:&#160;<a class="el" href="structTcpParameters.html#a331c58bef1f841ed5e0fee7fcae16152">TcpParameters</a></li>
 <li>_checksum&#160;:&#160;<a class="el" href="structIcmpHeader.html#ad2ed3f50729959b773f1c60d577f17f6">IcmpHeader</a>, <a class="el" href="structTcpHeader.html#ad2ed3f50729959b773f1c60d577f17f6">TcpHeader</a>, <a class="el" href="structUdpHeader.html#ad2ed3f50729959b773f1c60d577f17f6">UdpHeader</a></li>
 <li>_code&#160;:&#160;<a class="el" href="structIcmpHeader.html#ada25dc4b2266318e53c953d6555ebc32">IcmpHeader</a></li>
 <li>_current&#160;:&#160;<a class="el" href="structTimer.html#a01dbe2272be7db05457c5c7d23aef39e">Timer</a></li>
 <li>_cwr&#160;:&#160;<a class="el" href="structControlBits.html#a5bdcd5f9e9bc6b4be95441f43970061d">ControlBits</a></li>
 <li>_df&#160;:&#160;<a class="el" href="structIpParameters.html#a5ea0b51470a75b99eeab36cb44791549">IpParameters</a></li>
 <li>_dsf&#160;:&#160;<a class="el" href="structIpHeader.html#abace33e0c29fb2d5b3909532e6b487b5">IpHeader</a></li>
-<li>_dstaddr&#160;:&#160;<a class="el" href="structIpHeader.html#a31309e94546aab12faa3891a7cbe06ac">IpHeader</a></li>
+<li>_dstaddr&#160;:&#160;<a class="el" href="structIpHeader.html#a31309e94546aab12faa3891a7cbe06ac">IpHeader</a>, <a class="el" href="structPseudoHeader.html#a31309e94546aab12faa3891a7cbe06ac">PseudoHeader</a></li>
 <li>_dstaddress&#160;:&#160;<a class="el" href="structSender.html#af4dafdbf703a9a362443d2bdd764264d">Sender</a></li>
 <li>_dstport&#160;:&#160;<a class="el" href="structTcpHeader.html#a8c95c8bb25459cbd718928d4658485ea">TcpHeader</a>, <a class="el" href="structUdpHeader.html#a8c95c8bb25459cbd718928d4658485ea">UdpHeader</a></li>
 <li>_ece&#160;:&#160;<a class="el" href="structControlBits.html#a95178bea4f2c67c906307fe7da026aca">ControlBits</a></li>
@@ -128,13 +130,12 @@ $(function(){initNavTree('functions_vars.html',''); initResizable(true); });
 <li>_head&#160;:&#160;<a class="el" href="structLinkedList.html#a304ff920d03d2ca345026d23ead563b2">LinkedList</a></li>
 <li>_icmp&#160;:&#160;<a class="el" href="structIpPacket.html#a6b14810e61fd8aaf8edb03935ff40224">IpPacket</a></li>
 <li>_icmphdr&#160;:&#160;<a class="el" href="structIcmpPacket.html#a4cdc2edea5e4d06e1d050ba1b09f090c">IcmpPacket</a></li>
-<li>_icmpsn&#160;:&#160;<a class="el" href="structSender.html#aac688bbccbcc19a8190fe7ec31aa725b">Sender</a></li>
-<li>_id&#160;:&#160;<a class="el" href="structh__echo__t.html#a67319b8def030fe96eb296fa9f80f5a2">h_echo_t</a>, <a class="el" href="structIpHeader.html#a67319b8def030fe96eb296fa9f80f5a2">IpHeader</a></li>
+<li>_icmpp&#160;:&#160;<a class="el" href="structSender.html#aa8f94acc1d5f473bfc4273f6524d5312">Sender</a></li>
+<li>_id&#160;:&#160;<a class="el" href="structh__echo__t.html#a67319b8def030fe96eb296fa9f80f5a2">h_echo_t</a>, <a class="el" href="structIcmpParameters.html#a67319b8def030fe96eb296fa9f80f5a2">IcmpParameters</a>, <a class="el" href="structIpHeader.html#a67319b8def030fe96eb296fa9f80f5a2">IpHeader</a>, <a class="el" href="structIpParameters.html#a67319b8def030fe96eb296fa9f80f5a2">IpParameters</a></li>
 <li>_iphdr&#160;:&#160;<a class="el" href="structIpPacket.html#a52a08317a3eed7502f3365fa18202016">IpPacket</a></li>
+<li>_ipp&#160;:&#160;<a class="el" href="structSender.html#ae4e51a97975d53d239ae1d8c75d14241">Sender</a></li>
 <li>_last&#160;:&#160;<a class="el" href="structLinkedList.html#abcb3337401092fac2f69ade9da215bec">LinkedList</a></li>
-<li>_lastid&#160;:&#160;<a class="el" href="structSender.html#a8aad0d776cf9c8742ef8ebf3ddc956c8">Sender</a></li>
 <li>_length&#160;:&#160;<a class="el" href="structUdpHeader.html#a10ae027acd56faf9d500dac0b91dca84">UdpHeader</a></li>
-<li>_lsticmpid&#160;:&#160;<a class="el" href="structSender.html#ad66a5f2dbffb40239a16ba37cd0ef469">Sender</a></li>
 <li>_mf&#160;:&#160;<a class="el" href="structIpParameters.html#a37275c4f0953382e333088001789fd94">IpParameters</a></li>
 <li>_msgcnt&#160;:&#160;<a class="el" href="structSender.html#ae19d9dcc9ceac69917e03e97ec032900">Sender</a></li>
 <li>_mtu&#160;:&#160;<a class="el" href="unionh__data__t.html#a50bab3ce4205dd5e1db204ba903a09ad">h_data_t</a>, <a class="el" href="structh__mtu__t.html#a15ffc775514fa88e142e57d8e67e02ea">h_mtu_t</a>, <a class="el" href="structSender.html#a4d0dca23b0071174792c79108056a98d">Sender</a></li>
@@ -142,13 +143,12 @@ $(function(){initNavTree('functions_vars.html',''); initResizable(true); });
 <li>_next&#160;:&#160;<a class="el" href="structNode.html#af66cfd05f285ba49aced643cf9b2f7e1">Node</a></li>
 <li>_offset&#160;:&#160;<a class="el" href="structTcpHeader.html#a71b8ce4061f5f20ba3153dc447f754b1">TcpHeader</a></li>
 <li>_options&#160;:&#160;<a class="el" href="structTcpHeader.html#ac09aae7322b5aa2946fef59034225691">TcpHeader</a></li>
-<li>_params&#160;:&#160;<a class="el" href="structSender.html#a341740fac1b20d60fe746e29cb00bb31">Sender</a></li>
 <li>_payload&#160;:&#160;<a class="el" href="structIcmpPacket.html#a79f8ec352ea9f85cd8cd503c25b95274">IcmpPacket</a>, <a class="el" href="structIpPacket.html#a79ce56254bf41c6697960b3f8bf4d61a">IpPacket</a>, <a class="el" href="structTcpPacket.html#a79f8ec352ea9f85cd8cd503c25b95274">TcpPacket</a>, <a class="el" href="structUdpPacket.html#a79f8ec352ea9f85cd8cd503c25b95274">UdpPacket</a></li>
 <li>_position&#160;:&#160;<a class="el" href="structByteBuffer.html#ae8a4c9b3c903b1884e75302a77e41904">ByteBuffer</a></li>
 <li>_prev&#160;:&#160;<a class="el" href="structNode.html#a34a5fb04431b3fffd85de29ce74e117a">Node</a></li>
 <li>_previous&#160;:&#160;<a class="el" href="structTimer.html#adc1adc5e46bf8a25ec3827da914fd2c7">Timer</a></li>
 <li>_proto&#160;:&#160;<a class="el" href="structReceiver.html#ad9d7a9a1188c503671a81f989582f997">Receiver</a>, <a class="el" href="structSender.html#ad9d7a9a1188c503671a81f989582f997">Sender</a></li>
-<li>_protocol&#160;:&#160;<a class="el" href="structIpHeader.html#a53009ca070b040fca5332f0b43d35fa3">IpHeader</a></li>
+<li>_protocol&#160;:&#160;<a class="el" href="structIpHeader.html#a53009ca070b040fca5332f0b43d35fa3">IpHeader</a>, <a class="el" href="structPseudoHeader.html#a53009ca070b040fca5332f0b43d35fa3">PseudoHeader</a></li>
 <li>_psh&#160;:&#160;<a class="el" href="structControlBits.html#a68a48a484bd6c65883c1ddedcb6daf4b">ControlBits</a></li>
 <li>_queue&#160;:&#160;<a class="el" href="structReceiver.html#a04ada15b48ffd5c4d6b93c3061867b4c">Receiver</a></li>
 <li>_rest&#160;:&#160;<a class="el" href="structIcmpHeader.html#a3c7b006f79e6d228d30e36ec799dbf5e">IcmpHeader</a></li>
@@ -157,15 +157,17 @@ $(function(){initNavTree('functions_vars.html',''); initResizable(true); });
 <li>_running&#160;:&#160;<a class="el" href="structReceiver.html#a665c90a6f5b8fdb743accfaaf0517e27">Receiver</a>, <a class="el" href="structTimer.html#a665c90a6f5b8fdb743accfaaf0517e27">Timer</a></li>
 <li>_sent&#160;:&#160;<a class="el" href="structSender.html#ae92c912d5246b5255b13e73da8736709">Sender</a></li>
 <li>_seqnum&#160;:&#160;<a class="el" href="structh__echo__t.html#ac87fbcb3e2bc0d91be218edb910c740b">h_echo_t</a>, <a class="el" href="structTcpHeader.html#affec41e0ae5a63d5f538bd713d943001">TcpHeader</a></li>
-<li>_size&#160;:&#160;<a class="el" href="structByteBuffer.html#a3cce90d52cb7e47b6c17d3a0e1c94842">ByteBuffer</a>, <a class="el" href="structFragmentList.html#a3cce90d52cb7e47b6c17d3a0e1c94842">FragmentList</a>, <a class="el" href="structLinkedList.html#a3cce90d52cb7e47b6c17d3a0e1c94842">LinkedList</a>, <a class="el" href="structResponse.html#a3cce90d52cb7e47b6c17d3a0e1c94842">Response</a></li>
+<li>_size&#160;:&#160;<a class="el" href="structByteBuffer.html#a3cce90d52cb7e47b6c17d3a0e1c94842">ByteBuffer</a>, <a class="el" href="structFragmentList.html#a3cce90d52cb7e47b6c17d3a0e1c94842">FragmentList</a>, <a class="el" href="structLinkedList.html#a3cce90d52cb7e47b6c17d3a0e1c94842">LinkedList</a>, <a class="el" href="structPseudoHeader.html#a546b64b224100b32183bd4a12bb3e301">PseudoHeader</a>, <a class="el" href="structResponse.html#a3cce90d52cb7e47b6c17d3a0e1c94842">Response</a></li>
+<li>_sn&#160;:&#160;<a class="el" href="structIcmpParameters.html#a8781b84a7fc76bb034c6e6f6fcd9ac98">IcmpParameters</a>, <a class="el" href="structTcpParameters.html#a2f615447b4def2578a2ee1e3d54b7756">TcpParameters</a></li>
 <li>_socket&#160;:&#160;<a class="el" href="structReceiver.html#adba482ed381b10fe52a0492c2a4ed24b">Receiver</a>, <a class="el" href="structSender.html#adba482ed381b10fe52a0492c2a4ed24b">Sender</a></li>
-<li>_srcaddr&#160;:&#160;<a class="el" href="structIpHeader.html#a984ccfd0f2a75bc847d6f287e2f3b73d">IpHeader</a></li>
+<li>_srcaddr&#160;:&#160;<a class="el" href="structIpHeader.html#a984ccfd0f2a75bc847d6f287e2f3b73d">IpHeader</a>, <a class="el" href="structPseudoHeader.html#a984ccfd0f2a75bc847d6f287e2f3b73d">PseudoHeader</a></li>
 <li>_srcaddress&#160;:&#160;<a class="el" href="structSender.html#af084b94b5c76bf9f03fd02077e5c0735">Sender</a></li>
 <li>_srcport&#160;:&#160;<a class="el" href="structTcpHeader.html#a617c28886c8739e65ece6c86a5b363ce">TcpHeader</a>, <a class="el" href="structUdpHeader.html#a617c28886c8739e65ece6c86a5b363ce">UdpHeader</a></li>
 <li>_start&#160;:&#160;<a class="el" href="structTimer.html#a7950998d66ef9e9d921cf261afe4827f">Timer</a></li>
 <li>_syn&#160;:&#160;<a class="el" href="structControlBits.html#ad13e27345f60836939b11bcc713e4266">ControlBits</a></li>
 <li>_synch&#160;:&#160;<a class="el" href="structSender.html#aa52aa2feffaab76b8a1aec37f96add6d">Sender</a></li>
 <li>_tcp&#160;:&#160;<a class="el" href="structIpPacket.html#a8513f60d6d222e31e8cf2d9cb40725cd">IpPacket</a></li>
+<li>_tcpp&#160;:&#160;<a class="el" href="structSender.html#ab41cc0cec8859d3a4647d054ee61aa39">Sender</a></li>
 <li>_timer&#160;:&#160;<a class="el" href="structReceiver.html#a4ab14a648091d1c2192cac07b8129323">Receiver</a>, <a class="el" href="structSender.html#a4ab14a648091d1c2192cac07b8129323">Sender</a></li>
 <li>_tlength&#160;:&#160;<a class="el" href="structIpHeader.html#ac66f4cae7b225e6e103b7bf3a75b2387">IpHeader</a></li>
 <li>_ttl&#160;:&#160;<a class="el" href="structIpHeader.html#ab3c1999c3f816ddcbb616c624eec96d2">IpHeader</a></li>

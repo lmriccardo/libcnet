@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v02.01d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -125,6 +125,10 @@ $(function(){initNavTree('sender_8h.html',''); initResizable(true); });
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIpParameters.html">IpParameters</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structIcmpParameters.html">IcmpParameters</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTcpParameters.html">TcpParameters</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSender.html">Sender</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -165,10 +169,14 @@ Functions</h2></td></tr>
 <tr class="separator:a8b2018b4b3c01d23694e0720fb84ebc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6a1cc1c4f27d8ae09e79f568a5a0114" id="r_ad6a1cc1c4f27d8ae09e79f568a5a0114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6a1cc1c4f27d8ae09e79f568a5a0114">Sender_fillUdpHeader</a> (<a class="el" href="structSender.html">Sender</a> *_self, <a class="el" href="structUdpPacket.html">UdpPacket</a> *_pckt, const u_int16_t _srcport) __attribute__((nonnull))</td></tr>
 <tr class="separator:ad6a1cc1c4f27d8ae09e79f568a5a0114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c64f29e2b685a4436feb303375cff54" id="r_a5c64f29e2b685a4436feb303375cff54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c64f29e2b685a4436feb303375cff54">Sender_fillTcpHeader</a> (<a class="el" href="structSender.html">Sender</a> *_self, <a class="el" href="structTcpPacket.html">TcpPacket</a> *_pckt, const u_int16_t _port, const u_int8_t _offset, const u_int16_t _window, const u_int16_t _urgpntr) __attribute__((nonnull))</td></tr>
+<tr class="separator:a5c64f29e2b685a4436feb303375cff54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4e4af6987f4dbff2146dfd5193fe910" id="r_ad4e4af6987f4dbff2146dfd5193fe910"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structIpPacket.html">IpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4e4af6987f4dbff2146dfd5193fe910">Sender_craftIcmp</a> (<a class="el" href="structSender.html">Sender</a> *_self, const u_int8_t _type, const u_int8_t _code, const char *_payload, const size_t _size) __attribute__((nonnull(1))) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:ad4e4af6987f4dbff2146dfd5193fe910"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae20ad9757fb7aa54e3901c28e10f0708" id="r_ae20ad9757fb7aa54e3901c28e10f0708"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structIpPacket.html">IpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae20ad9757fb7aa54e3901c28e10f0708">Sender_craftUdp</a> (<a class="el" href="structSender.html">Sender</a> *_self, const u_int16_t _port, const char *_payload, const size_t _size) __attribute__((nonnull(1))) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:ae20ad9757fb7aa54e3901c28e10f0708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b5901ad18c3e407f0a7c168ee3951dd" id="r_a0b5901ad18c3e407f0a7c168ee3951dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structIpPacket.html">IpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5901ad18c3e407f0a7c168ee3951dd">Sender_craftTcp</a> (<a class="el" href="structSender.html">Sender</a> *_self, const u_int16_t _srcport, const u_int8_t _offset, const u_int16_t _window, const u_int16_t _urgpntr, const char *_payload, const size_t _size) __attribute__((nonnull(1))) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a0b5901ad18c3e407f0a7c168ee3951dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af729e17e3ce336f39c3c3b46385d89c4" id="r_af729e17e3ce336f39c3c3b46385d89c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af729e17e3ce336f39c3c3b46385d89c4">Sender_send</a> (<a class="el" href="structSender.html">Sender</a> *_self, <a class="el" href="structIpPacket.html">IpPacket</a> *_pckt, const double _delay) __attribute__((nonnull))</td></tr>
 <tr class="separator:af729e17e3ce336f39c3c3b46385d89c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c466f40969eba72c1cbacea03b3a7c8" id="r_a2c466f40969eba72c1cbacea03b3a7c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c466f40969eba72c1cbacea03b3a7c8">Sender_updateIcmpPacket</a> (<a class="el" href="structSender.html">Sender</a> *_self, <a class="el" href="structIpPacket.html">IpPacket</a> *_pckt) __attribute__((nonnull))</td></tr>
@@ -196,7 +204,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00020">20</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00039">39</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -212,7 +220,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00021">21</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00040">40</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>
@@ -294,6 +302,61 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Craft a complete Ip Packet containing an ICMP Packet </p>
+
+</div>
+</div>
+<a id="a0b5901ad18c3e407f0a7c168ee3951dd" name="a0b5901ad18c3e407f0a7c168ee3951dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b5901ad18c3e407f0a7c168ee3951dd">&#9670;&#160;</a></span>Sender_craftTcp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structIpPacket.html">IpPacket</a> * Sender_craftTcp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSender.html">Sender</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_srcport</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_window</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_urgpntr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>_payload</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t</td>          <td class="paramname"><span class="paramname"><em>_size</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Craft a complete Ip Packet containing a TCP Packet </p>
 
 </div>
 </div>
@@ -460,6 +523,56 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Fill the input IP packet header with information from the <a class="el" href="structSender.html">Sender</a> object </p>
+
+</div>
+</div>
+<a id="a5c64f29e2b685a4436feb303375cff54" name="a5c64f29e2b685a4436feb303375cff54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c64f29e2b685a4436feb303375cff54">&#9670;&#160;</a></span>Sender_fillTcpHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sender_fillTcpHeader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSender.html">Sender</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTcpPacket.html">TcpPacket</a> *</td>          <td class="paramname"><span class="paramname"><em>_pckt</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_port</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_offset</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_window</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_urgpntr</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Fill the header of the input TCP Packet with informations from the <a class="el" href="structSender.html">Sender</a> object and in input </p>
 
 </div>
 </div>
@@ -635,7 +748,7 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Send the input icmp packet </p>
+<p>Send the input Ip packet </p>
 
 </div>
 </div>

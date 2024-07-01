@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['receiver_0',['Receiver',['../structReceiver.html',1,'']]],
-  ['response_1',['Response',['../structResponse.html',1,'']]]
+  ['pseudoheader_0',['PseudoHeader',['../structPseudoHeader.html',1,'']]]
 ];

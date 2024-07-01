@@ -1,4 +1,4 @@
-.TH "Sender" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "Sender" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -36,18 +36,6 @@ Sender
 .br
 .RI "The protocol used\&. "
 .ti -1c
-.RI "u_int16_t \fB_lastid\fP"
-.br
-.RI "Last used IP Packet identifier\&. "
-.ti -1c
-.RI "u_int16_t \fB_lsticmpid\fP"
-.br
-.RI "Last used ICMP Packet identifier\&. "
-.ti -1c
-.RI "u_int16_t \fB_icmpsn\fP"
-.br
-.RI "ICMP Message Sequence Number\&. "
-.ti -1c
 .RI "bool \fB_verbose\fP"
 .br
 .RI "Enable verbosity\&. "
@@ -72,9 +60,17 @@ Sender
 .br
 .RI "Another variable to syncrhonize with the \fBReceiver\fP\&. "
 .ti -1c
-.RI "struct \fBIpParameters\fP \fB_params\fP"
+.RI "struct \fBIpParameters\fP \fB_ipp\fP"
 .br
 .RI "Some additional parameters for IP Packets\&. "
+.ti -1c
+.RI "struct \fBIcmpParameters\fP \fB_icmpp\fP"
+.br
+.RI "Some parameters used for ICMP Packets\&. "
+.ti -1c
+.RI "struct \fBTcpParameters\fP \fB_tcpp\fP"
+.br
+.RI "Some parameters used for TCP Packets\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -115,7 +111,7 @@ This structure has the following fields:
 .PP
 
 .PP
-Definition at line \fB58\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB99\fP of file \fBsender\&.h\fP\&.
 .SH "Field Documentation"
 .PP 
 .SS "struct sockaddr_in _dstaddress"
@@ -123,97 +119,91 @@ Definition at line \fB58\fP of file \fBsender\&.h\fP\&.
 .PP
 The Host receiving the packet\&. 
 .PP
-Definition at line \fB62\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB103\fP of file \fBsender\&.h\fP\&.
 .SS "char* _gateway"
 
 .PP
 The gateway address of the current Source Address\&. 
 .PP
-Definition at line \fB63\fP of file \fBsender\&.h\fP\&.
-.SS "u_int16_t _icmpsn"
+Definition at line \fB104\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBIcmpParameters\fP _icmpp"
 
 .PP
-ICMP Message Sequence Number\&. 
+Some parameters used for ICMP Packets\&. 
 .PP
-Definition at line \fB69\fP of file \fBsender\&.h\fP\&.
-.SS "u_int16_t _lastid"
+Definition at line \fB115\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBIpParameters\fP _ipp"
 
 .PP
-Last used IP Packet identifier\&. 
+Some additional parameters for IP Packets\&. 
 .PP
-Definition at line \fB67\fP of file \fBsender\&.h\fP\&.
-.SS "u_int16_t _lsticmpid"
-
-.PP
-Last used ICMP Packet identifier\&. 
-.PP
-Definition at line \fB68\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB114\fP of file \fBsender\&.h\fP\&.
 .SS "int _msgcnt"
 
 .PP
 Current Message Number\&. 
 .PP
-Definition at line \fB65\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB106\fP of file \fBsender\&.h\fP\&.
 .SS "int _mtu"
 
 .PP
 The maximum transmission unit\&. 
 .PP
-Definition at line \fB72\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB110\fP of file \fBsender\&.h\fP\&.
 .SS "sem_t _mutex"
 
 .PP
 A semaphore to synchronize with the \fBReceiver\fP\&. 
 .PP
-Definition at line \fB73\fP of file \fBsender\&.h\fP\&.
-.SS "struct \fBIpParameters\fP _params"
-
-.PP
-Some additional parameters for IP Packets\&. 
-.PP
-Definition at line \fB76\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB111\fP of file \fBsender\&.h\fP\&.
 .SS "struct protoent* _proto"
 
 .PP
 The protocol used\&. 
 .PP
-Definition at line \fB66\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB107\fP of file \fBsender\&.h\fP\&.
 .SS "bool _sent"
 
 .PP
 Another variable to syncrhonize with the \fBReceiver\fP\&. 
 .PP
-Definition at line \fB75\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB113\fP of file \fBsender\&.h\fP\&.
 .SS "int _socket"
 
 .PP
 File descriptor for the created socket\&. 
 .PP
-Definition at line \fB64\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB105\fP of file \fBsender\&.h\fP\&.
 .SS "char* _srcaddress"
 
 .PP
 Source Address\&. 
 .PP
-Definition at line \fB61\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB102\fP of file \fBsender\&.h\fP\&.
 .SS "bool _synch"
 
 .PP
 Set to true when it is synchronized with the \fBReceiver\fP\&. 
 .PP
-Definition at line \fB74\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB112\fP of file \fBsender\&.h\fP\&.
+.SS "struct \fBTcpParameters\fP _tcpp"
+
+.PP
+Some parameters used for TCP Packets\&. 
+.PP
+Definition at line \fB116\fP of file \fBsender\&.h\fP\&.
 .SS "struct \fBTimer\fP* _timer"
 
 .PP
 A timer synchronized with the receiver\&. 
 .PP
-Definition at line \fB71\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB109\fP of file \fBsender\&.h\fP\&.
 .SS "bool _verbose"
 
 .PP
 Enable verbosity\&. 
 .PP
-Definition at line \fB70\fP of file \fBsender\&.h\fP\&.
+Definition at line \fB108\fP of file \fBsender\&.h\fP\&.
 
 .SH "Author"
 .PP 

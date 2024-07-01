@@ -1,4 +1,4 @@
-.TH "Receiver" 3 "Version v02.01d0" "libcnet" \" -*- nroff -*-
+.TH "Receiver" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -66,7 +66,7 @@ It has the following fields:
 .PP
 
 .PP
-Definition at line \fB45\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB63\fP of file \fBreceiver\&.h\fP\&.
 .SH "Field Documentation"
 .PP 
 .SS "struct sockaddr_in _address"
@@ -74,49 +74,49 @@ Definition at line \fB45\fP of file \fBreceiver\&.h\fP\&.
 .PP
 The IP address on which we are binded\&. 
 .PP
-Definition at line \fB49\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB67\fP of file \fBreceiver\&.h\fP\&.
 .SS "sem_t* _mutex"
 
 .PP
 A semaphore to synchronize with the \fBSender\fP\&. 
 .PP
-Definition at line \fB54\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB72\fP of file \fBreceiver\&.h\fP\&.
 .SS "struct protoent* _proto"
 
 .PP
 The protocol used\&. 
 .PP
-Definition at line \fB48\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB66\fP of file \fBreceiver\&.h\fP\&.
 .SS "\fBMessageQueue\fP* _queue"
 
 .PP
 The message queue, essentially a linked list\&. 
 .PP
-Definition at line \fB55\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB73\fP of file \fBreceiver\&.h\fP\&.
 .SS "bool _running"
 
 .PP
 If the receiver in receiving or not\&. 
 .PP
-Definition at line \fB51\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB69\fP of file \fBreceiver\&.h\fP\&.
 .SS "int _socket"
 
 .PP
 File descriptor for the created socket\&. 
 .PP
-Definition at line \fB50\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB68\fP of file \fBreceiver\&.h\fP\&.
 .SS "struct \fBTimer\fP* _timer"
 
 .PP
 An optional \fBTimer\fP\&. 
 .PP
-Definition at line \fB53\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB71\fP of file \fBreceiver\&.h\fP\&.
 .SS "bool _verbose"
 
 .PP
 Enable verbosity\&. 
 .PP
-Definition at line \fB52\fP of file \fBreceiver\&.h\fP\&.
+Definition at line \fB70\fP of file \fBreceiver\&.h\fP\&.
 
 .SH "Author"
 .PP 
