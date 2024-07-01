@@ -2,7 +2,6 @@
 
 /* --------------------------------------------- ICMP HEADER --------------------------------------------- */
 
-// IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code)
 void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
 {
     switch (_type)
@@ -10,23 +9,23 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
         case ICMP_DESTINATION_UNREACHABLE_TYPE:
             if ( _code == ICMP_FRAGMENTATION_NEEDED_CODE )
             {
-                __IcmpHeader_createHeader_v4(hdr);
+                IcmpHeader_createHeader_Mtu(hdr);
                 break;
             }
         case ICMP_SOURCE_QUENCH_TYPE:
         case ICMP_TIME_EXCEEEDED_TYPE:
-            __IcmpHeader_createHeader_v1(hdr);
+            IcmpHeader_createHeader_Unused(hdr);
             break;
 
         case ICMP_REDIRECT_TYPE:
-            __IcmpHeader_createHeader_v2(hdr);
+            IcmpHeader_createHeader_Redirect(hdr);
             break;
 
         case ICMP_ECHO_REPLY_TYPE:
         case ICMP_ECHO_TYPE:
         case ICMP_INFORMATION_REQUEST_TYPE:
         case ICMP_INFORMATION_REPLY_TYPE:
-            __IcmpHeader_createHeader_v3(hdr);
+            IcmpHeader_createHeader_Echo(hdr);
             break;
         
         default:
@@ -39,21 +38,21 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
     IcmpHeader_setChecksum(hdr, 0);
 }
 
-void __IcmpHeader_createHeader_v1(IcmpHeader* _self)
+void IcmpHeader_createHeader_Unused(IcmpHeader* _self)
 {
     // The first version consists on the header with Type, code
     // checksum and the next 32 bit left unused.
     _self->_rest._unused = 0x0;
 }
 
-void __IcmpHeader_createHeader_v2(IcmpHeader* _self)
+void IcmpHeader_createHeader_Redirect(IcmpHeader* _self)
 {
     // The second version of the header consists of Type, code
     // checksum and 32 bit reserved to the gateway address.
     _self->_rest._gateway = 0;
 }
 
-void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
+void IcmpHeader_createHeader_Echo(IcmpHeader* _self)
 {
     // The third version of the header consists of Type, code
     // checksum, identification and sequence number.
@@ -61,7 +60,7 @@ void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
     _self->_rest._echo._seqnum = 0;
 }
 
-void __IcmpHeader_createHeader_v4(IcmpHeader* _self)
+void IcmpHeader_createHeader_Mtu(IcmpHeader* _self)
 {
     // The fourth version of the header is used for MTU
     // Path Discovery. It has 16 bits set to zero, and
@@ -179,7 +178,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
 
     if (_self->_type == ICMP_REDIRECT_TYPE)
     {
-        IcmpHeader_printInfo_v2(_self);
+        IcmpHeader_printInfo_Unused(_self);
     }
 
     if (
@@ -190,7 +189,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        IcmpHeader_printInfo_v3(_self);
+        IcmpHeader_printInfo_Redirect(_self);
     }
 
     if (
@@ -199,24 +198,24 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_code == ICMP_FRAGMENTATION_NEEDED_CODE
         )
     ) {
-        IcmpHeader_printInfo_v4(_self);
+        IcmpHeader_printInfo_Mtu(_self);
     }
 
     printf("\n");
 }
 
-void IcmpHeader_printInfo_v2(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Unused(const IcmpHeader* _self)
 {
     printf("ICMP Header Gateway: %d\n", _self->_rest._gateway);
 }
 
-void IcmpHeader_printInfo_v3(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Redirect(const IcmpHeader* _self)
 {
     printf("ICMP Header Identifier: %d\n", _self->_rest._echo._id);
     printf("ICMP Header Sequence Number: %d\n", _self->_rest._echo._seqnum);
 }
 
-void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Mtu(const IcmpHeader* _self)
 {
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest._mtu._mtu);
 }
@@ -598,11 +597,11 @@ size_t UdpPacket_getPacketSize(const UdpPacket* _self)
 ByteBuffer* UdpPacket_encode(const UdpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(_self->_hdr._length);
-    UdpPacket_encode__(_self, bbuff);
+    UdpPacket_encode_b(_self, bbuff);
     return bbuff;
 }
 
-void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer)
+void UdpPacket_encode_b(const UdpPacket* _self, ByteBuffer* _buffer)
 {
     UdpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
@@ -630,15 +629,7 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer)
 {
     u_int8_t bits = ByteBuffer_get(_buffer);
-
-    _cbits->_cwr = bits & TCP_CWR_SET;
-    _cbits->_ece = bits & TCP_ECE_SET;
-    _cbits->_urg = bits & TCP_URG_SET;
-    _cbits->_ack = bits & TCP_ACK_SET;
-    _cbits->_psh = bits & TCP_PSH_SET;
-    _cbits->_rst = bits & TCP_RST_SET;
-    _cbits->_syn = bits & TCP_SYN_SET;
-    _cbits->_fin = bits & TCP_FIN_SET;
+    convertIntToControlBits(bits, _cbits);
 }
 
 void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
@@ -653,6 +644,18 @@ void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
     int _fin = _cbits->_fin;
 
     sprintf(_out, "%d%d%d%d%d%d%d%d", _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
+}
+
+void convertIntToControlBits(const u_int8_t _bits, struct ControlBits *_cbits)
+{
+    _cbits->_cwr = _bits & TCP_CWR_SET;
+    _cbits->_ece = _bits & TCP_ECE_SET;
+    _cbits->_urg = _bits & TCP_URG_SET;
+    _cbits->_ack = _bits & TCP_ACK_SET;
+    _cbits->_psh = _bits & TCP_PSH_SET;
+    _cbits->_rst = _bits & TCP_RST_SET;
+    _cbits->_syn = _bits & TCP_SYN_SET;
+    _cbits->_fin = _bits & TCP_FIN_SET;
 }
 
 void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport)
@@ -923,11 +926,11 @@ size_t TcpPacket_getPacketSize(TcpPacket* _self)
 ByteBuffer* TcpPacket_encode(TcpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(TcpPacket_getPacketSize(_self));
-    TcpPacket_encode__(_self, bbuff);
+    TcpPacket_encode_b(_self, bbuff);
     return bbuff;
 }
 
-void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer)
+void TcpPacket_encode_b(TcpPacket* _self, ByteBuffer* _buffer)
 {
     TcpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
@@ -1124,6 +1127,23 @@ void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer)
 
 /* --------------------------------------------- IP PACKET --------------------------------------------- */
 
+void PseudoHeader_create(const IpPacket* _pckt, struct PseudoHeader* _ph, const size_t _size)
+{
+    _ph->_srcaddr = _pckt->_iphdr._srcaddr;
+    _ph->_dstaddr = _pckt->_iphdr._dstaddr;
+    _ph->_protocol = _pckt->_iphdr._protocol;
+    _ph->_size = _size;
+}
+
+void PseudoHeader_encode(const struct PseudoHeader* _ph, ByteBuffer* _buffer)
+{
+    ByteBuffer_putInt(_buffer, htonl(_ph->_srcaddr));
+    ByteBuffer_putInt(_buffer, htonl(_ph->_dstaddr));
+    ByteBuffer_put(_buffer, (u_int8_t)0x0);
+    ByteBuffer_put(_buffer, _ph->_protocol);
+    ByteBuffer_putShort(_buffer, htons(_ph->_size));
+}
+
 IpPacket* IpPacket_new()
 {
     IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
@@ -1244,11 +1264,11 @@ ByteBuffer* IpPacket_encode(const IpPacket* _self)
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
-            UdpPacket_encode__(_self->_payload._udp, buff);
+            UdpPacket_encode_b(_self->_payload._udp, buff);
             break;
 
         case IP_HEADER_TCP_PROTOCOL_CODE:
-            TcpPacket_encode__(_self->_payload._tcp, buff);
+            TcpPacket_encode_b(_self->_payload._tcp, buff);
             break;
 
         default:
@@ -1325,4 +1345,56 @@ void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt)
 {
     memcpy(_self->_payload._tcp, _tcppckt, TcpPacket_getPacketSize(_tcppckt));
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(_tcppckt));
+}
+
+u_int16_t IpPacket_computeIcmpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    ByteBuffer* buff = IcmpPacket_encode(_self->_payload._icmp);
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeUdpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    // Encode the UDP Packet Header + Payload
+    ByteBuffer* buff = ByteBuffer_new(UDP_PSEUDO_HEADER_SIZE + _self->_payload._udp->_hdr._length);
+    UdpPacket_encode_b(_self->_payload._udp, buff);
+
+    // Then we need also to put the pseudo header inside the buffer
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, _self->_payload._udp->_hdr._length);
+    PseudoHeader_encode(&ph, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    ByteBuffer* buff = ByteBuffer_new(TCP_PSEUDO_HEADER_SIZE + TcpPacket_getPacketSize(_self->_payload._tcp));
+
+    // Differently from UDP, in TCP Packets the pseudo-header is counted as first.
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
+    PseudoHeader_encode(&ph, buff);
+
+    // Then, comes the real packet
+    TcpPacket_encode_b(_self->_payload._tcp, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
 }

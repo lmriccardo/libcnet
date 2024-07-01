@@ -1,3 +1,20 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name timer.h                                                              *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This file contains the declaration of the Timer struct and other    *****
+ *****   functions to interact with it. This timer is able to compute with double   *****
+ *****   precision an elapsed time, and to sleep for floating-point values.         *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _TIMER_H
 #define _TIMER_H
 

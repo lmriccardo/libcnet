@@ -31,9 +31,6 @@ Sender* Sender_new(
     sender->_socket = socketfd;
     sender->_msgcnt = 0;
     sender->_proto = proto;
-    sender->_lastid = (unsigned short)getpid();
-    sender->_icmpsn = 0;
-    sender->_lsticmpid = 1;
     sender->_verbose = _verbose;
     sender->_timer = NULL;
     sender->_mtu = getInterfaceMTU(_interface);
@@ -41,9 +38,16 @@ Sender* Sender_new(
     sender->_sent = false;
 
     // Set default values for Parameters structure
-    sender->_params._df = D_FLAG_SET;
-    sender->_params._mf = M_FLAG_NOT_SET;
-    sender->_params._xf = X_FLAG_NOT_SET;
+    sender->_ipp._df = D_FLAG_SET;
+    sender->_ipp._mf = M_FLAG_NOT_SET;
+    sender->_ipp._xf = X_FLAG_NOT_SET;
+    sender->_ipp._id = (unsigned short)getpid();
+    sender->_icmpp._sn = 0;
+    sender->_icmpp._id = 1;
+    sender->_tcpp._sn = 1;
+    sender->_tcpp._an = 0;
+
+    convertIntToControlBits(0, &sender->_tcpp._cbits);
 
     return sender;
 }
@@ -83,9 +87,9 @@ void Sender_setIpFlags(Sender* _self, int _d, int _m)
         fprintf(stderr, "Program will not terminate but flags will not be set.\n");
     }
 
-    _self->_params._xf = X_FLAG_NOT_SET;
-    _self->_params._df = _d;
-    _self->_params._mf = _m;
+    _self->_ipp._xf = X_FLAG_NOT_SET;
+    _self->_ipp._df = _d;
+    _self->_ipp._mf = _m;
 }
 
 void Sender_bsendto(Sender* _self, const char* _buffer, const size_t _size)
@@ -122,7 +126,7 @@ void Sender_sendto(Sender* _self, const IpPacket* _pckt)
         char filename[100];
 
         snprintf(
-            filename, 60, "sent_%hu_%d_%s.bin", _self->_lastid, 
+            filename, 60, "sent_%hu_%d_%s.bin", _self->_ipp._id, 
             _self->_msgcnt, _self->_proto->p_name
         );
         
@@ -167,9 +171,9 @@ IpPacket* Sender_createIpPacket(Sender *_self, const u_int16_t _id)
     u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
     u_int32_t srcaddr = inet_network(_self->_srcaddress);
 
-    int _m = _self->_params._mf;
-    int _d = _self->_params._df;
-    int _x = _self->_params._xf;
+    int _m = _self->_ipp._mf;
+    int _d = _self->_ipp._df;
+    int _x = _self->_ipp._xf;
 
     IpPacket* ippckt = craftIpPacket(
         IPv4, 0x0, 0x0, IP_HEADER_SIZE, _id, _x, _d, _m, 
@@ -185,15 +189,15 @@ void Sender_fillIpHeader(Sender* _self, IpPacket* _pckt)
     u_int32_t dstaddr = ntohl(_self->_dstaddress.sin_addr.s_addr);
     u_int32_t srcaddr = inet_network(_self->_srcaddress);
 
-    int _mf = _self->_params._mf;
-    int _df = _self->_params._df;
-    int _xf = _self->_params._xf;
+    int _mf = _self->_ipp._mf;
+    int _df = _self->_ipp._df;
+    int _xf = _self->_ipp._xf;
 
     u_int16_t flagoff = computeFlagOff(_xf, _df, _mf, 0);
     u_int16_t dsf = computeDifferentiatedServiceField(0, 0);
 
     IpPacket_fillHeader(
-        _pckt, IPv4, dsf, _pckt->_iphdr._tlength, _self->_lastid++, flagoff, 
+        _pckt, IPv4, dsf, _pckt->_iphdr._tlength, _self->_ipp._id++, flagoff, 
         TTL_DEFAULT_VALUE, proto, 0, srcaddr, dstaddr
     );
 }
@@ -233,7 +237,7 @@ void Sender_fillIcmpHeader(
             _type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        return IcmpPacket_fillHeader_Echo(_pckt, 0x0, _self->_lsticmpid++, _self->_icmpsn++);
+        return IcmpPacket_fillHeader_Echo(_pckt, 0x0, _self->_icmpp._id++, _self->_icmpp._sn++);
     }
 
     fprintf(stderr, "[Sender_createIcmpPacket] Undefined ICMP type %c\n", _type);
@@ -246,6 +250,18 @@ void Sender_fillUdpHeader(Sender* _self, UdpPacket* _pckt, const u_int16_t _srcp
     u_int16_t size = UdpPacket_getPacketSize(_pckt);
 
     UdpPacket_fillHeader(_pckt, _srcport, dstport, size, 0);
+}
+
+void Sender_fillTcpHeader(
+    Sender*         _self, TcpPacket*        _pckt, const u_int16_t _port, const u_int8_t _offset, 
+    const u_int16_t _window, const u_int16_t _urgpntr
+) {
+    u_int16_t dstport = ntohs(_self->_dstaddress.sin_port);
+
+    TcpPacket_fillHeader(
+        _pckt, _port, dstport, _self->_tcpp._sn, _self->_tcpp._an, _offset,
+        _self->_tcpp._cbits, _window, 0, _urgpntr
+    );
 }
 
 IpPacket* Sender_craftIcmp(
@@ -262,10 +278,8 @@ IpPacket* Sender_craftIcmp(
     }
 
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = IcmpPacket_encode(pckt->_payload._icmp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeIcmpChecksum(pckt);
     IcmpHeader_setChecksum(&pckt->_payload._icmp->_icmphdr, chks);
-    ByteBuffer_delete(bbuff);
 
     return pckt;
 }
@@ -283,11 +297,30 @@ IpPacket* Sender_craftUdp(
     }
 
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = UdpPacket_encode(pckt->_payload._udp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeUdpChecksum(pckt);
     UdpHeader_setChecksum(&pckt->_payload._udp->_hdr, chks);
-    ByteBuffer_delete(bbuff);
     
+    return pckt;
+}
+
+IpPacket* Sender_craftTcp(
+    Sender*         _self,   const u_int16_t _srcport, const u_int8_t _offset, 
+    const u_int16_t _window, const u_int16_t _urgpntr, const char*    _payload, 
+    const size_t    _size
+) {
+    IpPacket* pckt = IpPacket_newTcp(_size);
+    Sender_fillIpHeader(_self, pckt);
+    Sender_fillTcpHeader(_self, pckt->_payload._tcp, _srcport, _offset, _window, _urgpntr);
+
+    if (_payload != NULL && _size > 0)
+    {
+        TcpPacket_fillPayload(pckt->_payload._tcp, _payload, _size);
+    }
+
+    // Now, we need to compute the checksum
+    u_int16_t chks = IpPacket_computeTcpChecksum(pckt);
+    TcpHeader_setChecksum(&pckt->_payload._tcp->_hdr, chks);
+
     return pckt;
 }
 
@@ -304,7 +337,7 @@ void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay)
 
 void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
 {
-    IpHeader_setIdentfication(&_pckt->_iphdr, _self->_lastid++);
+    IpHeader_setIdentfication(&_pckt->_iphdr, _self->_ipp._id++);
     
     u_int8_t _type = _pckt->_payload._icmp->_icmphdr._type;
 
@@ -314,24 +347,20 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
             _type == ICMP_INFORMATION_REQUEST_TYPE
         )
     ) {
-        IcmpHeader_setIdentifier(&_pckt->_payload._icmp->_icmphdr, _self->_lsticmpid++);
-        IcmpHeader_setSequenceNumber(&_pckt->_payload._icmp->_icmphdr, _self->_icmpsn++);
+        IcmpHeader_setIdentifier(&_pckt->_payload._icmp->_icmphdr, _self->_icmpp._id++);
+        IcmpHeader_setSequenceNumber(&_pckt->_payload._icmp->_icmphdr, _self->_icmpp._sn++);
     }
 
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = IcmpPacket_encode(_pckt->_payload._icmp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeIcmpChecksum(_pckt);
     IcmpHeader_setChecksum(&_pckt->_payload._icmp->_icmphdr, chks);
-    ByteBuffer_delete(bbuff);
 }
 
 void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt)
 {
-    IpHeader_setIdentfication(&_pckt->_iphdr, _self->_lastid++);
+    IpHeader_setIdentfication(&_pckt->_iphdr, _self->_ipp._id++);
     
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = UdpPacket_encode(_pckt->_payload._udp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeUdpChecksum(_pckt);
     UdpHeader_setChecksum(&_pckt->_payload._udp->_hdr, chks);
-    ByteBuffer_delete(bbuff);
 }

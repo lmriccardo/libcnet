@@ -1,3 +1,22 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name sender.h                                                             *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This header file contains the declaration of the Sender object      *****
+ *****   and a number of functions used to interact with it. The Sender struct      *****
+ *****   contains some useful information in order to be able to craft an ICMP,     *****
+ *****   UDP or TCP IP Packets from scratch. The sender can also be syncrhonized    *****
+ *****   with the Receiver, so that RTT and other things are easily computed.       *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _SENDER_H
 #define _SENDER_H
 
@@ -28,9 +47,31 @@ __BEGIN_DECLS
  */
 struct IpParameters
 {
-    int _xf;    //!< The X flag (not used so it must be always 0)
-    int _df;    //!< Don't Fragment Flag
-    int _mf;    //!< More Fragment Flag
+    int       _xf; //!< The X flag (not used so it must be always 0)
+    int       _df; //!< Don't Fragment Flag
+    int       _mf; //!< More Fragment Flag
+    u_int16_t _id; //!< The identification number to put into the IP Packet
+};
+
+/**
+ * Struct containing some parameters, like identificaton and sequence number
+ * useful when constructing ICMP Packets from the sender
+ */
+struct IcmpParameters
+{
+    u_int16_t _id; //!< The Identification number to put into the ICMP Packet
+    u_int16_t _sn; //!< The Sequence number to put into the ICMP Packet
+};
+
+/**
+ * Struct containing some parameters, like sequence and acknowledgment number
+ * useful when constructing TCP Packets from the sender
+ */
+struct TcpParameters
+{
+    u_int32_t          _sn;     //!< The Sequence number to put into the TCP Packet
+    u_int32_t          _an;     //!< The acknowledgment number to put into the TCP Packet
+    struct ControlBits _cbits;  //!< Control Bits
 };
 
 /**
@@ -58,22 +99,21 @@ struct IpParameters
 typedef struct 
 {
 
-    char*               _srcaddress;  //!< Source Address
-    struct sockaddr_in  _dstaddress;  //!< The Host receiving the packet
-    char*               _gateway;     //!< The gateway address of the current Source Address
-    int                 _socket;      //!< File descriptor for the created socket
-    int                 _msgcnt;      //!< Current Message Number
-    struct protoent*    _proto;       //!< The protocol used
-    u_int16_t           _lastid;      //!< Last used IP Packet identifier
-    u_int16_t           _lsticmpid;   //!< Last used ICMP Packet identifier
-    u_int16_t           _icmpsn;      //!< ICMP Message Sequence Number
-    bool                _verbose;     //!< Enable verbosity
-    struct Timer*       _timer;       //!< A timer synchronized with the receiver
-    int                 _mtu;         //!< The maximum transmission unit
-    sem_t               _mutex;       //!< A semaphore to synchronize with the Receiver
-    bool                _synch;       //!< Set to true when it is synchronized with the Receiver
-    bool                _sent;        //!< Another variable to syncrhonize with the Receiver
-    struct IpParameters _params;      //!< Some additional parameters for IP Packets
+    char*                 _srcaddress;  //!< Source Address
+    struct sockaddr_in    _dstaddress;  //!< The Host receiving the packet
+    char*                 _gateway;     //!< The gateway address of the current Source Address
+    int                   _socket;      //!< File descriptor for the created socket
+    int                   _msgcnt;      //!< Current Message Number
+    struct protoent*      _proto;       //!< The protocol used
+    bool                  _verbose;     //!< Enable verbosity
+    struct Timer*         _timer;       //!< A timer synchronized with the receiver
+    int                   _mtu;         //!< The maximum transmission unit
+    sem_t                 _mutex;       //!< A semaphore to synchronize with the Receiver
+    bool                  _synch;       //!< Set to true when it is synchronized with the Receiver
+    bool                  _sent;        //!< Another variable to syncrhonize with the Receiver
+    struct IpParameters   _ipp;         //!< Some additional parameters for IP Packets
+    struct IcmpParameters _icmpp;       //!< Some parameters used for ICMP Packets
+    struct TcpParameters  _tcpp;        //!< Some parameters used for TCP Packets
 
 } Sender;
 
@@ -152,6 +192,14 @@ extern void Sender_fillIcmpHeader(Sender* _self, IcmpPacket* _pckt, const u_int8
 extern void Sender_fillUdpHeader(Sender* _self, UdpPacket* _pckt, const u_int16_t _srcport) __attribute__((nonnull));
 
 /**
+ * Fill the header of the input TCP Packet with informations from the Sender object and in input
+ */
+extern void Sender_fillTcpHeader(
+    Sender* _self, TcpPacket* _pckt, const u_int16_t _port, const u_int8_t _offset, 
+    const u_int16_t _window, const u_int16_t _urgpntr
+) __attribute__((nonnull));
+
+/**
  * Craft a complete Ip Packet containing an ICMP Packet
  */
 extern IpPacket* Sender_craftIcmp(Sender* _self, const u_int8_t _type, const u_int8_t _code, const char* _payload, const size_t _size) 
@@ -164,7 +212,15 @@ extern IpPacket* Sender_craftUdp(Sender* _self, const u_int16_t _port, const cha
     __attribute__((nonnull(1))) __attribute__((returns_nonnull));
 
 /**
- * Send the input icmp packet 
+ * Craft a complete Ip Packet containing a TCP Packet
+ */
+extern IpPacket* Sender_craftTcp(
+    Sender* _self, const u_int16_t _srcport, const u_int8_t _offset, const u_int16_t _window, 
+    const u_int16_t _urgpntr, const char* _payload, const size_t _size
+) __attribute__((nonnull(1))) __attribute__((returns_nonnull));
+
+/**
+ * Send the input Ip packet
  */
 extern void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay) __attribute__((nonnull));
 
