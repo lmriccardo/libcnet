@@ -855,7 +855,7 @@ void TcpHeader_printInfo(TcpHeader* _self)
 
 size_t TcpHeader_getHeaderSize(TcpHeader* _self)
 {
-    return 24;
+    return 20;
 }
 
 /* --------------------------------------------- TCP PACKET -------------------------------------------- */

@@ -80,6 +80,7 @@ Legend:
 - [ ] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
 - [ ] Test the TCP implementation
 - [ ] Write a simple example on Tcp packets
+- [ ] Analyze Wireshark 
 
 ### Advanced Development
 
