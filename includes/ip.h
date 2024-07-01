@@ -37,9 +37,9 @@
 #define ICMP_ECHO_CODE 0x0
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 
-#define UDP_HEADER_SIZE             0x08
-#define UDP_PAYLOAD_MAX_SIZE        0xffe3
-#define UDP_HEADER_PLUS_PSEUDO_SIZE 0x14
+#define UDP_HEADER_SIZE        0x08
+#define UDP_PAYLOAD_MAX_SIZE   0xffe3
+#define UDP_PSEUDO_HEADER_SIZE 0x0c
 
 /* TCP Header Flags */
 #define TCP_NOT_SET 0x00
@@ -450,7 +450,7 @@ extern ByteBuffer* UdpPacket_encode(const UdpPacket* _self) __attribute__((nonnu
 /**
  * Encode the UDP Packet into a Byte Buffer given as input
  */
-extern void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void UdpPacket_encode_b(const UdpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Decode a ByteBuffer into a UDP Packet
@@ -528,6 +528,18 @@ extern void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer) _
  * Converts the control bits into a string of binary values
  */
 extern void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out) __attribute__((nonnull));
+
+/**
+ * Converts the input integer into ControlBits. For example, consider that the Control Bits field is 
+ * 8 bit long, which means that the greatest number that can fit in is 2^8 - 1. Consdering any number
+ * between [0, 2^8), it is possible to convert it into flags just by converting it into binary.
+ * 
+ * Hence, this function fills each field of the input structure `_cbits`.
+ * 
+ * @param _bits a value between 0 and 2^8 - 1
+ * @param _cbits a poiter to a ControlBits structure
+ */
+extern void convertIntToControlBits(const u_int8_t _bits, struct ControlBits* _cbits) __attribute__((nonnull));
 
 /**
  * Set the source port of the input Tcp Header
@@ -726,7 +738,7 @@ extern ByteBuffer* TcpPacket_encode(TcpPacket* _self) __attribute__((nonnull)) _
 /**
  * Encodes the TCP Packet into the input ByteBuffer
  */
-extern void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void TcpPacket_encode_b(TcpPacket* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Decodes a ByteBuffer into a TCP Packet
@@ -734,6 +746,19 @@ extern void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer) __attribut
 extern TcpPacket* TcpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 /******************************* IP PACKET ******************************/
+
+/**
+ * This struct is used when computing checksums for UDP and TCP packets, that
+ * requires the existance of a Pseudo Header containing informations from
+ * lower layer in the ISO-OSI or TCP/IP Protocol Stack.
+ */
+struct PseudoHeader
+{
+    u_int32_t _srcaddr;   //!< The Source address from the IP Packet
+    u_int32_t _dstaddr;   //!< The Destination address from the IP Packet
+    u_int8_t  _protocol;  //!< The protocol number from the IP packet
+    u_int16_t _size;      //!< The total size of the underlying packet
+};
 
 /**
  * Struct representing the IP Header of the IP Packet. It consists of classical
@@ -788,6 +813,17 @@ typedef struct
     } _payload; 
 
 } IpPacket;
+
+/**
+ * Fill the pseudo header with the information from the Ip Packet Header and
+ * a size value, corresponding of the size of the entire underlying packet.
+ */
+extern void PseudoHeader_create(const IpPacket* _pckt, struct PseudoHeader* _ph, const size_t _size) __attribute__((nonnull));
+
+/**
+ * Fill the input ByteBuffer with informations from the Pseudo Header
+ */
+extern void PseudoHeader_encode(const struct PseudoHeader* _ph, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Set the IP Version field and the IHL (always 5) field
@@ -1000,6 +1036,21 @@ extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__
  * Wrap the input TCP Packet into the payload of the input IP Packet
  */
 extern void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt) __attribute__((nonnull));
+
+/**
+ * Compute the checksum for an ICMP Packet
+ */
+extern u_int16_t IpPacket_computeIcmpChecksum(IpPacket* _self) __attribute__((nonnull));
+
+/**
+ * Compute the checksum for an UDP Packet
+ */
+extern u_int16_t IpPacket_computeUdpChecksum(IpPacket* _self) __attribute__((nonnull));
+
+/**
+ * Compute the checksum for a TCP Packet
+ */
+extern u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self) __attribute__((nonnull));
 
 __END_DECLS
 

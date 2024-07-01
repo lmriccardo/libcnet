@@ -416,7 +416,7 @@ includes/ip.h
 .RI "\fBByteBuffer\fP * \fBUdpPacket_encode\fP (const \fBUdpPacket\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBUdpPacket_encode__\fP (const \fBUdpPacket\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "void \fBUdpPacket_encode_b\fP (const \fBUdpPacket\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "\fBUdpPacket\fP * \fBUdpPacket_decode\fP (\fBByteBuffer\fP *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))"
@@ -542,7 +542,7 @@ includes/ip.h
 .RI "\fBByteBuffer\fP * \fBTcpPacket_encode\fP (\fBTcpPacket\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBTcpPacket_encode__\fP (\fBTcpPacket\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "void \fBTcpPacket_encode_b\fP (\fBTcpPacket\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "\fBTcpPacket\fP * \fBTcpPacket_decode\fP (\fBByteBuffer\fP *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))"
@@ -1168,7 +1168,7 @@ Decodes a \fBByteBuffer\fP into a TCP Packet
 Free the memory allocated for the TCP Packet 
 .SS "\fBByteBuffer\fP * TcpPacket_encode (\fBTcpPacket\fP * _self)\fR [extern]\fP"
 Encodes the TCP Packet into a \fBByteBuffer\fP and returns it 
-.SS "void TcpPacket_encode__ (\fBTcpPacket\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+.SS "void TcpPacket_encode_b (\fBTcpPacket\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encodes the TCP Packet into the input \fBByteBuffer\fP 
 .SS "void TcpPacket_fillHeader (\fBTcpPacket\fP * _self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct \fBControlBits\fP _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr)\fR [extern]\fP"
 Fill the TCP Packet Header with all values given as input 
@@ -1204,7 +1204,7 @@ Decode a \fBByteBuffer\fP into a UDP Packet
 Free the memory allocated for the input UDP Packet 
 .SS "\fBByteBuffer\fP * UdpPacket_encode (const \fBUdpPacket\fP * _self)\fR [extern]\fP"
 Encode the UDP Packet into a Byte Buffer 
-.SS "void UdpPacket_encode__ (const \fBUdpPacket\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+.SS "void UdpPacket_encode_b (const \fBUdpPacket\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encode the UDP Packet into a Byte Buffer given as input 
 .SS "void UdpPacket_fillHeader (\fBUdpPacket\fP * _self, const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum)\fR [extern]\fP"
 Fill the header of the input UDP Packet given all its fields 

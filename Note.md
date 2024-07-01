@@ -54,6 +54,7 @@ Legend:
 - [x] Change the receiver so that it uses a Message Queue instead of `process` function (**PROBLEM 2**)
 - [x] Re-engineering applied
 - [?] Check for memory safetiness using Valgrind
+- [ ] Add into the crafter the possibility to craft all packets
 
 #### ICMP PACKETS
 

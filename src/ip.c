@@ -598,11 +598,11 @@ size_t UdpPacket_getPacketSize(const UdpPacket* _self)
 ByteBuffer* UdpPacket_encode(const UdpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(_self->_hdr._length);
-    UdpPacket_encode__(_self, bbuff);
+    UdpPacket_encode_b(_self, bbuff);
     return bbuff;
 }
 
-void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer)
+void UdpPacket_encode_b(const UdpPacket* _self, ByteBuffer* _buffer)
 {
     UdpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
@@ -630,15 +630,7 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer)
 {
     u_int8_t bits = ByteBuffer_get(_buffer);
-
-    _cbits->_cwr = bits & TCP_CWR_SET;
-    _cbits->_ece = bits & TCP_ECE_SET;
-    _cbits->_urg = bits & TCP_URG_SET;
-    _cbits->_ack = bits & TCP_ACK_SET;
-    _cbits->_psh = bits & TCP_PSH_SET;
-    _cbits->_rst = bits & TCP_RST_SET;
-    _cbits->_syn = bits & TCP_SYN_SET;
-    _cbits->_fin = bits & TCP_FIN_SET;
+    convertIntToControlBits(bits, _cbits);
 }
 
 void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
@@ -653,6 +645,18 @@ void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
     int _fin = _cbits->_fin;
 
     sprintf(_out, "%d%d%d%d%d%d%d%d", _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
+}
+
+void convertIntToControlBits(const u_int8_t _bits, struct ControlBits *_cbits)
+{
+    _cbits->_cwr = _bits & TCP_CWR_SET;
+    _cbits->_ece = _bits & TCP_ECE_SET;
+    _cbits->_urg = _bits & TCP_URG_SET;
+    _cbits->_ack = _bits & TCP_ACK_SET;
+    _cbits->_psh = _bits & TCP_PSH_SET;
+    _cbits->_rst = _bits & TCP_RST_SET;
+    _cbits->_syn = _bits & TCP_SYN_SET;
+    _cbits->_fin = _bits & TCP_FIN_SET;
 }
 
 void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport)
@@ -923,11 +927,11 @@ size_t TcpPacket_getPacketSize(TcpPacket* _self)
 ByteBuffer* TcpPacket_encode(TcpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(TcpPacket_getPacketSize(_self));
-    TcpPacket_encode__(_self, bbuff);
+    TcpPacket_encode_b(_self, bbuff);
     return bbuff;
 }
 
-void TcpPacket_encode__(TcpPacket* _self, ByteBuffer* _buffer)
+void TcpPacket_encode_b(TcpPacket* _self, ByteBuffer* _buffer)
 {
     TcpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
@@ -1124,6 +1128,23 @@ void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer)
 
 /* --------------------------------------------- IP PACKET --------------------------------------------- */
 
+void PseudoHeader_create(const IpPacket* _pckt, struct PseudoHeader* _ph, const size_t _size)
+{
+    _ph->_srcaddr = _pckt->_iphdr._srcaddr;
+    _ph->_dstaddr = _pckt->_iphdr._dstaddr;
+    _ph->_protocol = _pckt->_iphdr._protocol;
+    _ph->_size = _size;
+}
+
+void PseudoHeader_encode(const struct PseudoHeader* _ph, ByteBuffer* _buffer)
+{
+    ByteBuffer_putInt(_buffer, htonl(_ph->_srcaddr));
+    ByteBuffer_putInt(_buffer, htonl(_ph->_dstaddr));
+    ByteBuffer_put(_buffer, (u_int8_t)0x0);
+    ByteBuffer_put(_buffer, _ph->_protocol);
+    ByteBuffer_putShort(_buffer, htons(_ph->_size));
+}
+
 IpPacket* IpPacket_new()
 {
     IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
@@ -1244,11 +1265,11 @@ ByteBuffer* IpPacket_encode(const IpPacket* _self)
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
-            UdpPacket_encode__(_self->_payload._udp, buff);
+            UdpPacket_encode_b(_self->_payload._udp, buff);
             break;
 
         case IP_HEADER_TCP_PROTOCOL_CODE:
-            TcpPacket_encode__(_self->_payload._tcp, buff);
+            TcpPacket_encode_b(_self->_payload._tcp, buff);
             break;
 
         default:
@@ -1325,4 +1346,55 @@ void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt)
 {
     memcpy(_self->_payload._tcp, _tcppckt, TcpPacket_getPacketSize(_tcppckt));
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(_tcppckt));
+}
+
+u_int16_t IpPacket_computeIcmpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    ByteBuffer* buff = IcmpPacket_encode(_self->_payload._icmp);
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeUdpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    // Encode the UDP Packet Header + Payload
+    ByteBuffer* buff = ByteBuffer_new(UDP_PSEUDO_HEADER_SIZE + _self->_payload._udp->_hdr._length);
+    UdpPacket_encode_b(_self->_payload._udp, buff);
+
+    // Then we need also to put the pseudo header inside the buffer
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, _self->_payload._udp->_hdr._length);
+    PseudoHeader_encode(&ph, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    // Encode the TCP Packet Header + Payload
+    ByteBuffer* buff = ByteBuffer_new(TCP_PSEUDO_HEADER_SIZE + TcpPacket_getPacketSize(_self->_payload._tcp));
+    TcpPacket_encode_b(_self->_payload._tcp, buff);
+
+    // Then we need also to put the pseudo header inside the buffer
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
+    PseudoHeader_encode(&ph, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
 }
