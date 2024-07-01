@@ -1,3 +1,21 @@
+/***********************************************************************************
+ ***********************************************************************************
+ *****                                                                         *****
+ *****   @details Header file                                                  *****
+ *****   @name receiver.h                                                      *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)              *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                 *****
+ *****                                                                         *****
+ *****   @brief This header file contains the declaration of the Receiver      *****
+ *****   object struct and a number of functions to interact with it.          *****
+ *****   The receiver is defined is ran as a thread and uses a MessageQueue    *****
+ *****   to save all the messages it receives.                                 *****
+ *****                                                                         *****
+ ***********************************************************************************
+ ***********************************************************************************
+*/
+
+
 #ifndef _RECEIVER_H
 #define _RECEIVER_H
 

@@ -54,7 +54,7 @@ Legend:
 - [x] Change the receiver so that it uses a Message Queue instead of `process` function (**PROBLEM 2**)
 - [x] Re-engineering applied
 - [?] Check for memory safetiness using Valgrind
-- [ ] Add into the crafter the possibility to craft all packets
+- [x] Add into the crafter the possibility to craft all packets
 
 #### ICMP PACKETS
 
@@ -74,9 +74,10 @@ Legend:
 
 - [?] TCP Packet (Header + Payload)
 - [?] Upadate IP Packet with the new TCP Packet payload option
-- [ ] Update the crafter for TCP Packets
+- [?] Update the crafter for TCP Packets
 - [?] Update the sender for TCP Packets
 - [ ] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
+- [ ] Test the TCP implementation
 
 ### Advanced Development
 

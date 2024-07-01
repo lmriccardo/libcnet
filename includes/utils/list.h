@@ -1,3 +1,19 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name list.h                                                               *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This file contains the declarations of a Linked List object struct  *****
+ *****   and a number of functions to interact with it.                             *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _LIST_H
 #define _LIST_H
 

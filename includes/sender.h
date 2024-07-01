@@ -1,3 +1,22 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name sender.h                                                             *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This header file contains the declaration of the Sender object      *****
+ *****   and a number of functions used to interact with it. The Sender struct      *****
+ *****   contains some useful information in order to be able to craft an ICMP,     *****
+ *****   UDP or TCP IP Packets from scratch. The sender can also be syncrhonized    *****
+ *****   with the Receiver, so that RTT and other things are easily computed.       *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _SENDER_H
 #define _SENDER_H
 

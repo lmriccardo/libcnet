@@ -352,10 +352,8 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
     }
 
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = IcmpPacket_encode(_pckt->_payload._icmp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeIcmpChecksum(_pckt);
     IcmpHeader_setChecksum(&_pckt->_payload._icmp->_icmphdr, chks);
-    ByteBuffer_delete(bbuff);
 }
 
 void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt)
@@ -363,8 +361,6 @@ void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt)
     IpHeader_setIdentfication(&_pckt->_iphdr, _self->_ipp._id++);
     
     // Now, we need to compute the checksum
-    ByteBuffer* bbuff = UdpPacket_encode(_pckt->_payload._udp);
-    u_int16_t chks = computeChecksum((unsigned char*)bbuff->_buffer, bbuff->_size);
+    u_int16_t chks = IpPacket_computeUdpChecksum(_pckt);
     UdpHeader_setChecksum(&_pckt->_payload._udp->_hdr, chks);
-    ByteBuffer_delete(bbuff);
 }

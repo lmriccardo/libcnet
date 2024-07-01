@@ -1,3 +1,18 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name synch.h                                                              *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This file contains declaration of functions used to synchronize     *****
+ *****   a Sender and Receiver, between each other or a common Timer object.        *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
 #ifndef _SYNCH_H
 #define _SYNCH_H
 

@@ -1,3 +1,18 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name crafter.h                                                            *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This file contains the declarations of functions to craft packets   *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _CRAFTER_H
 #define _CRAFTER_H
 
@@ -54,6 +69,17 @@ extern IcmpPacket* craftIcmpPacket_Mtu(
  */
 extern UdpPacket* craftUdpPacket(
     const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum,
+    const char*     _payload, const size_t    _size
+) __attribute__((returns_nonnull));
+
+
+/**
+ * Create a TCP Packet given the fields of the TCP header and the payload of the TCP Packet
+ */
+extern TcpPacket* craftTcpPacket(
+    const u_int16_t _srcport, const u_int16_t _dstport,  const u_int32_t          _seqnum, 
+    const u_int32_t _acknum,  const u_int8_t  _offset,   const struct ControlBits _cbits,
+    const u_int16_t _window,  const u_int16_t _checksum, const u_int16_t          _urgpntr,
     const char*     _payload, const size_t    _size
 ) __attribute__((returns_nonnull));
 

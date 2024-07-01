@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *******************************************************************************
+ *****                                                                     *****
+ *****   @details Header file                                              *****
+ *****   @name ip.h                                                        *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)          *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)             *****
+ *****                                                                     *****
+ *****   @brief This header file contains declarations for the main        *****
+ *****   objects that a user should use througout its entire code.         *****
+ *****   This file contains declarations for ICMP Packets, UDP Packets,    *****
+ *****   TCP Packets and finally, IP Packets. There are also a number of   *****
+ *****   useful functions that can be used to create and customize a       *****
+ *****   generic IP Packet.                                                *****
+ *****                                                                     *****
+ *******************************************************************************
+ *******************************************************************************
+*/
+
+
 #ifndef _IP_H
 #define _IP_H
 
@@ -233,6 +253,44 @@ extern void IcmpHeader_setNextHopMtu(IcmpHeader* _self, const u_int16_t _mtu) __
  * Print all the Header fields with corresponding values
  */
 extern void IcmpHeader_printInfo(const IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Prints header information in the case the Redirect header format is chosen.
+ * This function is already called in IcmpHeader_printInfo
+ */
+extern void IcmpHeader_printInfo_Unused(const IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Prints header information in the case the Echo Req/Rep format is chosen.
+ * This function is already called in IcmpHeader_printInfo
+ */
+extern void IcmpHeader_printInfo_Redirect(const IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Prints header information in the case the Mtu format is chosen.
+ * This function is already called in IcmpHeader_printInfo
+ */
+extern void IcmpHeader_printInfo_Mtu(const IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Creates and fill the header with Unused bytes
+ */
+extern void IcmpHeader_createHeader_Unused(IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Creates and fill the header with the gateway field
+ */
+extern void IcmpHeader_createHeader_Redirect(IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Creates and fill the header with the Identification and Sequence Number fields
+ */
+extern void IcmpHeader_createHeader_Echo(IcmpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Creates and fill the header with the Next Hop MTU field
+ */
+extern void IcmpHeader_createHeader_Mtu(IcmpHeader* _self) __attribute__((nonnull));
 
 /**
  * Encode the Icmp Header into a buffer of bytes filling the input ByteBuffer.

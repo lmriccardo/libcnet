@@ -71,3 +71,20 @@ UdpPacket* craftUdpPacket(
     UdpPacket_fillPayload(pckt, _payload, _size);
     return pckt;
 }
+
+TcpPacket* craftTcpPacket(
+    const u_int16_t _srcport, const u_int16_t _dstport,  const u_int32_t          _seqnum, 
+    const u_int32_t _acknum,  const u_int8_t  _offset,   const struct ControlBits _cbits,
+    const u_int16_t _window,  const u_int16_t _checksum, const u_int16_t          _urgpntr,
+    const char*     _payload, const size_t    _size
+) {
+    TcpPacket* pckt = TcpPacket_new_s(_size);
+    TcpPacket_fillHeader(
+        pckt, _srcport, _dstport, _seqnum, _acknum, _offset, _cbits,
+        _window, _checksum, _urgpntr
+    );
+
+    TcpPacket_fillPayload(pckt, _payload, _size);
+
+    return pckt;
+}

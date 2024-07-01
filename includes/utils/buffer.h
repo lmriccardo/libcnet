@@ -1,3 +1,20 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name buffer.h                                                             *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 1 June 2024 (Mon Jul 01 2024 Last Modification)                      *****
+ *****                                                                              *****
+ *****   @brief This file contains the declaration of the ByteBuffer struct and     *****
+ *****   a number of functions to interact with it. This byte buffer object is      *****
+ *****   used principally when encoding and decoding IP Packets etc.                *****
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
+
 #ifndef _ENCODER_H
 #define _ENCODER_H
 

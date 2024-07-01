@@ -2,7 +2,6 @@
 
 /* --------------------------------------------- ICMP HEADER --------------------------------------------- */
 
-// IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code)
 void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
 {
     switch (_type)
@@ -10,23 +9,23 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
         case ICMP_DESTINATION_UNREACHABLE_TYPE:
             if ( _code == ICMP_FRAGMENTATION_NEEDED_CODE )
             {
-                __IcmpHeader_createHeader_v4(hdr);
+                IcmpHeader_createHeader_Mtu(hdr);
                 break;
             }
         case ICMP_SOURCE_QUENCH_TYPE:
         case ICMP_TIME_EXCEEEDED_TYPE:
-            __IcmpHeader_createHeader_v1(hdr);
+            IcmpHeader_createHeader_Unused(hdr);
             break;
 
         case ICMP_REDIRECT_TYPE:
-            __IcmpHeader_createHeader_v2(hdr);
+            IcmpHeader_createHeader_Redirect(hdr);
             break;
 
         case ICMP_ECHO_REPLY_TYPE:
         case ICMP_ECHO_TYPE:
         case ICMP_INFORMATION_REQUEST_TYPE:
         case ICMP_INFORMATION_REPLY_TYPE:
-            __IcmpHeader_createHeader_v3(hdr);
+            IcmpHeader_createHeader_Echo(hdr);
             break;
         
         default:
@@ -39,21 +38,21 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
     IcmpHeader_setChecksum(hdr, 0);
 }
 
-void __IcmpHeader_createHeader_v1(IcmpHeader* _self)
+void IcmpHeader_createHeader_Unused(IcmpHeader* _self)
 {
     // The first version consists on the header with Type, code
     // checksum and the next 32 bit left unused.
     _self->_rest._unused = 0x0;
 }
 
-void __IcmpHeader_createHeader_v2(IcmpHeader* _self)
+void IcmpHeader_createHeader_Redirect(IcmpHeader* _self)
 {
     // The second version of the header consists of Type, code
     // checksum and 32 bit reserved to the gateway address.
     _self->_rest._gateway = 0;
 }
 
-void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
+void IcmpHeader_createHeader_Echo(IcmpHeader* _self)
 {
     // The third version of the header consists of Type, code
     // checksum, identification and sequence number.
@@ -61,7 +60,7 @@ void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
     _self->_rest._echo._seqnum = 0;
 }
 
-void __IcmpHeader_createHeader_v4(IcmpHeader* _self)
+void IcmpHeader_createHeader_Mtu(IcmpHeader* _self)
 {
     // The fourth version of the header is used for MTU
     // Path Discovery. It has 16 bits set to zero, and
@@ -179,7 +178,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
 
     if (_self->_type == ICMP_REDIRECT_TYPE)
     {
-        IcmpHeader_printInfo_v2(_self);
+        IcmpHeader_printInfo_Unused(_self);
     }
 
     if (
@@ -190,7 +189,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        IcmpHeader_printInfo_v3(_self);
+        IcmpHeader_printInfo_Redirect(_self);
     }
 
     if (
@@ -199,24 +198,24 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_code == ICMP_FRAGMENTATION_NEEDED_CODE
         )
     ) {
-        IcmpHeader_printInfo_v4(_self);
+        IcmpHeader_printInfo_Mtu(_self);
     }
 
     printf("\n");
 }
 
-void IcmpHeader_printInfo_v2(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Unused(const IcmpHeader* _self)
 {
     printf("ICMP Header Gateway: %d\n", _self->_rest._gateway);
 }
 
-void IcmpHeader_printInfo_v3(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Redirect(const IcmpHeader* _self)
 {
     printf("ICMP Header Identifier: %d\n", _self->_rest._echo._id);
     printf("ICMP Header Sequence Number: %d\n", _self->_rest._echo._seqnum);
 }
 
-void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Mtu(const IcmpHeader* _self)
 {
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest._mtu._mtu);
 }
@@ -1383,14 +1382,15 @@ u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self)
 {
     u_int16_t checksum;
 
-    // Encode the TCP Packet Header + Payload
     ByteBuffer* buff = ByteBuffer_new(TCP_PSEUDO_HEADER_SIZE + TcpPacket_getPacketSize(_self->_payload._tcp));
-    TcpPacket_encode_b(_self->_payload._tcp, buff);
 
-    // Then we need also to put the pseudo header inside the buffer
+    // Differently from UDP, in TCP Packets the pseudo-header is counted as first.
     struct PseudoHeader ph;
     PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
     PseudoHeader_encode(&ph, buff);
+
+    // Then, comes the real packet
+    TcpPacket_encode_b(_self->_payload._tcp, buff);
 
     // Finally compute the checksum
     checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
