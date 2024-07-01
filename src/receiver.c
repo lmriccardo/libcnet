@@ -33,7 +33,6 @@ Receiver* Receiver_new(
     recv->_proto = proto;
     recv->_socket = socketfd;
     recv->_running = false;
-    recv->__process_fn = NULL;
     recv->_verbose = _verbose;
     recv->_timer = NULL;
     recv->_mutex = NULL;

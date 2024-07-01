@@ -65,10 +65,11 @@ Legend:
 #### UDP PACKETS
 
 - [x] UDP Packet (Header + Payload)
-- [?] Update the crafter for UDP
-- [?] Update the sender to UDP
+- [x] Update the crafter for UDP
+- [x] Update the sender to UDP
 - [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
-- [ ] Sender must also consider the UDP Pseudo-header when computing the checksum
+- [?] Sender must also consider the UDP Pseudo-header when computing the checksum
+- [x] Write a simple example on Udp packets 
 
 #### TCP PACKETS
 
@@ -78,6 +79,7 @@ Legend:
 - [?] Update the sender for TCP Packets
 - [ ] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
 - [ ] Test the TCP implementation
+- [ ] Write a simple example on Tcp packets
 
 ### Advanced Development
 
