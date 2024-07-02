@@ -517,6 +517,13 @@ extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull))
 
 /******************************* TCP PACKET ******************************/
 
+struct TcpOption
+{
+    u_int8_t _kind;    //!< The type of TCP Option
+    u_int8_t _length;  //!< How many bytes is the option big
+    void*    _value;   //!< The value of the option
+};
+
 /**
  * Struct containing all control bits of a TCP header
  */
@@ -561,7 +568,7 @@ typedef struct
     u_int16_t          _window;     //!< The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept
     u_int16_t          _checksum;   //!< The checksum
     u_int16_t          _urgpntr;    //!< The current value of the urgent pointer as a positive offset from the sequence number in this segment
-    u_int32_t          _options;    //!< A number of options
+    struct TcpOption** _options;
 
 } TcpHeader;
 
