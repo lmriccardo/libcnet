@@ -286,10 +286,6 @@ IpPacket* Sender_craftIcmp(
         IcmpPacket_fillPayload(pckt->_payload._icmp, _payload, _size);
     }
 
-    // Now, we need to compute the checksum
-    u_int16_t chks = IpPacket_computeIcmpChecksum(pckt);
-    IcmpHeader_setChecksum(&pckt->_payload._icmp->_icmphdr, chks);
-
     return pckt;
 }
 
@@ -304,10 +300,6 @@ IpPacket* Sender_craftUdp(
     {
         UdpPacket_fillPayload(pckt->_payload._udp, _payload, _size);
     }
-
-    // Now, we need to compute the checksum
-    u_int16_t chks = IpPacket_computeUdpChecksum(pckt);
-    UdpHeader_setChecksum(&pckt->_payload._udp->_hdr, chks);
     
     return pckt;
 }
@@ -326,9 +318,11 @@ IpPacket* Sender_craftTcp(
         TcpPacket_fillPayload(pckt->_payload._tcp, _payload, _size);
     }
 
-    // Now, we need to compute the checksum
-    u_int16_t chks = IpPacket_computeTcpChecksum(pckt);
-    TcpHeader_setChecksum(&pckt->_payload._tcp->_hdr, chks);
+    // We need to reset the total length of the IP packet since we may have
+    // added some TCP options when filling the IP header
+    IpHeader_setTotalLength(
+        &pckt->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(pckt->_payload._tcp)
+    );
 
     return pckt;
 }
@@ -336,6 +330,9 @@ IpPacket* Sender_craftTcp(
 void Sender_send(Sender* _self, IpPacket* _pckt, const double _delay)
 {
     if (_self->_timer != NULL) Timer_resetPrevious(_self->_timer);
+
+    // Before sending, let's compute the checksum
+    IpPacket_computeChecksum(_pckt);
 
     // Then send the packet
     Sender_sendto(_self, _pckt);
@@ -348,7 +345,7 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
 {
     IpHeader_setIdentfication(&_pckt->_iphdr, _self->_ipp._id++);
     
-    u_int8_t _type = _pckt->_payload._icmp->_icmphdr._type;
+    u_int8_t _type = _pckt->_payload._icmp->_hdr._type;
 
     if (
         (
@@ -356,20 +353,12 @@ void Sender_updateIcmpPacket(Sender* _self, IpPacket* _pckt)
             _type == ICMP_INFORMATION_REQUEST_TYPE
         )
     ) {
-        IcmpHeader_setIdentifier(&_pckt->_payload._icmp->_icmphdr, _self->_icmpp._id++);
-        IcmpHeader_setSequenceNumber(&_pckt->_payload._icmp->_icmphdr, _self->_icmpp._sn++);
+        IcmpHeader_setIdentifier(&_pckt->_payload._icmp->_hdr, _self->_icmpp._id++);
+        IcmpHeader_setSequenceNumber(&_pckt->_payload._icmp->_hdr, _self->_icmpp._sn++);
     }
-
-    // Now, we need to compute the checksum
-    u_int16_t chks = IpPacket_computeIcmpChecksum(_pckt);
-    IcmpHeader_setChecksum(&_pckt->_payload._icmp->_icmphdr, chks);
 }
 
 void Sender_updateUdpPacket(Sender* _self, IpPacket* _pckt)
 {
     IpHeader_setIdentfication(&_pckt->_iphdr, _self->_ipp._id++);
-    
-    // Now, we need to compute the checksum
-    u_int16_t chks = IpPacket_computeUdpChecksum(_pckt);
-    UdpHeader_setChecksum(&_pckt->_payload._udp->_hdr, chks);
 }

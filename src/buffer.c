@@ -66,6 +66,22 @@ void ByteBuffer_putInt(ByteBuffer* _self, const u_int32_t _data)
 void ByteBuffer_putBufferFrom(ByteBuffer* _self, const char* _src, const int _start, const size_t _size)
 {
     checkForOOB(_start, _size, _self->_size, "ByteBuffer_putBufferFrom");
+
+    // ByteBuffer_position(_self, _start);
+
+    // for (int idx = 0; idx < _size; idx += 2)
+    // {
+    //     if (idx == _size - 1)
+    //     {
+    //         memcpy(_self->_buffer + _self->_position, _src + idx, 1);
+    //         ByteBuffer_position(_self, _self->_position + BYTE_SIZE);
+    //         continue;
+    //     }
+
+    //     memcpy(_self->_buffer + _self->_position, _src + idx, 2);
+    //     ByteBuffer_position(_self, _self->_position + SHORT_SIZE);
+    // }
+
     memcpy(_self->_buffer + _start, _src, _size);
     ByteBuffer_position(_self, _start + _size);
 }

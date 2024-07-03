@@ -18,7 +18,7 @@ void *process(struct Response* resp)
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
     
     IcmpPacket* icmppckt = IpPacket_getIcmpPacket(ippckt);
-    IcmpHeader* icmphdr = &icmppckt->_icmphdr;
+    IcmpHeader* icmphdr = &icmppckt->_hdr;
 
     char addr[INET_ADDRSTRLEN];
     addressNumberToString(ippckt->_iphdr._srcaddr, addr, false);

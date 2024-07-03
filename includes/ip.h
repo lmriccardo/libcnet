@@ -204,7 +204,7 @@ typedef struct
 typedef struct
 {
 
-    IcmpHeader  _icmphdr; //!< The ICMP Header
+    IcmpHeader  _hdr; //!< The ICMP Header
     char       *_payload; //!< The payload containing all the ICMP data
 
     size_t __size;  //!< The size of the payload
@@ -1063,7 +1063,7 @@ extern u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self) __attribute__(
 /**
  * Encode the IP header into a ByteBuffer
  */
-extern void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void IpHeader_encode_b(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Encode the IP header into a ByteBuffer and returns the ByteBuffer
@@ -1191,6 +1191,11 @@ extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__
  * Wrap the input TCP Packet into the payload of the input IP Packet
  */
 extern void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt) __attribute__((nonnull));
+
+/**
+ * Compute and set the checksum for TCP/UDP/ICMP Packet
+ */
+extern void IpPacket_computeChecksum(IpPacket* _self) __attribute__((nonnull));
 
 /**
  * Compute the checksum for an ICMP Packet

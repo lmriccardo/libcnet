@@ -132,8 +132,8 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
         IpPacket* rpckt = IpPacket_decodeIcmp(bbuffer);
         IcmpPacket* icmppckt = IpPacket_getIcmpPacket(pckt);
 
-        u_int8_t type = icmppckt->_icmphdr._type;
-        u_int8_t code = icmppckt->_icmphdr._code;
+        u_int8_t type = icmppckt->_hdr._type;
+        u_int8_t code = icmppckt->_hdr._code;
 
         if (
             (
@@ -141,7 +141,7 @@ int pathMtuDiscovery(const char* _interface, const char* _hostname)
                 code == ICMP_FRAGMENTATION_NEEDED_CODE
             )
         ) {
-            next_hop_mtu = icmppckt->_icmphdr._rest._mtu._mtu;
+            next_hop_mtu = icmppckt->_hdr._rest._mtu._mtu;
         } else {
             next_hop_mtu = -1;
         }

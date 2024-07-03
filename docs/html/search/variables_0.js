@@ -27,7 +27,7 @@ var searchData=
   ['_5fhdr_5fchksum_24',['_hdr_chksum',['../structIpHeader.html#afd58beddab2f7227ff9842d66636d86e',1,'IpHeader']]],
   ['_5fhead_25',['_head',['../structLinkedList.html#a304ff920d03d2ca345026d23ead563b2',1,'LinkedList']]],
   ['_5ficmp_26',['_icmp',['../structIpPacket.html#a6b14810e61fd8aaf8edb03935ff40224',1,'IpPacket']]],
-  ['_5ficmphdr_27',['_icmphdr',['../structIcmpPacket.html#a4cdc2edea5e4d06e1d050ba1b09f090c',1,'IcmpPacket']]],
+  ['_5ficmphdr_27',['_hdr',['../structIcmpPacket.html#a4cdc2edea5e4d06e1d050ba1b09f090c',1,'IcmpPacket']]],
   ['_5ficmpsn_28',['_icmpsn',['../structSender.html#aac688bbccbcc19a8190fe7ec31aa725b',1,'Sender']]],
   ['_5fid_29',['_id',['../structh__echo__t.html#a67319b8def030fe96eb296fa9f80f5a2',1,'h_echo_t::_id'],['../structIpHeader.html#a67319b8def030fe96eb296fa9f80f5a2',1,'IpHeader::_id']]],
   ['_5fiphdr_30',['_iphdr',['../structIpPacket.html#a52a08317a3eed7502f3365fa18202016',1,'IpPacket']]],

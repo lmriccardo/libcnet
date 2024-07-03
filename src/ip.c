@@ -343,7 +343,7 @@ IcmpPacket* IcmpPacket_new_tnc(const u_int8_t _type, const u_int8_t _code)
 IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code, const size_t _size)
 {
     IcmpPacket* pckt = (IcmpPacket*)malloc(sizeof(IcmpPacket));
-    IcmpHeader_new(&pckt->_icmphdr, _type, _code);
+    IcmpHeader_new(&pckt->_hdr, _type, _code);
 
     pckt->_payload = (char *)malloc(_size * sizeof(char));
     pckt->__size = _size;
@@ -359,26 +359,26 @@ void IcmpPacket_delete(IcmpPacket* _self)
 
 void IcmpPacket_fillHeader_Unused(IcmpPacket* _self, const u_int16_t _checksum)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
 }
 
 void IcmpPacket_fillHeader_Redirect(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setGateway(&_self->_icmphdr, _gateway);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setGateway(&_self->_hdr, _gateway);
 }
 
 void IcmpPacket_fillHeader_Echo(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setIdentifier(&_self->_icmphdr, _id);
-    IcmpHeader_setSequenceNumber(&_self->_icmphdr, _seqnum);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setIdentifier(&_self->_hdr, _id);
+    IcmpHeader_setSequenceNumber(&_self->_hdr, _seqnum);
 }
 
 void IcmpPacket_fillHeader_Mtu(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setNextHopMtu(&_self->_icmphdr, _data);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setNextHopMtu(&_self->_hdr, _data);
 }
 
 void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _payload, const size_t _size)
@@ -405,7 +405,7 @@ size_t IcmpPacket_getPacketSize(const IcmpPacket* _self)
 
 void IcmpPacket_encode_b(const IcmpPacket *_self, ByteBuffer* _buffer)
 {
-    IcmpHeader_encode(&_self->_icmphdr, _buffer);
+    IcmpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
 }
 
@@ -418,29 +418,29 @@ ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self)
 
 void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr)
 {
-    // We cannot just assign the _icmphdr field of the IcmpPacket structure
+    // We cannot just assign the _hdr field of the IcmpPacket structure
     // to the new value, otherwise the memory of the previous value will
     // never be freed. Hence, we need to copy the memory content of 
     // the input IcmpHeader and then free the input one.
 
     // First we can copy first 4 bytes for Type, Code and Checksum
-    memcpy(&_self->_icmphdr, _hdr, 4);
+    memcpy(&_self->_hdr, _hdr, 4);
     
     // The remaining 4 bytes depends on the ICMP Header Type Value
-    if (_self->_icmphdr._type == ICMP_REDIRECT_TYPE)
+    if (_self->_hdr._type == ICMP_REDIRECT_TYPE)
     {
-        memcpy(&_self->_icmphdr._rest._gateway, &_hdr->_rest._gateway, 4);
+        memcpy(&_self->_hdr._rest._gateway, &_hdr->_rest._gateway, 4);
     }
 
     if (
         (
-            _self->_icmphdr._type == ICMP_ECHO_REPLY_TYPE          ||
-            _self->_icmphdr._type == ICMP_ECHO_TYPE                ||
-            _self->_icmphdr._type == ICMP_INFORMATION_REQUEST_TYPE ||
-            _self->_icmphdr._type == ICMP_INFORMATION_REPLY_TYPE
+            _self->_hdr._type == ICMP_ECHO_REPLY_TYPE          ||
+            _self->_hdr._type == ICMP_ECHO_TYPE                ||
+            _self->_hdr._type == ICMP_INFORMATION_REQUEST_TYPE ||
+            _self->_hdr._type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        memcpy(&_self->_icmphdr._rest._echo, &_hdr->_rest._echo, 4);
+        memcpy(&_self->_hdr._rest._echo, &_hdr->_rest._echo, 4);
     }
 
     if (
@@ -449,7 +449,7 @@ void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr)
             _hdr->_code == ICMP_FRAGMENTATION_NEEDED_CODE
         )
     ) {
-        memcpy(&_self->_icmphdr._rest._mtu, &_hdr->_rest._mtu, 4);
+        memcpy(&_self->_hdr._rest._mtu, &_hdr->_rest._mtu, 4);
     }
 }
 
@@ -676,6 +676,8 @@ void TcpOptions_copy(struct TcpOption** _src, struct TcpOption** _dst, const int
         _dst[optIdx] = TcpOption_new(_src[optIdx]->_kind, _src[optIdx]->_length, _src[optIdx]->_value);
     }
 }
+
+extern void* TcpOption_getNetworkByteValue(struct TcpOption* _opt) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 void TcpOptions_delete(struct TcpOption** _opts, const int _n)
 {
@@ -1233,7 +1235,7 @@ void IpHeader_printInfo(const IpHeader* _self)
     printf("\n");
 }
 
-void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer)
+void IpHeader_encode_b(const IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
@@ -1250,7 +1252,7 @@ void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer)
 ByteBuffer* IpHeader_encode(const IpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_tlength);
-    IpHeader_encode__(_self, buff);
+    IpHeader_encode_b(_self, buff);
     return buff;
 }
 
@@ -1409,7 +1411,7 @@ TcpPacket* IpPacket_getTcpPacket(const IpPacket *_self)
 ByteBuffer* IpPacket_encode(const IpPacket* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_iphdr._tlength);
-    IpHeader_encode__(&_self->_iphdr, buff);
+    IpHeader_encode_b(&_self->_iphdr, buff);
 
     switch (_self->_iphdr._protocol)
     {
@@ -1437,8 +1439,8 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
     IpHeader hdr; IpHeader_decode(&hdr, _buffer);
     IcmpPacket* icmppckt = IcmpPacket_decode(_buffer);
 
-    u_int8_t type = icmppckt->_icmphdr._type;
-    u_int8_t code = icmppckt->_icmphdr._code;
+    u_int8_t type = icmppckt->_hdr._type;
+    u_int8_t code = icmppckt->_hdr._code;
     size_t   size = icmppckt->__size;
 
     IpPacket* pckt = IpPacket_newIcmp(type, code, size);
@@ -1485,7 +1487,7 @@ IpPacket* IpPacket_decodeTcp(ByteBuffer* _buffer)
 
 void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
 {
-    memcpy(&_self->_payload._icmp->_icmphdr, &_icmppckt->_icmphdr, ICMP_HEADER_MAX_SIZE);
+    memcpy(&_self->_payload._icmp->_hdr, &_icmppckt->_hdr, ICMP_HEADER_MAX_SIZE);
     memcpy(_self->_payload._icmp->_payload, _icmppckt->_payload, _icmppckt->__size);
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + IcmpPacket_getPacketSize(_icmppckt));
 }
@@ -1502,6 +1504,32 @@ void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt)
     memcpy(&_self->_payload._tcp->_hdr, &_tcppckt->_hdr, sizeof(TcpHeader));
     memcpy(_self->_payload._tcp->_payload, _tcppckt->_payload, _tcppckt->__size);
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(_tcppckt));
+}
+
+void IpPacket_computeChecksum(IpPacket* _self)
+{
+    u_int16_t chcks;
+
+    switch (_self->_iphdr._protocol)
+    {
+        case IP_HEADER_ICMP_PROTOCOL_CODE:
+            chcks = IpPacket_computeIcmpChecksum(_self);
+            IcmpHeader_setChecksum(&_self->_payload._icmp->_hdr, chcks);
+            break;
+        
+        case IP_HEADER_UDP_PROTOCOL_CODE:
+            chcks = IpPacket_computeUdpChecksum(_self);
+            UdpHeader_setChecksum(&_self->_payload._udp->_hdr, chcks);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            chcks = IpPacket_computeTcpChecksum(_self);
+            TcpHeader_setChecksum(&_self->_payload._tcp->_hdr, chcks);
+            break;
+
+        default:
+            break;
+    }
 }
 
 u_int16_t IpPacket_computeIcmpChecksum(IpPacket* _self)

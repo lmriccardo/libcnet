@@ -596,7 +596,7 @@ includes/ip.h
 .RI "u_int8_t \fBIpHeader_getFragmentOffset\fP (const \fBIpHeader\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
-.RI "void \fBIpHeader_encode__\fP (const \fBIpHeader\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "void \fBIpHeader_encode_b\fP (const \fBIpHeader\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "\fBByteBuffer\fP * \fBIpHeader_encode\fP (const \fBIpHeader\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
@@ -1030,7 +1030,7 @@ Set a new Header for the ICMP Packet\&.
 Decode the input \fBByteBuffer\fP into an IP Header 
 .SS "\fBByteBuffer\fP * IpHeader_encode (const \fBIpHeader\fP * _self)\fR [extern]\fP"
 Encode the IP header into a \fBByteBuffer\fP and returns the \fBByteBuffer\fP 
-.SS "void IpHeader_encode__ (const \fBIpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+.SS "void IpHeader_encode_b (const \fBIpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encode the IP header into a \fBByteBuffer\fP 
 .SS "u_int8_t IpHeader_getDSCP (const \fBIpHeader\fP * _self)\fR [extern]\fP"
 Returns the Differentiated Service Code Point from the DSF field 

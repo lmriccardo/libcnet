@@ -27,7 +27,7 @@ var searchData=
   ['icmppacket_5fsetheader_24',['IcmpPacket_setHeader',['../ip_8h.html#ada447feeaf19b246e81de6c71f54f2dc',1,'ip.h']]],
   ['ipheader_5fdecode_25',['IpHeader_decode',['../ip_8h.html#a62798d4c10cc08f6d508001327ea144a',1,'ip.h']]],
   ['ipheader_5fencode_26',['IpHeader_encode',['../ip_8h.html#ad41138f479db5e5fe21835cb3a6a6cb6',1,'ip.h']]],
-  ['ipheader_5fencode_5f_5f_27',['IpHeader_encode__',['../ip_8h.html#a71e3da869c5ca6fe49f9410efa68ce6c',1,'ip.h']]],
+  ['ipheader_5fencode_5f_5f_27',['IpHeader_encode_b',['../ip_8h.html#a71e3da869c5ca6fe49f9410efa68ce6c',1,'ip.h']]],
   ['ipheader_5fgetdscp_28',['IpHeader_getDSCP',['../ip_8h.html#a8ee3feb12d787fbd649d548ffea40d84',1,'ip.h']]],
   ['ipheader_5fgetecn_29',['IpHeader_getECN',['../ip_8h.html#afcfd9460b735a32f95ea3680b24f04c5',1,'ip.h']]],
   ['ipheader_5fgetflags_30',['IpHeader_getFlags',['../ip_8h.html#ad2011069eb0bfcf09a5f7f14b4afa4ac',1,'ip.h']]],

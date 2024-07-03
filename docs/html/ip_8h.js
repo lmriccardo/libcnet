@@ -115,7 +115,7 @@ var ip_8h =
     [ "IcmpPacket_setHeader", "ip_8h.html#ada447feeaf19b246e81de6c71f54f2dc", null ],
     [ "IpHeader_decode", "ip_8h.html#a62798d4c10cc08f6d508001327ea144a", null ],
     [ "IpHeader_encode", "ip_8h.html#ad41138f479db5e5fe21835cb3a6a6cb6", null ],
-    [ "IpHeader_encode__", "ip_8h.html#a71e3da869c5ca6fe49f9410efa68ce6c", null ],
+    [ "IpHeader_encode_b", "ip_8h.html#a71e3da869c5ca6fe49f9410efa68ce6c", null ],
     [ "IpHeader_getDSCP", "ip_8h.html#a8ee3feb12d787fbd649d548ffea40d84", null ],
     [ "IpHeader_getECN", "ip_8h.html#afcfd9460b735a32f95ea3680b24f04c5", null ],
     [ "IpHeader_getFlags", "ip_8h.html#ad2011069eb0bfcf09a5f7f14b4afa4ac", null ],
