@@ -8,7 +8,7 @@ var searchData=
   ['computeflagoff_5',['computeFlagOff',['../ip_8h.html#a2b2032e40fea930ae99425bfe898b21b',1,'ip.h']]],
   ['computenumberoffragments_6',['computeNumberOfFragments',['../fragment_8h.html#a4715e9a9fce052dc698bdabb877fff40',1,'fragment.h']]],
   ['controlbits_7',['ControlBits',['../structControlBits.html',1,'']]],
-  ['convertcontrolbitstobin_8',['convertControlBitsToBin',['../ip_8h.html#a9889d4285b9a805acb91d0d6a094bc92',1,'ip.h']]],
+  ['ControlBits_toBin_8',['ControlBits_toBin',['../ip_8h.html#a9889d4285b9a805acb91d0d6a094bc92',1,'ip.h']]],
   ['convertflagtobin_9',['convertFlagToBin',['../ip_8h.html#a3a9b23b880a9f395228429a7336afa6e',1,'ip.h']]],
   ['crafter_2eh_10',['crafter.h',['../crafter_8h.html',1,'']]],
   ['crafticmppacket_5fecho_11',['craftIcmpPacket_Echo',['../crafter_8h.html#aa6720c752291d7c321ea1fd0e73c161c',1,'crafter.h']]],

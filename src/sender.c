@@ -46,8 +46,9 @@ Sender* Sender_new(
     sender->_icmpp._id = 1;
     sender->_tcpp._sn = 1;
     sender->_tcpp._an = 0;
+    sender->_tcpp._numOfOptions = 0;
 
-    convertIntToControlBits(0, &sender->_tcpp._cbits);
+    ControlBits_fromValue(0, &sender->_tcpp._cbits);
 
     return sender;
 }
@@ -56,6 +57,7 @@ void Sender_delete(Sender* _self)
 {
     if (_self->_synch) sem_destroy(&_self->_mutex);
 
+    TcpOptions_delete(_self->_tcpp._opts, _self->_tcpp._numOfOptions);
     shutdown(_self->_socket, 2);
     free(_self->_srcaddress);
     free(_self);
@@ -90,6 +92,12 @@ void Sender_setIpFlags(Sender* _self, int _d, int _m)
     _self->_ipp._xf = X_FLAG_NOT_SET;
     _self->_ipp._df = _d;
     _self->_ipp._mf = _m;
+}
+
+void Sender_setTcpOptions(Sender* _self, struct TcpOption** _opts, const int _n)
+{
+    TcpOptions_copy(_opts, _self->_tcpp._opts, _n);
+    _self->_tcpp._numOfOptions = _n;
 }
 
 void Sender_bsendto(Sender* _self, const char* _buffer, const size_t _size)
@@ -260,7 +268,8 @@ void Sender_fillTcpHeader(
 
     TcpPacket_fillHeader(
         _pckt, _port, dstport, _self->_tcpp._sn, _self->_tcpp._an, _offset,
-        _self->_tcpp._cbits, _window, 0, _urgpntr
+        _self->_tcpp._cbits, _window, 0, _urgpntr,
+        _self->_tcpp._opts, _self->_tcpp._numOfOptions
     );
 }
 

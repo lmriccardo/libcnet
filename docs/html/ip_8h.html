@@ -380,9 +380,9 @@ Functions</h2></td></tr>
 <tr class="separator:ae15fa0622c69afeb1b43bf22f5841e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28e733ec68cbe3a61412443c5c4e0e5a" id="r_a28e733ec68cbe3a61412443c5c4e0e5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structUdpPacket.html">UdpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e733ec68cbe3a61412443c5c4e0e5a">UdpPacket_decode</a> (<a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:a28e733ec68cbe3a61412443c5c4e0e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a806eec1078a4b5d401e0bde413621f38" id="r_a806eec1078a4b5d401e0bde413621f38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a806eec1078a4b5d401e0bde413621f38">decodeControlBits</a> (struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
+<tr class="memitem:a806eec1078a4b5d401e0bde413621f38" id="r_a806eec1078a4b5d401e0bde413621f38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a806eec1078a4b5d401e0bde413621f38">ControlBits_decode</a> (struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
 <tr class="separator:a806eec1078a4b5d401e0bde413621f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9889d4285b9a805acb91d0d6a094bc92" id="r_a9889d4285b9a805acb91d0d6a094bc92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9889d4285b9a805acb91d0d6a094bc92">convertControlBitsToBin</a> (const struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, char *_out) __attribute__((nonnull))</td></tr>
+<tr class="memitem:a9889d4285b9a805acb91d0d6a094bc92" id="r_a9889d4285b9a805acb91d0d6a094bc92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9889d4285b9a805acb91d0d6a094bc92">ControlBits_toBin</a> (const struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, char *_out) __attribute__((nonnull))</td></tr>
 <tr class="separator:a9889d4285b9a805acb91d0d6a094bc92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d924896acab8403f2a2595baae821ea" id="r_a5d924896acab8403f2a2595baae821ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d924896acab8403f2a2595baae821ea">TcpHeader_setSourcePort</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, u_int16_t _srcport) __attribute__((nonnull))</td></tr>
 <tr class="separator:a5d924896acab8403f2a2595baae821ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1768,7 +1768,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a9889d4285b9a805acb91d0d6a094bc92" name="a9889d4285b9a805acb91d0d6a094bc92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9889d4285b9a805acb91d0d6a094bc92">&#9670;&#160;</a></span>convertControlBitsToBin()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9889d4285b9a805acb91d0d6a094bc92">&#9670;&#160;</a></span>ControlBits_toBin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1777,7 +1777,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void convertControlBitsToBin </td>
+          <td class="memname">void ControlBits_toBin </td>
           <td>(</td>
           <td class="paramtype">const struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>, </td>
         </tr>
@@ -1828,7 +1828,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a806eec1078a4b5d401e0bde413621f38" name="a806eec1078a4b5d401e0bde413621f38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a806eec1078a4b5d401e0bde413621f38">&#9670;&#160;</a></span>decodeControlBits()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a806eec1078a4b5d401e0bde413621f38">&#9670;&#160;</a></span>ControlBits_decode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1837,7 +1837,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void decodeControlBits </td>
+          <td class="memname">void ControlBits_decode </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>, </td>
         </tr>

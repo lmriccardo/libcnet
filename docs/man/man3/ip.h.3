@@ -422,10 +422,10 @@ includes/ip.h
 .RI "\fBUdpPacket\fP * \fBUdpPacket_decode\fP (\fBByteBuffer\fP *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBdecodeControlBits\fP (struct \fBControlBits\fP *_cbits, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "void \fBControlBits_decode\fP (struct \fBControlBits\fP *_cbits, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
-.RI "void \fBconvertControlBitsToBin\fP (const struct \fBControlBits\fP *_cbits, char *_out) __attribute__((nonnull))"
+.RI "void \fBControlBits_toBin\fP (const struct \fBControlBits\fP *_cbits, char *_out) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBTcpHeader_setSourcePort\fP (\fBTcpHeader\fP *_self, u_int16_t _srcport) __attribute__((nonnull))"
@@ -963,11 +963,11 @@ Definition at line \fB62\fP of file \fBip\&.h\fP\&.
 Compute the value for the DSF Field by combining the input DSCP and ECN values 
 .SS "u_int16_t computeFlagOff (const int _x, const int _d, const int _m, const int _offset)\fR [extern]\fP"
 Compute the value for the Flags + Fragment Offset field by combining the three input flags into a single value and then combining this single value with the input fragment offset into the final value 
-.SS "void convertControlBitsToBin (const struct \fBControlBits\fP * _cbits, char * _out)\fR [extern]\fP"
+.SS "void ControlBits_toBin (const struct \fBControlBits\fP * _cbits, char * _out)\fR [extern]\fP"
 Converts the control bits into a string of binary values 
 .SS "void convertFlagToBin (const u_int8_t _flags, char * _out)\fR [extern]\fP"
 Converts the IP Header flags into a binary string (i\&.e\&., 2 -> 010) 
-.SS "void decodeControlBits (struct \fBControlBits\fP * _cbits, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+.SS "void ControlBits_decode (struct \fBControlBits\fP * _cbits, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Fill the ControlBit structure with the content of the \fBByteBuffer\fP 
 .SS "void IcmpHeader_decode (\fBIcmpHeader\fP * _hdr, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decode the input bytes into an ICMP Header 

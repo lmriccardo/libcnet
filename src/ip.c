@@ -624,13 +624,76 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
 
 /* --------------------------------------------- TCP HEADER -------------------------------------------- */
 
-void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer)
+struct TcpOption* TcpOption_new(const u_int8_t _kind, const u_int8_t _length, void* _value)
 {
-    u_int8_t bits = ByteBuffer_get(_buffer);
-    convertIntToControlBits(bits, _cbits);
+    struct TcpOption* opt = (struct TcpOption*)malloc(_length);
+    opt->_kind = _kind;
+    opt->_length = _length;
+    
+    if (_value != NULL && _length > 2)
+    {
+        opt->_value = malloc(_length - 2);
+        memcpy(opt->_value, _value, _length - 2);
+    }
+    else
+    {
+        opt->_value = NULL;
+    }
+
+    return opt;
 }
 
-void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
+struct TcpOption* TcpOption_newMss(u_int16_t _mss)
+{
+    return TcpOption_new(TCP_OPTION_KIND_MSS, 4, &_mss);
+}
+
+struct TcpOption* TcpOption_newSackPermitted(void)
+{
+    return TcpOption_new(TCP_OPTION_KIND_SACK_PERM, 2, NULL);
+}
+
+struct TcpOption* TcpOption_newTimestamps(u_int32_t _tsval, u_int32_t _tsecr)
+{
+    u_int64_t _val = ((u_int64_t)_tsval << 32) + (u_int64_t)_tsecr;
+    return TcpOption_new(TCP_OPTION_KIND_TIMESTAMP, 10, &_val);
+}
+
+struct TcpOption* TcpOption_newNoOperation(void)
+{
+    return TcpOption_new(TCP_OPTION_KIND_NOOP, 1, NULL);
+}
+
+struct TcpOption* TcpOption_newWindowScale(u_int8_t _scale)
+{
+    return TcpOption_new(TCP_OPTION_KIND_WIN_SCALE, 3, &_scale);
+}
+
+void TcpOptions_copy(struct TcpOption** _src, struct TcpOption** _dst, const int _n)
+{
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        _dst[optIdx] = TcpOption_new(_src[optIdx]->_kind, _src[optIdx]->_length, _src[optIdx]->_value);
+    }
+}
+
+void TcpOptions_delete(struct TcpOption** _opts, const int _n)
+{
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        struct TcpOption* opt = *(_opts + optIdx);
+        free(opt->_value);
+        free(opt);
+    }
+}
+
+void ControlBits_decode(struct ControlBits* _cbits, ByteBuffer* _buffer)
+{
+    u_int8_t bits = ByteBuffer_get(_buffer);
+    ControlBits_fromValue(bits, _cbits);
+}
+
+void ControlBits_toBin(const struct ControlBits* _cbits, char* _out)
 {
     int _cwr = ((_cbits->_cwr >> 7) & 1);
     int _ece = ((_cbits->_ece >> 6) & 1);
@@ -644,7 +707,7 @@ void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out)
     sprintf(_out, "%d%d%d%d%d%d%d%d", _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
 }
 
-void convertIntToControlBits(const u_int8_t _bits, struct ControlBits *_cbits)
+void ControlBits_fromValue(const u_int8_t _bits, struct ControlBits *_cbits)
 {
     _cbits->_cwr = _bits & TCP_CWR_SET;
     _cbits->_ece = _bits & TCP_ECE_SET;
@@ -788,6 +851,35 @@ void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr)
     _self->_urgpntr = _urgpntr;
 }
 
+void TcpHeader_addTcpOption_o(TcpHeader* _self, struct TcpOption* _opt)
+{
+    TcpHeader_addTcpOption(_self, _opt->_kind, _opt->_length, _opt->_value);
+}
+
+void TcpHeader_addTcpOption(
+    TcpHeader* _self, const u_int8_t _kind, const u_int8_t _length, void* _value
+) {
+    // If we have reached the maximum number of bytes we can insert
+    // the adding operation cannot be completed.
+    if (_self->_totOptLen_b + _length > TCP_OPTIONS_MAX_SIZE) return;
+
+    _self->_options[_self->_numOfOpts++] = TcpOption_new(_kind, _length, _value);
+    _self->_totOptLen_b += _length;
+}
+
+void TcpHeader_setTcpOptions(TcpHeader* _self, struct TcpOption* _opts[], const int _n)
+{
+    // We need to reset the counter since we are overwriting
+    // the current options in the header, with newest ones.
+    _self->_numOfOpts = 0;
+    _self->_totOptLen_b = 0;
+
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        TcpHeader_addTcpOption_o(_self, *(_opts + optIdx));
+    }
+}
+
 u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self)
 {
     u_int8_t cbits = (u_int8_t)(  _self->_flags._cwr 
@@ -815,8 +907,21 @@ void TcpHeader_encode(TcpHeader* _self, ByteBuffer* _buffer)
     ByteBuffer_putShort(_buffer, htons(_self->_checksum));
     ByteBuffer_putShort(_buffer, htons(_self->_urgpntr));
 
-    // TODO: add optional Options
-    // ByteBuffer_putInt(_buffer, htonl(_self->_options));
+    for (int optIdx = 0; optIdx < _self->_numOfOpts; optIdx++)
+    {
+        struct TcpOption* opt = _self->_options[optIdx];
+
+        ByteBuffer_put(_buffer, opt->_kind);
+
+        // Some options may have length equal to 1, like the No-operation.
+        // In these cases, those lengths should not be put into the buffer
+        if (opt->_length > 1) ByteBuffer_put(_buffer, opt->_length);
+
+        if (opt->_value != NULL && opt->_length > 2)
+        {
+            ByteBuffer_putBuffer(_buffer, (const char*)opt->_value, opt->_length - 2);
+        }
+    }
 }
 
 void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer)
@@ -828,18 +933,41 @@ void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer)
     TcpHeader_setDataOffset(_self, ByteBuffer_get(_buffer) >> 4);
     
     struct ControlBits cbits;
-    decodeControlBits(&cbits, _buffer);
+    ControlBits_decode(&cbits, _buffer);
     TcpHeader_setControlBits(_self, cbits);
 
     TcpHeader_setUrgentPointer(_self, ntohs(ByteBuffer_getShort(_buffer)));
 
-    // TODO: We should also need to check for options
+    while (!ByteBuffer_isEndOfBuffer(_buffer))
+    {
+        u_int8_t _kind = ByteBuffer_get(_buffer);
+
+        // For the No-Operation option, we do not need to take the length and value
+        if (_kind == TCP_OPTION_KIND_NOOP)
+        {
+            TcpHeader_addTcpOption(_self, _kind, 1, NULL);
+            continue;
+        }
+
+        u_int8_t _length = ByteBuffer_get(_buffer);
+
+        if (_length > 2)
+        {
+            char out[_length - 2];
+            ByteBuffer_getBuffer(_buffer, out, _length - 2);
+            TcpHeader_addTcpOption(_self, _kind, _length, out);
+        }
+        else
+        {
+            TcpHeader_addTcpOption(_self, _kind, _length, NULL);
+        }
+    }
 }
 
 void TcpHeader_printInfo(TcpHeader* _self) 
 {
     char control_bits[9];
-    convertControlBitsToBin(&_self->_flags, control_bits);
+    ControlBits_toBin(&_self->_flags, control_bits);
     
     printf("[*] Printing TCP Header Informations\n");
     printf("Source Port: %hu\n", _self->_srcport);
@@ -855,7 +983,14 @@ void TcpHeader_printInfo(TcpHeader* _self)
 
 size_t TcpHeader_getHeaderSize(TcpHeader* _self)
 {
-    return 20;
+    return 20 + _self->_totOptLen_b;
+}
+
+void TcpHeader_deleteTcpOptions(TcpHeader* _self)
+{
+    TcpOptions_delete(_self->_options, _self->_numOfOpts);
+    _self->_numOfOpts = 0;
+    _self->_totOptLen_b = 0;
 }
 
 /* --------------------------------------------- TCP PACKET -------------------------------------------- */
@@ -870,12 +1005,15 @@ TcpPacket* TcpPacket_new_s(const size_t _size)
     TcpPacket* pckt = (TcpPacket*)malloc(sizeof(TcpPacket));
     pckt->_payload = (char *)malloc(_size * sizeof(char));
     pckt->__size = _size;
+    pckt->_hdr._numOfOpts = 0;
+    pckt->_hdr._totOptLen_b = 0;
 
     return pckt;
 }
 
 void TcpPacket_delete(TcpPacket* _self)
 {
+    TcpHeader_deleteTcpOptions(&_self->_hdr);
     free(_self->_payload);
     free(_self);
 }
@@ -883,15 +1021,22 @@ void TcpPacket_delete(TcpPacket* _self)
 void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr)
 {
     // Given the option field in the header, the header length might change.
-    // For now, I'm just considering the header length to be the default of
-    // 24 bytes, consider 32 bits for the option field filled with zeros.
-    memcpy(&_self->_hdr, &_hdr, TcpHeader_getHeaderSize(_hdr));
+    // Notice that by copying the entire structure, we are passing the memory
+    // addresses of each option to the new Header, not the content.
+    memcpy(&_self->_hdr, _hdr, 20);
+
+    _self->_hdr._numOfOpts = _hdr->_numOfOpts;
+    _self->_hdr._totOptLen_b = _hdr->_totOptLen_b;
+
+    if (_hdr->_numOfOpts == 0) return;
+
+    TcpHeader_setTcpOptions(&_self->_hdr, _hdr->_options, _hdr->_numOfOpts);
 }
 
 void TcpPacket_fillHeader(
     TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
     u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
-    u_int16_t  _checksum, u_int16_t _urgpntr
+    u_int16_t  _checksum, u_int16_t _urgpntr, struct TcpOption*  _opts[],  int       _nopts
 ) {
     TcpHeader_setSourcePort(&_self->_hdr, _srcport);
     TcpHeader_setDestinationPort(&_self->_hdr, _dstport);
@@ -902,6 +1047,7 @@ void TcpPacket_fillHeader(
     TcpHeader_setWindowSize(&_self->_hdr, _window);
     TcpHeader_setChecksum(&_self->_hdr, _checksum);
     TcpHeader_setUrgentPointer(&_self->_hdr, _urgpntr);
+    TcpHeader_setTcpOptions(&_self->_hdr, _opts, _nopts);
 }
 
 void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t _size)
@@ -919,6 +1065,16 @@ void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t 
 size_t TcpPacket_getPacketSize(TcpPacket* _self)
 {
     return _self->__size + TcpHeader_getHeaderSize(&_self->_hdr);
+}
+
+int TcpPacket_getNumberOfOptions(TcpPacket* _self)
+{
+    return _self->_hdr._numOfOpts;
+}
+
+u_int8_t TcpPacket_getOptionSize_bytes(TcpPacket* _self)
+{
+    return _self->_hdr._totOptLen_b;
 }
 
 ByteBuffer* TcpPacket_encode(TcpPacket* _self)

@@ -77,10 +77,10 @@ Legend:
 - [?] Upadate IP Packet with the new TCP Packet payload option
 - [?] Update the crafter for TCP Packets
 - [?] Update the sender for TCP Packets
-- [ ] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
-- [ ] Test the TCP implementation
-- [ ] Write a simple example on Tcp packets
-- [ ] Analyze Wireshark 
+- [?] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
+- [?] Test the TCP implementation
+- [?] Write a simple example on Tcp packets
+- [?] Analyze Wireshark 
 
 ### Advanced Development
 

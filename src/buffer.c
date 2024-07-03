@@ -134,6 +134,11 @@ bool ByteBuffer_isEmpty(const ByteBuffer* _self)
     return _self->_size == 0;
 }
 
+bool ByteBuffer_isEndOfBuffer(const ByteBuffer* _self)
+{
+    return _self->_size - _self->_position <= 0;
+}
+
 void checkForOOB(const int _position, const size_t _size, const size_t _max, const char* _func)
 {
     if (_position + _size > _max)

@@ -10,7 +10,7 @@ int main(void)
 
     Sender* sender = Sender_new(interface, addr, NULL, 80, "tcp", true);
 
-    convertIntToControlBits(TCP_SYN_SET, &sender->_tcpp._cbits);
+    ControlBits_fromValue(TCP_SYN_SET, &sender->_tcpp._cbits);
     sender->_tcpp._sn = 0;
 
     IpPacket* pckt = Sender_craftTcp(sender, 12345, 5, 64240, 0, NULL, 0);

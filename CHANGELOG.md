@@ -13,7 +13,7 @@
 
 ##### Small Changes
 
-- Changed `snprintf` into `sprintf` into `convertControlBitsToBin` function of `ip.c`
+- Changed `snprintf` into `sprintf` into `ControlBits_toBin` function of `ip.c`
 
 ##### Fixed Bugs
 

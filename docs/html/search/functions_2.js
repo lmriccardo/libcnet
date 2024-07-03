@@ -6,7 +6,7 @@ var searchData=
   ['computeelapsedtime_3',['computeElapsedTime',['../timer_8h.html#a03f0ef9e4cca306f206013e35f2214b3',1,'timer.h']]],
   ['computeflagoff_4',['computeFlagOff',['../ip_8h.html#a2b2032e40fea930ae99425bfe898b21b',1,'ip.h']]],
   ['computenumberoffragments_5',['computeNumberOfFragments',['../fragment_8h.html#a4715e9a9fce052dc698bdabb877fff40',1,'fragment.h']]],
-  ['convertcontrolbitstobin_6',['convertControlBitsToBin',['../ip_8h.html#a9889d4285b9a805acb91d0d6a094bc92',1,'ip.h']]],
+  ['ControlBits_toBin_6',['ControlBits_toBin',['../ip_8h.html#a9889d4285b9a805acb91d0d6a094bc92',1,'ip.h']]],
   ['convertflagtobin_7',['convertFlagToBin',['../ip_8h.html#a3a9b23b880a9f395228429a7336afa6e',1,'ip.h']]],
   ['crafticmppacket_5fecho_8',['craftIcmpPacket_Echo',['../crafter_8h.html#aa6720c752291d7c321ea1fd0e73c161c',1,'crafter.h']]],
   ['crafticmppacket_5fmtu_9',['craftIcmpPacket_Mtu',['../crafter_8h.html#affd293fdca488b85d28bee71608e0868',1,'crafter.h']]],
