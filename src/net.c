@@ -70,7 +70,6 @@ u_int16_t computeChecksum(const unsigned char* buffer, const size_t size)
 
     for (int i = 0; i < size; i +=2 )
     {
-        if (i == 2) continue;
         if (i == size - 1)
         {
             checksum += (*(buffer + i) << 8);

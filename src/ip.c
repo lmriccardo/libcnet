@@ -645,6 +645,7 @@ struct TcpOption* TcpOption_new(const u_int8_t _kind, const u_int8_t _length, vo
 
 struct TcpOption* TcpOption_newMss(u_int16_t _mss)
 {
+    _mss = htons(_mss);
     return TcpOption_new(TCP_OPTION_KIND_MSS, 4, &_mss);
 }
 
@@ -655,7 +656,7 @@ struct TcpOption* TcpOption_newSackPermitted(void)
 
 struct TcpOption* TcpOption_newTimestamps(u_int32_t _tsval, u_int32_t _tsecr)
 {
-    u_int64_t _val = ((u_int64_t)_tsval << 32) + (u_int64_t)_tsecr;
+    u_int64_t _val = ((u_int64_t)htonl(_tsecr) << 32) + (u_int64_t)htonl(_tsval);
     return TcpOption_new(TCP_OPTION_KIND_TIMESTAMP, 10, &_val);
 }
 
@@ -676,8 +677,6 @@ void TcpOptions_copy(struct TcpOption** _src, struct TcpOption** _dst, const int
         _dst[optIdx] = TcpOption_new(_src[optIdx]->_kind, _src[optIdx]->_length, _src[optIdx]->_value);
     }
 }
-
-extern void* TcpOption_getNetworkByteValue(struct TcpOption* _opt) __attribute__((nonnull)) __attribute__((returns_nonnull));
 
 void TcpOptions_delete(struct TcpOption** _opts, const int _n)
 {
@@ -974,7 +973,7 @@ void TcpHeader_printInfo(TcpHeader* _self)
     printf("[*] Printing TCP Header Informations\n");
     printf("Source Port: %hu\n", _self->_srcport);
     printf("Destination Port: %hu\n", _self->_dstport);
-    printf("Sequence Number: %hd\n", _self->_seqnum);
+    printf("Sequence Number: %d\n", _self->_seqnum);
     printf("Acknowledgment Number: %hd\n", _self->_acknum);
     printf("Data Offset: %d\n", _self->_offset >> 4);
     printf("Control Bits: %s\n", control_bits);
@@ -1570,12 +1569,13 @@ u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self)
     ByteBuffer* buff = ByteBuffer_new(TCP_PSEUDO_HEADER_SIZE + TcpPacket_getPacketSize(_self->_payload._tcp));
 
     // Differently from UDP, in TCP Packets the pseudo-header is counted as first.
-    struct PseudoHeader ph;
-    PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
-    PseudoHeader_encode(&ph, buff);
 
     // Then, comes the real packet
     TcpPacket_encode_b(_self->_payload._tcp, buff);
+
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
+    PseudoHeader_encode(&ph, buff);
 
     // Finally compute the checksum
     checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
