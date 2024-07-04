@@ -1,0 +1,193 @@
+\doxysection{includes/utils/list.h File Reference}
+\label{list_8h}\index{includes/utils/list.h@{includes/utils/list.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$utils/synch.\+h$>$}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Node}
+\item 
+struct \textbf{ Linked\+List}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Node} $\ast$ \textbf{ Node\+\_\+new} (void $\ast$\+\_\+value, size\+\_\+t \+\_\+vsize) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Node\+\_\+delete} (struct \textbf{ Node} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Linked\+List} $\ast$ \textbf{ Linked\+List\+\_\+new} (const size\+\_\+t \+\_\+capacity) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+delete} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+deletet} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+append} (\textbf{ Linked\+List} $\ast$\+\_\+self, struct \textbf{ Node} $\ast$\+\_\+node) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+appendt} (\textbf{ Linked\+List} $\ast$\+\_\+self, struct \textbf{ Node} $\ast$\+\_\+node) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+appendv} (\textbf{ Linked\+List} $\ast$\+\_\+self, void $\ast$\+\_\+value, size\+\_\+t \+\_\+vsize) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+appendvt} (\textbf{ Linked\+List} $\ast$\+\_\+self, void $\ast$\+\_\+value, size\+\_\+t \+\_\+vsize) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+push} (\textbf{ Linked\+List} $\ast$\+\_\+self, struct \textbf{ Node} $\ast$\+\_\+node) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+pusht} (\textbf{ Linked\+List} $\ast$\+\_\+self, struct \textbf{ Node} $\ast$\+\_\+node) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+pushv} (\textbf{ Linked\+List} $\ast$\+\_\+self, void $\ast$\+\_\+value, size\+\_\+t \+\_\+vsize) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Linked\+List\+\_\+pushvt} (\textbf{ Linked\+List} $\ast$\+\_\+self, void $\ast$\+\_\+value, size\+\_\+t \+\_\+vsize) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+struct \textbf{ Node} $\ast$ \textbf{ Linked\+List\+\_\+pop} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Node} $\ast$ \textbf{ Linked\+List\+\_\+popt} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Node} $\ast$ \textbf{ Linked\+List\+\_\+remove} (\textbf{ Linked\+List} $\ast$\+\_\+self, int \+\_\+i) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Node} $\ast$ \textbf{ Linked\+List\+\_\+removet} (\textbf{ Linked\+List} $\ast$\+\_\+self, int \+\_\+i) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+bool \textbf{ Linked\+List\+\_\+is\+Empty} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+bool \textbf{ Linked\+List\+\_\+is\+Emptyt} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Linked\+List\+\_\+get\+Size} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Linked\+List\+\_\+get\+Sizet} (\textbf{ Linked\+List} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\index{list.h@{list.h}!LinkedList\_append@{LinkedList\_append}}
+\index{LinkedList\_append@{LinkedList\_append}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_append()}
+{\footnotesize\ttfamily \label{list_8h_a3781465c512eccdd239ea34d482f17ef} 
+void Linked\+List\+\_\+append (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Node} $\ast$}]{\+\_\+node}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Append the input \doxyref{Node}{p.}{structNode} into the Linked List \index{list.h@{list.h}!LinkedList\_appendt@{LinkedList\_appendt}}
+\index{LinkedList\_appendt@{LinkedList\_appendt}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_appendt()}
+{\footnotesize\ttfamily \label{list_8h_a801d01fa936fc7a9dfbb3e9aea5bbdfe} 
+void Linked\+List\+\_\+appendt (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Node} $\ast$}]{\+\_\+node}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Append the input \doxyref{Node}{p.}{structNode} into the Linked List (Thread safe) \index{list.h@{list.h}!LinkedList\_appendv@{LinkedList\_appendv}}
+\index{LinkedList\_appendv@{LinkedList\_appendv}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_appendv()}
+{\footnotesize\ttfamily \label{list_8h_a1108d72600508619f56ad75897e1dc0a} 
+void Linked\+List\+\_\+appendv (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{void $\ast$}]{\+\_\+value}{, }\item[{size\+\_\+t}]{\+\_\+vsize}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and append a new \doxyref{Node}{p.}{structNode}, given the input value and value size, to the Linked List \index{list.h@{list.h}!LinkedList\_appendvt@{LinkedList\_appendvt}}
+\index{LinkedList\_appendvt@{LinkedList\_appendvt}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_appendvt()}
+{\footnotesize\ttfamily \label{list_8h_aac624f57195bba0041a097d98d37175d} 
+void Linked\+List\+\_\+appendvt (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{void $\ast$}]{\+\_\+value}{, }\item[{size\+\_\+t}]{\+\_\+vsize}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and append a new \doxyref{Node}{p.}{structNode}, given the input value and value size, to the Linked List (Thread Safe) \index{list.h@{list.h}!LinkedList\_delete@{LinkedList\_delete}}
+\index{LinkedList\_delete@{LinkedList\_delete}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_delete()}
+{\footnotesize\ttfamily \label{list_8h_a07bb0b083224eb911aa9765f29919347} 
+void Linked\+List\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the entire linked list (including nodes) \index{list.h@{list.h}!LinkedList\_deletet@{LinkedList\_deletet}}
+\index{LinkedList\_deletet@{LinkedList\_deletet}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_deletet()}
+{\footnotesize\ttfamily \label{list_8h_a5853ad4a2989533e4c9b024ed56c02bc} 
+void Linked\+List\+\_\+deletet (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the entire linked list (including nodes, Thread Safe) \index{list.h@{list.h}!LinkedList\_getSize@{LinkedList\_getSize}}
+\index{LinkedList\_getSize@{LinkedList\_getSize}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_getSize()}
+{\footnotesize\ttfamily \label{list_8h_aa1e3fb3d1107f94bc6f1aac2befb1501} 
+size\+\_\+t Linked\+List\+\_\+get\+Size (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the actual size of the linked List \index{list.h@{list.h}!LinkedList\_getSizet@{LinkedList\_getSizet}}
+\index{LinkedList\_getSizet@{LinkedList\_getSizet}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_getSizet()}
+{\footnotesize\ttfamily \label{list_8h_add3341f8fdfa0b1aeced17d032da0977} 
+size\+\_\+t Linked\+List\+\_\+get\+Sizet (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the actual size of the linked List (Thread safe) \index{list.h@{list.h}!LinkedList\_isEmpty@{LinkedList\_isEmpty}}
+\index{LinkedList\_isEmpty@{LinkedList\_isEmpty}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_isEmpty()}
+{\footnotesize\ttfamily \label{list_8h_a9d9e0b078af0e1a3bd896741ca123310} 
+bool Linked\+List\+\_\+is\+Empty (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Checks if the linked list is empty or not \index{list.h@{list.h}!LinkedList\_isEmptyt@{LinkedList\_isEmptyt}}
+\index{LinkedList\_isEmptyt@{LinkedList\_isEmptyt}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_isEmptyt()}
+{\footnotesize\ttfamily \label{list_8h_aeedb703487a17e1305b35c7c2d459ee7} 
+bool Linked\+List\+\_\+is\+Emptyt (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Checks if the linked list is empty or not (Thread-\/safe) \index{list.h@{list.h}!LinkedList\_new@{LinkedList\_new}}
+\index{LinkedList\_new@{LinkedList\_new}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_new()}
+{\footnotesize\ttfamily \label{list_8h_af2279504ba7b130d7d5ecbb9ebe13950} 
+\textbf{ Linked\+List} $\ast$ Linked\+List\+\_\+new (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+capacity}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Initialize an empty Linked List. This function dynamically allocate memory, this means that the corresponding object must be deleted using the \doxyref{Linked\+List\+\_\+delete()}{p.}{list_8h_a07bb0b083224eb911aa9765f29919347} function. \index{list.h@{list.h}!LinkedList\_pop@{LinkedList\_pop}}
+\index{LinkedList\_pop@{LinkedList\_pop}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_pop()}
+{\footnotesize\ttfamily \label{list_8h_a52252af266b8c33425329597f53d57c6} 
+struct \textbf{ Node} $\ast$ Linked\+List\+\_\+pop (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the last node of the Linked List \index{list.h@{list.h}!LinkedList\_popt@{LinkedList\_popt}}
+\index{LinkedList\_popt@{LinkedList\_popt}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_popt()}
+{\footnotesize\ttfamily \label{list_8h_a7876eb6b5fbcc55fa8e80bc100cea821} 
+struct \textbf{ Node} $\ast$ Linked\+List\+\_\+popt (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the last node of the Linked List (Thread safe) \index{list.h@{list.h}!LinkedList\_push@{LinkedList\_push}}
+\index{LinkedList\_push@{LinkedList\_push}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_push()}
+{\footnotesize\ttfamily \label{list_8h_a92520ffa8b142648263f1f9db8e15359} 
+void Linked\+List\+\_\+push (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Node} $\ast$}]{\+\_\+node}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Add the input node at the head of the list \index{list.h@{list.h}!LinkedList\_pusht@{LinkedList\_pusht}}
+\index{LinkedList\_pusht@{LinkedList\_pusht}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_pusht()}
+{\footnotesize\ttfamily \label{list_8h_a6e14091a2995510bb75da2076ab2cba4} 
+void Linked\+List\+\_\+pusht (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Node} $\ast$}]{\+\_\+node}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Add the input node at the head of the list (Thread Safe) \index{list.h@{list.h}!LinkedList\_pushv@{LinkedList\_pushv}}
+\index{LinkedList\_pushv@{LinkedList\_pushv}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_pushv()}
+{\footnotesize\ttfamily \label{list_8h_ae4cf094bcedcae2c83e5da069dc3be61} 
+void Linked\+List\+\_\+pushv (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{void $\ast$}]{\+\_\+value}{, }\item[{size\+\_\+t}]{\+\_\+vsize}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and add a new \doxyref{Node}{p.}{structNode} at the head of the list \index{list.h@{list.h}!LinkedList\_pushvt@{LinkedList\_pushvt}}
+\index{LinkedList\_pushvt@{LinkedList\_pushvt}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_pushvt()}
+{\footnotesize\ttfamily \label{list_8h_ac216cac0e6549d6743f7385281881148} 
+void Linked\+List\+\_\+pushvt (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{void $\ast$}]{\+\_\+value}{, }\item[{size\+\_\+t}]{\+\_\+vsize}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and add a new \doxyref{Node}{p.}{structNode} at the head of the list (Thread safe) \index{list.h@{list.h}!LinkedList\_remove@{LinkedList\_remove}}
+\index{LinkedList\_remove@{LinkedList\_remove}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_remove()}
+{\footnotesize\ttfamily \label{list_8h_a4f2cf0177046951f585676707ce30f00} 
+struct \textbf{ Node} $\ast$ Linked\+List\+\_\+remove (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{int}]{\+\_\+i}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the element of the list corresponding to input index \index{list.h@{list.h}!LinkedList\_removet@{LinkedList\_removet}}
+\index{LinkedList\_removet@{LinkedList\_removet}!list.h@{list.h}}
+\doxysubsubsection{LinkedList\_removet()}
+{\footnotesize\ttfamily \label{list_8h_a18ad9fcc5a5ed98a706f69c5440e5eab} 
+struct \textbf{ Node} $\ast$ Linked\+List\+\_\+removet (\begin{DoxyParamCaption}\item[{\textbf{ Linked\+List} $\ast$}]{\+\_\+self}{, }\item[{int}]{\+\_\+i}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the element of the list corresponding to input index (Thread-\/safe) \index{list.h@{list.h}!Node\_delete@{Node\_delete}}
+\index{Node\_delete@{Node\_delete}!list.h@{list.h}}
+\doxysubsubsection{Node\_delete()}
+{\footnotesize\ttfamily \label{list_8h_aadba4938d35791c4bf7e1f85c40e0711} 
+void Node\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \textbf{ Node} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input \doxyref{Node}{p.}{structNode} \index{list.h@{list.h}!Node\_new@{Node\_new}}
+\index{Node\_new@{Node\_new}!list.h@{list.h}}
+\doxysubsubsection{Node\_new()}
+{\footnotesize\ttfamily \label{list_8h_a91dfc67d643fb51d57f175f40f20187a} 
+struct \textbf{ Node} $\ast$ Node\+\_\+new (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+value}{, }\item[{size\+\_\+t}]{\+\_\+vsize}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Construct and return the pointer to a new \doxyref{Node}{p.}{structNode} initialized with given input values. Notice that, this function dynamically allocate memory when creating the new \doxyref{Node}{p.}{structNode}. Hence, the node should be freed using the Node\+\_\+delete function. If the node is in a Linked List, then all nodes will be freed when the Linked List is deleted. 

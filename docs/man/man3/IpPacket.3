@@ -1,0 +1,73 @@
+.TH "IpPacket" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+IpPacket
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBIpHeader\fP \fB_iphdr\fP"
+.br
+.RI "The IP Header\&. "
+.ti -1c
+.RI "union {"
+.br
+.ti -1c
+.RI "   \fBIcmpPacket\fP * \fB_icmp\fP"
+.br
+.RI "The ICMP Packet\&. "
+.ti -1c
+.RI "   \fBUdpPacket\fP * \fB_udp\fP"
+.br
+.RI "The UDP Packet\&. "
+.ti -1c
+.RI "   \fBTcpPacket\fP * \fB_tcp\fP"
+.br
+.RI "The TCP Packet\&. "
+.ti -1c
+.RI "} \fB_payload\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This struct refers to the entire IP Packet (Header + Payload) 
+.PP
+Definition at line \fB956\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "\fBIcmpPacket\fP* _icmp"
+
+.PP
+The ICMP Packet\&. 
+.PP
+Definition at line \fB964\fP of file \fBip\&.h\fP\&.
+.SS "\fBIpHeader\fP _iphdr"
+
+.PP
+The IP Header\&. 
+.PP
+Definition at line \fB959\fP of file \fBip\&.h\fP\&.
+.SS "union  { \&.\&.\&. }  _payload"
+
+.SS "\fBTcpPacket\fP* _tcp"
+
+.PP
+The TCP Packet\&. 
+.PP
+Definition at line \fB966\fP of file \fBip\&.h\fP\&.
+.SS "\fBUdpPacket\fP* _udp"
+
+.PP
+The UDP Packet\&. 
+.PP
+Definition at line \fB965\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

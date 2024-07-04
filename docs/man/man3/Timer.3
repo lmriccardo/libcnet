@@ -1,0 +1,87 @@
+.TH "Timer" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Timer
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <timer\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "struct timespec \fB_start\fP"
+.br
+.RI "The time when the \fBTimer\fP is created\&. "
+.ti -1c
+.RI "struct timespec \fB_current\fP"
+.br
+.RI "The current time, updated at each iteration\&. "
+.ti -1c
+.RI "struct timespec \fB_previous\fP"
+.br
+.RI "The time when the \fRTimer_getTime\fP function is called\&. "
+.ti -1c
+.RI "double \fB_elapsed\fP"
+.br
+.RI "The total elapsed time from the start\&. "
+.ti -1c
+.RI "bool \fB_running\fP"
+.br
+.RI "Is true if the corresponding thread is running\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a simple timer\&. It can be used to time the elapsed time between the message being sent and the response being received by the receiver\&. The timer starts by calling the corresponding \fRTimer_start\fP function\&.
+.PP
+The means of the fields is the following:
+.IP "\(bu" 2
+\fR_start\fP the time when the \fBTimer\fP is created
+.IP "\(bu" 2
+\fR_elapsed\fP the elapsed time between start and current
+.IP "\(bu" 2
+\fR_current\fP the current time everytime updated
+.IP "\(bu" 2
+\fR_previous\fP the time when the \fRTimer_getTime\fP function is called 
+.PP
+
+.PP
+Definition at line \fB58\fP of file \fBtimer\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "struct timespec _current"
+
+.PP
+The current time, updated at each iteration\&. 
+.PP
+Definition at line \fB61\fP of file \fBtimer\&.h\fP\&.
+.SS "double _elapsed"
+
+.PP
+The total elapsed time from the start\&. 
+.PP
+Definition at line \fB63\fP of file \fBtimer\&.h\fP\&.
+.SS "struct timespec _previous"
+
+.PP
+The time when the \fRTimer_getTime\fP function is called\&. 
+.PP
+Definition at line \fB62\fP of file \fBtimer\&.h\fP\&.
+.SS "bool _running"
+
+.PP
+Is true if the corresponding thread is running\&. 
+.PP
+Definition at line \fB64\fP of file \fBtimer\&.h\fP\&.
+.SS "struct timespec _start"
+
+.PP
+The time when the \fBTimer\fP is created\&. 
+.PP
+Definition at line \fB60\fP of file \fBtimer\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

@@ -1,0 +1,202 @@
+\doxysection{includes/receiver.h File Reference}
+\label{receiver_8h}\index{includes/receiver.h@{includes/receiver.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include "{}ip.\+h"{}}\newline
+{\ttfamily \#include "{}utils/timer.\+h"{}}\newline
+{\ttfamily \#include "{}utils/net.\+h"{}}\newline
+{\ttfamily \#include "{}utils/list.\+h"{}}\newline
+{\ttfamily \#include "{}utils/synch.\+h"{}}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Receiver}
+\item 
+struct \textbf{ Response}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ handle\+\_\+error}(msg,  fd)~do \{ perror(msg); shutdown(fd, 2); exit(EXIT\+\_\+\+FAILURE); \} while (0)
+\item 
+\#define \textbf{ Message\+Queue\+\_\+new}(x)~(\textbf{ Linked\+List\+\_\+new}(x))
+\item 
+\#define \textbf{ Message\+Queue\+\_\+delete}(x)~(\textbf{ Linked\+List\+\_\+deletet}(x))
+\item 
+\#define \textbf{ Message\+Queue\+\_\+push}(x,  y,  z)~(\textbf{ Linked\+List\+\_\+pushvt}(x, y, z))
+\item 
+\#define \textbf{ Message\+Queue\+\_\+pop}(x)~(\textbf{ Linked\+List\+\_\+popt}(x))
+\item 
+\#define \textbf{ Message\+Queue\+\_\+is\+Empty}(x)~(\textbf{ Linked\+List\+\_\+is\+Emptyt}(x))
+\item 
+\#define \textbf{ Message\+Queue\+\_\+get\+Size}(x)~(\textbf{ Linked\+List\+\_\+get\+Sizet}(x))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \textbf{ Linked\+List} \textbf{ Message\+Queue}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Receiver} $\ast$ \textbf{ Receiver\+\_\+new} (const char $\ast$\+\_\+interface, const u\+\_\+int16\+\_\+t \+\_\+port, const char $\ast$\+\_\+proto, const bool \+\_\+verbose) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Receiver\+\_\+delete} (\textbf{ Receiver} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Receiver\+\_\+start} (\textbf{ Receiver} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void $\ast$ \textbf{ Receiver\+\_\+run} (void $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Receiver\+\_\+stop} (\textbf{ Receiver} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Receiver\+\_\+set\+Timer} (\textbf{ Receiver} $\ast$\+\_\+self, struct \textbf{ Timer} $\ast$\+\_\+timer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Receiver\+\_\+set\+Semaphore} (\textbf{ Receiver} $\ast$\+\_\+self, sem\+\_\+t $\ast$\+\_\+mutex) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Response\+\_\+free} (struct \textbf{ Response} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\index{receiver.h@{receiver.h}!handle\_error@{handle\_error}}
+\index{handle\_error@{handle\_error}!receiver.h@{receiver.h}}
+\doxysubsubsection{handle\_error}
+{\footnotesize\ttfamily \label{receiver_8h_a0cc2553fc33439e268eb69c020a61dee} 
+\#define handle\+\_\+error(\begin{DoxyParamCaption}\item[{}]{msg}{, }\item[{}]{fd}{}\end{DoxyParamCaption})~do \{ perror(msg); shutdown(fd, 2); exit(EXIT\+\_\+\+FAILURE); \} while (0)}
+
+
+
+Definition at line \textbf{ 36} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_delete@{MessageQueue\_delete}}
+\index{MessageQueue\_delete@{MessageQueue\_delete}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_delete}
+{\footnotesize\ttfamily \label{receiver_8h_a83310cc754da56d5372155b28c587048} 
+\#define Message\+Queue\+\_\+delete(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+deletet}(x))}
+
+
+
+Definition at line \textbf{ 41} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_getSize@{MessageQueue\_getSize}}
+\index{MessageQueue\_getSize@{MessageQueue\_getSize}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_getSize}
+{\footnotesize\ttfamily \label{receiver_8h_a9a90c1c461af6283238715360a19bf93} 
+\#define Message\+Queue\+\_\+get\+Size(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+get\+Sizet}(x))}
+
+
+
+Definition at line \textbf{ 45} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_isEmpty@{MessageQueue\_isEmpty}}
+\index{MessageQueue\_isEmpty@{MessageQueue\_isEmpty}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_isEmpty}
+{\footnotesize\ttfamily \label{receiver_8h_a1a0c2bd760bc3d0ad495bd4373d07b51} 
+\#define Message\+Queue\+\_\+is\+Empty(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+is\+Emptyt}(x))}
+
+
+
+Definition at line \textbf{ 44} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_new@{MessageQueue\_new}}
+\index{MessageQueue\_new@{MessageQueue\_new}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_new}
+{\footnotesize\ttfamily \label{receiver_8h_a8f51e73d4419836844dcb7ca4d241fc4} 
+\#define Message\+Queue\+\_\+new(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+new}(x))}
+
+
+
+Definition at line \textbf{ 40} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_pop@{MessageQueue\_pop}}
+\index{MessageQueue\_pop@{MessageQueue\_pop}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_pop}
+{\footnotesize\ttfamily \label{receiver_8h_a1b9d70ba69e3cac0683b86b45bdd36ba} 
+\#define Message\+Queue\+\_\+pop(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+popt}(x))}
+
+
+
+Definition at line \textbf{ 43} of file \textbf{ receiver.\+h}.
+
+\index{receiver.h@{receiver.h}!MessageQueue\_push@{MessageQueue\_push}}
+\index{MessageQueue\_push@{MessageQueue\_push}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue\_push}
+{\footnotesize\ttfamily \label{receiver_8h_a9ba371f32f2f4e045e1003f4b5fb2c42} 
+\#define Message\+Queue\+\_\+push(\begin{DoxyParamCaption}\item[{}]{x}{, }\item[{}]{y}{, }\item[{}]{z}{}\end{DoxyParamCaption})~(\textbf{ Linked\+List\+\_\+pushvt}(x, y, z))}
+
+
+
+Definition at line \textbf{ 42} of file \textbf{ receiver.\+h}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\index{receiver.h@{receiver.h}!MessageQueue@{MessageQueue}}
+\index{MessageQueue@{MessageQueue}!receiver.h@{receiver.h}}
+\doxysubsubsection{MessageQueue}
+{\footnotesize\ttfamily \label{receiver_8h_adfee8e1ded58009a52c6006ffb1e9848} 
+typedef \textbf{ Linked\+List} \textbf{ Message\+Queue}}
+
+
+
+Definition at line \textbf{ 38} of file \textbf{ receiver.\+h}.
+
+
+
+\doxysubsection{Function Documentation}
+\index{receiver.h@{receiver.h}!Receiver\_delete@{Receiver\_delete}}
+\index{Receiver\_delete@{Receiver\_delete}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_delete()}
+{\footnotesize\ttfamily \label{receiver_8h_a509a6ccbaaedf8d792f9804a8c2da63f} 
+void Receiver\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Receiver} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input \doxyref{Receiver}{p.}{structReceiver} \index{receiver.h@{receiver.h}!Receiver\_new@{Receiver\_new}}
+\index{Receiver\_new@{Receiver\_new}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_new()}
+{\footnotesize\ttfamily \label{receiver_8h_ad98b64cfdcea0d827caf12b3e362a100} 
+\textbf{ Receiver} $\ast$ Receiver\+\_\+new (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+interface}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+port}{, }\item[{const char $\ast$}]{\+\_\+proto}{, }\item[{const bool}]{\+\_\+verbose}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates a new \doxyref{Receiver}{p.}{structReceiver} given as input the string containing an IP address, a port and the protocol. This function binds the newly created socket using this input values.
+
+The first argument is the interface to which bind the receiver, for example eth0. Given the interface, it takes the associated IP address. \index{receiver.h@{receiver.h}!Receiver\_run@{Receiver\_run}}
+\index{Receiver\_run@{Receiver\_run}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_run()}
+{\footnotesize\ttfamily \label{receiver_8h_a17dd0e7645bfe0ea3b8bd452a63e2d39} 
+void $\ast$ Receiver\+\_\+run (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+The function the \doxyref{Receiver}{p.}{structReceiver} thread will always execute. This function is called by {\ttfamily Receiver\+\_\+start} and passed to the newly created thread. It is an infinite loop that every time waits for a packet to be received and put the received packet, if it is correct, into a Message\+Queue. The only way to stop the \doxyref{Receiver}{p.}{structReceiver} thread is by calling the corresponding {\ttfamily Receiver\+\_\+stop} function. \index{receiver.h@{receiver.h}!Receiver\_setSemaphore@{Receiver\_setSemaphore}}
+\index{Receiver\_setSemaphore@{Receiver\_setSemaphore}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_setSemaphore()}
+{\footnotesize\ttfamily \label{receiver_8h_a574c693584718fbb0ca05b4974fdd636} 
+void Receiver\+\_\+set\+Semaphore (\begin{DoxyParamCaption}\item[{\textbf{ Receiver} $\ast$}]{\+\_\+self}{, }\item[{sem\+\_\+t $\ast$}]{\+\_\+mutex}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the input semaphore into the receiver \index{receiver.h@{receiver.h}!Receiver\_setTimer@{Receiver\_setTimer}}
+\index{Receiver\_setTimer@{Receiver\_setTimer}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_setTimer()}
+{\footnotesize\ttfamily \label{receiver_8h_a998ff6706dfd97524fe8e2ff751470d1} 
+void Receiver\+\_\+set\+Timer (\begin{DoxyParamCaption}\item[{\textbf{ Receiver} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+timer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new timer into the receiver \index{receiver.h@{receiver.h}!Receiver\_start@{Receiver\_start}}
+\index{Receiver\_start@{Receiver\_start}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_start()}
+{\footnotesize\ttfamily \label{receiver_8h_aa617792ed5f28d968401174e326f951f} 
+void Receiver\+\_\+start (\begin{DoxyParamCaption}\item[{\textbf{ Receiver} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Start a new \doxyref{Receiver}{p.}{structReceiver} thread \index{receiver.h@{receiver.h}!Receiver\_stop@{Receiver\_stop}}
+\index{Receiver\_stop@{Receiver\_stop}!receiver.h@{receiver.h}}
+\doxysubsubsection{Receiver\_stop()}
+{\footnotesize\ttfamily \label{receiver_8h_a6b05a7b469f10c64009425d077aaa2f8} 
+void Receiver\+\_\+stop (\begin{DoxyParamCaption}\item[{\textbf{ Receiver} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Stop the \doxyref{Receiver}{p.}{structReceiver} Thread \index{receiver.h@{receiver.h}!Response\_free@{Response\_free}}
+\index{Response\_free@{Response\_free}!receiver.h@{receiver.h}}
+\doxysubsubsection{Response\_free()}
+{\footnotesize\ttfamily \label{receiver_8h_aef7a08dca77694b7ba74956e9ee367f5} 
+void Response\+\_\+free (\begin{DoxyParamCaption}\item[{struct \textbf{ Response} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the response 

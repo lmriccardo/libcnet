@@ -1,0 +1,47 @@
+\doxysection{synch.\+h}
+\label{synch_8h_source}\index{includes/utils/synch.h@{includes/utils/synch.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ synch.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ declaration\ of\ functions\ used\ to\ synchronize\ \ \ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ a\ Sender\ and\ Receiver,\ between\ each\ other\ or\ a\ common\ Timer\ object.\ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00014\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifndef\ \_SYNCH\_H}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ \_SYNCH\_H}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <semaphore.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ synchronizeRTT(\textcolor{keywordtype}{void}*\ \_sender,\ \textcolor{keywordtype}{void}*\ \_recv,\ \textcolor{keywordtype}{void}*\ \_timer)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ syncrhonizeSendReceive(\textcolor{keywordtype}{void}*\ \_sender,\ \textcolor{keywordtype}{void}*\ \_recv)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ semaphore\_init(sem\_t*\ \_sem,\ \textcolor{keywordtype}{int}\ \_phsared,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \_value,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_fname)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ semaphore\_wait(sem\_t*\ \_sem,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_fname)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ semaphore\_post(sem\_t*\ \_sem,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_fname)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \_\_END\_DECLS}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

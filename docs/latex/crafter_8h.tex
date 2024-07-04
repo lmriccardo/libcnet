@@ -1,0 +1,68 @@
+\doxysection{includes/utils/crafter.h File Reference}
+\label{crafter_8h}\index{includes/utils/crafter.h@{includes/utils/crafter.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include "{}ip.\+h"{}}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS \textbf{ Ip\+Packet} $\ast$ \textbf{ craft\+Ip\+Packet} (const u\+\_\+int8\+\_\+t \+\_\+version, const int \+\_\+dscp, const int \+\_\+ecn, const u\+\_\+int16\+\_\+t \+\_\+tlen, const u\+\_\+int16\+\_\+t \+\_\+id, const int \+\_\+xf, const int \+\_\+df, const int \+\_\+mf, const int \+\_\+offset, const u\+\_\+int8\+\_\+t \+\_\+ttl, const u\+\_\+int8\+\_\+t \+\_\+proto, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int32\+\_\+t \+\_\+srcaddr, const u\+\_\+int32\+\_\+t \+\_\+dstaddr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ craft\+Icmp\+Packet\+\_\+\+Unused} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const u\+\_\+int16\+\_\+t \+\_\+checksum, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ craft\+Icmp\+Packet\+\_\+\+Echo} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int16\+\_\+t \+\_\+id, const u\+\_\+int16\+\_\+t \+\_\+seqnum, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ craft\+Icmp\+Packet\+\_\+\+Redirect} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const u\+\_\+int16\+\_\+t \+\_\+checksum, const char $\ast$\+\_\+gateway, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(4)))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ craft\+Icmp\+Packet\+\_\+\+Mtu} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int16\+\_\+t \+\_\+mtu, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Udp\+Packet} $\ast$ \textbf{ craft\+Udp\+Packet} (const u\+\_\+int16\+\_\+t \+\_\+srcport, const u\+\_\+int16\+\_\+t \+\_\+dstport, const u\+\_\+int16\+\_\+t \+\_\+length, const u\+\_\+int16\+\_\+t \+\_\+checksum, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Tcp\+Packet} $\ast$ \textbf{ craft\+Tcp\+Packet} (const u\+\_\+int16\+\_\+t \+\_\+srcport, const u\+\_\+int16\+\_\+t \+\_\+dstport, const u\+\_\+int32\+\_\+t \+\_\+seqnum, const u\+\_\+int32\+\_\+t \+\_\+acknum, const u\+\_\+int8\+\_\+t \+\_\+offset, const struct \textbf{ Control\+Bits} \+\_\+cbits, const u\+\_\+int16\+\_\+t \+\_\+window, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int16\+\_\+t \+\_\+urgpntr, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\index{crafter.h@{crafter.h}!craftIcmpPacket\_Echo@{craftIcmpPacket\_Echo}}
+\index{craftIcmpPacket\_Echo@{craftIcmpPacket\_Echo}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftIcmpPacket\_Echo()}
+{\footnotesize\ttfamily \label{crafter_8h_aa6720c752291d7c321ea1fd0e73c161c} 
+\textbf{ Icmp\+Packet} $\ast$ craft\+Icmp\+Packet\+\_\+\+Echo (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+seqnum}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an ICMP Packet with ID and Sequence Number fields \index{crafter.h@{crafter.h}!craftIcmpPacket\_Mtu@{craftIcmpPacket\_Mtu}}
+\index{craftIcmpPacket\_Mtu@{craftIcmpPacket\_Mtu}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftIcmpPacket\_Mtu()}
+{\footnotesize\ttfamily \label{crafter_8h_affd293fdca488b85d28bee71608e0868} 
+\textbf{ Icmp\+Packet} $\ast$ craft\+Icmp\+Packet\+\_\+\+Mtu (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+mtu}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an ICMP Packet with the MTU Field \index{crafter.h@{crafter.h}!craftIcmpPacket\_Redirect@{craftIcmpPacket\_Redirect}}
+\index{craftIcmpPacket\_Redirect@{craftIcmpPacket\_Redirect}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftIcmpPacket\_Redirect()}
+{\footnotesize\ttfamily \label{crafter_8h_adf143c3bd0453282cea2be0229d3d405} 
+\textbf{ Icmp\+Packet} $\ast$ craft\+Icmp\+Packet\+\_\+\+Redirect (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const char $\ast$}]{\+\_\+gateway}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an ICMP Packet with the Gateway field \index{crafter.h@{crafter.h}!craftIcmpPacket\_Unused@{craftIcmpPacket\_Unused}}
+\index{craftIcmpPacket\_Unused@{craftIcmpPacket\_Unused}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftIcmpPacket\_Unused()}
+{\footnotesize\ttfamily \label{crafter_8h_a54ce6913c9fe165dbf038e96e38a057c} 
+\textbf{ Icmp\+Packet} $\ast$ craft\+Icmp\+Packet\+\_\+\+Unused (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an ICMP Packet with Unused fields \index{crafter.h@{crafter.h}!craftIpPacket@{craftIpPacket}}
+\index{craftIpPacket@{craftIpPacket}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftIpPacket()}
+{\footnotesize\ttfamily \label{crafter_8h_ab7ec7cf4fdf9f9cc4ac0d5a6d330a3c0} 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS \textbf{ Ip\+Packet} $\ast$ craft\+Ip\+Packet (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+version}{, }\item[{const int}]{\+\_\+dscp}{, }\item[{const int}]{\+\_\+ecn}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+tlen}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{, }\item[{const int}]{\+\_\+xf}{, }\item[{const int}]{\+\_\+df}{, }\item[{const int}]{\+\_\+mf}{, }\item[{const int}]{\+\_\+offset}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+ttl}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+proto}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+srcaddr}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+dstaddr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an IP Packet given the fields of the IP header \index{crafter.h@{crafter.h}!craftTcpPacket@{craftTcpPacket}}
+\index{craftTcpPacket@{craftTcpPacket}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftTcpPacket()}
+{\footnotesize\ttfamily \label{crafter_8h_ab78c007637b1c6c47eac29714d73f316} 
+\textbf{ Tcp\+Packet} $\ast$ craft\+Tcp\+Packet (\begin{DoxyParamCaption}\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+seqnum}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+acknum}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+offset}{, }\item[{const struct \textbf{ Control\+Bits}}]{\+\_\+cbits}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+window}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+urgpntr}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a TCP Packet given the fields of the TCP header and the payload of the TCP Packet \index{crafter.h@{crafter.h}!craftUdpPacket@{craftUdpPacket}}
+\index{craftUdpPacket@{craftUdpPacket}!crafter.h@{crafter.h}}
+\doxysubsubsection{craftUdpPacket()}
+{\footnotesize\ttfamily \label{crafter_8h_a0c92609a6339cc5411f482b8923f9594} 
+\textbf{ Udp\+Packet} $\ast$ craft\+Udp\+Packet (\begin{DoxyParamCaption}\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+length}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet 

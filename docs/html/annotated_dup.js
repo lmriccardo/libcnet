@@ -1,0 +1,28 @@
+var annotated_dup =
+[
+    [ "ByteBuffer", "structByteBuffer.html", "structByteBuffer" ],
+    [ "ControlBits", "structControlBits.html", "structControlBits" ],
+    [ "FragmentList", "structFragmentList.html", "structFragmentList" ],
+    [ "h_data_t", "unionh__data__t.html", "unionh__data__t" ],
+    [ "h_echo_t", "structh__echo__t.html", "structh__echo__t" ],
+    [ "h_mtu_t", "structh__mtu__t.html", "structh__mtu__t" ],
+    [ "IcmpHeader", "structIcmpHeader.html", "structIcmpHeader" ],
+    [ "IcmpPacket", "structIcmpPacket.html", "structIcmpPacket" ],
+    [ "IcmpParameters", "structIcmpParameters.html", "structIcmpParameters" ],
+    [ "IpHeader", "structIpHeader.html", "structIpHeader" ],
+    [ "IpPacket", "structIpPacket.html", "structIpPacket" ],
+    [ "IpParameters", "structIpParameters.html", "structIpParameters" ],
+    [ "LinkedList", "structLinkedList.html", "structLinkedList" ],
+    [ "Node", "structNode.html", "structNode" ],
+    [ "PseudoHeader", "structPseudoHeader.html", "structPseudoHeader" ],
+    [ "Receiver", "structReceiver.html", "structReceiver" ],
+    [ "Response", "structResponse.html", "structResponse" ],
+    [ "Sender", "structSender.html", "structSender" ],
+    [ "TcpHeader", "structTcpHeader.html", "structTcpHeader" ],
+    [ "TcpOption", "structTcpOption.html", "structTcpOption" ],
+    [ "TcpPacket", "structTcpPacket.html", "structTcpPacket" ],
+    [ "TcpParameters", "structTcpParameters.html", "structTcpParameters" ],
+    [ "Timer", "structTimer.html", "structTimer" ],
+    [ "UdpHeader", "structUdpHeader.html", "structUdpHeader" ],
+    [ "UdpPacket", "structUdpPacket.html", "structUdpPacket" ]
+];

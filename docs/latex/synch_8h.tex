@@ -1,0 +1,55 @@
+\doxysection{includes/utils/synch.h File Reference}
+\label{synch_8h}\index{includes/utils/synch.h@{includes/utils/synch.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS void \textbf{ synchronize\+RTT} (void $\ast$\+\_\+sender, void $\ast$\+\_\+recv, void $\ast$\+\_\+timer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ syncrhonize\+Send\+Receive} (void $\ast$\+\_\+sender, void $\ast$\+\_\+recv) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ semaphore\+\_\+init} (sem\+\_\+t $\ast$\+\_\+sem, int \+\_\+phsared, unsigned int \+\_\+value, const char $\ast$\+\_\+fname) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ semaphore\+\_\+wait} (sem\+\_\+t $\ast$\+\_\+sem, const char $\ast$\+\_\+fname) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ semaphore\+\_\+post} (sem\+\_\+t $\ast$\+\_\+sem, const char $\ast$\+\_\+fname) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\index{synch.h@{synch.h}!semaphore\_init@{semaphore\_init}}
+\index{semaphore\_init@{semaphore\_init}!synch.h@{synch.h}}
+\doxysubsubsection{semaphore\_init()}
+{\footnotesize\ttfamily \label{synch_8h_a6f5b4cce4b1054bafc77d6eeb7ab0944} 
+void semaphore\+\_\+init (\begin{DoxyParamCaption}\item[{sem\+\_\+t $\ast$}]{\+\_\+sem}{, }\item[{int}]{\+\_\+phsared}{, }\item[{unsigned int}]{\+\_\+value}{, }\item[{const char $\ast$}]{\+\_\+fname}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Initialize a semaphore \index{synch.h@{synch.h}!semaphore\_post@{semaphore\_post}}
+\index{semaphore\_post@{semaphore\_post}!synch.h@{synch.h}}
+\doxysubsubsection{semaphore\_post()}
+{\footnotesize\ttfamily \label{synch_8h_a07739f25f958d2c972e08820b5f10113} 
+void semaphore\+\_\+post (\begin{DoxyParamCaption}\item[{sem\+\_\+t $\ast$}]{\+\_\+sem}{, }\item[{const char $\ast$}]{\+\_\+fname}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Signal all the other processes to access critical resources \index{synch.h@{synch.h}!semaphore\_wait@{semaphore\_wait}}
+\index{semaphore\_wait@{semaphore\_wait}!synch.h@{synch.h}}
+\doxysubsubsection{semaphore\_wait()}
+{\footnotesize\ttfamily \label{synch_8h_a6a8d91c5dcce312fe4a33cb93ef240bb} 
+void semaphore\+\_\+wait (\begin{DoxyParamCaption}\item[{sem\+\_\+t $\ast$}]{\+\_\+sem}{, }\item[{const char $\ast$}]{\+\_\+fname}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Await for the semaphore to be unlocked \index{synch.h@{synch.h}!synchronizeRTT@{synchronizeRTT}}
+\index{synchronizeRTT@{synchronizeRTT}!synch.h@{synch.h}}
+\doxysubsubsection{synchronizeRTT()}
+{\footnotesize\ttfamily \label{synch_8h_acf30d18ad775c5edac44ceebe1571e36} 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS void synchronize\+RTT (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+sender}{, }\item[{void $\ast$}]{\+\_\+recv}{, }\item[{void $\ast$}]{\+\_\+timer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Synchronize a sender and a receiver with the same timer \index{synch.h@{synch.h}!syncrhonizeSendReceive@{syncrhonizeSendReceive}}
+\index{syncrhonizeSendReceive@{syncrhonizeSendReceive}!synch.h@{synch.h}}
+\doxysubsubsection{syncrhonizeSendReceive()}
+{\footnotesize\ttfamily \label{synch_8h_ab8c7731b698a2945537445e61645096a} 
+void syncrhonize\+Send\+Receive (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+sender}{, }\item[{void $\ast$}]{\+\_\+recv}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Synchronize the sender and the receiver setting a semaphore 

@@ -1,0 +1,169 @@
+.TH "TcpHeader" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TcpHeader
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int16_t \fB_srcport\fP"
+.br
+.RI "Source port number\&. "
+.ti -1c
+.RI "u_int16_t \fB_dstport\fP"
+.br
+.RI "Destination port number\&. "
+.ti -1c
+.RI "u_int32_t \fB_seqnum\fP"
+.br
+.RI "Sequence number of first data octet in this segment\&. "
+.ti -1c
+.RI "u_int32_t \fB_acknum\fP"
+.br
+.RI "Contains the next sequence the sender of the segment is expecting to receive\&. "
+.ti -1c
+.RI "u_int8_t \fB_offset\fP"
+.br
+.RI "This number indicates where the data begins + reserved bits set to 0\&. "
+.ti -1c
+.RI "struct \fBControlBits\fP \fB_flags\fP"
+.br
+.RI "A number of control bits for different pourposes\&. "
+.ti -1c
+.RI "u_int16_t \fB_window\fP"
+.br
+.RI "The number of data octets beginning with the one indicated in the ACK field\&. "
+.ti -1c
+.RI "u_int16_t \fB_checksum\fP"
+.br
+.RI "The checksum\&. "
+.ti -1c
+.RI "u_int16_t \fB_urgpntr\fP"
+.br
+.RI "The current value of the urgent pointer as a positive offset from the sequence number\&. "
+.ti -1c
+.RI "struct \fBTcpOption\fP * \fB_options\fP [\fBTCP_OPTIONS_MAX_SIZE\fP]"
+.br
+.RI "A vector of TCP Options (maximum 20 bytes) "
+.ti -1c
+.RI "u_int8_t \fB_totOptLen_b\fP"
+.br
+.RI "The current length in bytes of the options\&. "
+.ti -1c
+.RI "int \fB_numOfOpts\fP"
+.br
+.RI "The total number of options in the current header\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing the TCP header of the TCP Packet\&. It consists of classical minimum of 20 bytes divided into:
+.PP
+.IP "\(bu" 2
+\fR_srcport\fP, source port (2 bytes)
+.IP "\(bu" 2
+\fR_dstport\fP, destination port (2 bytes),
+.IP "\(bu" 2
+\fR_seqnum\fP, sequence number (4 bytes)
+.IP "\(bu" 2
+\fR_acknum\fP, acknowledgment number (4 bytes)
+.IP "\(bu" 2
+\fR_offset\fP, Data Offset + reserved bits (1 byte)
+.IP "\(bu" 2
+\fR_flags\fP, Control bits or flags (1 byte)
+.IP "\(bu" 2
+\fR_window\fP, \fBReceiver\fP Window size (2 bytes),
+.IP "\(bu" 2
+\fR_checksum\fP, Checksum (2 bytes)
+.IP "\(bu" 2
+\fR_urgpntr\fP, Urgent Pointer (2 bytes)
+.IP "\(bu" 2
+\fR_options\fP, Optional Options (from 0 to 20 bytes)\&.
+.PP
+.PP
+This structure refers to the RFC 9293 https://www.rfc-editor.org/rfc/rfc9293.html 
+.PP
+Definition at line \fB574\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int32_t _acknum"
+
+.PP
+Contains the next sequence the sender of the segment is expecting to receive\&. 
+.PP
+Definition at line \fB580\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _checksum"
+
+.PP
+The checksum\&. 
+.PP
+Definition at line \fB584\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _dstport"
+
+.PP
+Destination port number\&. 
+.PP
+Definition at line \fB578\fP of file \fBip\&.h\fP\&.
+.SS "struct \fBControlBits\fP _flags"
+
+.PP
+A number of control bits for different pourposes\&. 
+.PP
+Definition at line \fB582\fP of file \fBip\&.h\fP\&.
+.SS "int _numOfOpts"
+
+.PP
+The total number of options in the current header\&. 
+.PP
+Definition at line \fB590\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _offset"
+
+.PP
+This number indicates where the data begins + reserved bits set to 0\&. 
+.PP
+Definition at line \fB581\fP of file \fBip\&.h\fP\&.
+.SS "struct \fBTcpOption\fP* _options[\fBTCP_OPTIONS_MAX_SIZE\fP]"
+
+.PP
+A vector of TCP Options (maximum 20 bytes) 
+.PP
+Definition at line \fB587\fP of file \fBip\&.h\fP\&.
+.SS "u_int32_t _seqnum"
+
+.PP
+Sequence number of first data octet in this segment\&. 
+.PP
+Definition at line \fB579\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _srcport"
+
+.PP
+Source port number\&. 
+.PP
+Definition at line \fB577\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _totOptLen_b"
+
+.PP
+The current length in bytes of the options\&. 
+.PP
+Definition at line \fB589\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _urgpntr"
+
+.PP
+The current value of the urgent pointer as a positive offset from the sequence number\&. 
+.PP
+Definition at line \fB585\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _window"
+
+.PP
+The number of data octets beginning with the one indicated in the ACK field\&. 
+.PP
+Definition at line \fB583\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

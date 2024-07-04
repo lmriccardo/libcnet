@@ -26,24 +26,26 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 > that I would not like to have in this project. On the other hand, using a message queue shared between the receiver and the
 > user program, makes things simpler. In this case the user may or may not define a process function.
 
+> **FACT 1**: The TCP Packet offer an `Options` field to be filled with some values (refers to the RFC 9293). For now, the
+> libcnet implementation of such field is left incomplete, since I have yet not studied which options are available
+> and how they can be implemented. Note that this directly affects the TCP Header size computation.
+
 
 ## Todo
+
+Legend:
+
+- [x] Task completed
+- [?] Still under development/to be tested
+- [ ] Not started Yet (aka, to be done)
 
 ### Basic Development
 
 - [x] Implement IP Packet (Header + Payload)
-- [x] Implement ICMP Packet (Header + Payload) and wrap ICMP into IP
 - [x] Create a Sender which sends the packet
-- [x] Create a crafter for IP and ICMP packet
 - [x] Consider this aspect of `memcpy` when filling `ByteBuffer` and computing the Checksum
-- [ ] TCP Packet (Header + Payload)
-- [x] UDP Packet (Header + Payload)
 - [x] Decoder for already implemented Packets
-- [?] Update the crafter for TCP and UDP
-- [?] Update the sender to TCP and UDP
 - [x] Create a receiver
-- [?] Check for memory safetiness using Valgrind
-- [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
 - [?] Add context to the functions (e.g., `__attribute__ ((__noreturn__))`)
 - [?] Add Documentation Strings to Function declaration in .h files
 - [x] Find a way to handle the problem above (**PROBLEM 1**)
@@ -51,17 +53,40 @@ memcpy(buf, &x, 2); // --> buf = 0x1234
 - [x] Change all the functions returning char pointers to function taking a destination buffer
 - [x] Change the receiver so that it uses a Message Queue instead of `process` function (**PROBLEM 2**)
 - [x] Re-engineering applied
+- [?] Check for memory safetiness using Valgrind
+- [x] Add into the crafter the possibility to craft all packets
 
-Legend:
+#### ICMP PACKETS
 
-- [x] Task completed
-- [?] Still under development/to be tested
-- []  Not started Yet (aka, to be done)
+- [x] Implement ICMP Packet (Header + Payload) and wrap ICMP into IP
+- [x] Create a crafter for IP and ICMP packet
+- [x] Update the Sender for ICMP Packets
+
+#### UDP PACKETS
+
+- [x] UDP Packet (Header + Payload)
+- [x] Update the crafter for UDP
+- [x] Update the sender to UDP
+- [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
+- [?] Sender must also consider the UDP Pseudo-header when computing the checksum
+- [x] Write a simple example on Udp packets 
+
+#### TCP PACKETS
+
+- [x] TCP Packet (Header + Payload)
+- [x] Upadate IP Packet with the new TCP Packet payload option
+- [x] Update the crafter for TCP Packets
+- [x] Update the sender for TCP Packets
+- [x] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
+- [?] Test the TCP implementation
+- [x] Write a simple example on Tcp packets
+- [x] Analyze Wireshark
+- [x] Add to print header informations also the tcp options
 
 ### Advanced Development
 
 - [x] Implement custom ping message
 - [?] Test Fragmentation
 - [x] Test Linked List
-- [ ] Test UDP
+- [x] Test UDP
 - [?] Path MTU Discovery (Implemented, still to be tested)

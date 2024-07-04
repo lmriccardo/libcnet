@@ -24,7 +24,7 @@ IcmpPacket* craftIcmpPacket_Unused(
     const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char* _payload, const size_t _size
 ) {
     IcmpPacket* icmppckt = IcmpPacket_new(_type, _code, 0x0);
-    IcmpPacket_fillHeader_v1(icmppckt, _checksum);
+    IcmpPacket_fillHeader_Unused(icmppckt, _checksum);
     
     if (_payload != NULL && _size > 0)
     {
@@ -40,7 +40,7 @@ IcmpPacket* craftIcmpPacket_Echo(
     const size_t _size
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
-    IcmpPacket_fillHeader_v3(icmppckt, _checksum, _id, _seqnum);
+    IcmpPacket_fillHeader_Echo(icmppckt, _checksum, _id, _seqnum);
     return icmppckt;
 }
 
@@ -49,7 +49,7 @@ IcmpPacket* craftIcmpPacket_Redirect(
     const char* _payload, const size_t _size
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
-    IcmpPacket_fillHeader_v2(icmppckt, _checksum, inet_network(_gateway));
+    IcmpPacket_fillHeader_Redirect(icmppckt, _checksum, inet_network(_gateway));
     return icmppckt;
 }
 
@@ -58,7 +58,7 @@ IcmpPacket* craftIcmpPacket_Mtu(
     const char* _payload, const size_t _size
 ) {
     IcmpPacket* icmppckt = craftIcmpPacket_Unused(_type, _code, _checksum, _payload, _size);
-    IcmpPacket_fillHeader_v4(icmppckt, _checksum, _mtu);
+    IcmpPacket_fillHeader_Mtu(icmppckt, _checksum, _mtu);
     return icmppckt;
 }
 
@@ -69,5 +69,22 @@ UdpPacket* craftUdpPacket(
     UdpPacket* pckt = UdpPacket_new_s(_size);
     UdpPacket_fillHeader(pckt, _srcport, _dstport, _length, _checksum);
     UdpPacket_fillPayload(pckt, _payload, _size);
+    return pckt;
+}
+
+TcpPacket* craftTcpPacket(
+    const u_int16_t _srcport, const u_int16_t _dstport,  const u_int32_t          _seqnum, 
+    const u_int32_t _acknum,  const u_int8_t  _offset,   const struct ControlBits _cbits,
+    const u_int16_t _window,  const u_int16_t _checksum, const u_int16_t          _urgpntr,
+    const char*     _payload, const size_t    _size
+) {
+    TcpPacket* pckt = TcpPacket_new_s(_size);
+    TcpPacket_fillHeader(
+        pckt, _srcport, _dstport, _seqnum, _acknum, _offset, _cbits,
+        _window, _checksum, _urgpntr
+    );
+
+    TcpPacket_fillPayload(pckt, _payload, _size);
+
     return pckt;
 }

@@ -1,0 +1,99 @@
+\doxysection{receiver.\+h}
+\label{receiver_8h_source}\index{includes/receiver.h@{includes/receiver.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/***********************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ***********************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ receiver.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ header\ file\ contains\ the\ declaration\ of\ the\ Receiver\ \ \ \ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ object\ struct\ and\ a\ number\ of\ functions\ to\ interact\ with\ it.\ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ The\ receiver\ is\ defined\ is\ ran\ as\ a\ thread\ and\ uses\ a\ MessageQueue\ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *****\ \ \ to\ save\ all\ the\ messages\ it\ receives.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ ***********************************************************************************}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ ***********************************************************************************}}
+\DoxyCodeLine{00016\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#ifndef\ \_RECEIVER\_H}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ \_RECEIVER\_H}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <sys/socket.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <netdb.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <pthread.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}ip.h"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}utils/timer.h"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}utils/net.h"{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}utils/list.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}utils/synch.h"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ handle\_error(msg,\ fd)\ do\ \{\ perror(msg);\ shutdown(fd,\ 2);\ exit(EXIT\_FAILURE);\ \}\ while\ (0)}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{typedef}\ LinkedList\ MessageQueue;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ MessageQueue\_new(x)\ \ \ \ \ \ \ \ (LinkedList\_new(x))}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ MessageQueue\_delete(x)\ \ \ \ \ (LinkedList\_deletet(x))}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ MessageQueue\_push(x,\ y,\ z)\ (LinkedList\_pushvt(x,\ y,\ z))}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ MessageQueue\_pop(x)\ \ \ \ \ \ \ \ (LinkedList\_popt(x))}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ MessageQueue\_isEmpty(x)\ \ \ \ (LinkedList\_isEmptyt(x))}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ MessageQueue\_getSize(x)\ \ \ \ (LinkedList\_getSizet(x))}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }}
+\DoxyCodeLine{00064\ \{}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \textcolor{keyword}{struct\ }protoent*\ \ \ \_proto;\ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \textcolor{keyword}{struct\ }sockaddr\_in\ \_address;\ }
+\DoxyCodeLine{00068\ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_socket;\ \ }
+\DoxyCodeLine{00069\ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_running;\ }
+\DoxyCodeLine{00070\ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_verbose;\ }
+\DoxyCodeLine{00071\ \ \ \ \textcolor{keyword}{struct\ }Timer*\ \ \ \ \ \ \_timer;\ \ \ }
+\DoxyCodeLine{00072\ \ \ \ sem\_t*\ \ \ \ \ \ \ \ \ \ \ \ \ \_mutex;\ \ \ }
+\DoxyCodeLine{00073\ \ \ \ MessageQueue*\ \ \ \ \ \ \_queue;\ \ \ }
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \}\ Receiver;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{struct\ }Response}
+\DoxyCodeLine{00081\ \{}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \textcolor{keywordtype}{char}*\ \ \_buffer;\ }
+\DoxyCodeLine{00084\ \ \ \ \textcolor{keywordtype}{size\_t}\ \_size;\ \ \ }
+\DoxyCodeLine{00085\ \ \ \ \textcolor{keywordtype}{double}\ \_rtt;\ \ \ \ }
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00097\ \textcolor{keyword}{extern}\ Receiver*\ Receiver\_new(}
+\DoxyCodeLine{00098\ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_interface,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_port,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_proto,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \_verbose)}
+\DoxyCodeLine{00099\ \ \ \ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Receiver\_delete(Receiver*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00109\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ \ Receiver\_start(Receiver*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}*\ Receiver\_run(\textcolor{keywordtype}{void}*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ \ Receiver\_stop(Receiver*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Receiver\_setTimer(Receiver*\ \_self,\ \textcolor{keyword}{struct}\ Timer*\ \_timer)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00133\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Receiver\_setSemaphore(Receiver*\ \_self,\ sem\_t*\ \_mutex)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00138\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Response\_free(\textcolor{keyword}{struct}\ Response*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \_\_END\_DECLS}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

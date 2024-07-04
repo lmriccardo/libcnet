@@ -1,0 +1,59 @@
+.TH "includes/utils/crafter.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/utils/crafter.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include 'ip\&.h'\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "__BEGIN_DECLS \fBIpPacket\fP * \fBcraftIpPacket\fP (const u_int8_t _version, const int _dscp, const int _ecn, const u_int16_t _tlen, const u_int16_t _id, const int _xf, const int _df, const int _mf, const int _offset, const u_int8_t _ttl, const u_int8_t _proto, const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBIcmpPacket\fP * \fBcraftIcmpPacket_Unused\fP (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBIcmpPacket\fP * \fBcraftIcmpPacket_Echo\fP (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBIcmpPacket\fP * \fBcraftIcmpPacket_Redirect\fP (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char *_gateway, const char *_payload, const size_t _size) __attribute__((returns_nonnull)) __attribute__((nonnull(4)))"
+.br
+.ti -1c
+.RI "\fBIcmpPacket\fP * \fBcraftIcmpPacket_Mtu\fP (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBUdpPacket\fP * \fBcraftUdpPacket\fP (const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "\fBTcpPacket\fP * \fBcraftTcpPacket\fP (const u_int16_t _srcport, const u_int16_t _dstport, const u_int32_t _seqnum, const u_int32_t _acknum, const u_int8_t _offset, const struct \fBControlBits\fP _cbits, const u_int16_t _window, const u_int16_t _checksum, const u_int16_t _urgpntr, const char *_payload, const size_t _size) __attribute__((returns_nonnull))"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBIcmpPacket\fP * craftIcmpPacket_Echo (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft an ICMP Packet with ID and Sequence Number fields 
+.SS "\fBIcmpPacket\fP * craftIcmpPacket_Mtu (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const u_int16_t _mtu, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft an ICMP Packet with the MTU Field 
+.SS "\fBIcmpPacket\fP * craftIcmpPacket_Redirect (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char * _gateway, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft an ICMP Packet with the Gateway field 
+.SS "\fBIcmpPacket\fP * craftIcmpPacket_Unused (const u_int8_t _type, const u_int8_t _code, const u_int16_t _checksum, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft an ICMP Packet with Unused fields 
+.SS "__BEGIN_DECLS \fBIpPacket\fP * craftIpPacket (const u_int8_t _version, const int _dscp, const int _ecn, const u_int16_t _tlen, const u_int16_t _id, const int _xf, const int _df, const int _mf, const int _offset, const u_int8_t _ttl, const u_int8_t _proto, const u_int16_t _checksum, const u_int32_t _srcaddr, const u_int32_t _dstaddr)\fR [extern]\fP"
+Craft an IP Packet given the fields of the IP header 
+.SS "\fBTcpPacket\fP * craftTcpPacket (const u_int16_t _srcport, const u_int16_t _dstport, const u_int32_t _seqnum, const u_int32_t _acknum, const u_int8_t _offset, const struct \fBControlBits\fP _cbits, const u_int16_t _window, const u_int16_t _checksum, const u_int16_t _urgpntr, const char * _payload, const size_t _size)\fR [extern]\fP"
+Create a TCP Packet given the fields of the TCP header and the payload of the TCP Packet 
+.SS "\fBUdpPacket\fP * craftUdpPacket (const u_int16_t _srcport, const u_int16_t _dstport, const u_int16_t _length, const u_int16_t _checksum, const char * _payload, const size_t _size)\fR [extern]\fP"
+Craft an UDP packet given the fields of the UDP header and the payload of the UDP Packet 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

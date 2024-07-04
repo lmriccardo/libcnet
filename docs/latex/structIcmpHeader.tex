@@ -1,0 +1,90 @@
+\doxysection{Icmp\+Header Struct Reference}
+\label{structIcmpHeader}\index{IcmpHeader@{IcmpHeader}}
+
+
+{\ttfamily \#include $<$ip.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the ICMP Message. \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+code}
+\begin{DoxyCompactList}\small\item\em The code corresponding to the Type. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+checksum}
+\begin{DoxyCompactList}\small\item\em The checksum for packet validation. \end{DoxyCompactList}\item 
+union \textbf{ h\+\_\+data\+\_\+t} \textbf{ \+\_\+rest}
+\begin{DoxyCompactList}\small\item\em Additional data to the header. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing the ICMP Header of the ICMP Packet. There are the classical 32 bits of ICMP Header\+: Type, Code and Checksum and the also the remaining 32 bits of Optional header fields like\+: Identification, Sequence Number, Gateway or Zeros (Unused) according to the given type and ICMP Code.
+
+This structure refers to the RFC 792 {\texttt{ https\+://datatracker.\+ietf.\+org/doc/html/rfc792}} 
+
+Definition at line \textbf{ 191} of file \textbf{ ip.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{IcmpHeader@{IcmpHeader}!\_checksum@{\_checksum}}
+\index{\_checksum@{\_checksum}!IcmpHeader@{IcmpHeader}}
+\doxysubsubsection{\_checksum}
+{\footnotesize\ttfamily \label{structIcmpHeader_ad2ed3f50729959b773f1c60d577f17f6} 
+u\+\_\+int16\+\_\+t \+\_\+checksum}
+
+
+
+The checksum for packet validation. 
+
+
+
+Definition at line \textbf{ 196} of file \textbf{ ip.\+h}.
+
+\index{IcmpHeader@{IcmpHeader}!\_code@{\_code}}
+\index{\_code@{\_code}!IcmpHeader@{IcmpHeader}}
+\doxysubsubsection{\_code}
+{\footnotesize\ttfamily \label{structIcmpHeader_ada25dc4b2266318e53c953d6555ebc32} 
+u\+\_\+int8\+\_\+t \+\_\+code}
+
+
+
+The code corresponding to the Type. 
+
+
+
+Definition at line \textbf{ 195} of file \textbf{ ip.\+h}.
+
+\index{IcmpHeader@{IcmpHeader}!\_rest@{\_rest}}
+\index{\_rest@{\_rest}!IcmpHeader@{IcmpHeader}}
+\doxysubsubsection{\_rest}
+{\footnotesize\ttfamily \label{structIcmpHeader_a3c7b006f79e6d228d30e36ec799dbf5e} 
+union \textbf{ h\+\_\+data\+\_\+t} \+\_\+rest}
+
+
+
+Additional data to the header. 
+
+
+
+Definition at line \textbf{ 197} of file \textbf{ ip.\+h}.
+
+\index{IcmpHeader@{IcmpHeader}!\_type@{\_type}}
+\index{\_type@{\_type}!IcmpHeader@{IcmpHeader}}
+\doxysubsubsection{\_type}
+{\footnotesize\ttfamily \label{structIcmpHeader_add749a755fd97968ccf81f3a39ae1164} 
+u\+\_\+int8\+\_\+t \+\_\+type}
+
+
+
+The type of the ICMP Message. 
+
+
+
+Definition at line \textbf{ 194} of file \textbf{ ip.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ ip.\+h}\end{DoxyCompactItemize}

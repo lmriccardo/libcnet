@@ -1,0 +1,104 @@
+\doxysection{Tcp\+Parameters Struct Reference}
+\label{structTcpParameters}\index{TcpParameters@{TcpParameters}}
+
+
+{\ttfamily \#include $<$sender.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+sn}
+\begin{DoxyCompactList}\small\item\em The Sequence number to put into the TCP Packet. \end{DoxyCompactList}\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+an}
+\begin{DoxyCompactList}\small\item\em The acknowledgment number to put into the TCP Packet. \end{DoxyCompactList}\item 
+struct \textbf{ Control\+Bits} \textbf{ \+\_\+cbits}
+\begin{DoxyCompactList}\small\item\em Control Bits. \end{DoxyCompactList}\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ \+\_\+opts} [\textbf{ TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE}]
+\begin{DoxyCompactList}\small\item\em An array of header Options. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+num\+Of\+Options}
+\begin{DoxyCompactList}\small\item\em The total number of options. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct containing some parameters, like sequence and acknowledgment number useful when constructing TCP Packets from the sender 
+
+Definition at line \textbf{ 70} of file \textbf{ sender.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{TcpParameters@{TcpParameters}!\_an@{\_an}}
+\index{\_an@{\_an}!TcpParameters@{TcpParameters}}
+\doxysubsubsection{\_an}
+{\footnotesize\ttfamily \label{structTcpParameters_a125a456b90a667885a1764d1c33c4db5} 
+u\+\_\+int32\+\_\+t \+\_\+an}
+
+
+
+The acknowledgment number to put into the TCP Packet. 
+
+
+
+Definition at line \textbf{ 73} of file \textbf{ sender.\+h}.
+
+\index{TcpParameters@{TcpParameters}!\_cbits@{\_cbits}}
+\index{\_cbits@{\_cbits}!TcpParameters@{TcpParameters}}
+\doxysubsubsection{\_cbits}
+{\footnotesize\ttfamily \label{structTcpParameters_a331c58bef1f841ed5e0fee7fcae16152} 
+struct \textbf{ Control\+Bits} \+\_\+cbits}
+
+
+
+Control Bits. 
+
+
+
+Definition at line \textbf{ 74} of file \textbf{ sender.\+h}.
+
+\index{TcpParameters@{TcpParameters}!\_numOfOptions@{\_numOfOptions}}
+\index{\_numOfOptions@{\_numOfOptions}!TcpParameters@{TcpParameters}}
+\doxysubsubsection{\_numOfOptions}
+{\footnotesize\ttfamily \label{structTcpParameters_a6f79d5c1ab6bebb04c9fd9620815be8d} 
+int \+\_\+num\+Of\+Options}
+
+
+
+The total number of options. 
+
+
+
+Definition at line \textbf{ 77} of file \textbf{ sender.\+h}.
+
+\index{TcpParameters@{TcpParameters}!\_opts@{\_opts}}
+\index{\_opts@{\_opts}!TcpParameters@{TcpParameters}}
+\doxysubsubsection{\_opts}
+{\footnotesize\ttfamily \label{structTcpParameters_a57c8cac534f1c88ad094c52222d92c0d} 
+struct \textbf{ Tcp\+Option}$\ast$ \+\_\+opts[\textbf{ TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE}]}
+
+
+
+An array of header Options. 
+
+
+
+Definition at line \textbf{ 76} of file \textbf{ sender.\+h}.
+
+\index{TcpParameters@{TcpParameters}!\_sn@{\_sn}}
+\index{\_sn@{\_sn}!TcpParameters@{TcpParameters}}
+\doxysubsubsection{\_sn}
+{\footnotesize\ttfamily \label{structTcpParameters_a2f615447b4def2578a2ee1e3d54b7756} 
+u\+\_\+int32\+\_\+t \+\_\+sn}
+
+
+
+The Sequence number to put into the TCP Packet. 
+
+
+
+Definition at line \textbf{ 72} of file \textbf{ sender.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ sender.\+h}\end{DoxyCompactItemize}

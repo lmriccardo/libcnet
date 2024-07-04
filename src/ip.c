@@ -2,7 +2,6 @@
 
 /* --------------------------------------------- ICMP HEADER --------------------------------------------- */
 
-// IcmpHeader* IcmpHeader_new(const u_int8_t _type, const u_int8_t _code)
 void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
 {
     switch (_type)
@@ -10,23 +9,23 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
         case ICMP_DESTINATION_UNREACHABLE_TYPE:
             if ( _code == ICMP_FRAGMENTATION_NEEDED_CODE )
             {
-                __IcmpHeader_createHeader_v4(hdr);
+                IcmpHeader_createHeader_Mtu(hdr);
                 break;
             }
         case ICMP_SOURCE_QUENCH_TYPE:
         case ICMP_TIME_EXCEEEDED_TYPE:
-            __IcmpHeader_createHeader_v1(hdr);
+            IcmpHeader_createHeader_Unused(hdr);
             break;
 
         case ICMP_REDIRECT_TYPE:
-            __IcmpHeader_createHeader_v2(hdr);
+            IcmpHeader_createHeader_Redirect(hdr);
             break;
 
         case ICMP_ECHO_REPLY_TYPE:
         case ICMP_ECHO_TYPE:
         case ICMP_INFORMATION_REQUEST_TYPE:
         case ICMP_INFORMATION_REPLY_TYPE:
-            __IcmpHeader_createHeader_v3(hdr);
+            IcmpHeader_createHeader_Echo(hdr);
             break;
         
         default:
@@ -39,21 +38,21 @@ void IcmpHeader_new(IcmpHeader* hdr, const u_int8_t _type, const u_int8_t _code)
     IcmpHeader_setChecksum(hdr, 0);
 }
 
-void __IcmpHeader_createHeader_v1(IcmpHeader* _self)
+void IcmpHeader_createHeader_Unused(IcmpHeader* _self)
 {
     // The first version consists on the header with Type, code
     // checksum and the next 32 bit left unused.
     _self->_rest._unused = 0x0;
 }
 
-void __IcmpHeader_createHeader_v2(IcmpHeader* _self)
+void IcmpHeader_createHeader_Redirect(IcmpHeader* _self)
 {
     // The second version of the header consists of Type, code
     // checksum and 32 bit reserved to the gateway address.
     _self->_rest._gateway = 0;
 }
 
-void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
+void IcmpHeader_createHeader_Echo(IcmpHeader* _self)
 {
     // The third version of the header consists of Type, code
     // checksum, identification and sequence number.
@@ -61,7 +60,7 @@ void __IcmpHeader_createHeader_v3(IcmpHeader* _self)
     _self->_rest._echo._seqnum = 0;
 }
 
-void __IcmpHeader_createHeader_v4(IcmpHeader* _self)
+void IcmpHeader_createHeader_Mtu(IcmpHeader* _self)
 {
     // The fourth version of the header is used for MTU
     // Path Discovery. It has 16 bits set to zero, and
@@ -179,7 +178,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
 
     if (_self->_type == ICMP_REDIRECT_TYPE)
     {
-        IcmpHeader_printInfo_v2(_self);
+        IcmpHeader_printInfo_Unused(_self);
     }
 
     if (
@@ -190,7 +189,7 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        IcmpHeader_printInfo_v3(_self);
+        IcmpHeader_printInfo_Redirect(_self);
     }
 
     if (
@@ -199,29 +198,29 @@ void IcmpHeader_printInfo(const IcmpHeader* _self)
             _self->_code == ICMP_FRAGMENTATION_NEEDED_CODE
         )
     ) {
-        IcmpHeader_printInfo_v4(_self);
+        IcmpHeader_printInfo_Mtu(_self);
     }
 
     printf("\n");
 }
 
-void IcmpHeader_printInfo_v2(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Unused(const IcmpHeader* _self)
 {
     printf("ICMP Header Gateway: %d\n", _self->_rest._gateway);
 }
 
-void IcmpHeader_printInfo_v3(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Redirect(const IcmpHeader* _self)
 {
     printf("ICMP Header Identifier: %d\n", _self->_rest._echo._id);
     printf("ICMP Header Sequence Number: %d\n", _self->_rest._echo._seqnum);
 }
 
-void IcmpHeader_printInfo_v4(const IcmpHeader* _self)
+void IcmpHeader_printInfo_Mtu(const IcmpHeader* _self)
 {
     printf("ICMP Next Hop MTU: %hu\n", _self->_rest._mtu._mtu);
 }
 
-void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer)
+void IcmpHeader_encode(const IcmpHeader *_self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_type);
     ByteBuffer_put(_buffer, _self->_code);
@@ -268,10 +267,10 @@ void IcmpHeader_encode__(const IcmpHeader *_self, ByteBuffer* _buffer)
     }
 }
 
-ByteBuffer* IcmpHeader_encode(const IcmpHeader *_self)
+ByteBuffer* IcmpHeader_encode_b(const IcmpHeader *_self)
 {
     ByteBuffer *buff = ByteBuffer_new(ICMP_HEADER_MAX_SIZE);
-    IcmpHeader_encode__(_self, buff);
+    IcmpHeader_encode(_self, buff);
     return buff;
 }
 
@@ -336,7 +335,7 @@ void IcmpHeader_decode(IcmpHeader* hdr, ByteBuffer* _buffer)
 
 /* --------------------------------------------- ICMP PACKET --------------------------------------------- */
 
-IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code)
+IcmpPacket* IcmpPacket_new_tnc(const u_int8_t _type, const u_int8_t _code)
 {
     return IcmpPacket_new(_type, _code, 0x0);
 }
@@ -344,7 +343,7 @@ IcmpPacket* IcmpPacket_new__(const u_int8_t _type, const u_int8_t _code)
 IcmpPacket* IcmpPacket_new(const u_int8_t _type, const u_int8_t _code, const size_t _size)
 {
     IcmpPacket* pckt = (IcmpPacket*)malloc(sizeof(IcmpPacket));
-    IcmpHeader_new(&pckt->_icmphdr, _type, _code);
+    IcmpHeader_new(&pckt->_hdr, _type, _code);
 
     pckt->_payload = (char *)malloc(_size * sizeof(char));
     pckt->__size = _size;
@@ -358,31 +357,31 @@ void IcmpPacket_delete(IcmpPacket* _self)
     free(_self);
 }
 
-void IcmpPacket_fillHeader_v1(IcmpPacket* _self, const u_int16_t _checksum)
+void IcmpPacket_fillHeader_Unused(IcmpPacket* _self, const u_int16_t _checksum)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
 }
 
-void IcmpPacket_fillHeader_v2(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
+void IcmpPacket_fillHeader_Redirect(IcmpPacket* _self, const u_int16_t _checksum, const u_int32_t _gateway)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setGateway(&_self->_icmphdr, _gateway);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setGateway(&_self->_hdr, _gateway);
 }
 
-void IcmpPacket_fillHeader_v3(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
+void IcmpPacket_fillHeader_Echo(IcmpPacket* _self, const u_int16_t _checksum, const u_int16_t _id, const u_int16_t _seqnum) 
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setIdentifier(&_self->_icmphdr, _id);
-    IcmpHeader_setSequenceNumber(&_self->_icmphdr, _seqnum);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setIdentifier(&_self->_hdr, _id);
+    IcmpHeader_setSequenceNumber(&_self->_hdr, _seqnum);
 }
 
-void IcmpPacket_fillHeader_v4(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
+void IcmpPacket_fillHeader_Mtu(IcmpPacket *_self, const u_int16_t _checksum, const u_int16_t _data)
 {
-    IcmpHeader_setChecksum(&_self->_icmphdr, _checksum);
-    IcmpHeader_setNextHopMtu(&_self->_icmphdr, _data);
+    IcmpHeader_setChecksum(&_self->_hdr, _checksum);
+    IcmpHeader_setNextHopMtu(&_self->_hdr, _data);
 }
 
-void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _size)
+void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _payload, const size_t _size)
 {
     if (_size > ICMP_PAYLOAD_MAXIMUM_SIZE)
     {
@@ -395,7 +394,7 @@ void IcmpPacket_fillPayload(IcmpPacket* _self, const char* _data, const size_t _
         _self->_payload = (char*)realloc(_self->_payload, _size * sizeof(char));
     }
 
-    memcpy(_self->_payload, _data, _size);
+    memcpy(_self->_payload, _payload, _size);
     _self->__size = _size;
 }
 
@@ -404,44 +403,44 @@ size_t IcmpPacket_getPacketSize(const IcmpPacket* _self)
     return _self->__size + ICMP_HEADER_MAX_SIZE;
 }
 
-void IcmpPacket_encode__(const IcmpPacket *_self, ByteBuffer* _buffer)
+void IcmpPacket_encode_b(const IcmpPacket *_self, ByteBuffer* _buffer)
 {
-    IcmpHeader_encode__(&_self->_icmphdr, _buffer);
+    IcmpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
 }
 
 ByteBuffer* IcmpPacket_encode(const IcmpPacket *_self)
 {
     ByteBuffer* buffer = ByteBuffer_new(IcmpPacket_getPacketSize(_self));
-    IcmpPacket_encode__(_self, buffer);
+    IcmpPacket_encode_b(_self, buffer);
     return buffer;
 }
 
 void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr)
 {
-    // We cannot just assign the _icmphdr field of the IcmpPacket structure
+    // We cannot just assign the _hdr field of the IcmpPacket structure
     // to the new value, otherwise the memory of the previous value will
     // never be freed. Hence, we need to copy the memory content of 
     // the input IcmpHeader and then free the input one.
 
     // First we can copy first 4 bytes for Type, Code and Checksum
-    memcpy(&_self->_icmphdr, _hdr, 4);
+    memcpy(&_self->_hdr, _hdr, 4);
     
     // The remaining 4 bytes depends on the ICMP Header Type Value
-    if (_self->_icmphdr._type == ICMP_REDIRECT_TYPE)
+    if (_self->_hdr._type == ICMP_REDIRECT_TYPE)
     {
-        memcpy(&_self->_icmphdr._rest._gateway, &_hdr->_rest._gateway, 4);
+        memcpy(&_self->_hdr._rest._gateway, &_hdr->_rest._gateway, 4);
     }
 
     if (
         (
-            _self->_icmphdr._type == ICMP_ECHO_REPLY_TYPE          ||
-            _self->_icmphdr._type == ICMP_ECHO_TYPE                ||
-            _self->_icmphdr._type == ICMP_INFORMATION_REQUEST_TYPE ||
-            _self->_icmphdr._type == ICMP_INFORMATION_REPLY_TYPE
+            _self->_hdr._type == ICMP_ECHO_REPLY_TYPE          ||
+            _self->_hdr._type == ICMP_ECHO_TYPE                ||
+            _self->_hdr._type == ICMP_INFORMATION_REQUEST_TYPE ||
+            _self->_hdr._type == ICMP_INFORMATION_REPLY_TYPE
         )
     ) {
-        memcpy(&_self->_icmphdr._rest._echo, &_hdr->_rest._echo, 4);
+        memcpy(&_self->_hdr._rest._echo, &_hdr->_rest._echo, 4);
     }
 
     if (
@@ -450,7 +449,7 @@ void IcmpPacket_setHeader(IcmpPacket* _self, IcmpHeader* _hdr)
             _hdr->_code == ICMP_FRAGMENTATION_NEEDED_CODE
         )
     ) {
-        memcpy(&_self->_icmphdr._rest._mtu, &_hdr->_rest._mtu, 4);
+        memcpy(&_self->_hdr._rest._mtu, &_hdr->_rest._mtu, 4);
     }
 }
 
@@ -543,10 +542,8 @@ UdpPacket* UdpPacket_new()
 
 UdpPacket* UdpPacket_new_s(const size_t _size)
 {
-    char* payload = (char*)malloc(_size * sizeof(char));
-
     UdpPacket* pckt = (UdpPacket*)malloc(sizeof(UdpPacket));
-    pckt->_payload = payload;
+    pckt->_payload = (char*)malloc(_size * sizeof(char));
 
     UdpHeader_setLength(&pckt->_hdr, _size + UDP_HEADER_SIZE);
 
@@ -598,11 +595,11 @@ size_t UdpPacket_getPacketSize(const UdpPacket* _self)
 ByteBuffer* UdpPacket_encode(const UdpPacket* _self)
 {
     ByteBuffer* bbuff = ByteBuffer_new(_self->_hdr._length);
-    UdpPacket_encode__(_self, bbuff);
+    UdpPacket_encode_b(_self, bbuff);
     return bbuff;
 }
 
-void UdpPacket_encode__(const UdpPacket* _self, ByteBuffer* _buffer)
+void UdpPacket_encode_b(const UdpPacket* _self, ByteBuffer* _buffer)
 {
     UdpHeader_encode(&_self->_hdr, _buffer);
     ByteBuffer_putBuffer(_buffer, _self->_payload, (size_t)UdpPacket_getPayloadSize(_self));
@@ -614,13 +611,535 @@ UdpPacket* UdpPacket_decode(ByteBuffer* _buffer)
     UdpHeader_decode(&hdr, _buffer);
 
     size_t payload_size = hdr._length - UDP_HEADER_SIZE;
-    UdpPacket* pckt = UdpPacket_new_v2(payload_size);
+    UdpPacket* pckt = UdpPacket_new_s(payload_size);
 
     char payload[payload_size];
     ByteBuffer_getBuffer(_buffer, payload, payload_size);
 
     UdpPacket_setHeader(pckt, &hdr);
     UdpPacket_fillPayload(pckt, payload, payload_size);
+
+    return pckt;
+}
+
+/* --------------------------------------------- TCP HEADER -------------------------------------------- */
+
+struct TcpOption* TcpOption_new(const u_int8_t _kind, const u_int8_t _length, void* _value)
+{
+    struct TcpOption* opt = (struct TcpOption*)malloc(_length);
+    opt->_kind = _kind;
+    opt->_length = _length;
+    
+    if (_value != NULL && _length > 2)
+    {
+        opt->_value = malloc(_length - 2);
+        memcpy(opt->_value, _value, _length - 2);
+    }
+    else
+    {
+        opt->_value = NULL;
+    }
+
+    return opt;
+}
+
+struct TcpOption* TcpOption_newMss(u_int16_t _mss)
+{
+    _mss = htons(_mss);
+    return TcpOption_new(TCP_OPTION_KIND_MSS, 4, &_mss);
+}
+
+struct TcpOption* TcpOption_newSackPermitted(void)
+{
+    return TcpOption_new(TCP_OPTION_KIND_SACK_PERM, 2, NULL);
+}
+
+struct TcpOption* TcpOption_newTimestamps(u_int32_t _tsval, u_int32_t _tsecr)
+{
+    u_int64_t _val = ((u_int64_t)htonl(_tsecr) << 32) + (u_int64_t)htonl(_tsval);
+    return TcpOption_new(TCP_OPTION_KIND_TIMESTAMP, 10, &_val);
+}
+
+struct TcpOption* TcpOption_newNoOperation(void)
+{
+    return TcpOption_new(TCP_OPTION_KIND_NOOP, 1, NULL);
+}
+
+struct TcpOption* TcpOption_newWindowScale(u_int8_t _scale)
+{
+    return TcpOption_new(TCP_OPTION_KIND_WIN_SCALE, 3, &_scale);
+}
+
+void TcpOptions_copy(struct TcpOption** _src, struct TcpOption** _dst, const int _n)
+{
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        _dst[optIdx] = TcpOption_new(_src[optIdx]->_kind, _src[optIdx]->_length, _src[optIdx]->_value);
+    }
+}
+
+void TcpOptions_delete(struct TcpOption** _opts, const int _n)
+{
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        struct TcpOption* opt = *(_opts + optIdx);
+        free(opt->_value);
+        free(opt);
+    }
+}
+
+void ControlBits_decode(struct ControlBits* _cbits, ByteBuffer* _buffer)
+{
+    u_int8_t bits = ByteBuffer_get(_buffer);
+    ControlBits_fromValue(bits, _cbits);
+}
+
+void ControlBits_toBin(const struct ControlBits* _cbits, char* _out)
+{
+    int _cwr = ((_cbits->_cwr >> 7) & 1);
+    int _ece = ((_cbits->_ece >> 6) & 1);
+    int _urg = ((_cbits->_urg >> 5) & 1);
+    int _ack = ((_cbits->_ack >> 4) & 1);
+    int _psh = ((_cbits->_psh >> 3) & 1);
+    int _rst = ((_cbits->_rst >> 2) & 1);
+    int _syn = ((_cbits->_syn >> 1) & 1);
+    int _fin = _cbits->_fin;
+
+    sprintf(_out, "%d%d%d%d%d%d%d%d", _cwr, _ece, _urg, _ack, _psh, _rst, _syn, _fin);
+}
+
+void ControlBits_fromValue(const u_int8_t _bits, struct ControlBits *_cbits)
+{
+    _cbits->_cwr = _bits & TCP_CWR_SET;
+    _cbits->_ece = _bits & TCP_ECE_SET;
+    _cbits->_urg = _bits & TCP_URG_SET;
+    _cbits->_ack = _bits & TCP_ACK_SET;
+    _cbits->_psh = _bits & TCP_PSH_SET;
+    _cbits->_rst = _bits & TCP_RST_SET;
+    _cbits->_syn = _bits & TCP_SYN_SET;
+    _cbits->_fin = _bits & TCP_FIN_SET;
+}
+
+void TcpHeader_setSourcePort(TcpHeader* _self, u_int16_t _srcport)
+{
+    _self->_srcport = _srcport;
+}
+
+void TcpHeader_setDestinationPort(TcpHeader* _self, u_int16_t _dstport)
+{
+    _self->_dstport = _dstport;
+}
+
+void TcpHeader_setSequenceNumber(TcpHeader* _self, u_int32_t _seqnum)
+{
+    _self->_seqnum = _seqnum;
+}
+
+void TcpHeader_setAcknowledgmentNumber(TcpHeader* _self, u_int32_t _acknum)
+{
+    _self->_acknum = _acknum;
+}
+
+void TcpHeader_setDataOffset(TcpHeader* _self, u_int8_t _offset)
+{
+    _self->_offset = (_offset << 4);
+}
+
+void TcpHeader_setControlBits(TcpHeader* _self, struct ControlBits _cbits)
+{
+    _self->_flags._cwr = _cbits._cwr;
+    _self->_flags._ece = _cbits._ece;
+    _self->_flags._urg = _cbits._urg;
+    _self->_flags._ack = _cbits._ack;
+    _self->_flags._psh = _cbits._psh;
+    _self->_flags._rst = _cbits._rst;
+    _self->_flags._syn = _cbits._syn;
+    _self->_flags._fin = _cbits._fin;
+}
+
+void TcpHeader_setCongestionWindowReducedFlag(TcpHeader* _self)
+{
+    _self->_flags._cwr = TCP_CWR_SET;
+}
+
+void TcpHeader_unsetCongestionWindowReducedFlag(TcpHeader* _self)
+{
+    _self->_flags._cwr = TCP_NOT_SET;
+}
+
+void TcpHeader_setECNEchoFlag(TcpHeader* _self)
+{
+    _self->_flags._ece = TCP_ECE_SET;
+}
+
+void TcpHeader_unsetECNEchoFlag(TcpHeader* _self)
+{
+    _self->_flags._ece = TCP_NOT_SET;
+}
+
+void TcpHeader_setUrgentPointerFlag(TcpHeader* _self)
+{
+    _self->_flags._urg = TCP_URG_SET;
+}
+
+void TcpHeader_unsetUrgentPointerFlag(TcpHeader* _self)
+{
+    _self->_flags._urg = TCP_NOT_SET;
+}
+
+void TcpHeader_setAcknowledgmentFieldFlag(TcpHeader* _self)
+{
+    _self->_flags._ack = TCP_ACK_SET;
+}
+
+void TcpHeader_unsetAcknowledgmentFieldFlag(TcpHeader* _self)
+{
+    _self->_flags._ack = TCP_NOT_SET;
+}
+
+void TcpHeader_setPushFunctionFlag(TcpHeader* _self)
+{
+    _self->_flags._psh = TCP_PSH_SET;
+}
+
+void TcpHeader_unsetPushFunctionFlag(TcpHeader* _self)
+{
+    _self->_flags._psh = TCP_NOT_SET;
+}
+
+void TcpHeader_setResetConnectionFlag(TcpHeader* _self)
+{
+    _self->_flags._rst = TCP_RST_SET;
+}
+
+void TcpHeader_unsetResetConnectionFlag(TcpHeader* _self)
+{
+    _self->_flags._rst = TCP_NOT_SET;
+}
+
+void TcpHeader_setSynchronizeFlag(TcpHeader* _self)
+{
+    _self->_flags._syn = TCP_SYN_SET;
+}
+
+void TcpHeader_unsetSynchronizeFlag(TcpHeader* _self)
+{
+    _self->_flags._syn = TCP_NOT_SET;
+}
+
+void TcpHeader_setFinFlag(TcpHeader* _self)
+{
+    _self->_flags._fin = TCP_FIN_SET;
+}
+
+void TcpHeader_unsetFinFlag(TcpHeader* _self)
+{
+    _self->_flags._fin = TCP_NOT_SET;
+}
+
+void TcpHeader_setWindowSize(TcpHeader* _self, u_int16_t _window)
+{
+    _self->_window = _window;
+}
+
+void TcpHeader_setChecksum(TcpHeader* _self, u_int16_t _checksum)
+{
+    _self->_checksum = _checksum;
+}
+
+void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr)
+{
+    _self->_urgpntr = _urgpntr;
+}
+
+void TcpHeader_addTcpOption_o(TcpHeader* _self, struct TcpOption* _opt)
+{
+    TcpHeader_addTcpOption(_self, _opt->_kind, _opt->_length, _opt->_value);
+}
+
+void TcpHeader_addTcpOption(
+    TcpHeader* _self, const u_int8_t _kind, const u_int8_t _length, void* _value
+) {
+    // If we have reached the maximum number of bytes we can insert
+    // the adding operation cannot be completed.
+    if (_self->_totOptLen_b + _length > TCP_OPTIONS_MAX_SIZE) return;
+
+    _self->_options[_self->_numOfOpts++] = TcpOption_new(_kind, _length, _value);
+    _self->_totOptLen_b += _length;
+}
+
+void TcpHeader_setTcpOptions(TcpHeader* _self, struct TcpOption* _opts[], const int _n)
+{
+    // We need to reset the counter since we are overwriting
+    // the current options in the header, with newest ones.
+    _self->_numOfOpts = 0;
+    _self->_totOptLen_b = 0;
+
+    for (int optIdx = 0; optIdx < _n; optIdx++)
+    {
+        TcpHeader_addTcpOption_o(_self, *(_opts + optIdx));
+    }
+}
+
+u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self)
+{
+    u_int8_t cbits = (u_int8_t)(  _self->_flags._cwr 
+                                + _self->_flags._ece
+                                + _self->_flags._urg
+                                + _self->_flags._ack
+                                + _self->_flags._psh
+                                + _self->_flags._rst
+                                + _self->_flags._syn
+                                + _self->_flags._fin
+    );
+
+    return cbits;
+}
+
+void TcpHeader_encode(TcpHeader* _self, ByteBuffer* _buffer)
+{
+    ByteBuffer_putShort(_buffer, htons(_self->_srcport));
+    ByteBuffer_putShort(_buffer, htons(_self->_dstport));
+    ByteBuffer_putInt(_buffer, htonl(_self->_seqnum));
+    ByteBuffer_putInt(_buffer, htonl(_self->_acknum));
+    ByteBuffer_put(_buffer, _self->_offset);
+    ByteBuffer_put(_buffer, TcpHeader_mergeControlBits(_self));
+    ByteBuffer_putShort(_buffer, htons(_self->_window));
+    ByteBuffer_putShort(_buffer, htons(_self->_checksum));
+    ByteBuffer_putShort(_buffer, htons(_self->_urgpntr));
+
+    for (int optIdx = 0; optIdx < _self->_numOfOpts; optIdx++)
+    {
+        struct TcpOption* opt = _self->_options[optIdx];
+
+        ByteBuffer_put(_buffer, opt->_kind);
+
+        // Some options may have length equal to 1, like the No-operation.
+        // In these cases, those lengths should not be put into the buffer
+        if (opt->_length > 1) ByteBuffer_put(_buffer, opt->_length);
+
+        if (opt->_value != NULL && opt->_length > 2)
+        {
+            ByteBuffer_putBuffer(_buffer, (const char*)opt->_value, opt->_length - 2);
+        }
+    }
+}
+
+void TcpHeader_decode(TcpHeader* _self, ByteBuffer* _buffer)
+{
+    TcpHeader_setSourcePort(_self, ntohs(ByteBuffer_getShort(_buffer)));
+    TcpHeader_setDestinationPort(_self, ntohs(ByteBuffer_getShort(_buffer)));
+    TcpHeader_setSequenceNumber(_self, ntohl(ByteBuffer_getInt(_buffer)));
+    TcpHeader_setAcknowledgmentNumber(_self, ntohl(ByteBuffer_getInt(_buffer)));
+    TcpHeader_setDataOffset(_self, ByteBuffer_get(_buffer) >> 4);
+    
+    struct ControlBits cbits;
+    ControlBits_decode(&cbits, _buffer);
+    TcpHeader_setControlBits(_self, cbits);
+
+    TcpHeader_setUrgentPointer(_self, ntohs(ByteBuffer_getShort(_buffer)));
+
+    while (!ByteBuffer_isEndOfBuffer(_buffer))
+    {
+        u_int8_t _kind = ByteBuffer_get(_buffer);
+
+        // For the No-Operation option, we do not need to take the length and value
+        if (_kind == TCP_OPTION_KIND_NOOP)
+        {
+            TcpHeader_addTcpOption(_self, _kind, 1, NULL);
+            continue;
+        }
+
+        u_int8_t _length = ByteBuffer_get(_buffer);
+
+        if (_length > 2)
+        {
+            char out[_length - 2];
+            ByteBuffer_getBuffer(_buffer, out, _length - 2);
+            TcpHeader_addTcpOption(_self, _kind, _length, out);
+        }
+        else
+        {
+            TcpHeader_addTcpOption(_self, _kind, _length, NULL);
+        }
+    }
+}
+
+void TcpHeader_printInfo(TcpHeader* _self) 
+{
+    char control_bits[9];
+    ControlBits_toBin(&_self->_flags, control_bits);
+    
+    printf("[*] Printing TCP Header Informations\n");
+    printf("Source Port: %hu\n", _self->_srcport);
+    printf("Destination Port: %hu\n", _self->_dstport);
+    printf("Sequence Number: %d\n", _self->_seqnum);
+    printf("Acknowledgment Number: %hd\n", _self->_acknum);
+    printf("Data Offset: %d\n", _self->_offset >> 4);
+    printf("Control Bits: %s\n", control_bits);
+    printf("Window Size: %hu\n", _self->_window);
+    printf("Checksum: %hu\n", _self->_checksum);
+    printf("Urgent Pointer: %hu\n", _self->_urgpntr);
+
+    // Print also all the options
+    for (int optIdx = 0; optIdx < _self->_numOfOpts; optIdx++)
+    {
+        struct TcpOption* opt = _self->_options[optIdx];
+        u_int8_t kind = opt->_kind;
+
+        switch (kind)
+        {
+            case TCP_OPTION_KIND_MSS:
+                u_int16_t mss = ntohs(*((u_int16_t *)opt->_value));
+                printf("Tcp Option - Maximum Segment Size: %hu\n", mss);
+                break;
+
+            case TCP_OPTION_KIND_SACK_PERM:
+                printf("Tcp Option - SACK Permitted\n");
+                break;
+
+            case TCP_OPTION_KIND_TIMESTAMP:
+                u_int64_t value = *((u_int64_t*)opt->_value);
+                u_int32_t tsecr = ntohl(value >> 32);
+                u_int64_t tsval = ntohl(value & ~((u_int64_t)htonl(tsecr) << 32));
+
+                printf("Tcp Option - Timestamps: TSval %ld, TSecr %d\n", tsval, tsecr);
+                break;
+
+            case TCP_OPTION_KIND_NOOP:
+                printf("Tcp Option - No-Operation (NOP)\n");
+                break;
+
+            case TCP_OPTION_KIND_WIN_SCALE:
+                printf("Tcp Option - Window Scale: %d\n", *((u_int8_t*) opt->_value));
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+size_t TcpHeader_getHeaderSize(TcpHeader* _self)
+{
+    return 20 + _self->_totOptLen_b;
+}
+
+void TcpHeader_deleteTcpOptions(TcpHeader* _self)
+{
+    TcpOptions_delete(_self->_options, _self->_numOfOpts);
+    _self->_numOfOpts = 0;
+    _self->_totOptLen_b = 0;
+}
+
+/* --------------------------------------------- TCP PACKET -------------------------------------------- */
+
+TcpPacket* TcpPacket_new()
+{
+    return TcpPacket_new_s(IP_PAYLOAD_MAX_SIZE);
+}
+
+TcpPacket* TcpPacket_new_s(const size_t _size)
+{
+    TcpPacket* pckt = (TcpPacket*)malloc(sizeof(TcpPacket));
+    pckt->_payload = (char *)malloc(_size * sizeof(char));
+    pckt->__size = _size;
+    pckt->_hdr._numOfOpts = 0;
+    pckt->_hdr._totOptLen_b = 0;
+
+    return pckt;
+}
+
+void TcpPacket_delete(TcpPacket* _self)
+{
+    TcpHeader_deleteTcpOptions(&_self->_hdr);
+    free(_self->_payload);
+    free(_self);
+}
+
+void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr)
+{
+    // Given the option field in the header, the header length might change.
+    // Notice that by copying the entire structure, we are passing the memory
+    // addresses of each option to the new Header, not the content.
+    memcpy(&_self->_hdr, _hdr, 20);
+
+    _self->_hdr._numOfOpts = _hdr->_numOfOpts;
+    _self->_hdr._totOptLen_b = _hdr->_totOptLen_b;
+
+    if (_hdr->_numOfOpts == 0) return;
+
+    TcpHeader_setTcpOptions(&_self->_hdr, _hdr->_options, _hdr->_numOfOpts);
+}
+
+void TcpPacket_fillHeader(
+    TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
+    u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
+    u_int16_t  _checksum, u_int16_t _urgpntr, struct TcpOption*  _opts[],  int       _nopts
+) {
+    TcpHeader_setSourcePort(&_self->_hdr, _srcport);
+    TcpHeader_setDestinationPort(&_self->_hdr, _dstport);
+    TcpHeader_setSequenceNumber(&_self->_hdr, _seqnum);
+    TcpHeader_setAcknowledgmentNumber(&_self->_hdr, _acknum);
+    TcpHeader_setDataOffset(&_self->_hdr, _offset);
+    TcpHeader_setControlBits(&_self->_hdr, _cbits);
+    TcpHeader_setWindowSize(&_self->_hdr, _window);
+    TcpHeader_setChecksum(&_self->_hdr, _checksum);
+    TcpHeader_setUrgentPointer(&_self->_hdr, _urgpntr);
+    TcpHeader_setTcpOptions(&_self->_hdr, _opts, _nopts);
+}
+
+void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const size_t _size)
+{
+    // Readjust the memory allocated for the payload when first created the TCP Packet
+    if (_size < _self->__size)
+    {
+        _self->_payload = (char *)realloc(_self->_payload, _size);
+    }
+
+    memcpy(_self->_payload, _payload, _size);
+    _self->__size = _size;
+}
+
+size_t TcpPacket_getPacketSize(TcpPacket* _self)
+{
+    return _self->__size + TcpHeader_getHeaderSize(&_self->_hdr);
+}
+
+int TcpPacket_getNumberOfOptions(TcpPacket* _self)
+{
+    return _self->_hdr._numOfOpts;
+}
+
+u_int8_t TcpPacket_getOptionSize_bytes(TcpPacket* _self)
+{
+    return _self->_hdr._totOptLen_b;
+}
+
+ByteBuffer* TcpPacket_encode(TcpPacket* _self)
+{
+    ByteBuffer* bbuff = ByteBuffer_new(TcpPacket_getPacketSize(_self));
+    TcpPacket_encode_b(_self, bbuff);
+    return bbuff;
+}
+
+void TcpPacket_encode_b(TcpPacket* _self, ByteBuffer* _buffer)
+{
+    TcpHeader_encode(&_self->_hdr, _buffer);
+    ByteBuffer_putBuffer(_buffer, _self->_payload, _self->__size);
+}
+
+TcpPacket* TcpPacket_decode(ByteBuffer* _buffer)
+{
+    TcpPacket* pckt = TcpPacket_new();
+    TcpHeader_decode(&pckt->_hdr, _buffer);
+
+    size_t payload_size = _buffer->_size - _buffer->_position;
+    payload_size = payload_size < 0 ? 0 : payload_size;
+    
+    char payload[payload_size];
+    ByteBuffer_getBuffer(_buffer, payload, payload_size);
+    TcpPacket_fillPayload(pckt, payload, payload_size);
 
     return pckt;
 }
@@ -753,7 +1272,7 @@ void IpHeader_printInfo(const IpHeader* _self)
     printf("\n");
 }
 
-void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer)
+void IpHeader_encode_b(const IpHeader* _self, ByteBuffer* _buffer)
 {
     ByteBuffer_put(_buffer, _self->_version);
     ByteBuffer_put(_buffer, _self->_dsf);
@@ -770,7 +1289,7 @@ void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer)
 ByteBuffer* IpHeader_encode(const IpHeader* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_tlength);
-    IpHeader_encode__(_self, buff);
+    IpHeader_encode_b(_self, buff);
     return buff;
 }
 
@@ -801,6 +1320,23 @@ void IpHeader_decode(IpHeader* _self, ByteBuffer* _buffer)
 
 /* --------------------------------------------- IP PACKET --------------------------------------------- */
 
+void PseudoHeader_create(const IpPacket* _pckt, struct PseudoHeader* _ph, const size_t _size)
+{
+    _ph->_srcaddr = _pckt->_iphdr._srcaddr;
+    _ph->_dstaddr = _pckt->_iphdr._dstaddr;
+    _ph->_protocol = _pckt->_iphdr._protocol;
+    _ph->_size = _size;
+}
+
+void PseudoHeader_encode(const struct PseudoHeader* _ph, ByteBuffer* _buffer)
+{
+    ByteBuffer_putInt(_buffer, htonl(_ph->_srcaddr));
+    ByteBuffer_putInt(_buffer, htonl(_ph->_dstaddr));
+    ByteBuffer_put(_buffer, (u_int8_t)0x0);
+    ByteBuffer_put(_buffer, _ph->_protocol);
+    ByteBuffer_putShort(_buffer, htons(_ph->_size));
+}
+
 IpPacket* IpPacket_new()
 {
     IpPacket* pckt = (IpPacket *)malloc(sizeof(IpPacket));
@@ -829,6 +1365,21 @@ IpPacket* IpPacket_newUdp(const size_t _size)
     return pckt;
 }
 
+IpPacket* IpPacket_newTcp(const size_t _size)
+{
+    size_t size = _size > 0 ? _size : 0;
+
+    IpPacket* pckt = IpPacket_new();
+    pckt->_payload._tcp = TcpPacket_new_s(_size);
+    IpHeader_setTotalLength(
+        &pckt->_iphdr,  IP_HEADER_SIZE 
+                      + TcpHeader_getHeaderSize(&pckt->_payload._tcp->_hdr) 
+                      + size
+    );
+
+    return pckt;
+}
+
 void IpPacket_delete(IpPacket* _self)
 {
     switch (_self->_iphdr._protocol)
@@ -839,6 +1390,10 @@ void IpPacket_delete(IpPacket* _self)
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
             UdpPacket_delete(_self->_payload._udp);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            TcpPacket_delete(_self->_payload._tcp);
             break;
 
         default:
@@ -880,19 +1435,33 @@ IcmpPacket* IpPacket_getIcmpPacket(const IpPacket *_self)
     return _self->_payload._icmp;
 }
 
+UdpPacket* IpPacket_getUdpPacket(const IpPacket *_self)
+{
+    return _self->_payload._udp;
+}
+
+TcpPacket* IpPacket_getTcpPacket(const IpPacket *_self)
+{
+    return _self->_payload._tcp;
+}
+
 ByteBuffer* IpPacket_encode(const IpPacket* _self)
 {
     ByteBuffer* buff = ByteBuffer_new((size_t) _self->_iphdr._tlength);
-    IpHeader_encode__(&_self->_iphdr, buff);
+    IpHeader_encode_b(&_self->_iphdr, buff);
 
     switch (_self->_iphdr._protocol)
     {
         case IP_HEADER_ICMP_PROTOCOL_CODE:
-            IcmpPacket_encode__(_self->_payload._icmp, buff);
+            IcmpPacket_encode_b(_self->_payload._icmp, buff);
             break;
         
         case IP_HEADER_UDP_PROTOCOL_CODE:
-            UdpPacket_encode__(_self->_payload._udp, buff);
+            UdpPacket_encode_b(_self->_payload._udp, buff);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            TcpPacket_encode_b(_self->_payload._tcp, buff);
             break;
 
         default:
@@ -907,8 +1476,8 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
     IpHeader hdr; IpHeader_decode(&hdr, _buffer);
     IcmpPacket* icmppckt = IcmpPacket_decode(_buffer);
 
-    u_int8_t type = icmppckt->_icmphdr._type;
-    u_int8_t code = icmppckt->_icmphdr._code;
+    u_int8_t type = icmppckt->_hdr._type;
+    u_int8_t code = icmppckt->_hdr._code;
     size_t   size = icmppckt->__size;
 
     IpPacket* pckt = IpPacket_newIcmp(type, code, size);
@@ -921,14 +1490,134 @@ IpPacket* IpPacket_decodeIcmp(ByteBuffer* _buffer)
     return pckt;
 }
 
+IpPacket* IpPacket_decodeUdp(ByteBuffer* _buffer)
+{
+    IpHeader hdr; IpHeader_decode(&hdr, _buffer);
+    UdpPacket* udppckt = UdpPacket_decode(_buffer);
+
+    size_t size = udppckt->_hdr._length - UDP_HEADER_SIZE;
+    IpPacket* pckt = IpPacket_newUdp(size);
+    IpPacket_setHeader(pckt, &hdr);
+    IpPacket_wrapUdp(pckt, udppckt);
+
+    // Delete the UDP Packet
+    UdpPacket_delete(udppckt);
+
+    return pckt;
+}
+
+IpPacket* IpPacket_decodeTcp(ByteBuffer* _buffer)
+{
+    IpHeader hdr; IpHeader_decode(&hdr, _buffer);
+    TcpPacket* tcppckt = TcpPacket_decode(_buffer);
+
+    size_t size = tcppckt->__size;
+    IpPacket* pckt = IpPacket_newTcp(size);
+    IpPacket_setHeader(pckt, &hdr);
+    IpPacket_wrapTcp(pckt, tcppckt);
+
+    // Delete the TCP Packet
+    TcpPacket_delete(tcppckt);
+
+    return pckt;
+}
+
 void IpPacket_wrapIcmp(IpPacket* _self, IcmpPacket* _icmppckt)
 {
-    memcpy(_self->_payload._icmp, _icmppckt, IcmpPacket_getPacketSize(_icmppckt));
+    memcpy(&_self->_payload._icmp->_hdr, &_icmppckt->_hdr, ICMP_HEADER_MAX_SIZE);
+    memcpy(_self->_payload._icmp->_payload, _icmppckt->_payload, _icmppckt->__size);
     IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + IcmpPacket_getPacketSize(_icmppckt));
 }
 
 void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt)
 {
-   memcpy(_self->_payload._udp, _udppckt, UdpPacket_getPacketSize(_udppckt));
-   IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + UdpPacket_getPacketSize(_udppckt));
+    memcpy(&_self->_payload._udp->_hdr, &_udppckt->_hdr, sizeof(UdpHeader));
+    memcpy(_self->_payload._udp->_payload, _udppckt->_payload, UdpPacket_getPayloadSize(_udppckt));
+    IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + UdpPacket_getPacketSize(_udppckt));
+}
+
+void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt)
+{
+    memcpy(&_self->_payload._tcp->_hdr, &_tcppckt->_hdr, sizeof(TcpHeader));
+    memcpy(_self->_payload._tcp->_payload, _tcppckt->_payload, _tcppckt->__size);
+    IpHeader_setTotalLength(&_self->_iphdr, IP_HEADER_SIZE + TcpPacket_getPacketSize(_tcppckt));
+}
+
+void IpPacket_computeChecksum(IpPacket* _self)
+{
+    u_int16_t chcks;
+
+    switch (_self->_iphdr._protocol)
+    {
+        case IP_HEADER_ICMP_PROTOCOL_CODE:
+            chcks = IpPacket_computeIcmpChecksum(_self);
+            IcmpHeader_setChecksum(&_self->_payload._icmp->_hdr, chcks);
+            break;
+        
+        case IP_HEADER_UDP_PROTOCOL_CODE:
+            chcks = IpPacket_computeUdpChecksum(_self);
+            UdpHeader_setChecksum(&_self->_payload._udp->_hdr, chcks);
+            break;
+
+        case IP_HEADER_TCP_PROTOCOL_CODE:
+            chcks = IpPacket_computeTcpChecksum(_self);
+            TcpHeader_setChecksum(&_self->_payload._tcp->_hdr, chcks);
+            break;
+
+        default:
+            break;
+    }
+}
+
+u_int16_t IpPacket_computeIcmpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    ByteBuffer* buff = IcmpPacket_encode(_self->_payload._icmp);
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeUdpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    // Encode the UDP Packet Header + Payload
+    ByteBuffer* buff = ByteBuffer_new(UDP_PSEUDO_HEADER_SIZE + _self->_payload._udp->_hdr._length);
+    UdpPacket_encode_b(_self->_payload._udp, buff);
+
+    // Then we need also to put the pseudo header inside the buffer
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, _self->_payload._udp->_hdr._length);
+    PseudoHeader_encode(&ph, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
+}
+
+u_int16_t IpPacket_computeTcpChecksum(IpPacket* _self)
+{
+    u_int16_t checksum;
+
+    ByteBuffer* buff = ByteBuffer_new(TCP_PSEUDO_HEADER_SIZE + TcpPacket_getPacketSize(_self->_payload._tcp));
+
+    // Differently from UDP, in TCP Packets the pseudo-header is counted as first.
+
+    // Then, comes the real packet
+    TcpPacket_encode_b(_self->_payload._tcp, buff);
+
+    struct PseudoHeader ph;
+    PseudoHeader_create(_self, &ph, TcpPacket_getPacketSize(_self->_payload._tcp));
+    PseudoHeader_encode(&ph, buff);
+
+    // Finally compute the checksum
+    checksum = computeChecksum((unsigned char*)buff->_buffer, buff->_size);
+    ByteBuffer_delete(buff);
+
+    return checksum;
 }

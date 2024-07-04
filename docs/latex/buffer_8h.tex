@@ -1,0 +1,223 @@
+\doxysection{includes/utils/buffer.h File Reference}
+\label{buffer_8h}\index{includes/utils/buffer.h@{includes/utils/buffer.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Byte\+Buffer}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ BYTE\+\_\+\+SIZE}~1
+\item 
+\#define \textbf{ SHORT\+\_\+\+SIZE}~2
+\item 
+\#define \textbf{ INT\+\_\+\+SIZE}~4
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Byte\+Buffer\+\_\+new} (const size\+\_\+t \+\_\+size)
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Byte\+Buffer\+\_\+new\+\_\+b} (const char $\ast$\+\_\+buffer, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+delete} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+put} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const char \+\_\+data) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+put\+Short} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+data) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+put\+Int} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const u\+\_\+int32\+\_\+t \+\_\+data) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+position} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const int \+\_\+newpos) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+put\+Buffer} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const char $\ast$\+\_\+src, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+put\+Buffer\+From} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, const char $\ast$\+\_\+src, const int \+\_\+start, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Byte\+Buffer\+\_\+get} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ Byte\+Buffer\+\_\+get\+Short} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int32\+\_\+t \textbf{ Byte\+Buffer\+\_\+get\+Int} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+get\+Buffer} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, char $\ast$\+\_\+out, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+get\+Buffer\+From} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self, char $\ast$\+\_\+out, const size\+\_\+t \+\_\+start, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+reset\+Position} (\textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Byte\+Buffer\+\_\+write\+To\+File} (const \textbf{ Byte\+Buffer} $\ast$\+\_\+self, const char $\ast$\+\_\+file) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+bool \textbf{ Byte\+Buffer\+\_\+is\+Empty} (const \textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+bool \textbf{ Byte\+Buffer\+\_\+is\+End\+Of\+Buffer} (const \textbf{ Byte\+Buffer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ check\+For\+OOB} (const int \+\_\+position, const size\+\_\+t \+\_\+size, const size\+\_\+t \+\_\+max, const char $\ast$\+\_\+func) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ error\+If\+Empty} (const \textbf{ Byte\+Buffer} $\ast$\+\_\+self, const char $\ast$\+\_\+func) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\index{buffer.h@{buffer.h}!BYTE\_SIZE@{BYTE\_SIZE}}
+\index{BYTE\_SIZE@{BYTE\_SIZE}!buffer.h@{buffer.h}}
+\doxysubsubsection{BYTE\_SIZE}
+{\footnotesize\ttfamily \label{buffer_8h_a86fd4404b140711fdb77326609c0f393} 
+\#define BYTE\+\_\+\+SIZE~1}
+
+
+
+Definition at line \textbf{ 29} of file \textbf{ buffer.\+h}.
+
+\index{buffer.h@{buffer.h}!INT\_SIZE@{INT\_SIZE}}
+\index{INT\_SIZE@{INT\_SIZE}!buffer.h@{buffer.h}}
+\doxysubsubsection{INT\_SIZE}
+{\footnotesize\ttfamily \label{buffer_8h_a3ac36dd0f02f263e5966ac1d1ecbd1bd} 
+\#define INT\+\_\+\+SIZE~4}
+
+
+
+Definition at line \textbf{ 31} of file \textbf{ buffer.\+h}.
+
+\index{buffer.h@{buffer.h}!SHORT\_SIZE@{SHORT\_SIZE}}
+\index{SHORT\_SIZE@{SHORT\_SIZE}!buffer.h@{buffer.h}}
+\doxysubsubsection{SHORT\_SIZE}
+{\footnotesize\ttfamily \label{buffer_8h_adeb5281b5f526ce88376cb4b4b36572e} 
+\#define SHORT\+\_\+\+SIZE~2}
+
+
+
+Definition at line \textbf{ 30} of file \textbf{ buffer.\+h}.
+
+
+
+\doxysubsection{Function Documentation}
+\index{buffer.h@{buffer.h}!ByteBuffer\_delete@{ByteBuffer\_delete}}
+\index{ByteBuffer\_delete@{ByteBuffer\_delete}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_delete()}
+{\footnotesize\ttfamily \label{buffer_8h_a1e8ddfb27313294ad5b987e5dc0966a0} 
+void Byte\+Buffer\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} (like a deconstructor in C++) \index{buffer.h@{buffer.h}!ByteBuffer\_get@{ByteBuffer\_get}}
+\index{ByteBuffer\_get@{ByteBuffer\_get}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_get()}
+{\footnotesize\ttfamily \label{buffer_8h_ad0dd9ee03fb70bfae6c654018806a34a} 
+u\+\_\+int8\+\_\+t Byte\+Buffer\+\_\+get (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return a single byte from the buffer and increase the position of 1 \index{buffer.h@{buffer.h}!ByteBuffer\_getBuffer@{ByteBuffer\_getBuffer}}
+\index{ByteBuffer\_getBuffer@{ByteBuffer\_getBuffer}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_getBuffer()}
+{\footnotesize\ttfamily \label{buffer_8h_ae1a68ddbdc10357f0be62b5689ebd24b} 
+void Byte\+Buffer\+\_\+get\+Buffer (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{char $\ast$}]{\+\_\+out}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return a buffer of input size and increase the position of given size \index{buffer.h@{buffer.h}!ByteBuffer\_getBufferFrom@{ByteBuffer\_getBufferFrom}}
+\index{ByteBuffer\_getBufferFrom@{ByteBuffer\_getBufferFrom}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_getBufferFrom()}
+{\footnotesize\ttfamily \label{buffer_8h_a8414f819012e5b00df0bbd58a2937a36} 
+void Byte\+Buffer\+\_\+get\+Buffer\+From (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{char $\ast$}]{\+\_\+out}{, }\item[{const size\+\_\+t}]{\+\_\+start}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return a buffer of input size from a given starting position and set the current position to the starting position plus the input size \index{buffer.h@{buffer.h}!ByteBuffer\_getInt@{ByteBuffer\_getInt}}
+\index{ByteBuffer\_getInt@{ByteBuffer\_getInt}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_getInt()}
+{\footnotesize\ttfamily \label{buffer_8h_a909b399035b15013e29d759f67751c4c} 
+u\+\_\+int32\+\_\+t Byte\+Buffer\+\_\+get\+Int (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return an unsigned int from the buffer and increase the position of 4 \index{buffer.h@{buffer.h}!ByteBuffer\_getShort@{ByteBuffer\_getShort}}
+\index{ByteBuffer\_getShort@{ByteBuffer\_getShort}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_getShort()}
+{\footnotesize\ttfamily \label{buffer_8h_a97ff0fe8e79757c4e1fd4f0f288471c0} 
+u\+\_\+int16\+\_\+t Byte\+Buffer\+\_\+get\+Short (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return an unsigned short from the buffer and increase the position of 2 \index{buffer.h@{buffer.h}!ByteBuffer\_isEmpty@{ByteBuffer\_isEmpty}}
+\index{ByteBuffer\_isEmpty@{ByteBuffer\_isEmpty}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_isEmpty()}
+{\footnotesize\ttfamily \label{buffer_8h_ae4d9836243e1e21733e3d51d0193839d} 
+bool Byte\+Buffer\+\_\+is\+Empty (\begin{DoxyParamCaption}\item[{const \textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Check if the byte buffer is empty or not \index{buffer.h@{buffer.h}!ByteBuffer\_isEndOfBuffer@{ByteBuffer\_isEndOfBuffer}}
+\index{ByteBuffer\_isEndOfBuffer@{ByteBuffer\_isEndOfBuffer}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_isEndOfBuffer()}
+{\footnotesize\ttfamily \label{buffer_8h_ab9b49839705a40832b1cba3a2a82b184} 
+bool Byte\+Buffer\+\_\+is\+End\+Of\+Buffer (\begin{DoxyParamCaption}\item[{const \textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Check if the buffer position is at the end of the buffer \index{buffer.h@{buffer.h}!ByteBuffer\_new@{ByteBuffer\_new}}
+\index{ByteBuffer\_new@{ByteBuffer\_new}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_new()}
+{\footnotesize\ttfamily \label{buffer_8h_ae72db89c69091d12192f244e40991151} 
+\textbf{ Byte\+Buffer} $\ast$ Byte\+Buffer\+\_\+new (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a new \doxyref{Byte\+Buffer}{p.}{structByteBuffer} with initial input size \index{buffer.h@{buffer.h}!ByteBuffer\_new\_b@{ByteBuffer\_new\_b}}
+\index{ByteBuffer\_new\_b@{ByteBuffer\_new\_b}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_new\_b()}
+{\footnotesize\ttfamily \label{buffer_8h_a624194f61eb82711c2417f19c0a4c90d} 
+\textbf{ Byte\+Buffer} $\ast$ Byte\+Buffer\+\_\+new\+\_\+b (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+buffer}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a new \doxyref{Byte\+Buffer}{p.}{structByteBuffer} already filled with input buffer of input size \index{buffer.h@{buffer.h}!ByteBuffer\_position@{ByteBuffer\_position}}
+\index{ByteBuffer\_position@{ByteBuffer\_position}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_position()}
+{\footnotesize\ttfamily \label{buffer_8h_ad63e714be97565567eb3e1e5acfa8496} 
+void Byte\+Buffer\+\_\+position (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const int}]{\+\_\+newpos}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new position into the buffer \index{buffer.h@{buffer.h}!ByteBuffer\_put@{ByteBuffer\_put}}
+\index{ByteBuffer\_put@{ByteBuffer\_put}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_put()}
+{\footnotesize\ttfamily \label{buffer_8h_a3ffe0c92de59d9f10544bbcd556354e5} 
+void Byte\+Buffer\+\_\+put (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const char}]{\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Put a single inpute byte into the buffer and increase the position of 1 \index{buffer.h@{buffer.h}!ByteBuffer\_putBuffer@{ByteBuffer\_putBuffer}}
+\index{ByteBuffer\_putBuffer@{ByteBuffer\_putBuffer}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_putBuffer()}
+{\footnotesize\ttfamily \label{buffer_8h_aa548616d9f172efb8f4c888d0bd504f6} 
+void Byte\+Buffer\+\_\+put\+Buffer (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+src}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Put an input buffer into the buffer starting from the current position \index{buffer.h@{buffer.h}!ByteBuffer\_putBufferFrom@{ByteBuffer\_putBufferFrom}}
+\index{ByteBuffer\_putBufferFrom@{ByteBuffer\_putBufferFrom}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_putBufferFrom()}
+{\footnotesize\ttfamily \label{buffer_8h_ac468e4f4dee48e39983ba3d742e213d0} 
+void Byte\+Buffer\+\_\+put\+Buffer\+From (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+src}{, }\item[{const int}]{\+\_\+start}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Put an input buffer into the buffer starting from a given input position \index{buffer.h@{buffer.h}!ByteBuffer\_putInt@{ByteBuffer\_putInt}}
+\index{ByteBuffer\_putInt@{ByteBuffer\_putInt}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_putInt()}
+{\footnotesize\ttfamily \label{buffer_8h_a8400b278e59edc922e00fdb2ba6639bd} 
+void Byte\+Buffer\+\_\+put\+Int (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Put an unsigned Int into the buffer and increase the position of 4 \index{buffer.h@{buffer.h}!ByteBuffer\_putShort@{ByteBuffer\_putShort}}
+\index{ByteBuffer\_putShort@{ByteBuffer\_putShort}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_putShort()}
+{\footnotesize\ttfamily \label{buffer_8h_a35555dd2c9e4b78a2a89427dac4a4f18} 
+void Byte\+Buffer\+\_\+put\+Short (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Put an unsigned Short into the buffer and increase the position of 2 \index{buffer.h@{buffer.h}!ByteBuffer\_resetPosition@{ByteBuffer\_resetPosition}}
+\index{ByteBuffer\_resetPosition@{ByteBuffer\_resetPosition}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_resetPosition()}
+{\footnotesize\ttfamily \label{buffer_8h_a3db512ce68dc1ffee158b3ed7009814c} 
+void Byte\+Buffer\+\_\+reset\+Position (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Reset the current position to 0 \index{buffer.h@{buffer.h}!ByteBuffer\_writeToFile@{ByteBuffer\_writeToFile}}
+\index{ByteBuffer\_writeToFile@{ByteBuffer\_writeToFile}!buffer.h@{buffer.h}}
+\doxysubsubsection{ByteBuffer\_writeToFile()}
+{\footnotesize\ttfamily \label{buffer_8h_a70026625602157f896e8a8573cfc222a} 
+void Byte\+Buffer\+\_\+write\+To\+File (\begin{DoxyParamCaption}\item[{const \textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+file}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Write the content of the buffer into a file \index{buffer.h@{buffer.h}!checkForOOB@{checkForOOB}}
+\index{checkForOOB@{checkForOOB}!buffer.h@{buffer.h}}
+\doxysubsubsection{checkForOOB()}
+{\footnotesize\ttfamily \label{buffer_8h_a8503575afb1a0cf064b097ab24cb28c5} 
+void check\+For\+OOB (\begin{DoxyParamCaption}\item[{const int}]{\+\_\+position}{, }\item[{const size\+\_\+t}]{\+\_\+size}{, }\item[{const size\+\_\+t}]{\+\_\+max}{, }\item[{const char $\ast$}]{\+\_\+func}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Check if the input size + position is less than the maximum buffer dimension \index{buffer.h@{buffer.h}!errorIfEmpty@{errorIfEmpty}}
+\index{errorIfEmpty@{errorIfEmpty}!buffer.h@{buffer.h}}
+\doxysubsubsection{errorIfEmpty()}
+{\footnotesize\ttfamily \label{buffer_8h_a80536b7e54eba82a33baf96409de4161} 
+void error\+If\+Empty (\begin{DoxyParamCaption}\item[{const \textbf{ Byte\+Buffer} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+func}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Raise an error if any operation requiring a non-\/empty buffer operates on an empty one 

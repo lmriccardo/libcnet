@@ -1,0 +1,77 @@
+.TH "UdpHeader" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+UdpHeader
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int16_t \fB_srcport\fP"
+.br
+.RI "The optional Source Port\&. "
+.ti -1c
+.RI "u_int16_t \fB_dstport\fP"
+.br
+.RI "The Desination Port\&. "
+.ti -1c
+.RI "u_int16_t \fB_length\fP"
+.br
+.RI "The total length of the UDP Packet\&. "
+.ti -1c
+.RI "u_int16_t \fB_checksum\fP"
+.br
+.RI "The checksum\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing the UDP Header of the UDP Packet\&. It consists of the classical 8 bytes divided into:
+.PP
+.IP "\(bu" 2
+\fR_srcport\fP, (optional) Source port (16 bits),
+.IP "\(bu" 2
+\fR_dstport\fP, Destination port (16 bits)
+.IP "\(bu" 2
+\fR_length\fP, Total length (16 bits)
+.IP "\(bu" 2
+\fR_checksum\fP, Checksum (16 bits)
+.PP
+.PP
+This structure refers to the RFC 768 https://datatracker.ietf.org/doc/html/rfc768 
+.PP
+Definition at line \fB406\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int16_t _checksum"
+
+.PP
+The checksum\&. 
+.PP
+Definition at line \fB412\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _dstport"
+
+.PP
+The Desination Port\&. 
+.PP
+Definition at line \fB410\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _length"
+
+.PP
+The total length of the UDP Packet\&. 
+.PP
+Definition at line \fB411\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _srcport"
+
+.PP
+The optional Source Port\&. 
+.PP
+Definition at line \fB409\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

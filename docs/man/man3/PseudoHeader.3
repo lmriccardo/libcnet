@@ -1,0 +1,65 @@
+.TH "PseudoHeader" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+PseudoHeader
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int32_t \fB_srcaddr\fP"
+.br
+.RI "The Source address from the IP Packet\&. "
+.ti -1c
+.RI "u_int32_t \fB_dstaddr\fP"
+.br
+.RI "The Destination address from the IP Packet\&. "
+.ti -1c
+.RI "u_int8_t \fB_protocol\fP"
+.br
+.RI "The protocol number from the IP packet\&. "
+.ti -1c
+.RI "u_int16_t \fB_size\fP"
+.br
+.RI "The total size of the underlying packet\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This struct is used when computing checksums for UDP and TCP packets, that requires the existance of a Pseudo Header containing informations from lower layer in the ISO-OSI or TCP/IP Protocol Stack\&. 
+.PP
+Definition at line \fB910\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int32_t _dstaddr"
+
+.PP
+The Destination address from the IP Packet\&. 
+.PP
+Definition at line \fB913\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _protocol"
+
+.PP
+The protocol number from the IP packet\&. 
+.PP
+Definition at line \fB914\fP of file \fBip\&.h\fP\&.
+.SS "u_int16_t _size"
+
+.PP
+The total size of the underlying packet\&. 
+.PP
+Definition at line \fB915\fP of file \fBip\&.h\fP\&.
+.SS "u_int32_t _srcaddr"
+
+.PP
+The Source address from the IP Packet\&. 
+.PP
+Definition at line \fB912\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

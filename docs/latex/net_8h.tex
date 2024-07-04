@@ -1,0 +1,79 @@
+\doxysection{includes/utils/net.h File Reference}
+\label{net_8h}\index{includes/utils/net.h@{includes/utils/net.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$linux/if.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS void \textbf{ get\+Hostname\+IP} (const char $\ast$\+\_\+hostname, char $\ast$\+\_\+out) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ get\+Interface\+Ip} (const char $\ast$\+\_\+interface, char $\ast$\+\_\+addr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ address\+Number\+To\+String} (u\+\_\+int32\+\_\+t \+\_\+addr, char $\ast$\+\_\+out, const bool \+\_\+be) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ generate\+Random\+Data} (char $\ast$\+\_\+dst, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+int \textbf{ get\+Interface\+MTU} (const char $\ast$\+\_\+interface) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ compute\+Checksum} (const unsigned char $\ast$buffer, const size\+\_\+t size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+int \textbf{ path\+Mtu\+Discovery} (const char $\ast$\+\_\+interface, const char $\ast$\+\_\+hostname) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\index{net.h@{net.h}!addressNumberToString@{addressNumberToString}}
+\index{addressNumberToString@{addressNumberToString}!net.h@{net.h}}
+\doxysubsubsection{addressNumberToString()}
+{\footnotesize\ttfamily \label{net_8h_aff7885efe8f9f49f3c4236dd3c22ea7c} 
+void address\+Number\+To\+String (\begin{DoxyParamCaption}\item[{u\+\_\+int32\+\_\+t}]{\+\_\+addr}{, }\item[{char $\ast$}]{\+\_\+out}{, }\item[{const bool}]{\+\_\+be}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Converts the input address number into a string. The third argument is used to specify whether the input address number is in LE or BE format. The result of the operation will be saved into the {\ttfamily \+\_\+out} input buffer. \index{net.h@{net.h}!computeChecksum@{computeChecksum}}
+\index{computeChecksum@{computeChecksum}!net.h@{net.h}}
+\doxysubsubsection{computeChecksum()}
+{\footnotesize\ttfamily \label{net_8h_aae9bc4977c09d498ae1fee5a9fa27c2d} 
+u\+\_\+int16\+\_\+t compute\+Checksum (\begin{DoxyParamCaption}\item[{const unsigned char $\ast$}]{buffer}{, }\item[{const size\+\_\+t}]{size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the checksum of an IP Packet as described in the corresponding RFC \index{net.h@{net.h}!generateRandomData@{generateRandomData}}
+\index{generateRandomData@{generateRandomData}!net.h@{net.h}}
+\doxysubsubsection{generateRandomData()}
+{\footnotesize\ttfamily \label{net_8h_a7ca86f8340e3d4629a99760b0afcb95d} 
+void generate\+Random\+Data (\begin{DoxyParamCaption}\item[{char $\ast$}]{\+\_\+dst}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the input buffer with a given number of random bytes \index{net.h@{net.h}!getHostnameIP@{getHostnameIP}}
+\index{getHostnameIP@{getHostnameIP}!net.h@{net.h}}
+\doxysubsubsection{getHostnameIP()}
+{\footnotesize\ttfamily \label{net_8h_ab39dc4c0242ac18b280d3ad67d45b641} 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS void get\+Hostname\+IP (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+hostname}{, }\item[{char $\ast$}]{\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the {\ttfamily \+\_\+out} parameter with the IP address of the input host \index{net.h@{net.h}!getInterfaceIp@{getInterfaceIp}}
+\index{getInterfaceIp@{getInterfaceIp}!net.h@{net.h}}
+\doxysubsubsection{getInterfaceIp()}
+{\footnotesize\ttfamily \label{net_8h_a0e4a1082d02723868151f7887277b375} 
+void get\+Interface\+Ip (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+interface}{, }\item[{char $\ast$}]{\+\_\+addr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+\index{net.h@{net.h}!getInterfaceMTU@{getInterfaceMTU}}
+\index{getInterfaceMTU@{getInterfaceMTU}!net.h@{net.h}}
+\doxysubsubsection{getInterfaceMTU()}
+{\footnotesize\ttfamily \label{net_8h_add67e42a218986cf796743330b4f86a5} 
+int get\+Interface\+MTU (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+interface}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the MTU (Maximum Transmission Unit) for the given input interface \index{net.h@{net.h}!pathMtuDiscovery@{pathMtuDiscovery}}
+\index{pathMtuDiscovery@{pathMtuDiscovery}!net.h@{net.h}}
+\doxysubsubsection{pathMtuDiscovery()}
+{\footnotesize\ttfamily \label{net_8h_a06de88483e46075098d204b0446e59ff} 
+int path\+Mtu\+Discovery (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+interface}{, }\item[{const char $\ast$}]{\+\_\+hostname}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Performs Path MTU Discovery Search 

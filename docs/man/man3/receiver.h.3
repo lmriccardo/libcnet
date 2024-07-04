@@ -1,0 +1,162 @@
+.TH "includes/receiver.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/receiver.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <sys/socket\&.h>\fP
+.br
+\fR#include <netdb\&.h>\fP
+.br
+\fR#include <pthread\&.h>\fP
+.br
+\fR#include <unistd\&.h>\fP
+.br
+\fR#include 'ip\&.h'\fP
+.br
+\fR#include 'utils/timer\&.h'\fP
+.br
+\fR#include 'utils/net\&.h'\fP
+.br
+\fR#include 'utils/list\&.h'\fP
+.br
+\fR#include 'utils/synch\&.h'\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBReceiver\fP"
+.br
+.ti -1c
+.RI "struct \fBResponse\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBhandle_error\fP(msg,  fd)   do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_new\fP(x)   (\fBLinkedList_new\fP(x))"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_delete\fP(x)   (\fBLinkedList_deletet\fP(x))"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_push\fP(x,  y,  z)   (\fBLinkedList_pushvt\fP(x, y, z))"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_pop\fP(x)   (\fBLinkedList_popt\fP(x))"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_isEmpty\fP(x)   (\fBLinkedList_isEmptyt\fP(x))"
+.br
+.ti -1c
+.RI "#define \fBMessageQueue_getSize\fP(x)   (\fBLinkedList_getSizet\fP(x))"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBLinkedList\fP \fBMessageQueue\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBReceiver\fP * \fBReceiver_new\fP (const char *_interface, const u_int16_t _port, const char *_proto, const bool _verbose) __attribute__((nonnull)) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBReceiver_delete\fP (\fBReceiver\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBReceiver_start\fP (\fBReceiver\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void * \fBReceiver_run\fP (void *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBReceiver_stop\fP (\fBReceiver\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBReceiver_setTimer\fP (\fBReceiver\fP *_self, struct \fBTimer\fP *_timer) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBReceiver_setSemaphore\fP (\fBReceiver\fP *_self, sem_t *_mutex) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBResponse_free\fP (struct \fBResponse\fP *_self) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define handle_error( msg,  fd)   do { perror(msg); shutdown(fd, 2); exit(EXIT_FAILURE); } while (0)"
+
+.PP
+Definition at line \fB36\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_delete( x)   (\fBLinkedList_deletet\fP(x))"
+
+.PP
+Definition at line \fB41\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_getSize( x)   (\fBLinkedList_getSizet\fP(x))"
+
+.PP
+Definition at line \fB45\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_isEmpty( x)   (\fBLinkedList_isEmptyt\fP(x))"
+
+.PP
+Definition at line \fB44\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_new( x)   (\fBLinkedList_new\fP(x))"
+
+.PP
+Definition at line \fB40\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_pop( x)   (\fBLinkedList_popt\fP(x))"
+
+.PP
+Definition at line \fB43\fP of file \fBreceiver\&.h\fP\&.
+.SS "#define MessageQueue_push( x,  y,  z)   (\fBLinkedList_pushvt\fP(x, y, z))"
+
+.PP
+Definition at line \fB42\fP of file \fBreceiver\&.h\fP\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef \fBLinkedList\fP \fBMessageQueue\fP"
+
+.PP
+Definition at line \fB38\fP of file \fBreceiver\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void Receiver_delete (\fBReceiver\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the input \fBReceiver\fP 
+.SS "\fBReceiver\fP * Receiver_new (const char * _interface, const u_int16_t _port, const char * _proto, const bool _verbose)\fR [extern]\fP"
+Creates a new \fBReceiver\fP given as input the string containing an IP address, a port and the protocol\&. This function binds the newly created socket using this input values\&.
+.PP
+The first argument is the interface to which bind the receiver, for example eth0\&. Given the interface, it takes the associated IP address\&. 
+.SS "void * Receiver_run (void * _self)\fR [extern]\fP"
+The function the \fBReceiver\fP thread will always execute\&. This function is called by \fRReceiver_start\fP and passed to the newly created thread\&. It is an infinite loop that every time waits for a packet to be received and put the received packet, if it is correct, into a MessageQueue\&. The only way to stop the \fBReceiver\fP thread is by calling the corresponding \fRReceiver_stop\fP function\&. 
+.SS "void Receiver_setSemaphore (\fBReceiver\fP * _self, sem_t * _mutex)\fR [extern]\fP"
+Set the input semaphore into the receiver 
+.SS "void Receiver_setTimer (\fBReceiver\fP * _self, struct \fBTimer\fP * _timer)\fR [extern]\fP"
+Set a new timer into the receiver 
+.SS "void Receiver_start (\fBReceiver\fP * _self)\fR [extern]\fP"
+Start a new \fBReceiver\fP thread 
+.SS "void Receiver_stop (\fBReceiver\fP * _self)\fR [extern]\fP"
+Stop the \fBReceiver\fP Thread 
+.SS "void Response_free (struct \fBResponse\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the response 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

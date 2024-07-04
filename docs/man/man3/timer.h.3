@@ -1,0 +1,127 @@
+.TH "includes/utils/timer.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/utils/timer.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <time\&.h>\fP
+.br
+\fR#include <semaphore\&.h>\fP
+.br
+\fR#include <stdio\&.h>\fP
+.br
+\fR#include <stdlib\&.h>\fP
+.br
+\fR#include <pthread\&.h>\fP
+.br
+\fR#include <unistd\&.h>\fP
+.br
+\fR#include <stdbool\&.h>\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBTimer\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCLOCK_REALTIME\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_POSIX_C_SOURCE\fP   200809L"
+.br
+.ti -1c
+.RI "#define \fBNS_PER_SECOND\fP   1000000000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "__BEGIN_DECLS double \fBcomputeElapsedTime\fP (struct timespec t1, struct timespec t2)"
+.br
+.ti -1c
+.RI "struct \fBTimer\fP * \fBTimer_new\fP () __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_delete\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_start\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void * \fBTimer_run\fP (void *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_stop\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "double \fBTimer_getDeltaTime\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "double \fBTimer_getElapsedTime\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_reset\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_resetPrevious\fP (struct \fBTimer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTimer_sleep\fP (const double _delay) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define _POSIX_C_SOURCE   200809L"
+
+.PP
+Definition at line \fB36\fP of file \fBtimer\&.h\fP\&.
+.SS "#define CLOCK_REALTIME   0"
+
+.PP
+Definition at line \fB33\fP of file \fBtimer\&.h\fP\&.
+.SS "#define NS_PER_SECOND   1000000000"
+
+.PP
+Definition at line \fB38\fP of file \fBtimer\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "__BEGIN_DECLS double computeElapsedTime (struct timespec t1, struct timespec t2)\fR [extern]\fP"
+Compute the difference between two timespec t2 and t1 and returns the value in seconds 
+.SS "void Timer_delete (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the input \fBTimer\fP 
+.SS "double Timer_getDeltaTime (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Returns the difference between the current time and the previous time\&. Every time this function is called, computes the delta, updates the previous time with the value of the current time and returns the delta time\&. 
+.SS "double Timer_getElapsedTime (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Returns the elapsed time in seconds\&. We need to make a function since it access concurrent region, hence we need to semaphore it\&. 
+.SS "struct \fBTimer\fP * Timer_new ()\fR [extern]\fP"
+Create and returns new \fBTimer\fP\&. This function does dynamic allocation which means that, it must be freed using the corresponding Timer_delete function\&. 
+.SS "void Timer_reset (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Reset the start value to the current time 
+.SS "void Timer_resetPrevious (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Reset the previous value with the current time 
+.SS "void * Timer_run (void * _self)\fR [extern]\fP"
+Iteratively update the timer 
+.SS "void Timer_sleep (const double _delay)\fR [extern]\fP"
+Custom Sleep function which accepts floating delay values 
+.SS "void Timer_start (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Start the timer starting the corresponding thread 
+.SS "void Timer_stop (struct \fBTimer\fP * _self)\fR [extern]\fP"
+Stop the timer thread 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

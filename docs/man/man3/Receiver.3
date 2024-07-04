@@ -1,0 +1,123 @@
+.TH "Receiver" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Receiver
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <receiver\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "struct protoent * \fB_proto\fP"
+.br
+.RI "The protocol used\&. "
+.ti -1c
+.RI "struct sockaddr_in \fB_address\fP"
+.br
+.RI "The IP address on which we are binded\&. "
+.ti -1c
+.RI "int \fB_socket\fP"
+.br
+.RI "File descriptor for the created socket\&. "
+.ti -1c
+.RI "bool \fB_running\fP"
+.br
+.RI "If the receiver in receiving or not\&. "
+.ti -1c
+.RI "bool \fB_verbose\fP"
+.br
+.RI "Enable verbosity\&. "
+.ti -1c
+.RI "struct \fBTimer\fP * \fB_timer\fP"
+.br
+.RI "An optional \fBTimer\fP\&. "
+.ti -1c
+.RI "sem_t * \fB_mutex\fP"
+.br
+.RI "A semaphore to synchronize with the \fBSender\fP\&. "
+.ti -1c
+.RI "\fBMessageQueue\fP * \fB_queue\fP"
+.br
+.RI "The message queue, essentially a linked list\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a \fBReceiver\fP\&. Essentially, it is an always running thread listening for incoming packets on a defined protocol on a given port\&.
+.PP
+It has the following fields:
+.IP "\(bu" 2
+\fR_proto\fP is a pointer to a \fRprotoent\fP structure defining which protocol is used
+.IP "\(bu" 2
+\fR_address\fP is a \fRsockaddr_in\fP value containing the IP address on which the receiver is binded
+.IP "\(bu" 2
+\fR_socket\fP is just the file descriptor of the created socket
+.IP "\(bu" 2
+\fR_running\fP a boolean indicating if the receiver is running or not
+.IP "\(bu" 2
+\fR_verbose\fP A flag to enable verbosity
+.IP "\(bu" 2
+\fR_timer\fP A timer shared with the \fBSender\fP
+.IP "\(bu" 2
+\fR_mutex\fP A simple Mutex to syncrhonize with the sender 
+.PP
+
+.PP
+Definition at line \fB63\fP of file \fBreceiver\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "struct sockaddr_in _address"
+
+.PP
+The IP address on which we are binded\&. 
+.PP
+Definition at line \fB67\fP of file \fBreceiver\&.h\fP\&.
+.SS "sem_t* _mutex"
+
+.PP
+A semaphore to synchronize with the \fBSender\fP\&. 
+.PP
+Definition at line \fB72\fP of file \fBreceiver\&.h\fP\&.
+.SS "struct protoent* _proto"
+
+.PP
+The protocol used\&. 
+.PP
+Definition at line \fB66\fP of file \fBreceiver\&.h\fP\&.
+.SS "\fBMessageQueue\fP* _queue"
+
+.PP
+The message queue, essentially a linked list\&. 
+.PP
+Definition at line \fB73\fP of file \fBreceiver\&.h\fP\&.
+.SS "bool _running"
+
+.PP
+If the receiver in receiving or not\&. 
+.PP
+Definition at line \fB69\fP of file \fBreceiver\&.h\fP\&.
+.SS "int _socket"
+
+.PP
+File descriptor for the created socket\&. 
+.PP
+Definition at line \fB68\fP of file \fBreceiver\&.h\fP\&.
+.SS "struct \fBTimer\fP* _timer"
+
+.PP
+An optional \fBTimer\fP\&. 
+.PP
+Definition at line \fB71\fP of file \fBreceiver\&.h\fP\&.
+.SS "bool _verbose"
+
+.PP
+Enable verbosity\&. 
+.PP
+Definition at line \fB70\fP of file \fBreceiver\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

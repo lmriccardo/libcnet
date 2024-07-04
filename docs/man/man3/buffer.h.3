@@ -1,0 +1,166 @@
+.TH "includes/utils/buffer.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+includes/utils/buffer.h
+.SH SYNOPSIS
+.br
+.PP
+\fR#include <sys/cdefs\&.h>\fP
+.br
+\fR#include <sys/types\&.h>\fP
+.br
+\fR#include <stdlib\&.h>\fP
+.br
+\fR#include <stdio\&.h>\fP
+.br
+\fR#include <string\&.h>\fP
+.br
+\fR#include <stdbool\&.h>\fP
+.br
+\fR#include 'utils/version\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBByteBuffer\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBYTE_SIZE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSHORT_SIZE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBINT_SIZE\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBByteBuffer\fP * \fBByteBuffer_new\fP (const size_t _size)"
+.br
+.ti -1c
+.RI "\fBByteBuffer\fP * \fBByteBuffer_new_b\fP (const char *_buffer, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_delete\fP (\fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_put\fP (\fBByteBuffer\fP *_self, const char _data) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_putShort\fP (\fBByteBuffer\fP *_self, const u_int16_t _data) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_putInt\fP (\fBByteBuffer\fP *_self, const u_int32_t _data) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_position\fP (\fBByteBuffer\fP *_self, const int _newpos) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_putBuffer\fP (\fBByteBuffer\fP *_self, const char *_src, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_putBufferFrom\fP (\fBByteBuffer\fP *_self, const char *_src, const int _start, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int8_t \fBByteBuffer_get\fP (\fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int16_t \fBByteBuffer_getShort\fP (\fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int32_t \fBByteBuffer_getInt\fP (\fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_getBuffer\fP (\fBByteBuffer\fP *_self, char *_out, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_getBufferFrom\fP (\fBByteBuffer\fP *_self, char *_out, const size_t _start, const size_t _size) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_resetPosition\fP (\fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBByteBuffer_writeToFile\fP (const \fBByteBuffer\fP *_self, const char *_file) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "bool \fBByteBuffer_isEmpty\fP (const \fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "bool \fBByteBuffer_isEndOfBuffer\fP (const \fBByteBuffer\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBcheckForOOB\fP (const int _position, const size_t _size, const size_t _max, const char *_func) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBerrorIfEmpty\fP (const \fBByteBuffer\fP *_self, const char *_func) __attribute__((nonnull))"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define BYTE_SIZE   1"
+
+.PP
+Definition at line \fB29\fP of file \fBbuffer\&.h\fP\&.
+.SS "#define INT_SIZE   4"
+
+.PP
+Definition at line \fB31\fP of file \fBbuffer\&.h\fP\&.
+.SS "#define SHORT_SIZE   2"
+
+.PP
+Definition at line \fB30\fP of file \fBbuffer\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void ByteBuffer_delete (\fBByteBuffer\fP * _self)\fR [extern]\fP"
+Free the memory allocated for the input \fBByteBuffer\fP (like a deconstructor in C++) 
+.SS "u_int8_t ByteBuffer_get (\fBByteBuffer\fP * _self)\fR [extern]\fP"
+Return a single byte from the buffer and increase the position of 1 
+.SS "void ByteBuffer_getBuffer (\fBByteBuffer\fP * _self, char * _out, const size_t _size)\fR [extern]\fP"
+Return a buffer of input size and increase the position of given size 
+.SS "void ByteBuffer_getBufferFrom (\fBByteBuffer\fP * _self, char * _out, const size_t _start, const size_t _size)\fR [extern]\fP"
+Return a buffer of input size from a given starting position and set the current position to the starting position plus the input size 
+.SS "u_int32_t ByteBuffer_getInt (\fBByteBuffer\fP * _self)\fR [extern]\fP"
+Return an unsigned int from the buffer and increase the position of 4 
+.SS "u_int16_t ByteBuffer_getShort (\fBByteBuffer\fP * _self)\fR [extern]\fP"
+Return an unsigned short from the buffer and increase the position of 2 
+.SS "bool ByteBuffer_isEmpty (const \fBByteBuffer\fP * _self)\fR [extern]\fP"
+Check if the byte buffer is empty or not 
+.SS "bool ByteBuffer_isEndOfBuffer (const \fBByteBuffer\fP * _self)\fR [extern]\fP"
+Check if the buffer position is at the end of the buffer 
+.SS "\fBByteBuffer\fP * ByteBuffer_new (const size_t _size)\fR [extern]\fP"
+Create a new \fBByteBuffer\fP with initial input size 
+.SS "\fBByteBuffer\fP * ByteBuffer_new_b (const char * _buffer, const size_t _size)\fR [extern]\fP"
+Create a new \fBByteBuffer\fP already filled with input buffer of input size 
+.SS "void ByteBuffer_position (\fBByteBuffer\fP * _self, const int _newpos)\fR [extern]\fP"
+Set a new position into the buffer 
+.SS "void ByteBuffer_put (\fBByteBuffer\fP * _self, const char _data)\fR [extern]\fP"
+Put a single inpute byte into the buffer and increase the position of 1 
+.SS "void ByteBuffer_putBuffer (\fBByteBuffer\fP * _self, const char * _src, const size_t _size)\fR [extern]\fP"
+Put an input buffer into the buffer starting from the current position 
+.SS "void ByteBuffer_putBufferFrom (\fBByteBuffer\fP * _self, const char * _src, const int _start, const size_t _size)\fR [extern]\fP"
+Put an input buffer into the buffer starting from a given input position 
+.SS "void ByteBuffer_putInt (\fBByteBuffer\fP * _self, const u_int32_t _data)\fR [extern]\fP"
+Put an unsigned Int into the buffer and increase the position of 4 
+.SS "void ByteBuffer_putShort (\fBByteBuffer\fP * _self, const u_int16_t _data)\fR [extern]\fP"
+Put an unsigned Short into the buffer and increase the position of 2 
+.SS "void ByteBuffer_resetPosition (\fBByteBuffer\fP * _self)\fR [extern]\fP"
+Reset the current position to 0 
+.SS "void ByteBuffer_writeToFile (const \fBByteBuffer\fP * _self, const char * _file)\fR [extern]\fP"
+Write the content of the buffer into a file 
+.SS "void checkForOOB (const int _position, const size_t _size, const size_t _max, const char * _func)\fR [extern]\fP"
+Check if the input size + position is less than the maximum buffer dimension 
+.SS "void errorIfEmpty (const \fBByteBuffer\fP * _self, const char * _func)\fR [extern]\fP"
+Raise an error if any operation requiring a non-empty buffer operates on an empty one 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

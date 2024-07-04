@@ -1,0 +1,59 @@
+\doxysection{net.\+h}
+\label{net_8h_source}\index{includes/utils/net.h@{includes/utils/net.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ net.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ the\ declaration\ of\ some\ utility\ functions.\ \ \ \ \ \ \ *****\ }}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00013\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifndef\ \_NET\_H}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ \_NET\_H}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <netdb.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <arpa/inet.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <netinet/in.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <linux/if.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <sys/socket.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <sys/ioctl.h>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ getHostnameIP(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_hostname,\ \textcolor{keywordtype}{char}*\ \_out)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{comment}{/*\ Fill\ the\ \`{}\_addr`\ parameter\ with\ the\ IP\ address\ of\ the\ given\ input\ interface\ */}}
+\DoxyCodeLine{00042\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ getInterfaceIp(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_interface,\ \textcolor{keywordtype}{char}\ *\_addr)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ addressNumberToString(u\_int32\_t\ \_addr,\ \textcolor{keywordtype}{char}\ *\_out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \_be)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ generateRandomData(\textcolor{keywordtype}{char}*\ \_dst,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ getInterfaceMTU(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_interface)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{extern}\ u\_int16\_t\ computeChecksum(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ buffer,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ pathMtuDiscovery(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_interface,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_hostname)\ \ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \_\_END\_DECLS}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
