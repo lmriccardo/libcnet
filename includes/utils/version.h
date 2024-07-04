@@ -1,7 +1,7 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define LIBCNET_VERSION "v.02.01d"
+#define LIBCNET_VERSION "v.01.02d"
 
 #define LIBCNET_MAJOR 2
 #define LIBCNET_MINOR 1
