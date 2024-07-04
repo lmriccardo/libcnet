@@ -73,19 +73,20 @@ Legend:
 
 #### TCP PACKETS
 
-- [?] TCP Packet (Header + Payload)
-- [?] Upadate IP Packet with the new TCP Packet payload option
-- [?] Update the crafter for TCP Packets
-- [?] Update the sender for TCP Packets
-- [?] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
+- [x] TCP Packet (Header + Payload)
+- [x] Upadate IP Packet with the new TCP Packet payload option
+- [x] Update the crafter for TCP Packets
+- [x] Update the sender for TCP Packets
+- [x] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
 - [?] Test the TCP implementation
-- [?] Write a simple example on Tcp packets
-- [?] Analyze Wireshark 
+- [x] Write a simple example on Tcp packets
+- [x] Analyze Wireshark
+- [x] Add to print header informations also the tcp options
 
 ### Advanced Development
 
 - [x] Implement custom ping message
 - [?] Test Fragmentation
 - [x] Test Linked List
-- [ ] Test UDP
+- [x] Test UDP
 - [?] Path MTU Discovery (Implemented, still to be tested)

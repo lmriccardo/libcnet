@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## libcnet v01.01d -- 29/06/2024 (06/29/2024) - ?
+## libcnet v01.01r -- 29/06/2024 - 04/07/2024
 
 ##### Addition
 
@@ -14,6 +14,7 @@
 ##### Small Changes
 
 - Changed `snprintf` into `sprintf` into `ControlBits_toBin` function of `ip.c`
+- Added TCP Option printing informations to the `TcpHeader_printInfo` function
 
 ##### Fixed Bugs
 
@@ -22,3 +23,8 @@
   avoid this behaviour, first the Header and then the payload are copied into new memory
   locations. Before it was `memcpy(dstpacket, srcpacket, size)` now is
   `memcpy(dstpacket->hdr, srcpacket->hdr, hdr_size)` and `memcpy(dstpacket->payload, srcpacket->payload, psize)`
+
+- When computing the checksum it was jumping two bytes, now it does not. Notice that it computes the checksum
+  correctly both for ICMP and UDP Packets, but it does not for TCP Packets and complete IP Packets.
+
+- Correct the bug when creating the TCP Option and then encoding flipping the bytes in an incorrect way.

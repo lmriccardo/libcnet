@@ -980,6 +980,44 @@ void TcpHeader_printInfo(TcpHeader* _self)
     printf("Window Size: %hu\n", _self->_window);
     printf("Checksum: %hu\n", _self->_checksum);
     printf("Urgent Pointer: %hu\n", _self->_urgpntr);
+
+    // Print also all the options
+    for (int optIdx = 0; optIdx < _self->_numOfOpts; optIdx++)
+    {
+        struct TcpOption* opt = _self->_options[optIdx];
+        u_int8_t kind = opt->_kind;
+
+        switch (kind)
+        {
+            case TCP_OPTION_KIND_MSS:
+                u_int16_t mss = ntohs(*((u_int16_t *)opt->_value));
+                printf("Tcp Option - Maximum Segment Size: %hu\n", mss);
+                break;
+
+            case TCP_OPTION_KIND_SACK_PERM:
+                printf("Tcp Option - SACK Permitted\n");
+                break;
+
+            case TCP_OPTION_KIND_TIMESTAMP:
+                u_int64_t value = *((u_int64_t*)opt->_value);
+                u_int32_t tsecr = ntohl(value >> 32);
+                u_int64_t tsval = ntohl(value & ~((u_int64_t)htonl(tsecr) << 32));
+
+                printf("Tcp Option - Timestamps: TSval %ld, TSecr %d\n", tsval, tsecr);
+                break;
+
+            case TCP_OPTION_KIND_NOOP:
+                printf("Tcp Option - No-Operation (NOP)\n");
+                break;
+
+            case TCP_OPTION_KIND_WIN_SCALE:
+                printf("Tcp Option - Window Scale: %d\n", *((u_int8_t*) opt->_value));
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 size_t TcpHeader_getHeaderSize(TcpHeader* _self)
