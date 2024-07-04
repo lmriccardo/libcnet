@@ -1,0 +1,154 @@
+\doxysection{includes/utils/timer.h File Reference}
+\label{timer_8h}\index{includes/utils/timer.h@{includes/utils/timer.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Timer}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ CLOCK\+\_\+\+REALTIME}~0
+\item 
+\#define \textbf{ \+\_\+\+POSIX\+\_\+\+C\+\_\+\+SOURCE}~200809L
+\item 
+\#define \textbf{ NS\+\_\+\+PER\+\_\+\+SECOND}~1000000000
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS double \textbf{ compute\+Elapsed\+Time} (struct timespec t1, struct timespec t2)
+\item 
+struct \textbf{ Timer} $\ast$ \textbf{ Timer\+\_\+new} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Timer\+\_\+delete} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Timer\+\_\+start} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void $\ast$ \textbf{ Timer\+\_\+run} (void $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Timer\+\_\+stop} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+double \textbf{ Timer\+\_\+get\+Delta\+Time} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+double \textbf{ Timer\+\_\+get\+Elapsed\+Time} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Timer\+\_\+reset} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Timer\+\_\+reset\+Previous} (struct \textbf{ Timer} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Timer\+\_\+sleep} (const double \+\_\+delay) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\index{timer.h@{timer.h}!\_POSIX\_C\_SOURCE@{\_POSIX\_C\_SOURCE}}
+\index{\_POSIX\_C\_SOURCE@{\_POSIX\_C\_SOURCE}!timer.h@{timer.h}}
+\doxysubsubsection{\_POSIX\_C\_SOURCE}
+{\footnotesize\ttfamily \label{timer_8h_a3024ccd4a9af5109d24e6c57565d74a1} 
+\#define \+\_\+\+POSIX\+\_\+\+C\+\_\+\+SOURCE~200809L}
+
+
+
+Definition at line \textbf{ 36} of file \textbf{ timer.\+h}.
+
+\index{timer.h@{timer.h}!CLOCK\_REALTIME@{CLOCK\_REALTIME}}
+\index{CLOCK\_REALTIME@{CLOCK\_REALTIME}!timer.h@{timer.h}}
+\doxysubsubsection{CLOCK\_REALTIME}
+{\footnotesize\ttfamily \label{timer_8h_a922ce1ae64374c9410c8a999e25e82af} 
+\#define CLOCK\+\_\+\+REALTIME~0}
+
+
+
+Definition at line \textbf{ 33} of file \textbf{ timer.\+h}.
+
+\index{timer.h@{timer.h}!NS\_PER\_SECOND@{NS\_PER\_SECOND}}
+\index{NS\_PER\_SECOND@{NS\_PER\_SECOND}!timer.h@{timer.h}}
+\doxysubsubsection{NS\_PER\_SECOND}
+{\footnotesize\ttfamily \label{timer_8h_aba21db599a8fe4ea7ad366cd39db3361} 
+\#define NS\+\_\+\+PER\+\_\+\+SECOND~1000000000}
+
+
+
+Definition at line \textbf{ 38} of file \textbf{ timer.\+h}.
+
+
+
+\doxysubsection{Function Documentation}
+\index{timer.h@{timer.h}!computeElapsedTime@{computeElapsedTime}}
+\index{computeElapsedTime@{computeElapsedTime}!timer.h@{timer.h}}
+\doxysubsubsection{computeElapsedTime()}
+{\footnotesize\ttfamily \label{timer_8h_a03f0ef9e4cca306f206013e35f2214b3} 
+\+\_\+\+\_\+\+BEGIN\+\_\+\+DECLS double compute\+Elapsed\+Time (\begin{DoxyParamCaption}\item[{struct timespec}]{t1}{, }\item[{struct timespec}]{t2}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the difference between two timespec t2 and t1 and returns the value in seconds \index{timer.h@{timer.h}!Timer\_delete@{Timer\_delete}}
+\index{Timer\_delete@{Timer\_delete}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_delete()}
+{\footnotesize\ttfamily \label{timer_8h_ab94f045f238256247e74b98e07975020} 
+void Timer\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input \doxyref{Timer}{p.}{structTimer} \index{timer.h@{timer.h}!Timer\_getDeltaTime@{Timer\_getDeltaTime}}
+\index{Timer\_getDeltaTime@{Timer\_getDeltaTime}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_getDeltaTime()}
+{\footnotesize\ttfamily \label{timer_8h_afa821931873f23aeeea504ce88a7b4b1} 
+double Timer\+\_\+get\+Delta\+Time (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the difference between the current time and the previous time. Every time this function is called, computes the delta, updates the previous time with the value of the current time and returns the delta time. \index{timer.h@{timer.h}!Timer\_getElapsedTime@{Timer\_getElapsedTime}}
+\index{Timer\_getElapsedTime@{Timer\_getElapsedTime}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_getElapsedTime()}
+{\footnotesize\ttfamily \label{timer_8h_a555e283e1df985a08ce0aa49ce14ae0f} 
+double Timer\+\_\+get\+Elapsed\+Time (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the elapsed time in seconds. We need to make a function since it access concurrent region, hence we need to semaphore it. \index{timer.h@{timer.h}!Timer\_new@{Timer\_new}}
+\index{Timer\_new@{Timer\_new}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_new()}
+{\footnotesize\ttfamily \label{timer_8h_a083dda33c9a75506e2caa6828bb34abc} 
+struct \textbf{ Timer} $\ast$ Timer\+\_\+new (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns new \doxyref{Timer}{p.}{structTimer}. This function does dynamic allocation which means that, it must be freed using the corresponding Timer\+\_\+delete function. \index{timer.h@{timer.h}!Timer\_reset@{Timer\_reset}}
+\index{Timer\_reset@{Timer\_reset}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_reset()}
+{\footnotesize\ttfamily \label{timer_8h_a65c5349b01b51c0a31f7585fd139e98e} 
+void Timer\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Reset the start value to the current time \index{timer.h@{timer.h}!Timer\_resetPrevious@{Timer\_resetPrevious}}
+\index{Timer\_resetPrevious@{Timer\_resetPrevious}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_resetPrevious()}
+{\footnotesize\ttfamily \label{timer_8h_a7906d000bd96a556bd42005f40c62865} 
+void Timer\+\_\+reset\+Previous (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Reset the previous value with the current time \index{timer.h@{timer.h}!Timer\_run@{Timer\_run}}
+\index{Timer\_run@{Timer\_run}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_run()}
+{\footnotesize\ttfamily \label{timer_8h_a2234af366ede12f32f52f0f848d97d25} 
+void $\ast$ Timer\+\_\+run (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Iteratively update the timer \index{timer.h@{timer.h}!Timer\_sleep@{Timer\_sleep}}
+\index{Timer\_sleep@{Timer\_sleep}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_sleep()}
+{\footnotesize\ttfamily \label{timer_8h_a0ee3985f1735fd508a156a75510f6bc0} 
+void Timer\+\_\+sleep (\begin{DoxyParamCaption}\item[{const double}]{\+\_\+delay}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Custom Sleep function which accepts floating delay values \index{timer.h@{timer.h}!Timer\_start@{Timer\_start}}
+\index{Timer\_start@{Timer\_start}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_start()}
+{\footnotesize\ttfamily \label{timer_8h_a3d9f8fc0f989314c561cdf19a23c3c0b} 
+void Timer\+\_\+start (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Start the timer starting the corresponding thread \index{timer.h@{timer.h}!Timer\_stop@{Timer\_stop}}
+\index{Timer\_stop@{Timer\_stop}!timer.h@{timer.h}}
+\doxysubsubsection{Timer\_stop()}
+{\footnotesize\ttfamily \label{timer_8h_af87996272451e6c1154073bff3a2b975} 
+void Timer\+\_\+stop (\begin{DoxyParamCaption}\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Stop the timer thread 

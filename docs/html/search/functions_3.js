@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['decodecontrolbits_0',['decodeControlBits',['../ip_8h.html#a806eec1078a4b5d401e0bde413621f38',1,'ip.h']]]
+  ['errorifempty_0',['errorIfEmpty',['../buffer_8h.html#a80536b7e54eba82a33baf96409de4161',1,'buffer.h']]]
 ];

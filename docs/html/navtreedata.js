@@ -48,8 +48,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"ip_8h.html#ad0ad13835a0e2a32c042dd8b1a631987",
-"structh__echo__t.html"
+"ip_8h.html#aafbc860a9097ae4af9476dfc87555e7a",
+"structTcpHeader.html#afa33303d18db9a5ce0f98d58f0daafd4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.01r</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -116,6 +116,12 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a331c58bef1f841ed5e0fee7fcae16152" id="r_a331c58bef1f841ed5e0fee7fcae16152"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structControlBits.html">ControlBits</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a331c58bef1f841ed5e0fee7fcae16152">_cbits</a></td></tr>
 <tr class="memdesc:a331c58bef1f841ed5e0fee7fcae16152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control Bits.  <br /></td></tr>
 <tr class="separator:a331c58bef1f841ed5e0fee7fcae16152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c8cac534f1c88ad094c52222d92c0d" id="r_a57c8cac534f1c88ad094c52222d92c0d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57c8cac534f1c88ad094c52222d92c0d">_opts</a> [<a class="el" href="ip_8h.html#a96e9510e3a67042630d17e91a828f0e6">TCP_OPTIONS_MAX_SIZE</a>]</td></tr>
+<tr class="memdesc:a57c8cac534f1c88ad094c52222d92c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array of header Options.  <br /></td></tr>
+<tr class="separator:a57c8cac534f1c88ad094c52222d92c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f79d5c1ab6bebb04c9fd9620815be8d" id="r_a6f79d5c1ab6bebb04c9fd9620815be8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f79d5c1ab6bebb04c9fd9620815be8d">_numOfOptions</a></td></tr>
+<tr class="memdesc:a6f79d5c1ab6bebb04c9fd9620815be8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of options.  <br /></td></tr>
+<tr class="separator:a6f79d5c1ab6bebb04c9fd9620815be8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct containing some parameters, like sequence and acknowledgment number useful when constructing TCP Packets from the sender </p>
@@ -155,6 +161,42 @@ Data Fields</h2></td></tr>
 <p>Control Bits. </p>
 
 <p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00074">74</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+
+</div>
+</div>
+<a id="a6f79d5c1ab6bebb04c9fd9620815be8d" name="a6f79d5c1ab6bebb04c9fd9620815be8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f79d5c1ab6bebb04c9fd9620815be8d">&#9670;&#160;</a></span>_numOfOptions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _numOfOptions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The total number of options. </p>
+
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00077">77</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
+
+</div>
+</div>
+<a id="a57c8cac534f1c88ad094c52222d92c0d" name="a57c8cac534f1c88ad094c52222d92c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c8cac534f1c88ad094c52222d92c0d">&#9670;&#160;</a></span>_opts</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a>* _opts[<a class="el" href="ip_8h.html#a96e9510e3a67042630d17e91a828f0e6">TCP_OPTIONS_MAX_SIZE</a>]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An array of header Options. </p>
+
+<p class="definition">Definition at line <a class="el" href="sender_8h_source.html#l00076">76</a> of file <a class="el" href="sender_8h_source.html">sender.h</a>.</p>
 
 </div>
 </div>

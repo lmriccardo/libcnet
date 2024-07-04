@@ -1,0 +1,112 @@
+\doxysection{Timer Struct Reference}
+\label{structTimer}\index{Timer@{Timer}}
+
+
+{\ttfamily \#include $<$timer.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct timespec \textbf{ \+\_\+start}
+\begin{DoxyCompactList}\small\item\em The time when the \doxyref{Timer}{p.}{structTimer} is created. \end{DoxyCompactList}\item 
+struct timespec \textbf{ \+\_\+current}
+\begin{DoxyCompactList}\small\item\em The current time, updated at each iteration. \end{DoxyCompactList}\item 
+struct timespec \textbf{ \+\_\+previous}
+\begin{DoxyCompactList}\small\item\em The time when the {\ttfamily Timer\+\_\+get\+Time} function is called. \end{DoxyCompactList}\item 
+double \textbf{ \+\_\+elapsed}
+\begin{DoxyCompactList}\small\item\em The total elapsed time from the start. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+running}
+\begin{DoxyCompactList}\small\item\em Is true if the corresponding thread is running. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a simple timer. It can be used to time the elapsed time between the message being sent and the response being received by the receiver. The timer starts by calling the corresponding {\ttfamily Timer\+\_\+start} function.
+
+The means of the fields is the following\+:
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+start} the time when the \doxyref{Timer}{p.}{structTimer} is created
+\item {\ttfamily \+\_\+elapsed} the elapsed time between start and current
+\item {\ttfamily \+\_\+current} the current time everytime updated
+\item {\ttfamily \+\_\+previous} the time when the {\ttfamily Timer\+\_\+get\+Time} function is called 
+\end{DoxyItemize}
+
+Definition at line \textbf{ 58} of file \textbf{ timer.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{Timer@{Timer}!\_current@{\_current}}
+\index{\_current@{\_current}!Timer@{Timer}}
+\doxysubsubsection{\_current}
+{\footnotesize\ttfamily \label{structTimer_a01dbe2272be7db05457c5c7d23aef39e} 
+struct timespec \+\_\+current}
+
+
+
+The current time, updated at each iteration. 
+
+
+
+Definition at line \textbf{ 61} of file \textbf{ timer.\+h}.
+
+\index{Timer@{Timer}!\_elapsed@{\_elapsed}}
+\index{\_elapsed@{\_elapsed}!Timer@{Timer}}
+\doxysubsubsection{\_elapsed}
+{\footnotesize\ttfamily \label{structTimer_acf1e830bb8faadf52618d7ae43c4c923} 
+double \+\_\+elapsed}
+
+
+
+The total elapsed time from the start. 
+
+
+
+Definition at line \textbf{ 63} of file \textbf{ timer.\+h}.
+
+\index{Timer@{Timer}!\_previous@{\_previous}}
+\index{\_previous@{\_previous}!Timer@{Timer}}
+\doxysubsubsection{\_previous}
+{\footnotesize\ttfamily \label{structTimer_adc1adc5e46bf8a25ec3827da914fd2c7} 
+struct timespec \+\_\+previous}
+
+
+
+The time when the {\ttfamily Timer\+\_\+get\+Time} function is called. 
+
+
+
+Definition at line \textbf{ 62} of file \textbf{ timer.\+h}.
+
+\index{Timer@{Timer}!\_running@{\_running}}
+\index{\_running@{\_running}!Timer@{Timer}}
+\doxysubsubsection{\_running}
+{\footnotesize\ttfamily \label{structTimer_a665c90a6f5b8fdb743accfaaf0517e27} 
+bool \+\_\+running}
+
+
+
+Is true if the corresponding thread is running. 
+
+
+
+Definition at line \textbf{ 64} of file \textbf{ timer.\+h}.
+
+\index{Timer@{Timer}!\_start@{\_start}}
+\index{\_start@{\_start}!Timer@{Timer}}
+\doxysubsubsection{\_start}
+{\footnotesize\ttfamily \label{structTimer_a7950998d66ef9e9d921cf261afe4827f} 
+struct timespec \+\_\+start}
+
+
+
+The time when the \doxyref{Timer}{p.}{structTimer} is created. 
+
+
+
+Definition at line \textbf{ 60} of file \textbf{ timer.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/utils/\textbf{ timer.\+h}\end{DoxyCompactItemize}

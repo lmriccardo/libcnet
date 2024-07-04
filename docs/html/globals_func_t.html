@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.01r</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -100,7 +100,10 @@ $(function(){initNavTree('globals_func_t.html',''); initResizable(true); });
 <div class="textblock">Here is a list of all functions with links to the files they belong to:</div>
 
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>TcpHeader_addTcpOption()&#160;:&#160;<a class="el" href="ip_8h.html#a432738077f5e7c83010a0d98bfffc491">ip.h</a></li>
+<li>TcpHeader_addTcpOption_o()&#160;:&#160;<a class="el" href="ip_8h.html#a469d656c28039c6ea6bd90cab6104e33">ip.h</a></li>
 <li>TcpHeader_decode()&#160;:&#160;<a class="el" href="ip_8h.html#a55c522e97711f0d84e57fd24dcfcd6dc">ip.h</a></li>
+<li>TcpHeader_deleteTcpOptions()&#160;:&#160;<a class="el" href="ip_8h.html#a45df399ab7a57f3077408cbccf25171a">ip.h</a></li>
 <li>TcpHeader_encode()&#160;:&#160;<a class="el" href="ip_8h.html#a0c879a506f78089a93697a4074ad6ad0">ip.h</a></li>
 <li>TcpHeader_getHeaderSize()&#160;:&#160;<a class="el" href="ip_8h.html#a116bd803c810443a7cbc8cd978bc2163">ip.h</a></li>
 <li>TcpHeader_mergeControlBits()&#160;:&#160;<a class="el" href="ip_8h.html#a5e453a5a7d660cd01b06c8475bd5ba11">ip.h</a></li>
@@ -119,6 +122,7 @@ $(function(){initNavTree('globals_func_t.html',''); initResizable(true); });
 <li>TcpHeader_setSequenceNumber()&#160;:&#160;<a class="el" href="ip_8h.html#aa21bc3c22e4cd39ade80582fe34dd127">ip.h</a></li>
 <li>TcpHeader_setSourcePort()&#160;:&#160;<a class="el" href="ip_8h.html#a5d924896acab8403f2a2595baae821ea">ip.h</a></li>
 <li>TcpHeader_setSynchronizeFlag()&#160;:&#160;<a class="el" href="ip_8h.html#a4fcbbc96d34049e0d65004015983b55c">ip.h</a></li>
+<li>TcpHeader_setTcpOptions()&#160;:&#160;<a class="el" href="ip_8h.html#ae8dabf644a7b1072fca7b08d17c4bf59">ip.h</a></li>
 <li>TcpHeader_setUrgentPointer()&#160;:&#160;<a class="el" href="ip_8h.html#ab00d598425a76358afeadf818eab1636">ip.h</a></li>
 <li>TcpHeader_setUrgentPointerFlag()&#160;:&#160;<a class="el" href="ip_8h.html#ad0ad13835a0e2a32c042dd8b1a631987">ip.h</a></li>
 <li>TcpHeader_setWindowSize()&#160;:&#160;<a class="el" href="ip_8h.html#acc3c14384ff37ed488c944ac0db2d7d4">ip.h</a></li>
@@ -130,12 +134,22 @@ $(function(){initNavTree('globals_func_t.html',''); initResizable(true); });
 <li>TcpHeader_unsetResetConnectionFlag()&#160;:&#160;<a class="el" href="ip_8h.html#a3cac0357cd0dce50d520692bea8d78bb">ip.h</a></li>
 <li>TcpHeader_unsetSynchronizeFlag()&#160;:&#160;<a class="el" href="ip_8h.html#afbf6d0302be2f26bdf48674292d40b4d">ip.h</a></li>
 <li>TcpHeader_unsetUrgentPointerFlag()&#160;:&#160;<a class="el" href="ip_8h.html#a3b3bd71c752aa14b6711ae865b900395">ip.h</a></li>
+<li>TcpOption_new()&#160;:&#160;<a class="el" href="ip_8h.html#a96b87110433531bedb0f6c6a18ebe09e">ip.h</a></li>
+<li>TcpOption_newMss()&#160;:&#160;<a class="el" href="ip_8h.html#a20d0aa8fa70399cf64d387bdc2a8dab1">ip.h</a></li>
+<li>TcpOption_newNoOperation()&#160;:&#160;<a class="el" href="ip_8h.html#a3a55af5ecd73b489edf1b2a8224c9ff9">ip.h</a></li>
+<li>TcpOption_newSackPermitted()&#160;:&#160;<a class="el" href="ip_8h.html#a82dcfb07a385b077d17c1529131fde6b">ip.h</a></li>
+<li>TcpOption_newTimestamps()&#160;:&#160;<a class="el" href="ip_8h.html#ae0f87d07d9a22a92d2b9b7f81b7d8bd7">ip.h</a></li>
+<li>TcpOption_newWindowScale()&#160;:&#160;<a class="el" href="ip_8h.html#a8ecdeb8c8814e9922beb9d8740510810">ip.h</a></li>
+<li>TcpOptions_copy()&#160;:&#160;<a class="el" href="ip_8h.html#af801c88068a0084b6116b4cf3a836325">ip.h</a></li>
+<li>TcpOptions_delete()&#160;:&#160;<a class="el" href="ip_8h.html#a30fa889f868ba06ca6518dc497633266">ip.h</a></li>
 <li>TcpPacket_decode()&#160;:&#160;<a class="el" href="ip_8h.html#ae91d434f6b2ba0986bce87f7e4733bb3">ip.h</a></li>
 <li>TcpPacket_delete()&#160;:&#160;<a class="el" href="ip_8h.html#a7b80f7295e3ba4b5727795740194c0f7">ip.h</a></li>
 <li>TcpPacket_encode()&#160;:&#160;<a class="el" href="ip_8h.html#a5126829113308863a5aeb8d7d416d69f">ip.h</a></li>
 <li>TcpPacket_encode_b()&#160;:&#160;<a class="el" href="ip_8h.html#adbb2bc4b7f471ecacf0c7cc65a829780">ip.h</a></li>
-<li>TcpPacket_fillHeader()&#160;:&#160;<a class="el" href="ip_8h.html#a8f12e058c985df7a548700acc957a91b">ip.h</a></li>
+<li>TcpPacket_fillHeader()&#160;:&#160;<a class="el" href="ip_8h.html#a40b54951cbbd2482f5c14a6f7547bff2">ip.h</a></li>
 <li>TcpPacket_fillPayload()&#160;:&#160;<a class="el" href="ip_8h.html#ad84dcaa98479d8901016ac30a1781fcc">ip.h</a></li>
+<li>TcpPacket_getNumberOfOptions()&#160;:&#160;<a class="el" href="ip_8h.html#a1b892a8a629a660269230756ab5d2193">ip.h</a></li>
+<li>TcpPacket_getOptionSize_bytes()&#160;:&#160;<a class="el" href="ip_8h.html#aaaf4bfb05f74937f371b6a8aacbec946">ip.h</a></li>
 <li>TcpPacket_getPacketSize()&#160;:&#160;<a class="el" href="ip_8h.html#ab8f45ebdefe89f6d3f46b4a834aaf1ad">ip.h</a></li>
 <li>TcpPacket_new()&#160;:&#160;<a class="el" href="ip_8h.html#a5a10845bce85315985b0dd9d94ba5607">ip.h</a></li>
 <li>TcpPacket_new_s()&#160;:&#160;<a class="el" href="ip_8h.html#afc2575e71ca1d3718892b54c96b6963c">ip.h</a></li>

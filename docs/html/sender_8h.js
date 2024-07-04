@@ -24,6 +24,7 @@ var sender_8h =
     [ "Sender_sendto", "sender_8h.html#a90d92d510d8d774097822d58ea44ba9b", null ],
     [ "Sender_setIpFlags", "sender_8h.html#a098d2afc90384e157efb85c913385459", null ],
     [ "Sender_setMtu", "sender_8h.html#a81713e317126ef764e409f42b778776b", null ],
+    [ "Sender_setTcpOptions", "sender_8h.html#accdf283b5b52596dc32959af2da9b497", null ],
     [ "Sender_setTimer", "sender_8h.html#ac322c5e98a9c8bf2c9b7ad4521607222", null ],
     [ "Sender_updateIcmpPacket", "sender_8h.html#a2c466f40969eba72c1cbacea03b3a7c8", null ],
     [ "Sender_updateUdpPacket", "sender_8h.html#a190adb6342084af9ba0571de8d19c21e", null ]

@@ -23,11 +23,12 @@ var searchData=
   ['sender_5fsendto_20',['Sender_sendto',['../sender_8h.html#a90d92d510d8d774097822d58ea44ba9b',1,'sender.h']]],
   ['sender_5fsetipflags_21',['Sender_setIpFlags',['../sender_8h.html#a098d2afc90384e157efb85c913385459',1,'sender.h']]],
   ['sender_5fsetmtu_22',['Sender_setMtu',['../sender_8h.html#a81713e317126ef764e409f42b778776b',1,'sender.h']]],
-  ['sender_5fsettimer_23',['Sender_setTimer',['../sender_8h.html#ac322c5e98a9c8bf2c9b7ad4521607222',1,'sender.h']]],
-  ['sender_5fupdateicmppacket_24',['Sender_updateIcmpPacket',['../sender_8h.html#a2c466f40969eba72c1cbacea03b3a7c8',1,'sender.h']]],
-  ['sender_5fupdateudppacket_25',['Sender_updateUdpPacket',['../sender_8h.html#a190adb6342084af9ba0571de8d19c21e',1,'sender.h']]],
-  ['short_5fsize_26',['SHORT_SIZE',['../buffer_8h.html#adeb5281b5f526ce88376cb4b4b36572e',1,'buffer.h']]],
-  ['synch_2eh_27',['synch.h',['../synch_8h.html',1,'']]],
-  ['synchronizertt_28',['synchronizeRTT',['../synch_8h.html#acf30d18ad775c5edac44ceebe1571e36',1,'synch.h']]],
-  ['syncrhonizesendreceive_29',['syncrhonizeSendReceive',['../synch_8h.html#ab8c7731b698a2945537445e61645096a',1,'synch.h']]]
+  ['sender_5fsettcpoptions_23',['Sender_setTcpOptions',['../sender_8h.html#accdf283b5b52596dc32959af2da9b497',1,'sender.h']]],
+  ['sender_5fsettimer_24',['Sender_setTimer',['../sender_8h.html#ac322c5e98a9c8bf2c9b7ad4521607222',1,'sender.h']]],
+  ['sender_5fupdateicmppacket_25',['Sender_updateIcmpPacket',['../sender_8h.html#a2c466f40969eba72c1cbacea03b3a7c8',1,'sender.h']]],
+  ['sender_5fupdateudppacket_26',['Sender_updateUdpPacket',['../sender_8h.html#a190adb6342084af9ba0571de8d19c21e',1,'sender.h']]],
+  ['short_5fsize_27',['SHORT_SIZE',['../buffer_8h.html#adeb5281b5f526ce88376cb4b4b36572e',1,'buffer.h']]],
+  ['synch_2eh_28',['synch.h',['../synch_8h.html',1,'']]],
+  ['synchronizertt_29',['synchronizeRTT',['../synch_8h.html#acf30d18ad775c5edac44ceebe1571e36',1,'synch.h']]],
+  ['syncrhonizesendreceive_30',['syncrhonizeSendReceive',['../synch_8h.html#ab8c7731b698a2945537445e61645096a',1,'synch.h']]]
 ];

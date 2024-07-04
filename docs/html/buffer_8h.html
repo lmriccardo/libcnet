@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.01r</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -164,6 +164,8 @@ Functions</h2></td></tr>
 <tr class="separator:a70026625602157f896e8a8573cfc222a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d9836243e1e21733e3d51d0193839d" id="r_ae4d9836243e1e21733e3d51d0193839d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4d9836243e1e21733e3d51d0193839d">ByteBuffer_isEmpty</a> (const <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:ae4d9836243e1e21733e3d51d0193839d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9b49839705a40832b1cba3a2a82b184" id="r_ab9b49839705a40832b1cba3a2a82b184"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9b49839705a40832b1cba3a2a82b184">ByteBuffer_isEndOfBuffer</a> (const <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_self) __attribute__((nonnull))</td></tr>
+<tr class="separator:ab9b49839705a40832b1cba3a2a82b184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8503575afb1a0cf064b097ab24cb28c5" id="r_a8503575afb1a0cf064b097ab24cb28c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8503575afb1a0cf064b097ab24cb28c5">checkForOOB</a> (const int _position, const size_t _size, const size_t _max, const char *_func) __attribute__((nonnull))</td></tr>
 <tr class="separator:a8503575afb1a0cf064b097ab24cb28c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80536b7e54eba82a33baf96409de4161" id="r_a80536b7e54eba82a33baf96409de4161"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80536b7e54eba82a33baf96409de4161">errorIfEmpty</a> (const <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_self, const char *_func) __attribute__((nonnull))</td></tr>
@@ -421,6 +423,32 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Check if the byte buffer is empty or not </p>
+
+</div>
+</div>
+<a id="ab9b49839705a40832b1cba3a2a82b184" name="ab9b49839705a40832b1cba3a2a82b184"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9b49839705a40832b1cba3a2a82b184">&#9670;&#160;</a></span>ByteBuffer_isEndOfBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ByteBuffer_isEndOfBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structByteBuffer.html">ByteBuffer</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the buffer position is at the end of the buffer </p>
 
 </div>
 </div>

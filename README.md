@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     if (verbose)
     {
         IpHeader_printInfo(&pckt->_iphdr);
-        IcmpHeader_printInfo(&pckt->_payload._icmp->_icmphdr);
+        IcmpHeader_printInfo(&pckt->_payload._icmp->_hdr);
     }
 
     Sender_send(sender, pckt, 0.0);

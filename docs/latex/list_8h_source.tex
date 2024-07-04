@@ -1,0 +1,103 @@
+\doxysection{list.\+h}
+\label{list_8h_source}\index{includes/utils/list.h@{includes/utils/list.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ list.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ the\ declarations\ of\ a\ Linked\ List\ object\ struct\ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ and\ a\ number\ of\ functions\ to\ interact\ with\ it.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00014\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#ifndef\ \_LIST\_H}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ \_LIST\_H}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <utils/synch.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{struct\ }Node}
+\DoxyCodeLine{00036\ \{}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{struct\ }Node*\ \_next;\ \ \ \ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{struct\ }Node*\ \_prev;\ \ \ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}*\ \ \ \ \ \ \ \ \_value;\ \ \ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00048\ \{}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{struct\ }Node*\ \_head;\ \ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{struct\ }Node*\ \_last;\ \ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ \ \ \ \ \ \_size;\ \ \ \ \ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ \ \ \ \ \ \_capacity;\ \ }
+\DoxyCodeLine{00054\ \ \ \ \ sem\_t\ \ \ \ \ \ \ \ \_mutex;\ \ \ \ \ }
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \}\ LinkedList;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Node*\ Node\_new(\textcolor{keywordtype}{void}\ *\_value,\ \textcolor{keywordtype}{size\_t}\ \_vsize)\ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Node\_delete(\textcolor{keyword}{struct}\ Node*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00076\ \textcolor{keyword}{extern}\ LinkedList*\ LinkedList\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_capacity)\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_delete(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_deletet(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_append(LinkedList*\ \_self,\ \textcolor{keyword}{struct}\ Node*\ \_node)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_appendt(LinkedList*\ \_self,\ \textcolor{keyword}{struct}\ Node*\ \_node)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00101\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_appendv(LinkedList*\ \_self,\ \textcolor{keywordtype}{void}*\ \_value,\ \textcolor{keywordtype}{size\_t}\ \_vsize)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_appendvt(LinkedList*\ \_self,\ \textcolor{keywordtype}{void}*\ \_value,\ \textcolor{keywordtype}{size\_t}\ \_vsize)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_push(LinkedList*\ \_self,\ \textcolor{keyword}{struct}\ Node*\ \_node)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00116\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_pusht(LinkedList*\ \_self,\ \textcolor{keyword}{struct}\ Node*\ \_node)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00121\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_pushv(LinkedList*\ \_self,\ \textcolor{keywordtype}{void}*\ \_value,\ \textcolor{keywordtype}{size\_t}\ \_vsize)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ LinkedList\_pushvt(LinkedList*\ \_self,\ \textcolor{keywordtype}{void}*\ \_value,\ \textcolor{keywordtype}{size\_t}\ \_vsize)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00131\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Node*\ LinkedList\_pop(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Node*\ LinkedList\_popt(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Node*\ LinkedList\_remove(LinkedList*\ \_self,\ \textcolor{keywordtype}{int}\ \_i)\ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Node*\ LinkedList\_removet(LinkedList*\ \_self,\ \textcolor{keywordtype}{int}\ \_i)\ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ LinkedList\_isEmpty(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00156\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ LinkedList\_isEmptyt(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{size\_t}\ LinkedList\_getSize(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00166\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{size\_t}\ LinkedList\_getSizet(LinkedList*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \_\_END\_DECLS}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

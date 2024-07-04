@@ -65,24 +65,28 @@ Legend:
 #### UDP PACKETS
 
 - [x] UDP Packet (Header + Payload)
-- [?] Update the crafter for UDP
-- [?] Update the sender to UDP
+- [x] Update the crafter for UDP
+- [x] Update the sender to UDP
 - [?] Fragmenter for UDP Packets (not 100% sure it is the correct way)
-- [ ] Sender must also consider the UDP Pseudo-header when computing the checksum
+- [?] Sender must also consider the UDP Pseudo-header when computing the checksum
+- [x] Write a simple example on Udp packets 
 
 #### TCP PACKETS
 
-- [?] TCP Packet (Header + Payload)
-- [?] Upadate IP Packet with the new TCP Packet payload option
-- [?] Update the crafter for TCP Packets
-- [?] Update the sender for TCP Packets
-- [ ] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
-- [ ] Test the TCP implementation
+- [x] TCP Packet (Header + Payload)
+- [x] Upadate IP Packet with the new TCP Packet payload option
+- [x] Update the crafter for TCP Packets
+- [x] Update the sender for TCP Packets
+- [x] Implementation of the Options Field in TCP Header (refers to **FACT 1**)
+- [?] Test the TCP implementation
+- [x] Write a simple example on Tcp packets
+- [x] Analyze Wireshark
+- [x] Add to print header informations also the tcp options
 
 ### Advanced Development
 
 - [x] Implement custom ping message
 - [?] Test Fragmentation
 - [x] Test Linked List
-- [ ] Test UDP
+- [x] Test UDP
 - [?] Path MTU Discovery (Implemented, still to be tested)

@@ -73,6 +73,14 @@
 #define TCP_CWR_SET 0x80
 
 #define TCP_PSEUDO_HEADER_SIZE 0x0c
+#define TCP_OPTIONS_MAX_SIZE   0x14
+
+/* TCP Options Kinds */
+#define TCP_OPTION_KIND_NOOP      0x01
+#define TCP_OPTION_KIND_MSS       0x02
+#define TCP_OPTION_KIND_WIN_SCALE 0x03
+#define TCP_OPTION_KIND_SACK_PERM 0x04
+#define TCP_OPTION_KIND_TIMESTAMP 0x08
 
 /* IP Header Flags */
 #define IPv4 0x4
@@ -196,7 +204,7 @@ typedef struct
 typedef struct
 {
 
-    IcmpHeader  _icmphdr; //!< The ICMP Header
+    IcmpHeader  _hdr; //!< The ICMP Header
     char       *_payload; //!< The payload containing all the ICMP data
 
     size_t __size;  //!< The size of the payload
@@ -518,6 +526,20 @@ extern UdpPacket* UdpPacket_decode(ByteBuffer* _buffer) __attribute__((nonnull))
 /******************************* TCP PACKET ******************************/
 
 /**
+ * Struct representing a single generic TCP Option. Since options can be
+ * of variable size we need to use `void` pointers to address generic type
+ * values. Notice that the field `_value` MUST contain the entire option
+ * value. It means that, if the option have two 2 bytes values, we can write it into
+ * the `_value` field has `(val1 << 16) + val2` or as a vector of u_int16_t. 
+ */
+struct TcpOption
+{
+    u_int8_t _kind;    //!< The type of TCP Option
+    u_int8_t _length;  //!< How many bytes is the option big
+    void*    _value;   //!< The value of the option
+};
+
+/**
  * Struct containing all control bits of a TCP header
  */
 struct ControlBits
@@ -545,7 +567,7 @@ struct ControlBits
  * - `_window`, Receiver Window size (2 bytes),
  * - `_checksum`, Checksum (2 bytes)
  * - `_urgpntr`, Urgent Pointer (2 bytes)
- * - `_options`, Optional Options (4 bytes).
+ * - `_options`, Optional Options (from 0 to 20 bytes).
  * 
  * This structure refers to the RFC 9293 https://www.rfc-editor.org/rfc/rfc9293.html
  */
@@ -558,10 +580,14 @@ typedef struct
     u_int32_t          _acknum;     //!< Contains the next sequence the sender of the segment is expecting to receive
     u_int8_t           _offset;     //!< This number indicates where the data begins + reserved bits set to 0
     struct ControlBits _flags;      //!< A number of control bits for different pourposes
-    u_int16_t          _window;     //!< The number of data octets beginning with the one indicated in the ACK field the sender is willing to accept
+    u_int16_t          _window;     //!< The number of data octets beginning with the one indicated in the ACK field
     u_int16_t          _checksum;   //!< The checksum
-    u_int16_t          _urgpntr;    //!< The current value of the urgent pointer as a positive offset from the sequence number in this segment
-    u_int32_t          _options;    //!< A number of options
+    u_int16_t          _urgpntr;    //!< The current value of the urgent pointer as a positive offset from the sequence number
+
+    struct TcpOption*  _options[TCP_OPTIONS_MAX_SIZE]; //!< A vector of TCP Options (maximum 20 bytes)
+
+    u_int8_t _totOptLen_b; //!< The current length in bytes of the options
+    int      _numOfOpts;   //!< The total number of options in the current header
 
 } TcpHeader;
 
@@ -578,14 +604,54 @@ typedef struct
 } TcpPacket;
 
 /**
+ * Create a new TcpOption given the values as input. Notice that `_value` can be NULL.
+ */
+extern struct TcpOption* TcpOption_new(const u_int8_t _kind, const u_int8_t _length, void* _value) __attribute__((returns_nonnull));
+
+/**
+ * Create the TCP Option reserved for Maximum Segment Size
+ */
+extern struct TcpOption* TcpOption_newMss(u_int16_t _mss) __attribute__((returns_nonnull));
+
+/**
+ * Create the TCP Option reserved for SACK Permitted
+ */
+extern struct TcpOption* TcpOption_newSackPermitted(void) __attribute__((returns_nonnull));
+
+/**
+ * Create the TCP Option reserved for No-operation
+ */
+extern struct TcpOption* TcpOption_newNoOperation(void) __attribute__((returns_nonnull));
+
+/**
+ * Create the TCP Option reserved for Window Scale
+ */
+extern struct TcpOption* TcpOption_newWindowScale(u_int8_t _scale) __attribute__((returns_nonnull));
+
+/**
+ * Create the TCP Option reserved for Timestamps
+ */
+extern struct TcpOption* TcpOption_newTimestamps(u_int32_t _tsval, u_int32_t _tsecr) __attribute__((returns_nonnull));
+
+/**
+ * Copy all the options in `_src` into `_dst`.
+ */
+extern void TcpOptions_copy(struct TcpOption** _src, struct TcpOption** _dst, const int _n) __attribute__((nonnull));
+
+/**
+ * Free the memory allocate for each Tcp Option
+ */
+extern void TcpOptions_delete(struct TcpOption** _opts, const int _n) __attribute__((nonnull));
+
+/**
  * Fill the ControlBit structure with the content of the ByteBuffer
  */
-extern void decodeControlBits(struct ControlBits* _cbits, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void ControlBits_decode(struct ControlBits* _cbits, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Converts the control bits into a string of binary values
  */
-extern void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out) __attribute__((nonnull));
+extern void ControlBits_toBin(const struct ControlBits* _cbits, char* _out) __attribute__((nonnull));
 
 /**
  * Converts the input integer into ControlBits. For example, consider that the Control Bits field is 
@@ -597,7 +663,7 @@ extern void convertControlBitsToBin(const struct ControlBits* _cbits, char* _out
  * @param _bits a value between 0 and 2^8 - 1
  * @param _cbits a poiter to a ControlBits structure
  */
-extern void convertIntToControlBits(const u_int8_t _bits, struct ControlBits* _cbits) __attribute__((nonnull));
+extern void ControlBits_fromValue(const u_int8_t _bits, struct ControlBits* _cbits) __attribute__((nonnull));
 
 /**
  * Set the source port of the input Tcp Header
@@ -725,6 +791,22 @@ extern void TcpHeader_setChecksum(TcpHeader* _self, u_int16_t _checksum) __attri
 extern void TcpHeader_setUrgentPointer(TcpHeader* _self, u_int16_t _urgpntr) __attribute__((nonnull));
 
 /**
+ * Add a Tcp Option to the current Tcp Header.
+ */
+extern void TcpHeader_addTcpOption_o(TcpHeader* _self, struct TcpOption* _opt) __attribute__((nonnull));
+
+/**
+ * Construct and add a new Tcp Option to the current Tcp Header.
+ */
+extern void TcpHeader_addTcpOption(TcpHeader* _self, const u_int8_t _kind, const u_int8_t _length, void* _value)
+    __attribute__((nonnull(1)));
+
+/**
+ * Set a new set of options into the tcp header. `_n` is the length of the vector
+ */
+extern void TcpHeader_setTcpOptions(TcpHeader* _self, struct TcpOption* _opts[], const int _n) __attribute__((nonnull));
+
+/**
  * Sum all the control bits together in an unsigned short value
  */
 extern u_int8_t TcpHeader_mergeControlBits(TcpHeader* _self) __attribute__((nonnull));
@@ -748,6 +830,11 @@ extern void TcpHeader_printInfo(TcpHeader* _self) __attribute__((nonnull));
  * Returns the size of the tcp header
  */
 extern size_t TcpHeader_getHeaderSize(TcpHeader* _self) __attribute__((nonnull));
+
+/**
+ * Free the memory allocated for each Tcp Option
+ */
+extern void TcpHeader_deleteTcpOptions(TcpHeader* _self) __attribute__((nonnull));
 
 /**
  * Create and returns a new TCP Packet given the input size
@@ -775,7 +862,7 @@ extern void TcpPacket_setHeader(TcpPacket* _self, TcpHeader* _hdr) __attribute__
 extern void TcpPacket_fillHeader(
     TcpPacket* _self,     u_int16_t _srcport, u_int16_t          _dstport, u_int32_t _seqnum, 
     u_int32_t  _acknum,   u_int8_t  _offset,  struct ControlBits _cbits,   u_int16_t _window,
-    u_int16_t  _checksum, u_int16_t _urgpntr
+    u_int16_t  _checksum, u_int16_t _urgpntr, struct TcpOption*  _opts[],  int       _nopts
 ) __attribute__((nonnull));
 
 /**
@@ -787,6 +874,16 @@ extern void TcpPacket_fillPayload(TcpPacket* _self, const char* _payload, const 
  * Returns the size of the packet Header + Payload
  */
 extern size_t TcpPacket_getPacketSize(TcpPacket* _self) __attribute__((nonnull));
+
+/**
+ * Returns the number of Tcp options in the header
+ */
+extern int TcpPacket_getNumberOfOptions(TcpPacket* _self) __attribute__((nonnull));
+
+/**
+ * Returns the number of bytes of the header assigned to Tcp Options
+ */
+extern u_int8_t TcpPacket_getOptionSize_bytes(TcpPacket* _self) __attribute__((nonnull));
 
 /**
  * Encodes the TCP Packet into a ByteBuffer and returns it
@@ -966,7 +1063,7 @@ extern u_int8_t IpHeader_getFragmentOffset(const IpHeader* _self) __attribute__(
 /**
  * Encode the IP header into a ByteBuffer
  */
-extern void IpHeader_encode__(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
+extern void IpHeader_encode_b(const IpHeader* _self, ByteBuffer* _buffer) __attribute__((nonnull));
 
 /**
  * Encode the IP header into a ByteBuffer and returns the ByteBuffer
@@ -1094,6 +1191,11 @@ extern void IpPacket_wrapUdp(IpPacket* _self, UdpPacket* _udppckt) __attribute__
  * Wrap the input TCP Packet into the payload of the input IP Packet
  */
 extern void IpPacket_wrapTcp(IpPacket* _self, TcpPacket* _tcppckt) __attribute__((nonnull));
+
+/**
+ * Compute and set the checksum for TCP/UDP/ICMP Packet
+ */
+extern void IpPacket_computeChecksum(IpPacket* _self) __attribute__((nonnull));
 
 /**
  * Compute the checksum for an ICMP Packet

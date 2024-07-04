@@ -1,0 +1,163 @@
+\doxysection{Receiver Struct Reference}
+\label{structReceiver}\index{Receiver@{Receiver}}
+
+
+{\ttfamily \#include $<$receiver.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct protoent $\ast$ \textbf{ \+\_\+proto}
+\begin{DoxyCompactList}\small\item\em The protocol used. \end{DoxyCompactList}\item 
+struct sockaddr\+\_\+in \textbf{ \+\_\+address}
+\begin{DoxyCompactList}\small\item\em The IP address on which we are binded. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+socket}
+\begin{DoxyCompactList}\small\item\em File descriptor for the created socket. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+running}
+\begin{DoxyCompactList}\small\item\em If the receiver in receiving or not. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+verbose}
+\begin{DoxyCompactList}\small\item\em Enable verbosity. \end{DoxyCompactList}\item 
+struct \textbf{ Timer} $\ast$ \textbf{ \+\_\+timer}
+\begin{DoxyCompactList}\small\item\em An optional \doxyref{Timer}{p.}{structTimer}. \end{DoxyCompactList}\item 
+sem\+\_\+t $\ast$ \textbf{ \+\_\+mutex}
+\begin{DoxyCompactList}\small\item\em A semaphore to synchronize with the \doxyref{Sender}{p.}{structSender}. \end{DoxyCompactList}\item 
+\textbf{ Message\+Queue} $\ast$ \textbf{ \+\_\+queue}
+\begin{DoxyCompactList}\small\item\em The message queue, essentially a linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a \doxyref{Receiver}{p.}{structReceiver}. Essentially, it is an always running thread listening for incoming packets on a defined protocol on a given port.
+
+It has the following fields\+:
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+proto} is a pointer to a {\ttfamily protoent} structure defining which protocol is used
+\item {\ttfamily \+\_\+address} is a {\ttfamily sockaddr\+\_\+in} value containing the IP address on which the receiver is binded
+\item {\ttfamily \+\_\+socket} is just the file descriptor of the created socket
+\item {\ttfamily \+\_\+running} a boolean indicating if the receiver is running or not
+\item {\ttfamily \+\_\+verbose} A flag to enable verbosity
+\item {\ttfamily \+\_\+timer} A timer shared with the \doxyref{Sender}{p.}{structSender}
+\item {\ttfamily \+\_\+mutex} A simple Mutex to syncrhonize with the sender 
+\end{DoxyItemize}
+
+Definition at line \textbf{ 63} of file \textbf{ receiver.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{Receiver@{Receiver}!\_address@{\_address}}
+\index{\_address@{\_address}!Receiver@{Receiver}}
+\doxysubsubsection{\_address}
+{\footnotesize\ttfamily \label{structReceiver_af241297155e6cd0eef8fdaa4010309b8} 
+struct sockaddr\+\_\+in \+\_\+address}
+
+
+
+The IP address on which we are binded. 
+
+
+
+Definition at line \textbf{ 67} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_mutex@{\_mutex}}
+\index{\_mutex@{\_mutex}!Receiver@{Receiver}}
+\doxysubsubsection{\_mutex}
+{\footnotesize\ttfamily \label{structReceiver_a0002e0d6339242c262df985b961d2d67} 
+sem\+\_\+t$\ast$ \+\_\+mutex}
+
+
+
+A semaphore to synchronize with the \doxyref{Sender}{p.}{structSender}. 
+
+
+
+Definition at line \textbf{ 72} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_proto@{\_proto}}
+\index{\_proto@{\_proto}!Receiver@{Receiver}}
+\doxysubsubsection{\_proto}
+{\footnotesize\ttfamily \label{structReceiver_ad9d7a9a1188c503671a81f989582f997} 
+struct protoent$\ast$ \+\_\+proto}
+
+
+
+The protocol used. 
+
+
+
+Definition at line \textbf{ 66} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_queue@{\_queue}}
+\index{\_queue@{\_queue}!Receiver@{Receiver}}
+\doxysubsubsection{\_queue}
+{\footnotesize\ttfamily \label{structReceiver_a04ada15b48ffd5c4d6b93c3061867b4c} 
+\textbf{ Message\+Queue}$\ast$ \+\_\+queue}
+
+
+
+The message queue, essentially a linked list. 
+
+
+
+Definition at line \textbf{ 73} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_running@{\_running}}
+\index{\_running@{\_running}!Receiver@{Receiver}}
+\doxysubsubsection{\_running}
+{\footnotesize\ttfamily \label{structReceiver_a665c90a6f5b8fdb743accfaaf0517e27} 
+bool \+\_\+running}
+
+
+
+If the receiver in receiving or not. 
+
+
+
+Definition at line \textbf{ 69} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_socket@{\_socket}}
+\index{\_socket@{\_socket}!Receiver@{Receiver}}
+\doxysubsubsection{\_socket}
+{\footnotesize\ttfamily \label{structReceiver_adba482ed381b10fe52a0492c2a4ed24b} 
+int \+\_\+socket}
+
+
+
+File descriptor for the created socket. 
+
+
+
+Definition at line \textbf{ 68} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_timer@{\_timer}}
+\index{\_timer@{\_timer}!Receiver@{Receiver}}
+\doxysubsubsection{\_timer}
+{\footnotesize\ttfamily \label{structReceiver_a4ab14a648091d1c2192cac07b8129323} 
+struct \textbf{ Timer}$\ast$ \+\_\+timer}
+
+
+
+An optional \doxyref{Timer}{p.}{structTimer}. 
+
+
+
+Definition at line \textbf{ 71} of file \textbf{ receiver.\+h}.
+
+\index{Receiver@{Receiver}!\_verbose@{\_verbose}}
+\index{\_verbose@{\_verbose}!Receiver@{Receiver}}
+\doxysubsubsection{\_verbose}
+{\footnotesize\ttfamily \label{structReceiver_a350251bf0dbeb6a343c649789df9f572} 
+bool \+\_\+verbose}
+
+
+
+Enable verbosity. 
+
+
+
+Definition at line \textbf{ 70} of file \textbf{ receiver.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ receiver.\+h}\end{DoxyCompactItemize}

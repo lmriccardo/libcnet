@@ -1,4 +1,4 @@
-.TH "includes/ip.h" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
+.TH "includes/ip.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -52,6 +52,9 @@ includes/ip.h
 .br
 .ti -1c
 .RI "struct \fBUdpPacket\fP"
+.br
+.ti -1c
+.RI "struct \fBTcpOption\fP"
 .br
 .ti -1c
 .RI "struct \fBControlBits\fP"
@@ -167,6 +170,24 @@ includes/ip.h
 .br
 .ti -1c
 .RI "#define \fBTCP_PSEUDO_HEADER_SIZE\fP   0x0c"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTIONS_MAX_SIZE\fP   0x14"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTION_KIND_NOOP\fP   0x01"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTION_KIND_MSS\fP   0x02"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTION_KIND_WIN_SCALE\fP   0x03"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTION_KIND_SACK_PERM\fP   0x04"
+.br
+.ti -1c
+.RI "#define \fBTCP_OPTION_KIND_TIMESTAMP\fP   0x08"
 .br
 .ti -1c
 .RI "#define \fBIPv4\fP   0x4"
@@ -446,13 +467,37 @@ includes/ip.h
 .RI "\fBUdpPacket\fP * \fBUdpPacket_decode\fP (\fBByteBuffer\fP *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBdecodeControlBits\fP (struct \fBControlBits\fP *_cbits, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "struct \fBTcpOption\fP * \fBTcpOption_new\fP (const u_int8_t _kind, const u_int8_t _length, void *_value) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBconvertControlBitsToBin\fP (const struct \fBControlBits\fP *_cbits, char *_out) __attribute__((nonnull))"
+.RI "struct \fBTcpOption\fP * \fBTcpOption_newMss\fP (u_int16_t _mss) __attribute__((returns_nonnull))"
 .br
 .ti -1c
-.RI "void \fBconvertIntToControlBits\fP (const u_int8_t _bits, struct \fBControlBits\fP *_cbits) __attribute__((nonnull))"
+.RI "struct \fBTcpOption\fP * \fBTcpOption_newSackPermitted\fP (void) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBTcpOption\fP * \fBTcpOption_newNoOperation\fP (void) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBTcpOption\fP * \fBTcpOption_newWindowScale\fP (u_int8_t _scale) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "struct \fBTcpOption\fP * \fBTcpOption_newTimestamps\fP (u_int32_t _tsval, u_int32_t _tsecr) __attribute__((returns_nonnull))"
+.br
+.ti -1c
+.RI "void \fBTcpOptions_copy\fP (struct \fBTcpOption\fP **_src, struct \fBTcpOption\fP **_dst, const int _n) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTcpOptions_delete\fP (struct \fBTcpOption\fP **_opts, const int _n) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBControlBits_decode\fP (struct \fBControlBits\fP *_cbits, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBControlBits_toBin\fP (const struct \fBControlBits\fP *_cbits, char *_out) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBControlBits_fromValue\fP (const u_int8_t _bits, struct \fBControlBits\fP *_cbits) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBTcpHeader_setSourcePort\fP (\fBTcpHeader\fP *_self, u_int16_t _srcport) __attribute__((nonnull))"
@@ -530,6 +575,15 @@ includes/ip.h
 .RI "void \fBTcpHeader_setUrgentPointer\fP (\fBTcpHeader\fP *_self, u_int16_t _urgpntr) __attribute__((nonnull))"
 .br
 .ti -1c
+.RI "void \fBTcpHeader_addTcpOption_o\fP (\fBTcpHeader\fP *_self, struct \fBTcpOption\fP *_opt) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBTcpHeader_addTcpOption\fP (\fBTcpHeader\fP *_self, const u_int8_t _kind, const u_int8_t _length, void *_value) __attribute__((nonnull(1)))"
+.br
+.ti -1c
+.RI "void \fBTcpHeader_setTcpOptions\fP (\fBTcpHeader\fP *_self, struct \fBTcpOption\fP *_opts[], const int _n) __attribute__((nonnull))"
+.br
+.ti -1c
 .RI "u_int8_t \fBTcpHeader_mergeControlBits\fP (\fBTcpHeader\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
@@ -545,6 +599,9 @@ includes/ip.h
 .RI "size_t \fBTcpHeader_getHeaderSize\fP (\fBTcpHeader\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
+.RI "void \fBTcpHeader_deleteTcpOptions\fP (\fBTcpHeader\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
 .RI "\fBTcpPacket\fP * \fBTcpPacket_new_s\fP (const size_t _size) __attribute__((returns_nonnull))"
 .br
 .ti -1c
@@ -557,13 +614,19 @@ includes/ip.h
 .RI "void \fBTcpPacket_setHeader\fP (\fBTcpPacket\fP *_self, \fBTcpHeader\fP *_hdr) __attribute__((nonnull))"
 .br
 .ti -1c
-.RI "void \fBTcpPacket_fillHeader\fP (\fBTcpPacket\fP *_self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct \fBControlBits\fP _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr) __attribute__((nonnull))"
+.RI "void \fBTcpPacket_fillHeader\fP (\fBTcpPacket\fP *_self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct \fBControlBits\fP _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr, struct \fBTcpOption\fP *_opts[], int _nopts) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBTcpPacket_fillPayload\fP (\fBTcpPacket\fP *_self, const char *_payload, const size_t _size) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "size_t \fBTcpPacket_getPacketSize\fP (\fBTcpPacket\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "int \fBTcpPacket_getNumberOfOptions\fP (\fBTcpPacket\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "u_int8_t \fBTcpPacket_getOptionSize_bytes\fP (\fBTcpPacket\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "\fBByteBuffer\fP * \fBTcpPacket_encode\fP (\fBTcpPacket\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
@@ -629,7 +692,7 @@ includes/ip.h
 .RI "u_int8_t \fBIpHeader_getFragmentOffset\fP (const \fBIpHeader\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
-.RI "void \fBIpHeader_encode__\fP (const \fBIpHeader\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
+.RI "void \fBIpHeader_encode_b\fP (const \fBIpHeader\fP *_self, \fBByteBuffer\fP *_buffer) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "\fBByteBuffer\fP * \fBIpHeader_encode\fP (const \fBIpHeader\fP *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))"
@@ -704,6 +767,9 @@ includes/ip.h
 .RI "void \fBIpPacket_wrapTcp\fP (\fBIpPacket\fP *_self, \fBTcpPacket\fP *_tcppckt) __attribute__((nonnull))"
 .br
 .ti -1c
+.RI "void \fBIpPacket_computeChecksum\fP (\fBIpPacket\fP *_self) __attribute__((nonnull))"
+.br
+.ti -1c
 .RI "u_int16_t \fBIpPacket_computeIcmpChecksum\fP (\fBIpPacket\fP *_self) __attribute__((nonnull))"
 .br
 .ti -1c
@@ -718,11 +784,11 @@ includes/ip.h
 .SS "#define D_FLAG_NOT_SET   0"
 
 .PP
-Definition at line \fB83\fP of file \fBip\&.h\fP\&.
+Definition at line \fB91\fP of file \fBip\&.h\fP\&.
 .SS "#define D_FLAG_SET   0x02"
 
 .PP
-Definition at line \fB85\fP of file \fBip\&.h\fP\&.
+Definition at line \fB93\fP of file \fBip\&.h\fP\&.
 .SS "#define ICMP_DESTINATION_UNREACHABLE_TYPE   0x03"
 
 .PP
@@ -798,147 +864,147 @@ Definition at line \fB44\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF11   0x0a"
 
 .PP
-Definition at line \fB99\fP of file \fBip\&.h\fP\&.
+Definition at line \fB107\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF12   0x0c"
 
 .PP
-Definition at line \fB100\fP of file \fBip\&.h\fP\&.
+Definition at line \fB108\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF13   0x0e"
 
 .PP
-Definition at line \fB101\fP of file \fBip\&.h\fP\&.
+Definition at line \fB109\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF21   0x12"
 
 .PP
-Definition at line \fB102\fP of file \fBip\&.h\fP\&.
+Definition at line \fB110\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF22   0x14"
 
 .PP
-Definition at line \fB103\fP of file \fBip\&.h\fP\&.
+Definition at line \fB111\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF23   0x16"
 
 .PP
-Definition at line \fB104\fP of file \fBip\&.h\fP\&.
+Definition at line \fB112\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF31   0x1a"
 
 .PP
-Definition at line \fB105\fP of file \fBip\&.h\fP\&.
+Definition at line \fB113\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF32   0x1c"
 
 .PP
-Definition at line \fB106\fP of file \fBip\&.h\fP\&.
+Definition at line \fB114\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF33   0x1e"
 
 .PP
-Definition at line \fB107\fP of file \fBip\&.h\fP\&.
+Definition at line \fB115\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF41   0x22"
 
 .PP
-Definition at line \fB108\fP of file \fBip\&.h\fP\&.
+Definition at line \fB116\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF42   0x24"
 
 .PP
-Definition at line \fB109\fP of file \fBip\&.h\fP\&.
+Definition at line \fB117\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_AF43   0x26"
 
 .PP
-Definition at line \fB110\fP of file \fBip\&.h\fP\&.
+Definition at line \fB118\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS0   0x00"
 
 .PP
-Definition at line \fB91\fP of file \fBip\&.h\fP\&.
+Definition at line \fB99\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS1   0x08"
 
 .PP
-Definition at line \fB92\fP of file \fBip\&.h\fP\&.
+Definition at line \fB100\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS2   0x10"
 
 .PP
-Definition at line \fB93\fP of file \fBip\&.h\fP\&.
+Definition at line \fB101\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS3   0x18"
 
 .PP
-Definition at line \fB94\fP of file \fBip\&.h\fP\&.
+Definition at line \fB102\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS4   0x20"
 
 .PP
-Definition at line \fB95\fP of file \fBip\&.h\fP\&.
+Definition at line \fB103\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS5   0x28"
 
 .PP
-Definition at line \fB96\fP of file \fBip\&.h\fP\&.
+Definition at line \fB104\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS6   0x30"
 
 .PP
-Definition at line \fB97\fP of file \fBip\&.h\fP\&.
+Definition at line \fB105\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_CS7   0x38"
 
 .PP
-Definition at line \fB98\fP of file \fBip\&.h\fP\&.
+Definition at line \fB106\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_EF   0x2e"
 
 .PP
-Definition at line \fB111\fP of file \fBip\&.h\fP\&.
+Definition at line \fB119\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_DSCP_VOICE_ADMIT   0x2c"
 
 .PP
-Definition at line \fB112\fP of file \fBip\&.h\fP\&.
+Definition at line \fB120\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_CE   0x03"
 
 .PP
-Definition at line \fB118\fP of file \fBip\&.h\fP\&.
+Definition at line \fB126\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_ECT0   0x02"
 
 .PP
-Definition at line \fB117\fP of file \fBip\&.h\fP\&.
+Definition at line \fB125\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_ECT1   0x01"
 
 .PP
-Definition at line \fB116\fP of file \fBip\&.h\fP\&.
+Definition at line \fB124\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ECN_NECT   0x00"
 
 .PP
-Definition at line \fB115\fP of file \fBip\&.h\fP\&.
+Definition at line \fB123\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_FLAG( _x,  _d,  _m)   (_x + _d + _m)"
 
 .PP
-Definition at line \fB88\fP of file \fBip\&.h\fP\&.
+Definition at line \fB96\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_ICMP_PROTOCOL_CODE   0x01"
 
 .PP
-Definition at line \fB121\fP of file \fBip\&.h\fP\&.
+Definition at line \fB129\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_SIZE   0x14"
 
 .PP
-Definition at line \fB80\fP of file \fBip\&.h\fP\&.
+Definition at line \fB88\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_TCP_PROTOCOL_CODE   0x06"
 
 .PP
-Definition at line \fB123\fP of file \fBip\&.h\fP\&.
+Definition at line \fB131\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_HEADER_UDP_PROTOCOL_CODE   0x11"
 
 .PP
-Definition at line \fB122\fP of file \fBip\&.h\fP\&.
+Definition at line \fB130\fP of file \fBip\&.h\fP\&.
 .SS "#define IP_PAYLOAD_MAX_SIZE   65515"
 
 .PP
-Definition at line \fB133\fP of file \fBip\&.h\fP\&.
+Definition at line \fB141\fP of file \fBip\&.h\fP\&.
 .SS "#define IPv4   0x4"
 
 .PP
-Definition at line \fB78\fP of file \fBip\&.h\fP\&.
+Definition at line \fB86\fP of file \fBip\&.h\fP\&.
 .SS "#define IPv6   0x6"
 
 .PP
-Definition at line \fB79\fP of file \fBip\&.h\fP\&.
+Definition at line \fB87\fP of file \fBip\&.h\fP\&.
 .SS "#define M_FLAG_NOT_SET   0"
 
 .PP
-Definition at line \fB84\fP of file \fBip\&.h\fP\&.
+Definition at line \fB92\fP of file \fBip\&.h\fP\&.
 .SS "#define M_FLAG_SET   0x01"
 
 .PP
-Definition at line \fB86\fP of file \fBip\&.h\fP\&.
+Definition at line \fB94\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_ACK_SET   0x10"
 
 .PP
@@ -959,6 +1025,30 @@ Definition at line \fB66\fP of file \fBip\&.h\fP\&.
 
 .PP
 Definition at line \fB65\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTION_KIND_MSS   0x02"
+
+.PP
+Definition at line \fB80\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTION_KIND_NOOP   0x01"
+
+.PP
+Definition at line \fB79\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTION_KIND_SACK_PERM   0x04"
+
+.PP
+Definition at line \fB82\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTION_KIND_TIMESTAMP   0x08"
+
+.PP
+Definition at line \fB83\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTION_KIND_WIN_SCALE   0x03"
+
+.PP
+Definition at line \fB81\fP of file \fBip\&.h\fP\&.
+.SS "#define TCP_OPTIONS_MAX_SIZE   0x14"
+
+.PP
+Definition at line \fB76\fP of file \fBip\&.h\fP\&.
 .SS "#define TCP_PSEUDO_HEADER_SIZE   0x0c"
 
 .PP
@@ -982,7 +1072,7 @@ Definition at line \fB71\fP of file \fBip\&.h\fP\&.
 .SS "#define TTL_DEFAULT_VALUE   0x80"
 
 .PP
-Definition at line \fB127\fP of file \fBip\&.h\fP\&.
+Definition at line \fB135\fP of file \fBip\&.h\fP\&.
 .SS "#define UDP_HEADER_SIZE   0x08"
 
 .PP
@@ -998,18 +1088,16 @@ Definition at line \fB62\fP of file \fBip\&.h\fP\&.
 .SS "#define X_FLAG_NOT_SET   0"
 
 .PP
-Definition at line \fB82\fP of file \fBip\&.h\fP\&.
+Definition at line \fB90\fP of file \fBip\&.h\fP\&.
 .SH "Function Documentation"
 .PP 
 .SS "u_int8_t computeDifferentiatedServiceField (const int _dscp, const int _ecn)\fR [extern]\fP"
 Compute the value for the DSF Field by combining the input DSCP and ECN values 
 .SS "u_int16_t computeFlagOff (const int _x, const int _d, const int _m, const int _offset)\fR [extern]\fP"
 Compute the value for the Flags + Fragment Offset field by combining the three input flags into a single value and then combining this single value with the input fragment offset into the final value 
-.SS "void convertControlBitsToBin (const struct \fBControlBits\fP * _cbits, char * _out)\fR [extern]\fP"
-Converts the control bits into a string of binary values 
-.SS "void convertFlagToBin (const u_int8_t _flags, char * _out)\fR [extern]\fP"
-Converts the IP Header flags into a binary string (i\&.e\&., 2 -> 010) 
-.SS "void convertIntToControlBits (const u_int8_t _bits, struct \fBControlBits\fP * _cbits)\fR [extern]\fP"
+.SS "void ControlBits_decode (struct \fBControlBits\fP * _cbits, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+Fill the ControlBit structure with the content of the \fBByteBuffer\fP 
+.SS "void ControlBits_fromValue (const u_int8_t _bits, struct \fBControlBits\fP * _cbits)\fR [extern]\fP"
 Converts the input integer into \fBControlBits\fP\&. For example, consider that the Control Bits field is 8 bit long, which means that the greatest number that can fit in is 2^8 - 1\&. Consdering any number between [0, 2^8), it is possible to convert it into flags just by converting it into binary\&.
 .PP
 Hence, this function fills each field of the input structure \fR_cbits\fP\&.
@@ -1022,8 +1110,10 @@ Hence, this function fills each field of the input structure \fR_cbits\fP\&.
 .RE
 .PP
 
-.SS "void decodeControlBits (struct \fBControlBits\fP * _cbits, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
-Fill the ControlBit structure with the content of the \fBByteBuffer\fP 
+.SS "void ControlBits_toBin (const struct \fBControlBits\fP * _cbits, char * _out)\fR [extern]\fP"
+Converts the control bits into a string of binary values 
+.SS "void convertFlagToBin (const u_int8_t _flags, char * _out)\fR [extern]\fP"
+Converts the IP Header flags into a binary string (i\&.e\&., 2 -> 010) 
 .SS "void IcmpHeader_createHeader_Echo (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
 Creates and fill the header with the Identification and Sequence Number fields 
 .SS "void IcmpHeader_createHeader_Mtu (\fBIcmpHeader\fP * _self)\fR [extern]\fP"
@@ -1099,7 +1189,7 @@ Set a new Header for the ICMP Packet\&.
 Decode the input \fBByteBuffer\fP into an IP Header 
 .SS "\fBByteBuffer\fP * IpHeader_encode (const \fBIpHeader\fP * _self)\fR [extern]\fP"
 Encode the IP header into a \fBByteBuffer\fP and returns the \fBByteBuffer\fP 
-.SS "void IpHeader_encode__ (const \fBIpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
+.SS "void IpHeader_encode_b (const \fBIpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encode the IP header into a \fBByteBuffer\fP 
 .SS "u_int8_t IpHeader_getDSCP (const \fBIpHeader\fP * _self)\fR [extern]\fP"
 Returns the Differentiated Service Code Point from the DSF field 
@@ -1135,6 +1225,8 @@ Set the TTL Field
 Set the Total Length field of the IP Header 
 .SS "void IpHeader_setVersion (\fBIpHeader\fP * _self, const u_int8_t _version)\fR [extern]\fP"
 Set the IP Version field and the IHL (always 5) field 
+.SS "void IpPacket_computeChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
+Compute and set the checksum for TCP/UDP/ICMP Packet 
 .SS "u_int16_t IpPacket_computeIcmpChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
 Compute the checksum for an ICMP Packet 
 .SS "u_int16_t IpPacket_computeTcpChecksum (\fBIpPacket\fP * _self)\fR [extern]\fP"
@@ -1181,8 +1273,14 @@ Wrap the input UDP Packet into the payload of the input IP Packet
 Fill the pseudo header with the information from the Ip Packet Header and a size value, corresponding of the size of the entire underlying packet\&. 
 .SS "void PseudoHeader_encode (const struct \fBPseudoHeader\fP * _ph, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Fill the input \fBByteBuffer\fP with informations from the Pseudo Header 
+.SS "void TcpHeader_addTcpOption (\fBTcpHeader\fP * _self, const u_int8_t _kind, const u_int8_t _length, void * _value)\fR [extern]\fP"
+Construct and add a new Tcp Option to the current Tcp Header\&. 
+.SS "void TcpHeader_addTcpOption_o (\fBTcpHeader\fP * _self, struct \fBTcpOption\fP * _opt)\fR [extern]\fP"
+Add a Tcp Option to the current Tcp Header\&. 
 .SS "void TcpHeader_decode (\fBTcpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decode the input \fBByteBuffer\fP into a TCP Header 
+.SS "void TcpHeader_deleteTcpOptions (\fBTcpHeader\fP * _self)\fR [extern]\fP"
+Free the memory allocated for each Tcp Option 
 .SS "void TcpHeader_encode (\fBTcpHeader\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encode the input TCP Header into a \fBByteBuffer\fP 
 .SS "size_t TcpHeader_getHeaderSize (\fBTcpHeader\fP * _self)\fR [extern]\fP"
@@ -1219,6 +1317,8 @@ Set the sequence number of the input Tcp Header
 Set the source port of the input Tcp Header 
 .SS "void TcpHeader_setSynchronizeFlag (\fBTcpHeader\fP * _self)\fR [extern]\fP"
 Set the SYN Flag of the input TCP Header 
+.SS "void TcpHeader_setTcpOptions (\fBTcpHeader\fP * _self, struct \fBTcpOption\fP * _opts[], const int _n)\fR [extern]\fP"
+Set a new set of options into the tcp header\&. \fR_n\fP is the length of the vector 
 .SS "void TcpHeader_setUrgentPointer (\fBTcpHeader\fP * _self, u_int16_t _urgpntr)\fR [extern]\fP"
 Set the urgent pointer field of the input TCP Header 
 .SS "void TcpHeader_setUrgentPointerFlag (\fBTcpHeader\fP * _self)\fR [extern]\fP"
@@ -1241,6 +1341,22 @@ Unset the RST Flag of the input TCP Header
 Unset the SYN Flag of the input TCP Header 
 .SS "void TcpHeader_unsetUrgentPointerFlag (\fBTcpHeader\fP * _self)\fR [extern]\fP"
 Unset the URG Flag of the input TCP Header 
+.SS "struct \fBTcpOption\fP * TcpOption_new (const u_int8_t _kind, const u_int8_t _length, void * _value)\fR [extern]\fP"
+Create a new \fBTcpOption\fP given the values as input\&. Notice that \fR_value\fP can be NULL\&. 
+.SS "struct \fBTcpOption\fP * TcpOption_newMss (u_int16_t _mss)\fR [extern]\fP"
+Create the TCP Option reserved for Maximum Segment Size 
+.SS "struct \fBTcpOption\fP * TcpOption_newNoOperation (void )\fR [extern]\fP"
+Create the TCP Option reserved for No-operation 
+.SS "struct \fBTcpOption\fP * TcpOption_newSackPermitted (void )\fR [extern]\fP"
+Create the TCP Option reserved for SACK Permitted 
+.SS "struct \fBTcpOption\fP * TcpOption_newTimestamps (u_int32_t _tsval, u_int32_t _tsecr)\fR [extern]\fP"
+Create the TCP Option reserved for Timestamps 
+.SS "struct \fBTcpOption\fP * TcpOption_newWindowScale (u_int8_t _scale)\fR [extern]\fP"
+Create the TCP Option reserved for Window Scale 
+.SS "void TcpOptions_copy (struct \fBTcpOption\fP ** _src, struct \fBTcpOption\fP ** _dst, const int _n)\fR [extern]\fP"
+Copy all the options in \fR_src\fP into \fR_dst\fP\&. 
+.SS "void TcpOptions_delete (struct \fBTcpOption\fP ** _opts, const int _n)\fR [extern]\fP"
+Free the memory allocate for each Tcp Option 
 .SS "\fBTcpPacket\fP * TcpPacket_decode (\fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Decodes a \fBByteBuffer\fP into a TCP Packet 
 .SS "void TcpPacket_delete (\fBTcpPacket\fP * _self)\fR [extern]\fP"
@@ -1249,10 +1365,14 @@ Free the memory allocated for the TCP Packet
 Encodes the TCP Packet into a \fBByteBuffer\fP and returns it 
 .SS "void TcpPacket_encode_b (\fBTcpPacket\fP * _self, \fBByteBuffer\fP * _buffer)\fR [extern]\fP"
 Encodes the TCP Packet into the input \fBByteBuffer\fP 
-.SS "void TcpPacket_fillHeader (\fBTcpPacket\fP * _self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct \fBControlBits\fP _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr)\fR [extern]\fP"
+.SS "void TcpPacket_fillHeader (\fBTcpPacket\fP * _self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct \fBControlBits\fP _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr, struct \fBTcpOption\fP * _opts[], int _nopts)\fR [extern]\fP"
 Fill the TCP Packet Header with all values given as input 
 .SS "void TcpPacket_fillPayload (\fBTcpPacket\fP * _self, const char * _payload, const size_t _size)\fR [extern]\fP"
 Fill the TCP Packet payload with the given input data of input size 
+.SS "int TcpPacket_getNumberOfOptions (\fBTcpPacket\fP * _self)\fR [extern]\fP"
+Returns the number of Tcp options in the header 
+.SS "u_int8_t TcpPacket_getOptionSize_bytes (\fBTcpPacket\fP * _self)\fR [extern]\fP"
+Returns the number of bytes of the header assigned to Tcp Options 
 .SS "size_t TcpPacket_getPacketSize (\fBTcpPacket\fP * _self)\fR [extern]\fP"
 Returns the size of the packet Header + Payload 
 .SS "\fBTcpPacket\fP * TcpPacket_new ()\fR [extern]\fP"

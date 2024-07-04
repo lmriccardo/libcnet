@@ -1,0 +1,200 @@
+\doxysection{Ip\+Header Struct Reference}
+\label{structIpHeader}\index{IpHeader@{IpHeader}}
+
+
+{\ttfamily \#include $<$ip.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+version}
+\begin{DoxyCompactList}\small\item\em Version of IP protocol. \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+dsf}
+\begin{DoxyCompactList}\small\item\em Differentiated Service Field. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+tlength}
+\begin{DoxyCompactList}\small\item\em Total len of IP datagram or IP fragment. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+id}
+\begin{DoxyCompactList}\small\item\em Unique fragment identifier. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+flag\+\_\+off}
+\begin{DoxyCompactList}\small\item\em IP Flags and Fragment Offset. \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+ttl}
+\begin{DoxyCompactList}\small\item\em Time To Live. \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+protocol}
+\begin{DoxyCompactList}\small\item\em Protocol. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+hdr\+\_\+chksum}
+\begin{DoxyCompactList}\small\item\em Header Checksum. \end{DoxyCompactList}\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+srcaddr}
+\begin{DoxyCompactList}\small\item\em Source Address. \end{DoxyCompactList}\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+dstaddr}
+\begin{DoxyCompactList}\small\item\em Destination Address. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing the IP Header of the IP Packet. It consists of classical 28 bytes divided into\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+version}, IP Protocol Version + IHL (8 bits)
+\item {\ttfamily \+\_\+dsf}, Type of service (8 bits)
+\item {\ttfamily \+\_\+tlength}, Total length (16 bits)
+\item {\ttfamily \+\_\+id}, Identification (16 bits)
+\item {\ttfamily \+\_\+flag\+\_\+off}, Flags and Fragment Offset (16 bits)
+\item {\ttfamily \+\_\+ttl}, Time to Live (8 bits)
+\item {\ttfamily \+\_\+protocol}, IP Protocol (8 bits)
+\item {\ttfamily \+\_\+hdr\+\_\+chksum}, Checksum (16 bits)
+\item {\ttfamily \+\_\+srcaddr}, Source Address (32 bits)
+\item {\ttfamily \+\_\+dstaddr}, Destination Address (32 bits).
+\end{DoxyItemize}
+
+This structure refers to the RFC 791 {\texttt{ https\+://datatracker.\+ietf.\+org/doc/html/rfc791}} The TOS field has been subtituted with the Differentiated Service Field according to the RFC 2474 {\texttt{ https\+://datatracker.\+ietf.\+org/doc/html/rfc2474}} 
+
+Definition at line \textbf{ 937} of file \textbf{ ip.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{IpHeader@{IpHeader}!\_dsf@{\_dsf}}
+\index{\_dsf@{\_dsf}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_dsf}
+{\footnotesize\ttfamily \label{structIpHeader_abace33e0c29fb2d5b3909532e6b487b5} 
+u\+\_\+int8\+\_\+t \+\_\+dsf}
+
+
+
+Differentiated Service Field. 
+
+
+
+Definition at line \textbf{ 941} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_dstaddr@{\_dstaddr}}
+\index{\_dstaddr@{\_dstaddr}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_dstaddr}
+{\footnotesize\ttfamily \label{structIpHeader_a31309e94546aab12faa3891a7cbe06ac} 
+u\+\_\+int32\+\_\+t \+\_\+dstaddr}
+
+
+
+Destination Address. 
+
+
+
+Definition at line \textbf{ 949} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_flag\_off@{\_flag\_off}}
+\index{\_flag\_off@{\_flag\_off}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_flag\_off}
+{\footnotesize\ttfamily \label{structIpHeader_a4387df8868b4485443a767458668e5e0} 
+u\+\_\+int16\+\_\+t \+\_\+flag\+\_\+off}
+
+
+
+IP Flags and Fragment Offset. 
+
+
+
+Definition at line \textbf{ 944} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_hdr\_chksum@{\_hdr\_chksum}}
+\index{\_hdr\_chksum@{\_hdr\_chksum}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_hdr\_chksum}
+{\footnotesize\ttfamily \label{structIpHeader_afd58beddab2f7227ff9842d66636d86e} 
+u\+\_\+int16\+\_\+t \+\_\+hdr\+\_\+chksum}
+
+
+
+Header Checksum. 
+
+
+
+Definition at line \textbf{ 947} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_id@{\_id}}
+\index{\_id@{\_id}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_id}
+{\footnotesize\ttfamily \label{structIpHeader_a67319b8def030fe96eb296fa9f80f5a2} 
+u\+\_\+int16\+\_\+t \+\_\+id}
+
+
+
+Unique fragment identifier. 
+
+
+
+Definition at line \textbf{ 943} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_protocol@{\_protocol}}
+\index{\_protocol@{\_protocol}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_protocol}
+{\footnotesize\ttfamily \label{structIpHeader_a53009ca070b040fca5332f0b43d35fa3} 
+u\+\_\+int8\+\_\+t \+\_\+protocol}
+
+
+
+Protocol. 
+
+
+
+Definition at line \textbf{ 946} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_srcaddr@{\_srcaddr}}
+\index{\_srcaddr@{\_srcaddr}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_srcaddr}
+{\footnotesize\ttfamily \label{structIpHeader_a984ccfd0f2a75bc847d6f287e2f3b73d} 
+u\+\_\+int32\+\_\+t \+\_\+srcaddr}
+
+
+
+Source Address. 
+
+
+
+Definition at line \textbf{ 948} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_tlength@{\_tlength}}
+\index{\_tlength@{\_tlength}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_tlength}
+{\footnotesize\ttfamily \label{structIpHeader_ac66f4cae7b225e6e103b7bf3a75b2387} 
+u\+\_\+int16\+\_\+t \+\_\+tlength}
+
+
+
+Total len of IP datagram or IP fragment. 
+
+
+
+Definition at line \textbf{ 942} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_ttl@{\_ttl}}
+\index{\_ttl@{\_ttl}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_ttl}
+{\footnotesize\ttfamily \label{structIpHeader_ab3c1999c3f816ddcbb616c624eec96d2} 
+u\+\_\+int8\+\_\+t \+\_\+ttl}
+
+
+
+Time To Live. 
+
+
+
+Definition at line \textbf{ 945} of file \textbf{ ip.\+h}.
+
+\index{IpHeader@{IpHeader}!\_version@{\_version}}
+\index{\_version@{\_version}!IpHeader@{IpHeader}}
+\doxysubsubsection{\_version}
+{\footnotesize\ttfamily \label{structIpHeader_abb3ddcf11f6fe16a3510f988bd23e7ae} 
+u\+\_\+int8\+\_\+t \+\_\+version}
+
+
+
+Version of IP protocol. 
+
+
+
+Definition at line \textbf{ 940} of file \textbf{ ip.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ ip.\+h}\end{DoxyCompactItemize}

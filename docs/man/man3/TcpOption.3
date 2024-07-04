@@ -1,0 +1,55 @@
+.TH "TcpOption" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TcpOption
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <ip\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "u_int8_t \fB_kind\fP"
+.br
+.RI "The type of TCP Option\&. "
+.ti -1c
+.RI "u_int8_t \fB_length\fP"
+.br
+.RI "How many bytes is the option big\&. "
+.ti -1c
+.RI "void * \fB_value\fP"
+.br
+.RI "The value of the option\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Struct representing a single generic TCP Option\&. Since options can be of variable size we need to use \fRvoid\fP pointers to address generic type values\&. Notice that the field \fR_value\fP MUST contain the entire option value\&. It means that, if the option have two 2 bytes values, we can write it into the \fR_value\fP field has \fR(val1 << 16) + val2\fP or as a vector of u_int16_t\&. 
+.PP
+Definition at line \fB535\fP of file \fBip\&.h\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "u_int8_t _kind"
+
+.PP
+The type of TCP Option\&. 
+.PP
+Definition at line \fB537\fP of file \fBip\&.h\fP\&.
+.SS "u_int8_t _length"
+
+.PP
+How many bytes is the option big\&. 
+.PP
+Definition at line \fB538\fP of file \fBip\&.h\fP\&.
+.SS "void* _value"
+
+.PP
+The value of the option\&. 
+.PP
+Definition at line \fB539\fP of file \fBip\&.h\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libcnet from the source code\&.

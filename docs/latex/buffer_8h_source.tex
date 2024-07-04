@@ -1,0 +1,92 @@
+\doxysection{buffer.\+h}
+\label{buffer_8h_source}\index{includes/utils/buffer.h@{includes/utils/buffer.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ buffer.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ the\ declaration\ of\ the\ ByteBuffer\ struct\ and\ \ \ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ a\ number\ of\ functions\ to\ interact\ with\ it.\ This\ byte\ buffer\ object\ is\ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ used\ principally\ when\ encoding\ and\ decoding\ IP\ Packets\ etc.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00015\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifndef\ \_ENCODER\_H}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ \_ENCODER\_H}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ BYTE\_SIZE\ \ 1}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ SHORT\_SIZE\ 2}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ INT\_SIZE\ \ \ 4}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00047\ \{}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{char}*\ \ \_buffer;\ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \_position;\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_size;\ \ \ \ \ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \}\ ByteBuffer;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{extern}\ ByteBuffer*\ ByteBuffer\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{extern}\ ByteBuffer*\ ByteBuffer\_new\_b(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_buffer,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00068\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_delete(ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_put(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ \_data)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_putShort(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_data)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_putInt(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ u\_int32\_t\ \_data)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_position(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \_newpos)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_putBuffer(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_src,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_putBufferFrom(ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_src,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \_start,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ \textcolor{keyword}{extern}\ u\_int8\_t\ \ ByteBuffer\_get(ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{extern}\ u\_int16\_t\ ByteBuffer\_getShort(ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{extern}\ u\_int32\_t\ ByteBuffer\_getInt(ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_getBuffer(ByteBuffer*\ \_self,\ \textcolor{keywordtype}{char}*\ \_out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_getBufferFrom(ByteBuffer*\ \_self,\ \textcolor{keywordtype}{char}*\ \_out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_resetPosition(ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00134\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ByteBuffer\_writeToFile(\textcolor{keyword}{const}\ ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_file)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00139\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ ByteBuffer\_isEmpty(\textcolor{keyword}{const}\ ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00144\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ ByteBuffer\_isEndOfBuffer(\textcolor{keyword}{const}\ ByteBuffer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00149\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ checkForOOB(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \_position,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_max,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_func)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ errorIfEmpty(\textcolor{keyword}{const}\ ByteBuffer*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_func)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \_\_END\_DECLS}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

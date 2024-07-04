@@ -1,0 +1,82 @@
+\doxysection{timer.\+h}
+\label{timer_8h_source}\index{includes/utils/timer.h@{includes/utils/timer.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ timer.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ the\ declaration\ of\ the\ Timer\ struct\ and\ other\ \ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ functions\ to\ interact\ with\ it.\ This\ timer\ is\ able\ to\ compute\ with\ double\ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ precision\ an\ elapsed\ time,\ and\ to\ sleep\ for\ floating-\/point\ values.\ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00015\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifndef\ \_TIMER\_H}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ \_TIMER\_H}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <time.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <semaphore.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <pthread.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#ifndef\ \_\_USE\_POSIX199309}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\ \ \ \ \#define\ CLOCK\_REALTIME\ 0}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ \_POSIX\_C\_SOURCE\ 200809L}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ NS\_PER\_SECOND\ 1000000000}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{double}\ computeElapsedTime(\textcolor{keyword}{struct}\ timespec\ t1,\ \textcolor{keyword}{struct}\ timespec\ t2);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{struct\ }Timer\ }
+\DoxyCodeLine{00059\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{struct\ }timespec\ \_start;\ \ \ \ \ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{struct\ }timespec\ \_current;\ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{struct\ }timespec\ \_previous;\ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{double}\ \ \ \ \ \ \ \ \ \ \_elapsed;\ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \_running;\ \ \ }
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00072\ \textcolor{keyword}{extern}\ \textcolor{keyword}{struct\ }Timer*\ Timer\_new()\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00077\ extern\ \textcolor{keywordtype}{void}\ Timer\_delete(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00082\ extern\ \textcolor{keywordtype}{void}\ Timer\_start(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00087\ extern\ \textcolor{keywordtype}{void}*\ Timer\_run(\textcolor{keywordtype}{void}*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00092\ extern\ \textcolor{keywordtype}{void}\ Timer\_stop(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00099\ extern\ \textcolor{keywordtype}{double}\ Timer\_getDeltaTime(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00105\ extern\ \textcolor{keywordtype}{double}\ Timer\_getElapsedTime(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00110\ extern\ \textcolor{keywordtype}{void}\ Timer\_reset(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00115\ extern\ \textcolor{keywordtype}{void}\ Timer\_resetPrevious(struct\ Timer*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00120\ extern\ \textcolor{keywordtype}{void}\ Timer\_sleep(const\ \textcolor{keywordtype}{double}\ \_delay)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \_\_END\_DECLS}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

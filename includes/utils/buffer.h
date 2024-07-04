@@ -139,6 +139,11 @@ extern void ByteBuffer_writeToFile(const ByteBuffer* _self, const char *_file) _
 extern bool ByteBuffer_isEmpty(const ByteBuffer* _self) __attribute__((nonnull));
 
 /**
+ * Check if the buffer position is at the end of the buffer
+ */
+extern bool ByteBuffer_isEndOfBuffer(const ByteBuffer* _self) __attribute__((nonnull));
+
+/**
  * Check if the input size + position is less than the maximum buffer dimension
  */
 extern void checkForOOB(const int _position, const size_t _size, const size_t _max, const char* _func) __attribute__((nonnull));

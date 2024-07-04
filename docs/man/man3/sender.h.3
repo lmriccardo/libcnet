@@ -1,4 +1,4 @@
-.TH "includes/sender.h" 3 "Version v01.02d0" "libcnet" \" -*- nroff -*-
+.TH "includes/sender.h" 3 "Version v01.01r" "libcnet" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -78,6 +78,9 @@ includes/sender.h
 .br
 .ti -1c
 .RI "void \fBSender_setIpFlags\fP (\fBSender\fP *_self, int _d, int _m) __attribute__((nonnull))"
+.br
+.ti -1c
+.RI "void \fBSender_setTcpOptions\fP (\fBSender\fP *_self, struct \fBTcpOption\fP **_opts, const int _n) __attribute__((nonnull))"
 .br
 .ti -1c
 .RI "void \fBSender_sendto\fP (\fBSender\fP *_self, const \fBIpPacket\fP *_pckt) __attribute__((nonnull))"
@@ -176,6 +179,8 @@ Send the input IP Packet
 Set the flags to the Ip Parameters structure 
 .SS "void Sender_setMtu (\fBSender\fP * _self, const int _mtu)\fR [extern]\fP"
 Set the Maximum Transmission Unit into the \fBSender\fP 
+.SS "void Sender_setTcpOptions (\fBSender\fP * _self, struct \fBTcpOption\fP ** _opts, const int _n)\fR [extern]\fP"
+Set a number of TCP Options into the \fBSender\fP Tcp Parameters 
 .SS "void Sender_setTimer (\fBSender\fP * _self, struct \fBTimer\fP * _timer)\fR [extern]\fP"
 Set a timer into the sender 
 .SS "void Sender_updateIcmpPacket (\fBSender\fP * _self, \fBIpPacket\fP * _pckt)\fR [extern]\fP"

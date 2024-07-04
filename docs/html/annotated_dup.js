@@ -19,6 +19,7 @@ var annotated_dup =
     [ "Response", "structResponse.html", "structResponse" ],
     [ "Sender", "structSender.html", "structSender" ],
     [ "TcpHeader", "structTcpHeader.html", "structTcpHeader" ],
+    [ "TcpOption", "structTcpOption.html", "structTcpOption" ],
     [ "TcpPacket", "structTcpPacket.html", "structTcpPacket" ],
     [ "TcpParameters", "structTcpParameters.html", "structTcpParameters" ],
     [ "Timer", "structTimer.html", "structTimer" ],

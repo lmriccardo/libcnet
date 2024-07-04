@@ -1,0 +1,285 @@
+\doxysection{Sender Struct Reference}
+\label{structSender}\index{Sender@{Sender}}
+
+
+{\ttfamily \#include $<$sender.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \textbf{ \+\_\+srcaddress}
+\begin{DoxyCompactList}\small\item\em Source Address. \end{DoxyCompactList}\item 
+struct sockaddr\+\_\+in \textbf{ \+\_\+dstaddress}
+\begin{DoxyCompactList}\small\item\em The Host receiving the packet. \end{DoxyCompactList}\item 
+char $\ast$ \textbf{ \+\_\+gateway}
+\begin{DoxyCompactList}\small\item\em The gateway address of the current Source Address. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+socket}
+\begin{DoxyCompactList}\small\item\em File descriptor for the created socket. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+msgcnt}
+\begin{DoxyCompactList}\small\item\em Current Message Number. \end{DoxyCompactList}\item 
+struct protoent $\ast$ \textbf{ \+\_\+proto}
+\begin{DoxyCompactList}\small\item\em The protocol used. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+verbose}
+\begin{DoxyCompactList}\small\item\em Enable verbosity. \end{DoxyCompactList}\item 
+struct \textbf{ Timer} $\ast$ \textbf{ \+\_\+timer}
+\begin{DoxyCompactList}\small\item\em A timer synchronized with the receiver. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+mtu}
+\begin{DoxyCompactList}\small\item\em The maximum transmission unit. \end{DoxyCompactList}\item 
+sem\+\_\+t \textbf{ \+\_\+mutex}
+\begin{DoxyCompactList}\small\item\em A semaphore to synchronize with the \doxyref{Receiver}{p.}{structReceiver}. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+synch}
+\begin{DoxyCompactList}\small\item\em Set to true when it is synchronized with the \doxyref{Receiver}{p.}{structReceiver}. \end{DoxyCompactList}\item 
+bool \textbf{ \+\_\+sent}
+\begin{DoxyCompactList}\small\item\em Another variable to syncrhonize with the \doxyref{Receiver}{p.}{structReceiver}. \end{DoxyCompactList}\item 
+struct \textbf{ Ip\+Parameters} \textbf{ \+\_\+ipp}
+\begin{DoxyCompactList}\small\item\em Some additional parameters for IP Packets. \end{DoxyCompactList}\item 
+struct \textbf{ Icmp\+Parameters} \textbf{ \+\_\+icmpp}
+\begin{DoxyCompactList}\small\item\em Some parameters used for ICMP Packets. \end{DoxyCompactList}\item 
+struct \textbf{ Tcp\+Parameters} \textbf{ \+\_\+tcpp}
+\begin{DoxyCompactList}\small\item\em Some parameters used for TCP Packets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing a \doxyref{Sender}{p.}{structSender}. It is called Raw since it uses the SOCK\+\_\+\+RAW option when creating a new socket.
+
+This structure has the following fields\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+srcaddress} The IP address sending the packets
+\item {\ttfamily \+\_\+dstaddress} The host receiving the packet
+\item {\ttfamily \+\_\+gateway} The gateway address of the current Source address
+\item {\ttfamily \+\_\+socket} The file descriptor of the created socket
+\item {\ttfamily \+\_\+msgcnt} The current Message number being sent
+\item {\ttfamily \+\_\+proto} The protocol used to send the packets
+\item {\ttfamily \+\_\+lastid} The last used IP Packet Identifier
+\item {\ttfamily \+\_\+lasticmpid} The last used ICMP Packet Identifier
+\item {\ttfamily \+\_\+icmpsn} The last ICMP Message Sequence Number
+\item {\ttfamily \+\_\+timer} A \doxyref{Timer}{p.}{structTimer} shared with the \doxyref{Receiver}{p.}{structReceiver}
+\item {\ttfamily \+\_\+mtu} The Maximum Transmission Unit
+\item {\ttfamily \+\_\+mutex} A simple Mutex to syncrhonize with the receiver
+\item {\ttfamily \+\_\+synch} A boolean flag to indicate the syncrhonization
+\item {\ttfamily \+\_\+sent} A boolean flag to help avoid deadlock when synchronizing
+\item {\ttfamily \+\_\+params} Some additional parameters for IP Packets 
+\end{DoxyItemize}
+
+Definition at line \textbf{ 102} of file \textbf{ sender.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{Sender@{Sender}!\_dstaddress@{\_dstaddress}}
+\index{\_dstaddress@{\_dstaddress}!Sender@{Sender}}
+\doxysubsubsection{\_dstaddress}
+{\footnotesize\ttfamily \label{structSender_af4dafdbf703a9a362443d2bdd764264d} 
+struct sockaddr\+\_\+in \+\_\+dstaddress}
+
+
+
+The Host receiving the packet. 
+
+
+
+Definition at line \textbf{ 106} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_gateway@{\_gateway}}
+\index{\_gateway@{\_gateway}!Sender@{Sender}}
+\doxysubsubsection{\_gateway}
+{\footnotesize\ttfamily \label{structSender_aa2de4f1ca45e93a42187e394fe82cbe9} 
+char$\ast$ \+\_\+gateway}
+
+
+
+The gateway address of the current Source Address. 
+
+
+
+Definition at line \textbf{ 107} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_icmpp@{\_icmpp}}
+\index{\_icmpp@{\_icmpp}!Sender@{Sender}}
+\doxysubsubsection{\_icmpp}
+{\footnotesize\ttfamily \label{structSender_aa8f94acc1d5f473bfc4273f6524d5312} 
+struct \textbf{ Icmp\+Parameters} \+\_\+icmpp}
+
+
+
+Some parameters used for ICMP Packets. 
+
+
+
+Definition at line \textbf{ 118} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_ipp@{\_ipp}}
+\index{\_ipp@{\_ipp}!Sender@{Sender}}
+\doxysubsubsection{\_ipp}
+{\footnotesize\ttfamily \label{structSender_ae4e51a97975d53d239ae1d8c75d14241} 
+struct \textbf{ Ip\+Parameters} \+\_\+ipp}
+
+
+
+Some additional parameters for IP Packets. 
+
+
+
+Definition at line \textbf{ 117} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_msgcnt@{\_msgcnt}}
+\index{\_msgcnt@{\_msgcnt}!Sender@{Sender}}
+\doxysubsubsection{\_msgcnt}
+{\footnotesize\ttfamily \label{structSender_ae19d9dcc9ceac69917e03e97ec032900} 
+int \+\_\+msgcnt}
+
+
+
+Current Message Number. 
+
+
+
+Definition at line \textbf{ 109} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_mtu@{\_mtu}}
+\index{\_mtu@{\_mtu}!Sender@{Sender}}
+\doxysubsubsection{\_mtu}
+{\footnotesize\ttfamily \label{structSender_a4d0dca23b0071174792c79108056a98d} 
+int \+\_\+mtu}
+
+
+
+The maximum transmission unit. 
+
+
+
+Definition at line \textbf{ 113} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_mutex@{\_mutex}}
+\index{\_mutex@{\_mutex}!Sender@{Sender}}
+\doxysubsubsection{\_mutex}
+{\footnotesize\ttfamily \label{structSender_ad6bfb73153cf73c156158c16bccde114} 
+sem\+\_\+t \+\_\+mutex}
+
+
+
+A semaphore to synchronize with the \doxyref{Receiver}{p.}{structReceiver}. 
+
+
+
+Definition at line \textbf{ 114} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_proto@{\_proto}}
+\index{\_proto@{\_proto}!Sender@{Sender}}
+\doxysubsubsection{\_proto}
+{\footnotesize\ttfamily \label{structSender_ad9d7a9a1188c503671a81f989582f997} 
+struct protoent$\ast$ \+\_\+proto}
+
+
+
+The protocol used. 
+
+
+
+Definition at line \textbf{ 110} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_sent@{\_sent}}
+\index{\_sent@{\_sent}!Sender@{Sender}}
+\doxysubsubsection{\_sent}
+{\footnotesize\ttfamily \label{structSender_ae92c912d5246b5255b13e73da8736709} 
+bool \+\_\+sent}
+
+
+
+Another variable to syncrhonize with the \doxyref{Receiver}{p.}{structReceiver}. 
+
+
+
+Definition at line \textbf{ 116} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_socket@{\_socket}}
+\index{\_socket@{\_socket}!Sender@{Sender}}
+\doxysubsubsection{\_socket}
+{\footnotesize\ttfamily \label{structSender_adba482ed381b10fe52a0492c2a4ed24b} 
+int \+\_\+socket}
+
+
+
+File descriptor for the created socket. 
+
+
+
+Definition at line \textbf{ 108} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_srcaddress@{\_srcaddress}}
+\index{\_srcaddress@{\_srcaddress}!Sender@{Sender}}
+\doxysubsubsection{\_srcaddress}
+{\footnotesize\ttfamily \label{structSender_af084b94b5c76bf9f03fd02077e5c0735} 
+char$\ast$ \+\_\+srcaddress}
+
+
+
+Source Address. 
+
+
+
+Definition at line \textbf{ 105} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_synch@{\_synch}}
+\index{\_synch@{\_synch}!Sender@{Sender}}
+\doxysubsubsection{\_synch}
+{\footnotesize\ttfamily \label{structSender_aa52aa2feffaab76b8a1aec37f96add6d} 
+bool \+\_\+synch}
+
+
+
+Set to true when it is synchronized with the \doxyref{Receiver}{p.}{structReceiver}. 
+
+
+
+Definition at line \textbf{ 115} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_tcpp@{\_tcpp}}
+\index{\_tcpp@{\_tcpp}!Sender@{Sender}}
+\doxysubsubsection{\_tcpp}
+{\footnotesize\ttfamily \label{structSender_ab41cc0cec8859d3a4647d054ee61aa39} 
+struct \textbf{ Tcp\+Parameters} \+\_\+tcpp}
+
+
+
+Some parameters used for TCP Packets. 
+
+
+
+Definition at line \textbf{ 119} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_timer@{\_timer}}
+\index{\_timer@{\_timer}!Sender@{Sender}}
+\doxysubsubsection{\_timer}
+{\footnotesize\ttfamily \label{structSender_a4ab14a648091d1c2192cac07b8129323} 
+struct \textbf{ Timer}$\ast$ \+\_\+timer}
+
+
+
+A timer synchronized with the receiver. 
+
+
+
+Definition at line \textbf{ 112} of file \textbf{ sender.\+h}.
+
+\index{Sender@{Sender}!\_verbose@{\_verbose}}
+\index{\_verbose@{\_verbose}!Sender@{Sender}}
+\doxysubsubsection{\_verbose}
+{\footnotesize\ttfamily \label{structSender_a350251bf0dbeb6a343c649789df9f572} 
+bool \+\_\+verbose}
+
+
+
+Enable verbosity. 
+
+
+
+Definition at line \textbf{ 111} of file \textbf{ sender.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ sender.\+h}\end{DoxyCompactItemize}

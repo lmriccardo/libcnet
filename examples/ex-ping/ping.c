@@ -18,7 +18,7 @@ void *process(struct Response* resp)
     IpPacket* ippckt = IpPacket_decodeIcmp(buffer);
     
     IcmpPacket* icmppckt = IpPacket_getIcmpPacket(ippckt);
-    IcmpHeader* icmphdr = &icmppckt->_icmphdr;
+    IcmpHeader* icmphdr = &icmppckt->_hdr;
 
     char addr[INET_ADDRSTRLEN];
     addressNumberToString(ippckt->_iphdr._srcaddr, addr, false);
@@ -88,13 +88,13 @@ int ping(const char* address)
         counter--;
     }
 
-    double packet_loss = (double)(pinger->_icmpsn - 1 - received_packets) \
-        / (double)(pinger->_icmpsn - 1) * 100.0;
+    double packet_loss = (double)(pinger->_icmpp._sn - 1 - received_packets) \
+        / (double)(pinger->_icmpp._sn - 1) * 100.0;
 
     printf("\n--- %s ping statistics ---\n", address);
     printf(
         "%d packets transmitted, %d received, %.1f %% packet loss, tot rtt %.3f msec\n",
-        (pinger->_icmpsn - 1), received_packets, packet_loss, tot_time
+        (pinger->_icmpp._sn - 1), received_packets, packet_loss, tot_time
     );
 
     Receiver_stop(recv);

@@ -1,0 +1,2239 @@
+\doxysection{includes/ip.h File Reference}
+\label{ip_8h}\index{includes/ip.h@{includes/ip.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include "{}utils/buffer.\+h"{}}\newline
+{\ttfamily \#include "{}utils/net.\+h"{}}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ h\+\_\+echo\+\_\+t}
+\item 
+struct \textbf{ h\+\_\+mtu\+\_\+t}
+\item 
+union \textbf{ h\+\_\+data\+\_\+t}
+\item 
+struct \textbf{ Icmp\+Header}
+\item 
+struct \textbf{ Icmp\+Packet}
+\item 
+struct \textbf{ Udp\+Header}
+\item 
+struct \textbf{ Udp\+Packet}
+\item 
+struct \textbf{ Tcp\+Option}
+\item 
+struct \textbf{ Control\+Bits}
+\item 
+struct \textbf{ Tcp\+Header}
+\item 
+struct \textbf{ Tcp\+Packet}
+\item 
+struct \textbf{ Pseudo\+Header}
+\item 
+struct \textbf{ Ip\+Header}
+\item 
+struct \textbf{ Ip\+Packet}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ ICMP\+\_\+\+HEADER\+\_\+\+MAX\+\_\+\+SIZE}~0x08
+\item 
+\#define \textbf{ ICMP\+\_\+\+ECHO\+\_\+\+REPLY\+\_\+\+TYPE}~0x00
+\item 
+\#define \textbf{ ICMP\+\_\+\+DESTINATION\+\_\+\+UNREACHABLE\+\_\+\+TYPE}~0x03
+\item 
+\#define \textbf{ ICMP\+\_\+\+SOURCE\+\_\+\+QUENCH\+\_\+\+TYPE}~0x04
+\item 
+\#define \textbf{ ICMP\+\_\+\+REDIRECT\+\_\+\+TYPE}~0x05
+\item 
+\#define \textbf{ ICMP\+\_\+\+ECHO\+\_\+\+TYPE}~0x08
+\item 
+\#define \textbf{ ICMP\+\_\+\+TIME\+\_\+\+EXCEEEDED\+\_\+\+TYPE}~0x0b
+\item 
+\#define \textbf{ ICMP\+\_\+\+PARAMETER\+\_\+\+PROBLEM\+\_\+\+TYPE}~0x0c
+\item 
+\#define \textbf{ ICMP\+\_\+\+INFORMATION\+\_\+\+REQUEST\+\_\+\+TYPE}~0x0f
+\item 
+\#define \textbf{ ICMP\+\_\+\+INFORMATION\+\_\+\+REPLY\+\_\+\+TYPE}~0x10
+\item 
+\#define \textbf{ ICMP\+\_\+\+NET\+\_\+\+UNREACHABLE\+\_\+\+CODE}~0x00
+\item 
+\#define \textbf{ ICMP\+\_\+\+HOST\+\_\+\+UNREACHABLE\+\_\+\+CODE}~0x01
+\item 
+\#define \textbf{ ICMP\+\_\+\+PROTOCOL\+\_\+\+UNREACHABLE\+\_\+\+CODE}~0x02
+\item 
+\#define \textbf{ ICMP\+\_\+\+PORT\+\_\+\+UNREACHABLE\+\_\+\+CODE}~0x03
+\item 
+\#define \textbf{ ICMP\+\_\+\+FRAGMENTATION\+\_\+\+NEEDED\+\_\+\+CODE}~0x04
+\item 
+\#define \textbf{ ICMP\+\_\+\+SOURCE\+\_\+\+ROUTE\+\_\+\+FAILED\+\_\+\+CODE}~0x05
+\item 
+\#define \textbf{ ICMP\+\_\+\+ECHO\+\_\+\+CODE}~0x0
+\item 
+\#define \textbf{ ICMP\+\_\+\+PAYLOAD\+\_\+\+MAXIMUM\+\_\+\+SIZE}~0xffe3
+\item 
+\#define \textbf{ UDP\+\_\+\+HEADER\+\_\+\+SIZE}~0x08
+\item 
+\#define \textbf{ UDP\+\_\+\+PAYLOAD\+\_\+\+MAX\+\_\+\+SIZE}~0xffe3
+\item 
+\#define \textbf{ UDP\+\_\+\+PSEUDO\+\_\+\+HEADER\+\_\+\+SIZE}~0x0c
+\item 
+\#define \textbf{ TCP\+\_\+\+NOT\+\_\+\+SET}~0x00
+\item 
+\#define \textbf{ TCP\+\_\+\+FIN\+\_\+\+SET}~0x01
+\item 
+\#define \textbf{ TCP\+\_\+\+SYN\+\_\+\+SET}~0x02
+\item 
+\#define \textbf{ TCP\+\_\+\+RST\+\_\+\+SET}~0x04
+\item 
+\#define \textbf{ TCP\+\_\+\+PSH\+\_\+\+SET}~0x08
+\item 
+\#define \textbf{ TCP\+\_\+\+ACK\+\_\+\+SET}~0x10
+\item 
+\#define \textbf{ TCP\+\_\+\+URG\+\_\+\+SET}~0x20
+\item 
+\#define \textbf{ TCP\+\_\+\+ECE\+\_\+\+SET}~0x40
+\item 
+\#define \textbf{ TCP\+\_\+\+CWR\+\_\+\+SET}~0x80
+\item 
+\#define \textbf{ TCP\+\_\+\+PSEUDO\+\_\+\+HEADER\+\_\+\+SIZE}~0x0c
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE}~0x14
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+NOOP}~0x01
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+MSS}~0x02
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+WIN\+\_\+\+SCALE}~0x03
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+SACK\+\_\+\+PERM}~0x04
+\item 
+\#define \textbf{ TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+TIMESTAMP}~0x08
+\item 
+\#define \textbf{ IPv4}~0x4
+\item 
+\#define \textbf{ IPv6}~0x6
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+SIZE}~0x14
+\item 
+\#define \textbf{ X\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET}~0
+\item 
+\#define \textbf{ D\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET}~0
+\item 
+\#define \textbf{ M\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET}~0
+\item 
+\#define \textbf{ D\+\_\+\+FLAG\+\_\+\+SET}~0x02
+\item 
+\#define \textbf{ M\+\_\+\+FLAG\+\_\+\+SET}~0x01
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+FLAG}(\+\_\+x,  \+\_\+d,  \+\_\+m)~(\+\_\+x + \+\_\+d + \+\_\+m)
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS0}~0x00
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS1}~0x08
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS2}~0x10
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS3}~0x18
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS4}~0x20
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS5}~0x28
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS6}~0x30
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS7}~0x38
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF11}~0x0a
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF12}~0x0c
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF13}~0x0e
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF21}~0x12
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF22}~0x14
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF23}~0x16
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF31}~0x1a
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF32}~0x1c
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF33}~0x1e
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF41}~0x22
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF42}~0x24
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF43}~0x26
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+EF}~0x2e
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+VOICE\+\_\+\+ADMIT}~0x2c
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+NECT}~0x00
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+ECT1}~0x01
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+ECT0}~0x02
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+CE}~0x03
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+ICMP\+\_\+\+PROTOCOL\+\_\+\+CODE}~0x01
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+UDP\+\_\+\+PROTOCOL\+\_\+\+CODE}~0x11
+\item 
+\#define \textbf{ IP\+\_\+\+HEADER\+\_\+\+TCP\+\_\+\+PROTOCOL\+\_\+\+CODE}~0x06
+\item 
+\#define \textbf{ TTL\+\_\+\+DEFAULT\+\_\+\+VALUE}~0x80
+\item 
+\#define \textbf{ IP\+\_\+\+PAYLOAD\+\_\+\+MAX\+\_\+\+SIZE}~65515
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \textbf{ Icmp\+Header\+\_\+new} (\textbf{ Icmp\+Header} $\ast$\+\_\+hdr, const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Type} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+type) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Code} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+code) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Checksum} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Gateway} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int32\+\_\+t \+\_\+gateway) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Identifier} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+id) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Sequence\+Number} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+seqnum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+set\+Next\+Hop\+Mtu} (\textbf{ Icmp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+mtu) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+print\+Info} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+print\+Info\+\_\+\+Unused} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+print\+Info\+\_\+\+Redirect} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+print\+Info\+\_\+\+Mtu} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+create\+Header\+\_\+\+Unused} (\textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+create\+Header\+\_\+\+Redirect} (\textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+create\+Header\+\_\+\+Echo} (\textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+create\+Header\+\_\+\+Mtu} (\textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+encode} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Icmp\+Header\+\_\+encode\+\_\+b} (const \textbf{ Icmp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Icmp\+Header\+\_\+decode} (\textbf{ Icmp\+Header} $\ast$\+\_\+hdr, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ Icmp\+Packet\+\_\+new\+\_\+tnc} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ Icmp\+Packet\+\_\+new} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+delete} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Unused} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Redirect} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int32\+\_\+t \+\_\+gateway) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Echo} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int16\+\_\+t \+\_\+id, const u\+\_\+int16\+\_\+t \+\_\+seqnum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Mtu} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int16\+\_\+t \+\_\+data) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+set\+Header} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, \textbf{ Icmp\+Header} $\ast$\+\_\+hdr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+fill\+Payload} (\textbf{ Icmp\+Packet} $\ast$\+\_\+self, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Icmp\+Packet\+\_\+get\+Packet\+Size} (const \textbf{ Icmp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Icmp\+Packet\+\_\+encode\+\_\+b} (const \textbf{ Icmp\+Packet} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Icmp\+Packet\+\_\+encode} (const \textbf{ Icmp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ Icmp\+Packet\+\_\+decode} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+set\+Source\+Port} (\textbf{ Udp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+srcport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+set\+Destination\+Port} (\textbf{ Udp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+dstport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+set\+Length} (\textbf{ Udp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+length) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+set\+Checksum} (\textbf{ Udp\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+print\+Info} (const \textbf{ Udp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+encode} (const \textbf{ Udp\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Udp\+Header\+\_\+encode\+\_\+\+\_\+} (const \textbf{ Udp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Udp\+Header\+\_\+decode} (\textbf{ Udp\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Udp\+Packet} $\ast$ \textbf{ Udp\+Packet\+\_\+new} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Udp\+Packet} $\ast$ \textbf{ Udp\+Packet\+\_\+new\+\_\+s} (const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Udp\+Packet\+\_\+delete} (\textbf{ Udp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Packet\+\_\+fill\+Header} (\textbf{ Udp\+Packet} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+srcport, const u\+\_\+int16\+\_\+t \+\_\+dstport, const u\+\_\+int16\+\_\+t \+\_\+length, const u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Packet\+\_\+set\+Header} (\textbf{ Udp\+Packet} $\ast$\+\_\+self, \textbf{ Udp\+Header} $\ast$\+\_\+hdr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Udp\+Packet\+\_\+fill\+Payload} (\textbf{ Udp\+Packet} $\ast$\+\_\+self, const char $\ast$\+\_\+data, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Udp\+Packet\+\_\+get\+Payload\+Size} (const \textbf{ Udp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Udp\+Packet\+\_\+get\+Packet\+Size} (const \textbf{ Udp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Udp\+Packet\+\_\+encode} (const \textbf{ Udp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Udp\+Packet\+\_\+encode\+\_\+b} (const \textbf{ Udp\+Packet} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Udp\+Packet} $\ast$ \textbf{ Udp\+Packet\+\_\+decode} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new} (const u\+\_\+int8\+\_\+t \+\_\+kind, const u\+\_\+int8\+\_\+t \+\_\+length, void $\ast$\+\_\+value) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new\+Mss} (u\+\_\+int16\+\_\+t \+\_\+mss) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new\+Sack\+Permitted} (void) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new\+No\+Operation} (void) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new\+Window\+Scale} (u\+\_\+int8\+\_\+t \+\_\+scale) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ Tcp\+Option\+\_\+new\+Timestamps} (u\+\_\+int32\+\_\+t \+\_\+tsval, u\+\_\+int32\+\_\+t \+\_\+tsecr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Tcp\+Options\+\_\+copy} (struct \textbf{ Tcp\+Option} $\ast$$\ast$\+\_\+src, struct \textbf{ Tcp\+Option} $\ast$$\ast$\+\_\+dst, const int \+\_\+n) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Options\+\_\+delete} (struct \textbf{ Tcp\+Option} $\ast$$\ast$\+\_\+opts, const int \+\_\+n) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Control\+Bits\+\_\+decode} (struct \textbf{ Control\+Bits} $\ast$\+\_\+cbits, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Control\+Bits\+\_\+to\+Bin} (const struct \textbf{ Control\+Bits} $\ast$\+\_\+cbits, char $\ast$\+\_\+out) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Control\+Bits\+\_\+from\+Value} (const u\+\_\+int8\+\_\+t \+\_\+bits, struct \textbf{ Control\+Bits} $\ast$\+\_\+cbits) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Source\+Port} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+srcport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Destination\+Port} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+dstport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Sequence\+Number} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int32\+\_\+t \+\_\+seqnum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Acknowledgment\+Number} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int32\+\_\+t \+\_\+acknum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Data\+Offset} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int8\+\_\+t \+\_\+srcport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Control\+Bits} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, struct \textbf{ Control\+Bits} \+\_\+cbits) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Congestion\+Window\+Reduced\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Congestion\+Window\+Reduced\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+ECNEcho\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+ECNEcho\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Urgent\+Pointer\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Urgent\+Pointer\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Acknowledgment\+Field\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Acknowledgment\+Field\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Push\+Function\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Push\+Function\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Reset\+Connection\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Reset\+Connection\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Synchronize\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Synchronize\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Fin\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+unset\+Fin\+Flag} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Window\+Size} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+window) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Checksum} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Urgent\+Pointer} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+urgpntr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+add\+Tcp\+Option\+\_\+o} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, struct \textbf{ Tcp\+Option} $\ast$\+\_\+opt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+add\+Tcp\+Option} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+kind, const u\+\_\+int8\+\_\+t \+\_\+length, void $\ast$\+\_\+value) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(1)))
+\item 
+void \textbf{ Tcp\+Header\+\_\+set\+Tcp\+Options} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, struct \textbf{ Tcp\+Option} $\ast$\+\_\+opts[$\,$], const int \+\_\+n) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Tcp\+Header\+\_\+merge\+Control\+Bits} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+encode} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+decode} (\textbf{ Tcp\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+print\+Info} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Tcp\+Header\+\_\+get\+Header\+Size} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Header\+\_\+delete\+Tcp\+Options} (\textbf{ Tcp\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Tcp\+Packet} $\ast$ \textbf{ Tcp\+Packet\+\_\+new\+\_\+s} (const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Tcp\+Packet} $\ast$ \textbf{ Tcp\+Packet\+\_\+new} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Tcp\+Packet\+\_\+delete} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Packet\+\_\+set\+Header} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self, \textbf{ Tcp\+Header} $\ast$\+\_\+hdr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Packet\+\_\+fill\+Header} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self, u\+\_\+int16\+\_\+t \+\_\+srcport, u\+\_\+int16\+\_\+t \+\_\+dstport, u\+\_\+int32\+\_\+t \+\_\+seqnum, u\+\_\+int32\+\_\+t \+\_\+acknum, u\+\_\+int8\+\_\+t \+\_\+offset, struct \textbf{ Control\+Bits} \+\_\+cbits, u\+\_\+int16\+\_\+t \+\_\+window, u\+\_\+int16\+\_\+t \+\_\+checksum, u\+\_\+int16\+\_\+t \+\_\+urgpntr, struct \textbf{ Tcp\+Option} $\ast$\+\_\+opts[$\,$], int \+\_\+nopts) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Tcp\+Packet\+\_\+fill\+Payload} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+size\+\_\+t \textbf{ Tcp\+Packet\+\_\+get\+Packet\+Size} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+int \textbf{ Tcp\+Packet\+\_\+get\+Number\+Of\+Options} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Tcp\+Packet\+\_\+get\+Option\+Size\+\_\+bytes} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Tcp\+Packet\+\_\+encode} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Tcp\+Packet\+\_\+encode\+\_\+b} (\textbf{ Tcp\+Packet} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Tcp\+Packet} $\ast$ \textbf{ Tcp\+Packet\+\_\+decode} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Pseudo\+Header\+\_\+create} (const \textbf{ Ip\+Packet} $\ast$\+\_\+pckt, struct \textbf{ Pseudo\+Header} $\ast$\+\_\+ph, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Pseudo\+Header\+\_\+encode} (const struct \textbf{ Pseudo\+Header} $\ast$\+\_\+ph, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Version} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+version) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Differentiated\+Service\+Field} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+dsf) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Total\+Length} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+total\+\_\+length) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Identfication} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+identification) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Flag\+Off\+Field} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+flagoff) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Time\+To\+Live} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+time\+\_\+to\+\_\+live) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Protocol} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+protocol) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Header\+Checksum} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+checksum) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Source\+Address} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int32\+\_\+t \+\_\+srcaddres) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+set\+Destination\+Address} (\textbf{ Ip\+Header} $\ast$\+\_\+self, const u\+\_\+int32\+\_\+t \+\_\+dstaddress) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+Version} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+Internet\+Header\+Length} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+DSCP} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+ECN} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+Flags} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int8\+\_\+t \textbf{ Ip\+Header\+\_\+get\+Fragment\+Offset} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+encode\+\_\+b} (const \textbf{ Ip\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Ip\+Header\+\_\+encode} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+decode} (\textbf{ Ip\+Header} $\ast$\+\_\+self, \textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Header\+\_\+print\+Info} (const \textbf{ Ip\+Header} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ compute\+Flag\+Off} (const int \+\_\+x, const int \+\_\+d, const int \+\_\+m, const int \+\_\+offset)
+\item 
+u\+\_\+int8\+\_\+t \textbf{ compute\+Differentiated\+Service\+Field} (const int \+\_\+dscp, const int \+\_\+ecn)
+\item 
+void \textbf{ convert\+Flag\+To\+Bin} (const u\+\_\+int8\+\_\+t \+\_\+flags, char $\ast$\+\_\+out) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+new} () \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+new\+Icmp} (const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+new\+Udp} (const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+new\+Tcp} (const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+delete} (\textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+set\+Header} (\textbf{ Ip\+Packet} $\ast$\+\_\+self, \textbf{ Ip\+Header} $\ast$\+\_\+iphdr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+fill\+Header} (\textbf{ Ip\+Packet} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+version, const u\+\_\+int8\+\_\+t \+\_\+dsf, const u\+\_\+int16\+\_\+t \+\_\+tlen, const u\+\_\+int16\+\_\+t \+\_\+id, const u\+\_\+int16\+\_\+t \+\_\+flagoff, const u\+\_\+int8\+\_\+t \+\_\+ttl, const u\+\_\+int8\+\_\+t \+\_\+protocol, const u\+\_\+int16\+\_\+t \+\_\+checksum, const u\+\_\+int32\+\_\+t \+\_\+srcaddr, const u\+\_\+int32\+\_\+t \+\_\+dstaddr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ Ip\+Packet\+\_\+get\+Payload\+Size} (const \textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Icmp\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+get\+Icmp\+Packet} (const \textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Udp\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+get\+Udp\+Packet} (const \textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Tcp\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+get\+Tcp\+Packet} (const \textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Byte\+Buffer} $\ast$ \textbf{ Ip\+Packet\+\_\+encode} (const \textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+decode\+Icmp} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+decode\+Udp} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Ip\+Packet\+\_\+decode\+Tcp} (\textbf{ Byte\+Buffer} $\ast$\+\_\+buffer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+wrap\+Icmp} (\textbf{ Ip\+Packet} $\ast$\+\_\+self, \textbf{ Icmp\+Packet} $\ast$\+\_\+icmppckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+wrap\+Udp} (\textbf{ Ip\+Packet} $\ast$\+\_\+self, \textbf{ Udp\+Packet} $\ast$\+\_\+udppckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+wrap\+Tcp} (\textbf{ Ip\+Packet} $\ast$\+\_\+self, \textbf{ Tcp\+Packet} $\ast$\+\_\+tcppckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Ip\+Packet\+\_\+compute\+Checksum} (\textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ Ip\+Packet\+\_\+compute\+Icmp\+Checksum} (\textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ Ip\+Packet\+\_\+compute\+Udp\+Checksum} (\textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+u\+\_\+int16\+\_\+t \textbf{ Ip\+Packet\+\_\+compute\+Tcp\+Checksum} (\textbf{ Ip\+Packet} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\index{ip.h@{ip.h}!D\_FLAG\_NOT\_SET@{D\_FLAG\_NOT\_SET}}
+\index{D\_FLAG\_NOT\_SET@{D\_FLAG\_NOT\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{D\_FLAG\_NOT\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a4d25816d2dbcdf93fe9b8556f060b683} 
+\#define D\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET~0}
+
+
+
+Definition at line \textbf{ 91} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!D\_FLAG\_SET@{D\_FLAG\_SET}}
+\index{D\_FLAG\_SET@{D\_FLAG\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{D\_FLAG\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a8444b7b3e5a7e2d0af12e718d6ecae5b} 
+\#define D\+\_\+\+FLAG\+\_\+\+SET~0x02}
+
+
+
+Definition at line \textbf{ 93} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_DESTINATION\_UNREACHABLE\_TYPE@{ICMP\_DESTINATION\_UNREACHABLE\_TYPE}}
+\index{ICMP\_DESTINATION\_UNREACHABLE\_TYPE@{ICMP\_DESTINATION\_UNREACHABLE\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_DESTINATION\_UNREACHABLE\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_ab8990dae451fd1cec49f8eb9435e3551} 
+\#define ICMP\+\_\+\+DESTINATION\+\_\+\+UNREACHABLE\+\_\+\+TYPE~0x03}
+
+
+
+Definition at line \textbf{ 40} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_ECHO\_CODE@{ICMP\_ECHO\_CODE}}
+\index{ICMP\_ECHO\_CODE@{ICMP\_ECHO\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_ECHO\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_ae672940252291e5ba7c5d59f9dfbf23d} 
+\#define ICMP\+\_\+\+ECHO\+\_\+\+CODE~0x0}
+
+
+
+Definition at line \textbf{ 57} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_ECHO\_REPLY\_TYPE@{ICMP\_ECHO\_REPLY\_TYPE}}
+\index{ICMP\_ECHO\_REPLY\_TYPE@{ICMP\_ECHO\_REPLY\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_ECHO\_REPLY\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_af132ef77ea2a2eb235daaffd60ab360f} 
+\#define ICMP\+\_\+\+ECHO\+\_\+\+REPLY\+\_\+\+TYPE~0x00}
+
+
+
+Definition at line \textbf{ 39} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_ECHO\_TYPE@{ICMP\_ECHO\_TYPE}}
+\index{ICMP\_ECHO\_TYPE@{ICMP\_ECHO\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_ECHO\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_ae5b06146dfc6a42165411c3070c8acbb} 
+\#define ICMP\+\_\+\+ECHO\+\_\+\+TYPE~0x08}
+
+
+
+Definition at line \textbf{ 43} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_FRAGMENTATION\_NEEDED\_CODE@{ICMP\_FRAGMENTATION\_NEEDED\_CODE}}
+\index{ICMP\_FRAGMENTATION\_NEEDED\_CODE@{ICMP\_FRAGMENTATION\_NEEDED\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_FRAGMENTATION\_NEEDED\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_ab20f3ead454f423ffba453f5bcf8612f} 
+\#define ICMP\+\_\+\+FRAGMENTATION\+\_\+\+NEEDED\+\_\+\+CODE~0x04}
+
+
+
+Definition at line \textbf{ 54} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_HEADER\_MAX\_SIZE@{ICMP\_HEADER\_MAX\_SIZE}}
+\index{ICMP\_HEADER\_MAX\_SIZE@{ICMP\_HEADER\_MAX\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_HEADER\_MAX\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a119fd379364ac07979ab0609f5cb939e} 
+\#define ICMP\+\_\+\+HEADER\+\_\+\+MAX\+\_\+\+SIZE~0x08}
+
+
+
+Definition at line \textbf{ 36} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_HOST\_UNREACHABLE\_CODE@{ICMP\_HOST\_UNREACHABLE\_CODE}}
+\index{ICMP\_HOST\_UNREACHABLE\_CODE@{ICMP\_HOST\_UNREACHABLE\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_HOST\_UNREACHABLE\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_ad4dea762dbfa6e4c0ec4d6ebe99c35f7} 
+\#define ICMP\+\_\+\+HOST\+\_\+\+UNREACHABLE\+\_\+\+CODE~0x01}
+
+
+
+Definition at line \textbf{ 51} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_INFORMATION\_REPLY\_TYPE@{ICMP\_INFORMATION\_REPLY\_TYPE}}
+\index{ICMP\_INFORMATION\_REPLY\_TYPE@{ICMP\_INFORMATION\_REPLY\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_INFORMATION\_REPLY\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_a867a4c1c857f6c5360be3d60a9017046} 
+\#define ICMP\+\_\+\+INFORMATION\+\_\+\+REPLY\+\_\+\+TYPE~0x10}
+
+
+
+Definition at line \textbf{ 47} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_INFORMATION\_REQUEST\_TYPE@{ICMP\_INFORMATION\_REQUEST\_TYPE}}
+\index{ICMP\_INFORMATION\_REQUEST\_TYPE@{ICMP\_INFORMATION\_REQUEST\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_INFORMATION\_REQUEST\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_a3d9fffcedd8fb6f8036313c09103a329} 
+\#define ICMP\+\_\+\+INFORMATION\+\_\+\+REQUEST\+\_\+\+TYPE~0x0f}
+
+
+
+Definition at line \textbf{ 46} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_NET\_UNREACHABLE\_CODE@{ICMP\_NET\_UNREACHABLE\_CODE}}
+\index{ICMP\_NET\_UNREACHABLE\_CODE@{ICMP\_NET\_UNREACHABLE\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_NET\_UNREACHABLE\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_afa8a67a0c6db0d691927423a2595bee7} 
+\#define ICMP\+\_\+\+NET\+\_\+\+UNREACHABLE\+\_\+\+CODE~0x00}
+
+
+
+Definition at line \textbf{ 50} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_PARAMETER\_PROBLEM\_TYPE@{ICMP\_PARAMETER\_PROBLEM\_TYPE}}
+\index{ICMP\_PARAMETER\_PROBLEM\_TYPE@{ICMP\_PARAMETER\_PROBLEM\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_PARAMETER\_PROBLEM\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_a11ce0cff7d9f67d6e86b25c22f513a24} 
+\#define ICMP\+\_\+\+PARAMETER\+\_\+\+PROBLEM\+\_\+\+TYPE~0x0c}
+
+
+
+Definition at line \textbf{ 45} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_PAYLOAD\_MAXIMUM\_SIZE@{ICMP\_PAYLOAD\_MAXIMUM\_SIZE}}
+\index{ICMP\_PAYLOAD\_MAXIMUM\_SIZE@{ICMP\_PAYLOAD\_MAXIMUM\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_PAYLOAD\_MAXIMUM\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_ab36aa3c48247cf445b34253078a9d19a} 
+\#define ICMP\+\_\+\+PAYLOAD\+\_\+\+MAXIMUM\+\_\+\+SIZE~0xffe3}
+
+
+
+Definition at line \textbf{ 58} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_PORT\_UNREACHABLE\_CODE@{ICMP\_PORT\_UNREACHABLE\_CODE}}
+\index{ICMP\_PORT\_UNREACHABLE\_CODE@{ICMP\_PORT\_UNREACHABLE\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_PORT\_UNREACHABLE\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_ad87dc20db4197fe93c28fb08c50b540d} 
+\#define ICMP\+\_\+\+PORT\+\_\+\+UNREACHABLE\+\_\+\+CODE~0x03}
+
+
+
+Definition at line \textbf{ 53} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_PROTOCOL\_UNREACHABLE\_CODE@{ICMP\_PROTOCOL\_UNREACHABLE\_CODE}}
+\index{ICMP\_PROTOCOL\_UNREACHABLE\_CODE@{ICMP\_PROTOCOL\_UNREACHABLE\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_PROTOCOL\_UNREACHABLE\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_a5da761c0a6fa7cc5f49da68ebe118c81} 
+\#define ICMP\+\_\+\+PROTOCOL\+\_\+\+UNREACHABLE\+\_\+\+CODE~0x02}
+
+
+
+Definition at line \textbf{ 52} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_REDIRECT\_TYPE@{ICMP\_REDIRECT\_TYPE}}
+\index{ICMP\_REDIRECT\_TYPE@{ICMP\_REDIRECT\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_REDIRECT\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_aeec6348a26deaead1e35a843366ffc25} 
+\#define ICMP\+\_\+\+REDIRECT\+\_\+\+TYPE~0x05}
+
+
+
+Definition at line \textbf{ 42} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_SOURCE\_QUENCH\_TYPE@{ICMP\_SOURCE\_QUENCH\_TYPE}}
+\index{ICMP\_SOURCE\_QUENCH\_TYPE@{ICMP\_SOURCE\_QUENCH\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_SOURCE\_QUENCH\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_a30f3e241092dc4a0178262213d669b88} 
+\#define ICMP\+\_\+\+SOURCE\+\_\+\+QUENCH\+\_\+\+TYPE~0x04}
+
+
+
+Definition at line \textbf{ 41} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_SOURCE\_ROUTE\_FAILED\_CODE@{ICMP\_SOURCE\_ROUTE\_FAILED\_CODE}}
+\index{ICMP\_SOURCE\_ROUTE\_FAILED\_CODE@{ICMP\_SOURCE\_ROUTE\_FAILED\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_SOURCE\_ROUTE\_FAILED\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_a80b0b338d5b3ae19af65f6cf5d5ab14b} 
+\#define ICMP\+\_\+\+SOURCE\+\_\+\+ROUTE\+\_\+\+FAILED\+\_\+\+CODE~0x05}
+
+
+
+Definition at line \textbf{ 55} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!ICMP\_TIME\_EXCEEEDED\_TYPE@{ICMP\_TIME\_EXCEEEDED\_TYPE}}
+\index{ICMP\_TIME\_EXCEEEDED\_TYPE@{ICMP\_TIME\_EXCEEEDED\_TYPE}!ip.h@{ip.h}}
+\doxysubsubsection{ICMP\_TIME\_EXCEEEDED\_TYPE}
+{\footnotesize\ttfamily \label{ip_8h_ab846d3f44d24c0c953033e136ed09332} 
+\#define ICMP\+\_\+\+TIME\+\_\+\+EXCEEEDED\+\_\+\+TYPE~0x0b}
+
+
+
+Definition at line \textbf{ 44} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF11@{IP\_HEADER\_DSCP\_AF11}}
+\index{IP\_HEADER\_DSCP\_AF11@{IP\_HEADER\_DSCP\_AF11}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF11}
+{\footnotesize\ttfamily \label{ip_8h_ade93ff88a510003867c9d9ccff9faceb} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF11~0x0a}
+
+
+
+Definition at line \textbf{ 107} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF12@{IP\_HEADER\_DSCP\_AF12}}
+\index{IP\_HEADER\_DSCP\_AF12@{IP\_HEADER\_DSCP\_AF12}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF12}
+{\footnotesize\ttfamily \label{ip_8h_a9020ca43aa2d011cc36f1b0aa2607239} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF12~0x0c}
+
+
+
+Definition at line \textbf{ 108} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF13@{IP\_HEADER\_DSCP\_AF13}}
+\index{IP\_HEADER\_DSCP\_AF13@{IP\_HEADER\_DSCP\_AF13}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF13}
+{\footnotesize\ttfamily \label{ip_8h_a5016984aa908a782dcc426ea0f9e0932} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF13~0x0e}
+
+
+
+Definition at line \textbf{ 109} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF21@{IP\_HEADER\_DSCP\_AF21}}
+\index{IP\_HEADER\_DSCP\_AF21@{IP\_HEADER\_DSCP\_AF21}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF21}
+{\footnotesize\ttfamily \label{ip_8h_aa03cd57a180079dd1205c539da3cd369} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF21~0x12}
+
+
+
+Definition at line \textbf{ 110} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF22@{IP\_HEADER\_DSCP\_AF22}}
+\index{IP\_HEADER\_DSCP\_AF22@{IP\_HEADER\_DSCP\_AF22}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF22}
+{\footnotesize\ttfamily \label{ip_8h_a1035846d4064401cb0af7bdbc5b1d4f7} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF22~0x14}
+
+
+
+Definition at line \textbf{ 111} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF23@{IP\_HEADER\_DSCP\_AF23}}
+\index{IP\_HEADER\_DSCP\_AF23@{IP\_HEADER\_DSCP\_AF23}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF23}
+{\footnotesize\ttfamily \label{ip_8h_a45fef98b8a930b414161aadb069f9f29} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF23~0x16}
+
+
+
+Definition at line \textbf{ 112} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF31@{IP\_HEADER\_DSCP\_AF31}}
+\index{IP\_HEADER\_DSCP\_AF31@{IP\_HEADER\_DSCP\_AF31}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF31}
+{\footnotesize\ttfamily \label{ip_8h_a1922d6f529bf4f5c9c858db168297f70} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF31~0x1a}
+
+
+
+Definition at line \textbf{ 113} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF32@{IP\_HEADER\_DSCP\_AF32}}
+\index{IP\_HEADER\_DSCP\_AF32@{IP\_HEADER\_DSCP\_AF32}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF32}
+{\footnotesize\ttfamily \label{ip_8h_a266d88ab3fe5fcea668f3a18fd4785a0} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF32~0x1c}
+
+
+
+Definition at line \textbf{ 114} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF33@{IP\_HEADER\_DSCP\_AF33}}
+\index{IP\_HEADER\_DSCP\_AF33@{IP\_HEADER\_DSCP\_AF33}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF33}
+{\footnotesize\ttfamily \label{ip_8h_a59b56f149cf6525094d1a1d3bf1cf536} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF33~0x1e}
+
+
+
+Definition at line \textbf{ 115} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF41@{IP\_HEADER\_DSCP\_AF41}}
+\index{IP\_HEADER\_DSCP\_AF41@{IP\_HEADER\_DSCP\_AF41}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF41}
+{\footnotesize\ttfamily \label{ip_8h_a4a0c9927bb27cec2f548304d3e7036be} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF41~0x22}
+
+
+
+Definition at line \textbf{ 116} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF42@{IP\_HEADER\_DSCP\_AF42}}
+\index{IP\_HEADER\_DSCP\_AF42@{IP\_HEADER\_DSCP\_AF42}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF42}
+{\footnotesize\ttfamily \label{ip_8h_a23f104f3592b5d51f601f3fccbae0234} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF42~0x24}
+
+
+
+Definition at line \textbf{ 117} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_AF43@{IP\_HEADER\_DSCP\_AF43}}
+\index{IP\_HEADER\_DSCP\_AF43@{IP\_HEADER\_DSCP\_AF43}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_AF43}
+{\footnotesize\ttfamily \label{ip_8h_aef5e5f078f6a4444e98bd6fd252b90b3} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+AF43~0x26}
+
+
+
+Definition at line \textbf{ 118} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS0@{IP\_HEADER\_DSCP\_CS0}}
+\index{IP\_HEADER\_DSCP\_CS0@{IP\_HEADER\_DSCP\_CS0}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS0}
+{\footnotesize\ttfamily \label{ip_8h_aa38d2758b482c163fa419d84621b5d3e} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS0~0x00}
+
+
+
+Definition at line \textbf{ 99} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS1@{IP\_HEADER\_DSCP\_CS1}}
+\index{IP\_HEADER\_DSCP\_CS1@{IP\_HEADER\_DSCP\_CS1}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS1}
+{\footnotesize\ttfamily \label{ip_8h_a8362f7eaf490a91a8d5b69c123438323} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS1~0x08}
+
+
+
+Definition at line \textbf{ 100} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS2@{IP\_HEADER\_DSCP\_CS2}}
+\index{IP\_HEADER\_DSCP\_CS2@{IP\_HEADER\_DSCP\_CS2}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS2}
+{\footnotesize\ttfamily \label{ip_8h_af3e830e17d8068318009e432c154c863} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS2~0x10}
+
+
+
+Definition at line \textbf{ 101} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS3@{IP\_HEADER\_DSCP\_CS3}}
+\index{IP\_HEADER\_DSCP\_CS3@{IP\_HEADER\_DSCP\_CS3}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS3}
+{\footnotesize\ttfamily \label{ip_8h_a55b6fc9a1789e2feedff499d70ecfb3e} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS3~0x18}
+
+
+
+Definition at line \textbf{ 102} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS4@{IP\_HEADER\_DSCP\_CS4}}
+\index{IP\_HEADER\_DSCP\_CS4@{IP\_HEADER\_DSCP\_CS4}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS4}
+{\footnotesize\ttfamily \label{ip_8h_af738d29616ca132809a318f02e40714f} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS4~0x20}
+
+
+
+Definition at line \textbf{ 103} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS5@{IP\_HEADER\_DSCP\_CS5}}
+\index{IP\_HEADER\_DSCP\_CS5@{IP\_HEADER\_DSCP\_CS5}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS5}
+{\footnotesize\ttfamily \label{ip_8h_a23d6fd043b63b0fc9b89e05f7e8abd18} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS5~0x28}
+
+
+
+Definition at line \textbf{ 104} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS6@{IP\_HEADER\_DSCP\_CS6}}
+\index{IP\_HEADER\_DSCP\_CS6@{IP\_HEADER\_DSCP\_CS6}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS6}
+{\footnotesize\ttfamily \label{ip_8h_a68ddadc2e23a67a68c0cc3e5a5c32c4d} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS6~0x30}
+
+
+
+Definition at line \textbf{ 105} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_CS7@{IP\_HEADER\_DSCP\_CS7}}
+\index{IP\_HEADER\_DSCP\_CS7@{IP\_HEADER\_DSCP\_CS7}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_CS7}
+{\footnotesize\ttfamily \label{ip_8h_aa263574bcd36b960d65fdf5f2866c3bf} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+CS7~0x38}
+
+
+
+Definition at line \textbf{ 106} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_EF@{IP\_HEADER\_DSCP\_EF}}
+\index{IP\_HEADER\_DSCP\_EF@{IP\_HEADER\_DSCP\_EF}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_EF}
+{\footnotesize\ttfamily \label{ip_8h_a8400c19c867a67ff98af4f9b0b26b741} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+EF~0x2e}
+
+
+
+Definition at line \textbf{ 119} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_DSCP\_VOICE\_ADMIT@{IP\_HEADER\_DSCP\_VOICE\_ADMIT}}
+\index{IP\_HEADER\_DSCP\_VOICE\_ADMIT@{IP\_HEADER\_DSCP\_VOICE\_ADMIT}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_DSCP\_VOICE\_ADMIT}
+{\footnotesize\ttfamily \label{ip_8h_a7e610c8c7dc3366b50850eb11dec6779} 
+\#define IP\+\_\+\+HEADER\+\_\+\+DSCP\+\_\+\+VOICE\+\_\+\+ADMIT~0x2c}
+
+
+
+Definition at line \textbf{ 120} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_ECN\_CE@{IP\_HEADER\_ECN\_CE}}
+\index{IP\_HEADER\_ECN\_CE@{IP\_HEADER\_ECN\_CE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_ECN\_CE}
+{\footnotesize\ttfamily \label{ip_8h_a5fbfa16670e5f739a5c741c5261d796d} 
+\#define IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+CE~0x03}
+
+
+
+Definition at line \textbf{ 126} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_ECN\_ECT0@{IP\_HEADER\_ECN\_ECT0}}
+\index{IP\_HEADER\_ECN\_ECT0@{IP\_HEADER\_ECN\_ECT0}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_ECN\_ECT0}
+{\footnotesize\ttfamily \label{ip_8h_a1202222cd171e7790b98fee0da2efc69} 
+\#define IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+ECT0~0x02}
+
+
+
+Definition at line \textbf{ 125} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_ECN\_ECT1@{IP\_HEADER\_ECN\_ECT1}}
+\index{IP\_HEADER\_ECN\_ECT1@{IP\_HEADER\_ECN\_ECT1}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_ECN\_ECT1}
+{\footnotesize\ttfamily \label{ip_8h_af8fe0ce01e05133a7b60351185532497} 
+\#define IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+ECT1~0x01}
+
+
+
+Definition at line \textbf{ 124} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_ECN\_NECT@{IP\_HEADER\_ECN\_NECT}}
+\index{IP\_HEADER\_ECN\_NECT@{IP\_HEADER\_ECN\_NECT}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_ECN\_NECT}
+{\footnotesize\ttfamily \label{ip_8h_aea10e0e111a5c854161701f099615a9f} 
+\#define IP\+\_\+\+HEADER\+\_\+\+ECN\+\_\+\+NECT~0x00}
+
+
+
+Definition at line \textbf{ 123} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_FLAG@{IP\_HEADER\_FLAG}}
+\index{IP\_HEADER\_FLAG@{IP\_HEADER\_FLAG}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_FLAG}
+{\footnotesize\ttfamily \label{ip_8h_aee71e27feb1b274c71275fbfda9f22d7} 
+\#define IP\+\_\+\+HEADER\+\_\+\+FLAG(\begin{DoxyParamCaption}\item[{}]{\+\_\+x}{, }\item[{}]{\+\_\+d}{, }\item[{}]{\+\_\+m}{}\end{DoxyParamCaption})~(\+\_\+x + \+\_\+d + \+\_\+m)}
+
+
+
+Definition at line \textbf{ 96} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_ICMP\_PROTOCOL\_CODE@{IP\_HEADER\_ICMP\_PROTOCOL\_CODE}}
+\index{IP\_HEADER\_ICMP\_PROTOCOL\_CODE@{IP\_HEADER\_ICMP\_PROTOCOL\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_ICMP\_PROTOCOL\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_a09df004c38515a4a5b19786c8d5cc32e} 
+\#define IP\+\_\+\+HEADER\+\_\+\+ICMP\+\_\+\+PROTOCOL\+\_\+\+CODE~0x01}
+
+
+
+Definition at line \textbf{ 129} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_SIZE@{IP\_HEADER\_SIZE}}
+\index{IP\_HEADER\_SIZE@{IP\_HEADER\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a21bc1a47f469b35f87dc62b1782a207d} 
+\#define IP\+\_\+\+HEADER\+\_\+\+SIZE~0x14}
+
+
+
+Definition at line \textbf{ 88} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_TCP\_PROTOCOL\_CODE@{IP\_HEADER\_TCP\_PROTOCOL\_CODE}}
+\index{IP\_HEADER\_TCP\_PROTOCOL\_CODE@{IP\_HEADER\_TCP\_PROTOCOL\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_TCP\_PROTOCOL\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_a9b51dfb8387942eba058c3c98b8f5b30} 
+\#define IP\+\_\+\+HEADER\+\_\+\+TCP\+\_\+\+PROTOCOL\+\_\+\+CODE~0x06}
+
+
+
+Definition at line \textbf{ 131} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_HEADER\_UDP\_PROTOCOL\_CODE@{IP\_HEADER\_UDP\_PROTOCOL\_CODE}}
+\index{IP\_HEADER\_UDP\_PROTOCOL\_CODE@{IP\_HEADER\_UDP\_PROTOCOL\_CODE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_HEADER\_UDP\_PROTOCOL\_CODE}
+{\footnotesize\ttfamily \label{ip_8h_aa850ff43d85deb35edd18c748c160035} 
+\#define IP\+\_\+\+HEADER\+\_\+\+UDP\+\_\+\+PROTOCOL\+\_\+\+CODE~0x11}
+
+
+
+Definition at line \textbf{ 130} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IP\_PAYLOAD\_MAX\_SIZE@{IP\_PAYLOAD\_MAX\_SIZE}}
+\index{IP\_PAYLOAD\_MAX\_SIZE@{IP\_PAYLOAD\_MAX\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{IP\_PAYLOAD\_MAX\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a1543d9ca63dc1cd557e5b337f7beaf77} 
+\#define IP\+\_\+\+PAYLOAD\+\_\+\+MAX\+\_\+\+SIZE~65515}
+
+
+
+Definition at line \textbf{ 141} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IPv4@{IPv4}}
+\index{IPv4@{IPv4}!ip.h@{ip.h}}
+\doxysubsubsection{IPv4}
+{\footnotesize\ttfamily \label{ip_8h_aafb616fa3526bbcea92488cfd1b174bb} 
+\#define IPv4~0x4}
+
+
+
+Definition at line \textbf{ 86} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!IPv6@{IPv6}}
+\index{IPv6@{IPv6}!ip.h@{ip.h}}
+\doxysubsubsection{IPv6}
+{\footnotesize\ttfamily \label{ip_8h_a2c29ea2ee796869613ef16cf5d2d8d9c} 
+\#define IPv6~0x6}
+
+
+
+Definition at line \textbf{ 87} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!M\_FLAG\_NOT\_SET@{M\_FLAG\_NOT\_SET}}
+\index{M\_FLAG\_NOT\_SET@{M\_FLAG\_NOT\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{M\_FLAG\_NOT\_SET}
+{\footnotesize\ttfamily \label{ip_8h_aa8c0a0b8142028d939331987c51cce59} 
+\#define M\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET~0}
+
+
+
+Definition at line \textbf{ 92} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!M\_FLAG\_SET@{M\_FLAG\_SET}}
+\index{M\_FLAG\_SET@{M\_FLAG\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{M\_FLAG\_SET}
+{\footnotesize\ttfamily \label{ip_8h_ad1912220205dabf1e2fb3174046d8681} 
+\#define M\+\_\+\+FLAG\+\_\+\+SET~0x01}
+
+
+
+Definition at line \textbf{ 94} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_ACK\_SET@{TCP\_ACK\_SET}}
+\index{TCP\_ACK\_SET@{TCP\_ACK\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_ACK\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a0300f9ec25de577165ca2e269153ca79} 
+\#define TCP\+\_\+\+ACK\+\_\+\+SET~0x10}
+
+
+
+Definition at line \textbf{ 70} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_CWR\_SET@{TCP\_CWR\_SET}}
+\index{TCP\_CWR\_SET@{TCP\_CWR\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_CWR\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a336dde7d46037b027acd66c5adae1ee5} 
+\#define TCP\+\_\+\+CWR\+\_\+\+SET~0x80}
+
+
+
+Definition at line \textbf{ 73} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_ECE\_SET@{TCP\_ECE\_SET}}
+\index{TCP\_ECE\_SET@{TCP\_ECE\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_ECE\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a15ba995e984929f9dc4b1a4f30b864c8} 
+\#define TCP\+\_\+\+ECE\+\_\+\+SET~0x40}
+
+
+
+Definition at line \textbf{ 72} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_FIN\_SET@{TCP\_FIN\_SET}}
+\index{TCP\_FIN\_SET@{TCP\_FIN\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_FIN\_SET}
+{\footnotesize\ttfamily \label{ip_8h_af34c835379a4f7eb1a0a804d27aed6b8} 
+\#define TCP\+\_\+\+FIN\+\_\+\+SET~0x01}
+
+
+
+Definition at line \textbf{ 66} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_NOT\_SET@{TCP\_NOT\_SET}}
+\index{TCP\_NOT\_SET@{TCP\_NOT\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_NOT\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a0e17d3a22ec0ebb5382dc5b6e6920e5f} 
+\#define TCP\+\_\+\+NOT\+\_\+\+SET~0x00}
+
+
+
+Definition at line \textbf{ 65} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTION\_KIND\_MSS@{TCP\_OPTION\_KIND\_MSS}}
+\index{TCP\_OPTION\_KIND\_MSS@{TCP\_OPTION\_KIND\_MSS}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTION\_KIND\_MSS}
+{\footnotesize\ttfamily \label{ip_8h_a173966fe0d7890406a2f1e877f338507} 
+\#define TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+MSS~0x02}
+
+
+
+Definition at line \textbf{ 80} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTION\_KIND\_NOOP@{TCP\_OPTION\_KIND\_NOOP}}
+\index{TCP\_OPTION\_KIND\_NOOP@{TCP\_OPTION\_KIND\_NOOP}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTION\_KIND\_NOOP}
+{\footnotesize\ttfamily \label{ip_8h_a975e308450be23279f2792b63fe3a656} 
+\#define TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+NOOP~0x01}
+
+
+
+Definition at line \textbf{ 79} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTION\_KIND\_SACK\_PERM@{TCP\_OPTION\_KIND\_SACK\_PERM}}
+\index{TCP\_OPTION\_KIND\_SACK\_PERM@{TCP\_OPTION\_KIND\_SACK\_PERM}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTION\_KIND\_SACK\_PERM}
+{\footnotesize\ttfamily \label{ip_8h_a1fb556511608438d5ac45d08eb36adf2} 
+\#define TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+SACK\+\_\+\+PERM~0x04}
+
+
+
+Definition at line \textbf{ 82} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTION\_KIND\_TIMESTAMP@{TCP\_OPTION\_KIND\_TIMESTAMP}}
+\index{TCP\_OPTION\_KIND\_TIMESTAMP@{TCP\_OPTION\_KIND\_TIMESTAMP}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTION\_KIND\_TIMESTAMP}
+{\footnotesize\ttfamily \label{ip_8h_a75efc72c53e632e5adc2f14eaf15fae6} 
+\#define TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+TIMESTAMP~0x08}
+
+
+
+Definition at line \textbf{ 83} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTION\_KIND\_WIN\_SCALE@{TCP\_OPTION\_KIND\_WIN\_SCALE}}
+\index{TCP\_OPTION\_KIND\_WIN\_SCALE@{TCP\_OPTION\_KIND\_WIN\_SCALE}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTION\_KIND\_WIN\_SCALE}
+{\footnotesize\ttfamily \label{ip_8h_a45081f07136074db9afd73aced895ef3} 
+\#define TCP\+\_\+\+OPTION\+\_\+\+KIND\+\_\+\+WIN\+\_\+\+SCALE~0x03}
+
+
+
+Definition at line \textbf{ 81} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_OPTIONS\_MAX\_SIZE@{TCP\_OPTIONS\_MAX\_SIZE}}
+\index{TCP\_OPTIONS\_MAX\_SIZE@{TCP\_OPTIONS\_MAX\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_OPTIONS\_MAX\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a96e9510e3a67042630d17e91a828f0e6} 
+\#define TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE~0x14}
+
+
+
+Definition at line \textbf{ 76} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_PSEUDO\_HEADER\_SIZE@{TCP\_PSEUDO\_HEADER\_SIZE}}
+\index{TCP\_PSEUDO\_HEADER\_SIZE@{TCP\_PSEUDO\_HEADER\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_PSEUDO\_HEADER\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_abedf98ef779639a967483a41ea032986} 
+\#define TCP\+\_\+\+PSEUDO\+\_\+\+HEADER\+\_\+\+SIZE~0x0c}
+
+
+
+Definition at line \textbf{ 75} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_PSH\_SET@{TCP\_PSH\_SET}}
+\index{TCP\_PSH\_SET@{TCP\_PSH\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_PSH\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a56e9a737702401445405f63afe304678} 
+\#define TCP\+\_\+\+PSH\+\_\+\+SET~0x08}
+
+
+
+Definition at line \textbf{ 69} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_RST\_SET@{TCP\_RST\_SET}}
+\index{TCP\_RST\_SET@{TCP\_RST\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_RST\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a0f5f21fb860e0573bae1126c7dc388e1} 
+\#define TCP\+\_\+\+RST\+\_\+\+SET~0x04}
+
+
+
+Definition at line \textbf{ 68} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_SYN\_SET@{TCP\_SYN\_SET}}
+\index{TCP\_SYN\_SET@{TCP\_SYN\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_SYN\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a46349020c429fd16f75d51957310b3ce} 
+\#define TCP\+\_\+\+SYN\+\_\+\+SET~0x02}
+
+
+
+Definition at line \textbf{ 67} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TCP\_URG\_SET@{TCP\_URG\_SET}}
+\index{TCP\_URG\_SET@{TCP\_URG\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{TCP\_URG\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a3a99e99f9afdf1e18c167f043ca015ec} 
+\#define TCP\+\_\+\+URG\+\_\+\+SET~0x20}
+
+
+
+Definition at line \textbf{ 71} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!TTL\_DEFAULT\_VALUE@{TTL\_DEFAULT\_VALUE}}
+\index{TTL\_DEFAULT\_VALUE@{TTL\_DEFAULT\_VALUE}!ip.h@{ip.h}}
+\doxysubsubsection{TTL\_DEFAULT\_VALUE}
+{\footnotesize\ttfamily \label{ip_8h_a1faeb0d495f571aea434cdde5109d2d1} 
+\#define TTL\+\_\+\+DEFAULT\+\_\+\+VALUE~0x80}
+
+
+
+Definition at line \textbf{ 135} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!UDP\_HEADER\_SIZE@{UDP\_HEADER\_SIZE}}
+\index{UDP\_HEADER\_SIZE@{UDP\_HEADER\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{UDP\_HEADER\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a8a0fae83e487dc04b3cd774b3d4ee637} 
+\#define UDP\+\_\+\+HEADER\+\_\+\+SIZE~0x08}
+
+
+
+Definition at line \textbf{ 60} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!UDP\_PAYLOAD\_MAX\_SIZE@{UDP\_PAYLOAD\_MAX\_SIZE}}
+\index{UDP\_PAYLOAD\_MAX\_SIZE@{UDP\_PAYLOAD\_MAX\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{UDP\_PAYLOAD\_MAX\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_aa1388f3a65aa57c8fbef75024717ac07} 
+\#define UDP\+\_\+\+PAYLOAD\+\_\+\+MAX\+\_\+\+SIZE~0xffe3}
+
+
+
+Definition at line \textbf{ 61} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!UDP\_PSEUDO\_HEADER\_SIZE@{UDP\_PSEUDO\_HEADER\_SIZE}}
+\index{UDP\_PSEUDO\_HEADER\_SIZE@{UDP\_PSEUDO\_HEADER\_SIZE}!ip.h@{ip.h}}
+\doxysubsubsection{UDP\_PSEUDO\_HEADER\_SIZE}
+{\footnotesize\ttfamily \label{ip_8h_a1fe538c5665ea39fb524714c2ad5d5b6} 
+\#define UDP\+\_\+\+PSEUDO\+\_\+\+HEADER\+\_\+\+SIZE~0x0c}
+
+
+
+Definition at line \textbf{ 62} of file \textbf{ ip.\+h}.
+
+\index{ip.h@{ip.h}!X\_FLAG\_NOT\_SET@{X\_FLAG\_NOT\_SET}}
+\index{X\_FLAG\_NOT\_SET@{X\_FLAG\_NOT\_SET}!ip.h@{ip.h}}
+\doxysubsubsection{X\_FLAG\_NOT\_SET}
+{\footnotesize\ttfamily \label{ip_8h_a489f48bf647b5369c396107de3b3d0fb} 
+\#define X\+\_\+\+FLAG\+\_\+\+NOT\+\_\+\+SET~0}
+
+
+
+Definition at line \textbf{ 90} of file \textbf{ ip.\+h}.
+
+
+
+\doxysubsection{Function Documentation}
+\index{ip.h@{ip.h}!computeDifferentiatedServiceField@{computeDifferentiatedServiceField}}
+\index{computeDifferentiatedServiceField@{computeDifferentiatedServiceField}!ip.h@{ip.h}}
+\doxysubsubsection{computeDifferentiatedServiceField()}
+{\footnotesize\ttfamily \label{ip_8h_aecc6d445713e6155af8274afedc97cfb} 
+u\+\_\+int8\+\_\+t compute\+Differentiated\+Service\+Field (\begin{DoxyParamCaption}\item[{const int}]{\+\_\+dscp}{, }\item[{const int}]{\+\_\+ecn}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the value for the DSF Field by combining the input DSCP and ECN values \index{ip.h@{ip.h}!computeFlagOff@{computeFlagOff}}
+\index{computeFlagOff@{computeFlagOff}!ip.h@{ip.h}}
+\doxysubsubsection{computeFlagOff()}
+{\footnotesize\ttfamily \label{ip_8h_a2b2032e40fea930ae99425bfe898b21b} 
+u\+\_\+int16\+\_\+t compute\+Flag\+Off (\begin{DoxyParamCaption}\item[{const int}]{\+\_\+x}{, }\item[{const int}]{\+\_\+d}{, }\item[{const int}]{\+\_\+m}{, }\item[{const int}]{\+\_\+offset}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the value for the Flags + Fragment Offset field by combining the three input flags into a single value and then combining this single value with the input fragment offset into the final value \index{ip.h@{ip.h}!ControlBits\_decode@{ControlBits\_decode}}
+\index{ControlBits\_decode@{ControlBits\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{ControlBits\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a4c90d05baf882b514233d490e4d1068d} 
+void Control\+Bits\+\_\+decode (\begin{DoxyParamCaption}\item[{struct \textbf{ Control\+Bits} $\ast$}]{\+\_\+cbits}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the Control\+Bit structure with the content of the \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!ControlBits\_fromValue@{ControlBits\_fromValue}}
+\index{ControlBits\_fromValue@{ControlBits\_fromValue}!ip.h@{ip.h}}
+\doxysubsubsection{ControlBits\_fromValue()}
+{\footnotesize\ttfamily \label{ip_8h_aa3a4f1707d9994dac00e21ffb10372fe} 
+void Control\+Bits\+\_\+from\+Value (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+bits}{, }\item[{struct \textbf{ Control\+Bits} $\ast$}]{\+\_\+cbits}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Converts the input integer into \doxyref{Control\+Bits}{p.}{structControlBits}. For example, consider that the Control Bits field is 8 bit long, which means that the greatest number that can fit in is 2$^\wedge$8 -\/ 1. Consdering any number between [0, 2$^\wedge$8), it is possible to convert it into flags just by converting it into binary.
+
+Hence, this function fills each field of the input structure {\ttfamily \+\_\+cbits}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+bits} & a value between 0 and 2$^\wedge$8 -\/ 1 \\
+\hline
+{\em \+\_\+cbits} & a poiter to a \doxyref{Control\+Bits}{p.}{structControlBits} structure \\
+\hline
+\end{DoxyParams}
+\index{ip.h@{ip.h}!ControlBits\_toBin@{ControlBits\_toBin}}
+\index{ControlBits\_toBin@{ControlBits\_toBin}!ip.h@{ip.h}}
+\doxysubsubsection{ControlBits\_toBin()}
+{\footnotesize\ttfamily \label{ip_8h_a5de6a0fba0640949ffab6f7b85aab798} 
+void Control\+Bits\+\_\+to\+Bin (\begin{DoxyParamCaption}\item[{const struct \textbf{ Control\+Bits} $\ast$}]{\+\_\+cbits}{, }\item[{char $\ast$}]{\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Converts the control bits into a string of binary values \index{ip.h@{ip.h}!convertFlagToBin@{convertFlagToBin}}
+\index{convertFlagToBin@{convertFlagToBin}!ip.h@{ip.h}}
+\doxysubsubsection{convertFlagToBin()}
+{\footnotesize\ttfamily \label{ip_8h_a3a9b23b880a9f395228429a7336afa6e} 
+void convert\+Flag\+To\+Bin (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+flags}{, }\item[{char $\ast$}]{\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Converts the IP Header flags into a binary string (i.\+e., 2 -\/$>$ 010) \index{ip.h@{ip.h}!IcmpHeader\_createHeader\_Echo@{IcmpHeader\_createHeader\_Echo}}
+\index{IcmpHeader\_createHeader\_Echo@{IcmpHeader\_createHeader\_Echo}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_createHeader\_Echo()}
+{\footnotesize\ttfamily \label{ip_8h_a5ea3f091b42e90a7221f40c23b5d5470} 
+void Icmp\+Header\+\_\+create\+Header\+\_\+\+Echo (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and fill the header with the Identification and Sequence Number fields \index{ip.h@{ip.h}!IcmpHeader\_createHeader\_Mtu@{IcmpHeader\_createHeader\_Mtu}}
+\index{IcmpHeader\_createHeader\_Mtu@{IcmpHeader\_createHeader\_Mtu}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_createHeader\_Mtu()}
+{\footnotesize\ttfamily \label{ip_8h_a7abcb2538b1139c45d079f2c9d00bf76} 
+void Icmp\+Header\+\_\+create\+Header\+\_\+\+Mtu (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and fill the header with the Next Hop MTU field \index{ip.h@{ip.h}!IcmpHeader\_createHeader\_Redirect@{IcmpHeader\_createHeader\_Redirect}}
+\index{IcmpHeader\_createHeader\_Redirect@{IcmpHeader\_createHeader\_Redirect}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_createHeader\_Redirect()}
+{\footnotesize\ttfamily \label{ip_8h_abcbcc2dc4032f724ac035016489a0a65} 
+void Icmp\+Header\+\_\+create\+Header\+\_\+\+Redirect (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and fill the header with the gateway field \index{ip.h@{ip.h}!IcmpHeader\_createHeader\_Unused@{IcmpHeader\_createHeader\_Unused}}
+\index{IcmpHeader\_createHeader\_Unused@{IcmpHeader\_createHeader\_Unused}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_createHeader\_Unused()}
+{\footnotesize\ttfamily \label{ip_8h_a5d12244f98dd1feb74a3d217e2527622} 
+void Icmp\+Header\+\_\+create\+Header\+\_\+\+Unused (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and fill the header with Unused bytes \index{ip.h@{ip.h}!IcmpHeader\_decode@{IcmpHeader\_decode}}
+\index{IcmpHeader\_decode@{IcmpHeader\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a13b043ff21b58566aa58356f1db0a6d2} 
+void Icmp\+Header\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+hdr}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input bytes into an ICMP Header \index{ip.h@{ip.h}!IcmpHeader\_encode@{IcmpHeader\_encode}}
+\index{IcmpHeader\_encode@{IcmpHeader\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_ae2da9ac9bbdccbdafa56863790a0c041} 
+void Icmp\+Header\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the Icmp Header into a buffer of bytes filling the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer}. Notice that all the elements with size grater than 1 are converted from little-\/endian into big-\/endian (network byte order) \index{ip.h@{ip.h}!IcmpHeader\_encode\_b@{IcmpHeader\_encode\_b}}
+\index{IcmpHeader\_encode\_b@{IcmpHeader\_encode\_b}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_encode\_b()}
+{\footnotesize\ttfamily \label{ip_8h_a79367eda7da658d028ed73c4e7807fa9} 
+\textbf{ Byte\+Buffer} $\ast$ Icmp\+Header\+\_\+encode\+\_\+b (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Perform the encoding as the {\ttfamily Icmp\+Header\+\_\+encode} function and also returns the \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IcmpHeader\_new@{IcmpHeader\_new}}
+\index{IcmpHeader\_new@{IcmpHeader\_new}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a02417ff28e219b3764a3c84079f0a2bd} 
+void Icmp\+Header\+\_\+new (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+hdr}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Return a pointer to an \doxyref{Icmp\+Header}{p.}{structIcmpHeader} struct initialized given the input type \index{ip.h@{ip.h}!IcmpHeader\_printInfo@{IcmpHeader\_printInfo}}
+\index{IcmpHeader\_printInfo@{IcmpHeader\_printInfo}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_printInfo()}
+{\footnotesize\ttfamily \label{ip_8h_ad1d973a7327e1dc3f5c4bdff0dbd56af} 
+void Icmp\+Header\+\_\+print\+Info (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Print all the Header fields with corresponding values \index{ip.h@{ip.h}!IcmpHeader\_printInfo\_Mtu@{IcmpHeader\_printInfo\_Mtu}}
+\index{IcmpHeader\_printInfo\_Mtu@{IcmpHeader\_printInfo\_Mtu}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_printInfo\_Mtu()}
+{\footnotesize\ttfamily \label{ip_8h_abd0cdc94b3ad97bcb0b93df60b87c192} 
+void Icmp\+Header\+\_\+print\+Info\+\_\+\+Mtu (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Prints header information in the case the Mtu format is chosen. This function is already called in Icmp\+Header\+\_\+print\+Info \index{ip.h@{ip.h}!IcmpHeader\_printInfo\_Redirect@{IcmpHeader\_printInfo\_Redirect}}
+\index{IcmpHeader\_printInfo\_Redirect@{IcmpHeader\_printInfo\_Redirect}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_printInfo\_Redirect()}
+{\footnotesize\ttfamily \label{ip_8h_aafbc860a9097ae4af9476dfc87555e7a} 
+void Icmp\+Header\+\_\+print\+Info\+\_\+\+Redirect (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Prints header information in the case the Echo Req/\+Rep format is chosen. This function is already called in Icmp\+Header\+\_\+print\+Info \index{ip.h@{ip.h}!IcmpHeader\_printInfo\_Unused@{IcmpHeader\_printInfo\_Unused}}
+\index{IcmpHeader\_printInfo\_Unused@{IcmpHeader\_printInfo\_Unused}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_printInfo\_Unused()}
+{\footnotesize\ttfamily \label{ip_8h_ae6424bcca7b80a1d944bf3d96183de6d} 
+void Icmp\+Header\+\_\+print\+Info\+\_\+\+Unused (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Prints header information in the case the Redirect header format is chosen. This function is already called in Icmp\+Header\+\_\+print\+Info \index{ip.h@{ip.h}!IcmpHeader\_setChecksum@{IcmpHeader\_setChecksum}}
+\index{IcmpHeader\_setChecksum@{IcmpHeader\_setChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_aa89b16da357ca8b168356fb43296a60b} 
+void Icmp\+Header\+\_\+set\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Checksum field of the ICMP header with the input checksum \index{ip.h@{ip.h}!IcmpHeader\_setCode@{IcmpHeader\_setCode}}
+\index{IcmpHeader\_setCode@{IcmpHeader\_setCode}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setCode()}
+{\footnotesize\ttfamily \label{ip_8h_adf4659a022d04e9d74a33d95b91aaa92} 
+void Icmp\+Header\+\_\+set\+Code (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Code field of the ICMP header with the input Code \index{ip.h@{ip.h}!IcmpHeader\_setGateway@{IcmpHeader\_setGateway}}
+\index{IcmpHeader\_setGateway@{IcmpHeader\_setGateway}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setGateway()}
+{\footnotesize\ttfamily \label{ip_8h_a7adc94541801fdbdbb30c62502a7c360} 
+void Icmp\+Header\+\_\+set\+Gateway (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+gateway}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Gateway field of the ICMP header with the input gateway address if the given ICMP Type corresponds to the correct ICMP Header format. If it is not, then an error is raise and the process exit with failure \index{ip.h@{ip.h}!IcmpHeader\_setIdentifier@{IcmpHeader\_setIdentifier}}
+\index{IcmpHeader\_setIdentifier@{IcmpHeader\_setIdentifier}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setIdentifier()}
+{\footnotesize\ttfamily \label{ip_8h_aed7a2a2995328968571e439df8b00a6a} 
+void Icmp\+Header\+\_\+set\+Identifier (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Identifier field of the ICMP header with the input identifier if the given ICMP Type corresponds to the correct ICMP Header format. If it is not, then an error is raise and the process exit with failure \index{ip.h@{ip.h}!IcmpHeader\_setNextHopMtu@{IcmpHeader\_setNextHopMtu}}
+\index{IcmpHeader\_setNextHopMtu@{IcmpHeader\_setNextHopMtu}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setNextHopMtu()}
+{\footnotesize\ttfamily \label{ip_8h_af110d5fc83666150c3da3e5a2694ca1c} 
+void Icmp\+Header\+\_\+set\+Next\+Hop\+Mtu (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+mtu}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Next Hop MTU for Destination Unreachable message with Fragmentation Needed \index{ip.h@{ip.h}!IcmpHeader\_setSequenceNumber@{IcmpHeader\_setSequenceNumber}}
+\index{IcmpHeader\_setSequenceNumber@{IcmpHeader\_setSequenceNumber}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setSequenceNumber()}
+{\footnotesize\ttfamily \label{ip_8h_af94badef5f51406f350418a18049131a} 
+void Icmp\+Header\+\_\+set\+Sequence\+Number (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+seqnum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Sequence Number field of the ICMP header with the input sequence number if the given ICMP Type corresponds to the correct ICMP Header format. If it is not, then an error is raise and the process exit with failure \index{ip.h@{ip.h}!IcmpHeader\_setType@{IcmpHeader\_setType}}
+\index{IcmpHeader\_setType@{IcmpHeader\_setType}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpHeader\_setType()}
+{\footnotesize\ttfamily \label{ip_8h_a1facbdedd1c1580f3b0063481ecb82da} 
+void Icmp\+Header\+\_\+set\+Type (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Type field of the ICMP header with the input Type \index{ip.h@{ip.h}!IcmpPacket\_decode@{IcmpPacket\_decode}}
+\index{IcmpPacket\_decode@{IcmpPacket\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a65dc92b7bd3681f283756a5ca06fd707} 
+\textbf{ Icmp\+Packet} $\ast$ Icmp\+Packet\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into a ICMP Packet \index{ip.h@{ip.h}!IcmpPacket\_delete@{IcmpPacket\_delete}}
+\index{IcmpPacket\_delete@{IcmpPacket\_delete}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_delete()}
+{\footnotesize\ttfamily \label{ip_8h_ade167e5b1e2dee4e2d286c51f9c7f7ef} 
+void Icmp\+Packet\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the ICMP Packet \index{ip.h@{ip.h}!IcmpPacket\_encode@{IcmpPacket\_encode}}
+\index{IcmpPacket\_encode@{IcmpPacket\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a32d04b3044d2090eddc6ff435e95009c} 
+\textbf{ Byte\+Buffer} $\ast$ Icmp\+Packet\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and Encodes the entire ICMP Packet into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IcmpPacket\_encode\_b@{IcmpPacket\_encode\_b}}
+\index{IcmpPacket\_encode\_b@{IcmpPacket\_encode\_b}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_encode\_b()}
+{\footnotesize\ttfamily \label{ip_8h_a37ea2dd3412234b50e613fa9700febc9} 
+void Icmp\+Packet\+\_\+encode\+\_\+b (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encodes the entire ICMP Packet into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IcmpPacket\_fillHeader\_Echo@{IcmpPacket\_fillHeader\_Echo}}
+\index{IcmpPacket\_fillHeader\_Echo@{IcmpPacket\_fillHeader\_Echo}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_fillHeader\_Echo()}
+{\footnotesize\ttfamily \label{ip_8h_a4fad35cecec536b51e194f1ebe1459f9} 
+void Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Echo (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+seqnum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the Header of the ICMP Packet with the Code, Identifier and Sequence Number. This version of the {\ttfamily fill\+Header} function is reserved for ICMP Header with 32 bits divided into Identifier (16 bits) and Sequence Number (16 bits). \index{ip.h@{ip.h}!IcmpPacket\_fillHeader\_Mtu@{IcmpPacket\_fillHeader\_Mtu}}
+\index{IcmpPacket\_fillHeader\_Mtu@{IcmpPacket\_fillHeader\_Mtu}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_fillHeader\_Mtu()}
+{\footnotesize\ttfamily \label{ip_8h_a81997d47efff36e19b784c2fe9722693} 
+void Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Mtu (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the header of the ICMP with 32 of Optinal datas divided into\+: 16 unused (zeros) bits and remaining 16 bits used for some generic purpose, like MTU Path Discovery.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+data} & Represents the Next Hop MTU \\
+\hline
+\end{DoxyParams}
+\index{ip.h@{ip.h}!IcmpPacket\_fillHeader\_Redirect@{IcmpPacket\_fillHeader\_Redirect}}
+\index{IcmpPacket\_fillHeader\_Redirect@{IcmpPacket\_fillHeader\_Redirect}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_fillHeader\_Redirect()}
+{\footnotesize\ttfamily \label{ip_8h_ae814035f6ed80b4eb1ad384cc0430c07} 
+void Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Redirect (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+gateway}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the Header of the ICMP Packet with the Code and the Gateway. This version of the {\ttfamily fill\+Header} function is reserved for ICMP Header with 32 bits for the gateway address \index{ip.h@{ip.h}!IcmpPacket\_fillHeader\_Unused@{IcmpPacket\_fillHeader\_Unused}}
+\index{IcmpPacket\_fillHeader\_Unused@{IcmpPacket\_fillHeader\_Unused}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_fillHeader\_Unused()}
+{\footnotesize\ttfamily \label{ip_8h_a667b5ddffe3e5f86b40e8ade32d63946} 
+void Icmp\+Packet\+\_\+fill\+Header\+\_\+\+Unused (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the Header of the ICMP Packet with the Code. This version of the {\ttfamily fill\+Header} function is reserved for ICMP Header with 32 bits unused \index{ip.h@{ip.h}!IcmpPacket\_fillPayload@{IcmpPacket\_fillPayload}}
+\index{IcmpPacket\_fillPayload@{IcmpPacket\_fillPayload}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_fillPayload()}
+{\footnotesize\ttfamily \label{ip_8h_a1d950d457ab58d628a8e692ec5264c2c} 
+void Icmp\+Packet\+\_\+fill\+Payload (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the ICMP Packet payload with input buffer and set a new size \index{ip.h@{ip.h}!IcmpPacket\_getPacketSize@{IcmpPacket\_getPacketSize}}
+\index{IcmpPacket\_getPacketSize@{IcmpPacket\_getPacketSize}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_getPacketSize()}
+{\footnotesize\ttfamily \label{ip_8h_a2de54e185fee1bedb31c2cc0e1401d87} 
+size\+\_\+t Icmp\+Packet\+\_\+get\+Packet\+Size (\begin{DoxyParamCaption}\item[{const \textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the entire size of the ICMP Packet (Header + Payload) \index{ip.h@{ip.h}!IcmpPacket\_new@{IcmpPacket\_new}}
+\index{IcmpPacket\_new@{IcmpPacket\_new}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a3288ebdac0a87f448293e34b5e000d55} 
+\textbf{ Icmp\+Packet} $\ast$ Icmp\+Packet\+\_\+new (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a new ICMP Packet initialized according to input Type and Payload Size \index{ip.h@{ip.h}!IcmpPacket\_new\_tnc@{IcmpPacket\_new\_tnc}}
+\index{IcmpPacket\_new\_tnc@{IcmpPacket\_new\_tnc}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_new\_tnc()}
+{\footnotesize\ttfamily \label{ip_8h_af339bf64d17c7b1c8de8b1371cde4fa9} 
+\textbf{ Icmp\+Packet} $\ast$ Icmp\+Packet\+\_\+new\+\_\+tnc (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a new ICMP Packet initialized according to input Type \index{ip.h@{ip.h}!IcmpPacket\_setHeader@{IcmpPacket\_setHeader}}
+\index{IcmpPacket\_setHeader@{IcmpPacket\_setHeader}!ip.h@{ip.h}}
+\doxysubsubsection{IcmpPacket\_setHeader()}
+{\footnotesize\ttfamily \label{ip_8h_ada447feeaf19b246e81de6c71f54f2dc} 
+void Icmp\+Packet\+\_\+set\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Icmp\+Header} $\ast$}]{\+\_\+hdr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new Header for the ICMP Packet. \index{ip.h@{ip.h}!IpHeader\_decode@{IpHeader\_decode}}
+\index{IpHeader\_decode@{IpHeader\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a62798d4c10cc08f6d508001327ea144a} 
+void Ip\+Header\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into an IP Header \index{ip.h@{ip.h}!IpHeader\_encode@{IpHeader\_encode}}
+\index{IpHeader\_encode@{IpHeader\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_ad41138f479db5e5fe21835cb3a6a6cb6} 
+\textbf{ Byte\+Buffer} $\ast$ Ip\+Header\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the IP header into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} and returns the \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IpHeader\_encode\_b@{IpHeader\_encode\_b}}
+\index{IpHeader\_encode\_b@{IpHeader\_encode\_b}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_encode\_b()}
+{\footnotesize\ttfamily \label{ip_8h_aa9d6f532322db9174a0bb9109ba42c08} 
+void Ip\+Header\+\_\+encode\+\_\+b (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the IP header into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IpHeader\_getDSCP@{IpHeader\_getDSCP}}
+\index{IpHeader\_getDSCP@{IpHeader\_getDSCP}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getDSCP()}
+{\footnotesize\ttfamily \label{ip_8h_a8ee3feb12d787fbd649d548ffea40d84} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+DSCP (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the Differentiated Service Code Point from the DSF field \index{ip.h@{ip.h}!IpHeader\_getECN@{IpHeader\_getECN}}
+\index{IpHeader\_getECN@{IpHeader\_getECN}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getECN()}
+{\footnotesize\ttfamily \label{ip_8h_afcfd9460b735a32f95ea3680b24f04c5} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+ECN (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the Explicit Congestion Notification value from the DSF field \index{ip.h@{ip.h}!IpHeader\_getFlags@{IpHeader\_getFlags}}
+\index{IpHeader\_getFlags@{IpHeader\_getFlags}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getFlags()}
+{\footnotesize\ttfamily \label{ip_8h_ad2011069eb0bfcf09a5f7f14b4afa4ac} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+Flags (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the Flags value from the IP Header \index{ip.h@{ip.h}!IpHeader\_getFragmentOffset@{IpHeader\_getFragmentOffset}}
+\index{IpHeader\_getFragmentOffset@{IpHeader\_getFragmentOffset}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getFragmentOffset()}
+{\footnotesize\ttfamily \label{ip_8h_a0ed6c4f29b9cacaa345c0a76bb9e7f93} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+Fragment\+Offset (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the Fragment Offset value from the IP Header \index{ip.h@{ip.h}!IpHeader\_getInternetHeaderLength@{IpHeader\_getInternetHeaderLength}}
+\index{IpHeader\_getInternetHeaderLength@{IpHeader\_getInternetHeaderLength}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getInternetHeaderLength()}
+{\footnotesize\ttfamily \label{ip_8h_a3ab88127838ea8ea05fbd5931ed9d3ce} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+Internet\+Header\+Length (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the IHL Value from the IP Header \index{ip.h@{ip.h}!IpHeader\_getVersion@{IpHeader\_getVersion}}
+\index{IpHeader\_getVersion@{IpHeader\_getVersion}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_getVersion()}
+{\footnotesize\ttfamily \label{ip_8h_abb9e30429b5f8c92eb2a70832b141fa6} 
+u\+\_\+int8\+\_\+t Ip\+Header\+\_\+get\+Version (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the version of the IP \index{ip.h@{ip.h}!IpHeader\_printInfo@{IpHeader\_printInfo}}
+\index{IpHeader\_printInfo@{IpHeader\_printInfo}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_printInfo()}
+{\footnotesize\ttfamily \label{ip_8h_a5da91ff0345097b7359d370134a625db} 
+void Ip\+Header\+\_\+print\+Info (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Prints the IP Header fields and values \index{ip.h@{ip.h}!IpHeader\_setDestinationAddress@{IpHeader\_setDestinationAddress}}
+\index{IpHeader\_setDestinationAddress@{IpHeader\_setDestinationAddress}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setDestinationAddress()}
+{\footnotesize\ttfamily \label{ip_8h_a53628400a1ee2a26f70050bb2afb9aca} 
+void Ip\+Header\+\_\+set\+Destination\+Address (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+dstaddress}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Destination Address field of the IP Header \index{ip.h@{ip.h}!IpHeader\_setDifferentiatedServiceField@{IpHeader\_setDifferentiatedServiceField}}
+\index{IpHeader\_setDifferentiatedServiceField@{IpHeader\_setDifferentiatedServiceField}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setDifferentiatedServiceField()}
+{\footnotesize\ttfamily \label{ip_8h_a1e8b54c54d75412d84652a0d37624666} 
+void Ip\+Header\+\_\+set\+Differentiated\+Service\+Field (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+dsf}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the differentiated Service field In the IP Header \index{ip.h@{ip.h}!IpHeader\_setFlagOffField@{IpHeader\_setFlagOffField}}
+\index{IpHeader\_setFlagOffField@{IpHeader\_setFlagOffField}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setFlagOffField()}
+{\footnotesize\ttfamily \label{ip_8h_a3ee85dac0815f251939e70a132b367a4} 
+void Ip\+Header\+\_\+set\+Flag\+Off\+Field (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+flagoff}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Flag and the Fragment Offset field \index{ip.h@{ip.h}!IpHeader\_setHeaderChecksum@{IpHeader\_setHeaderChecksum}}
+\index{IpHeader\_setHeaderChecksum@{IpHeader\_setHeaderChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setHeaderChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_a479972685271aacbe719f7a5f53deba8} 
+void Ip\+Header\+\_\+set\+Header\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Checksum of the Header \index{ip.h@{ip.h}!IpHeader\_setIdentfication@{IpHeader\_setIdentfication}}
+\index{IpHeader\_setIdentfication@{IpHeader\_setIdentfication}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setIdentfication()}
+{\footnotesize\ttfamily \label{ip_8h_a8e6c6fff110d539a2bb4c3c8c3713f2f} 
+void Ip\+Header\+\_\+set\+Identfication (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+identification}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Identification field of the IP Header \index{ip.h@{ip.h}!IpHeader\_setProtocol@{IpHeader\_setProtocol}}
+\index{IpHeader\_setProtocol@{IpHeader\_setProtocol}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setProtocol()}
+{\footnotesize\ttfamily \label{ip_8h_a3c21c93af8d42299ae1e29f40708824e} 
+void Ip\+Header\+\_\+set\+Protocol (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+protocol}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Protocol Field \index{ip.h@{ip.h}!IpHeader\_setSourceAddress@{IpHeader\_setSourceAddress}}
+\index{IpHeader\_setSourceAddress@{IpHeader\_setSourceAddress}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setSourceAddress()}
+{\footnotesize\ttfamily \label{ip_8h_a6a6d2ebd3f9a807e0536c589c6eaaa65} 
+void Ip\+Header\+\_\+set\+Source\+Address (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+srcaddres}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the source Address field of the IP Header \index{ip.h@{ip.h}!IpHeader\_setTimeToLive@{IpHeader\_setTimeToLive}}
+\index{IpHeader\_setTimeToLive@{IpHeader\_setTimeToLive}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setTimeToLive()}
+{\footnotesize\ttfamily \label{ip_8h_a5d7fe5ba59eca46d4aec37818111bed2} 
+void Ip\+Header\+\_\+set\+Time\+To\+Live (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+time\+\_\+to\+\_\+live}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the TTL Field \index{ip.h@{ip.h}!IpHeader\_setTotalLength@{IpHeader\_setTotalLength}}
+\index{IpHeader\_setTotalLength@{IpHeader\_setTotalLength}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setTotalLength()}
+{\footnotesize\ttfamily \label{ip_8h_a1d1c2746269bdddd190f56d413d9a735} 
+void Ip\+Header\+\_\+set\+Total\+Length (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+total\+\_\+length}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Total Length field of the IP Header \index{ip.h@{ip.h}!IpHeader\_setVersion@{IpHeader\_setVersion}}
+\index{IpHeader\_setVersion@{IpHeader\_setVersion}!ip.h@{ip.h}}
+\doxysubsubsection{IpHeader\_setVersion()}
+{\footnotesize\ttfamily \label{ip_8h_a4f749c665c3fb310dc52abef8965c1dc} 
+void Ip\+Header\+\_\+set\+Version (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+version}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the IP Version field and the IHL (always 5) field \index{ip.h@{ip.h}!IpPacket\_computeChecksum@{IpPacket\_computeChecksum}}
+\index{IpPacket\_computeChecksum@{IpPacket\_computeChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_computeChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_a0fb568f3062c05af52027227299b689e} 
+void Ip\+Packet\+\_\+compute\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute and set the checksum for TCP/\+UDP/\+ICMP Packet \index{ip.h@{ip.h}!IpPacket\_computeIcmpChecksum@{IpPacket\_computeIcmpChecksum}}
+\index{IpPacket\_computeIcmpChecksum@{IpPacket\_computeIcmpChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_computeIcmpChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_ac6cf58e458b603e07d4d8b0da046037e} 
+u\+\_\+int16\+\_\+t Ip\+Packet\+\_\+compute\+Icmp\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the checksum for an ICMP Packet \index{ip.h@{ip.h}!IpPacket\_computeTcpChecksum@{IpPacket\_computeTcpChecksum}}
+\index{IpPacket\_computeTcpChecksum@{IpPacket\_computeTcpChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_computeTcpChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_a44ae95ec8226690c36c6abd554dac212} 
+u\+\_\+int16\+\_\+t Ip\+Packet\+\_\+compute\+Tcp\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the checksum for a TCP Packet \index{ip.h@{ip.h}!IpPacket\_computeUdpChecksum@{IpPacket\_computeUdpChecksum}}
+\index{IpPacket\_computeUdpChecksum@{IpPacket\_computeUdpChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_computeUdpChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_aa587f3c0d7f24339009be7986c388edd} 
+u\+\_\+int16\+\_\+t Ip\+Packet\+\_\+compute\+Udp\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the checksum for an UDP Packet \index{ip.h@{ip.h}!IpPacket\_decodeIcmp@{IpPacket\_decodeIcmp}}
+\index{IpPacket\_decodeIcmp@{IpPacket\_decodeIcmp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_decodeIcmp()}
+{\footnotesize\ttfamily \label{ip_8h_adef3816458b031ab4ad805dee1671e33} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+decode\+Icmp (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input ICMP \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into an ICMP packet \index{ip.h@{ip.h}!IpPacket\_decodeTcp@{IpPacket\_decodeTcp}}
+\index{IpPacket\_decodeTcp@{IpPacket\_decodeTcp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_decodeTcp()}
+{\footnotesize\ttfamily \label{ip_8h_a6bfaa03a87fc77d97d9d852df8992583} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+decode\+Tcp (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input TCP \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into an IP packet \index{ip.h@{ip.h}!IpPacket\_decodeUdp@{IpPacket\_decodeUdp}}
+\index{IpPacket\_decodeUdp@{IpPacket\_decodeUdp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_decodeUdp()}
+{\footnotesize\ttfamily \label{ip_8h_ad0fbecbc994d557470fe52a193983e94} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+decode\+Udp (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input UDP \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into an IP packet \index{ip.h@{ip.h}!IpPacket\_delete@{IpPacket\_delete}}
+\index{IpPacket\_delete@{IpPacket\_delete}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_delete()}
+{\footnotesize\ttfamily \label{ip_8h_a17e8397735df5e64e19d2e3b4a493a6a} 
+void Ip\+Packet\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input IP Packet \index{ip.h@{ip.h}!IpPacket\_encode@{IpPacket\_encode}}
+\index{IpPacket\_encode@{IpPacket\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a60689cd63063919174e09e75b95e17e9} 
+\textbf{ Byte\+Buffer} $\ast$ Ip\+Packet\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the IP Packet into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!IpPacket\_fillHeader@{IpPacket\_fillHeader}}
+\index{IpPacket\_fillHeader@{IpPacket\_fillHeader}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_fillHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a4fbb843684ce0d2aaf57742fb01085b4} 
+void Ip\+Packet\+\_\+fill\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+version}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+dsf}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+tlen}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+flagoff}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+ttl}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+protocol}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+srcaddr}{, }\item[{const u\+\_\+int32\+\_\+t}]{\+\_\+dstaddr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the header of the input IP Packet with all the values given as input \index{ip.h@{ip.h}!IpPacket\_getIcmpPacket@{IpPacket\_getIcmpPacket}}
+\index{IpPacket\_getIcmpPacket@{IpPacket\_getIcmpPacket}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_getIcmpPacket()}
+{\footnotesize\ttfamily \label{ip_8h_ad03a705eaacd5ed9ce89258c5c7c8a70} 
+\textbf{ Icmp\+Packet} $\ast$ Ip\+Packet\+\_\+get\+Icmp\+Packet (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the ICMP Packet encoded into the IP Packet Payload \index{ip.h@{ip.h}!IpPacket\_getPayloadSize@{IpPacket\_getPayloadSize}}
+\index{IpPacket\_getPayloadSize@{IpPacket\_getPayloadSize}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_getPayloadSize()}
+{\footnotesize\ttfamily \label{ip_8h_a7b9faf5df75153eea745ced5e9abb0af} 
+u\+\_\+int16\+\_\+t Ip\+Packet\+\_\+get\+Payload\+Size (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the payload size of the input IP Packet \index{ip.h@{ip.h}!IpPacket\_getTcpPacket@{IpPacket\_getTcpPacket}}
+\index{IpPacket\_getTcpPacket@{IpPacket\_getTcpPacket}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_getTcpPacket()}
+{\footnotesize\ttfamily \label{ip_8h_a2495ec04dc66544e0b3449c38414090b} 
+\textbf{ Tcp\+Packet} $\ast$ Ip\+Packet\+\_\+get\+Tcp\+Packet (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the TCP Packet encoded into the IP Packet Payload \index{ip.h@{ip.h}!IpPacket\_getUdpPacket@{IpPacket\_getUdpPacket}}
+\index{IpPacket\_getUdpPacket@{IpPacket\_getUdpPacket}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_getUdpPacket()}
+{\footnotesize\ttfamily \label{ip_8h_aa2da36c321b9f31a39e3241b190ea4a2} 
+\textbf{ Udp\+Packet} $\ast$ Ip\+Packet\+\_\+get\+Udp\+Packet (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the UDP Packet encoded into the IP Packet Payload \index{ip.h@{ip.h}!IpPacket\_new@{IpPacket\_new}}
+\index{IpPacket\_new@{IpPacket\_new}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a206d7163cf2f1469ff1d8000f582f37a} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+new (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and returns a new empty IP packet \index{ip.h@{ip.h}!IpPacket\_newIcmp@{IpPacket\_newIcmp}}
+\index{IpPacket\_newIcmp@{IpPacket\_newIcmp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_newIcmp()}
+{\footnotesize\ttfamily \label{ip_8h_a9c9fd19551ae8aa4b7b14c681012308a} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+new\+Icmp (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns a new ICMP Packet \index{ip.h@{ip.h}!IpPacket\_newTcp@{IpPacket\_newTcp}}
+\index{IpPacket\_newTcp@{IpPacket\_newTcp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_newTcp()}
+{\footnotesize\ttfamily \label{ip_8h_a39fc29a756832e5199ffd5b658ff1a72} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+new\+Tcp (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns a new TCP Packet \index{ip.h@{ip.h}!IpPacket\_newUdp@{IpPacket\_newUdp}}
+\index{IpPacket\_newUdp@{IpPacket\_newUdp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_newUdp()}
+{\footnotesize\ttfamily \label{ip_8h_a5180ad9b68a0ed7beb2f1010e583c77e} 
+\textbf{ Ip\+Packet} $\ast$ Ip\+Packet\+\_\+new\+Udp (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns a new UDP packet \index{ip.h@{ip.h}!IpPacket\_setHeader@{IpPacket\_setHeader}}
+\index{IpPacket\_setHeader@{IpPacket\_setHeader}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_setHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a6900485f1f8a0073b3065ea4d4a9f114} 
+void Ip\+Packet\+\_\+set\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Ip\+Header} $\ast$}]{\+\_\+iphdr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new header for the IP Packet. \index{ip.h@{ip.h}!IpPacket\_wrapIcmp@{IpPacket\_wrapIcmp}}
+\index{IpPacket\_wrapIcmp@{IpPacket\_wrapIcmp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_wrapIcmp()}
+{\footnotesize\ttfamily \label{ip_8h_a6d99e3e062f7517a1fc8a7c6ec6ce0e3} 
+void Ip\+Packet\+\_\+wrap\+Icmp (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+icmppckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Wrap the input ICMP Packet into the payload of the input IP Packet \index{ip.h@{ip.h}!IpPacket\_wrapTcp@{IpPacket\_wrapTcp}}
+\index{IpPacket\_wrapTcp@{IpPacket\_wrapTcp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_wrapTcp()}
+{\footnotesize\ttfamily \label{ip_8h_ab133550c8b276b5a6888ff7a3dc03172} 
+void Ip\+Packet\+\_\+wrap\+Tcp (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+tcppckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Wrap the input TCP Packet into the payload of the input IP Packet \index{ip.h@{ip.h}!IpPacket\_wrapUdp@{IpPacket\_wrapUdp}}
+\index{IpPacket\_wrapUdp@{IpPacket\_wrapUdp}!ip.h@{ip.h}}
+\doxysubsubsection{IpPacket\_wrapUdp()}
+{\footnotesize\ttfamily \label{ip_8h_a12baf04b8e760cd0e67a034dc769f6a2} 
+void Ip\+Packet\+\_\+wrap\+Udp (\begin{DoxyParamCaption}\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+udppckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Wrap the input UDP Packet into the payload of the input IP Packet \index{ip.h@{ip.h}!PseudoHeader\_create@{PseudoHeader\_create}}
+\index{PseudoHeader\_create@{PseudoHeader\_create}!ip.h@{ip.h}}
+\doxysubsubsection{PseudoHeader\_create()}
+{\footnotesize\ttfamily \label{ip_8h_aebd718cdcf1d034777070a5b6ad61bde} 
+void Pseudo\+Header\+\_\+create (\begin{DoxyParamCaption}\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{, }\item[{struct \textbf{ Pseudo\+Header} $\ast$}]{\+\_\+ph}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the pseudo header with the information from the Ip Packet Header and a size value, corresponding of the size of the entire underlying packet. \index{ip.h@{ip.h}!PseudoHeader\_encode@{PseudoHeader\_encode}}
+\index{PseudoHeader\_encode@{PseudoHeader\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{PseudoHeader\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a3bca53adb0f551568cd84072b5c48a95} 
+void Pseudo\+Header\+\_\+encode (\begin{DoxyParamCaption}\item[{const struct \textbf{ Pseudo\+Header} $\ast$}]{\+\_\+ph}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} with informations from the Pseudo Header \index{ip.h@{ip.h}!TcpHeader\_addTcpOption@{TcpHeader\_addTcpOption}}
+\index{TcpHeader\_addTcpOption@{TcpHeader\_addTcpOption}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_addTcpOption()}
+{\footnotesize\ttfamily \label{ip_8h_a432738077f5e7c83010a0d98bfffc491} 
+void Tcp\+Header\+\_\+add\+Tcp\+Option (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+kind}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+length}{, }\item[{void $\ast$}]{\+\_\+value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Construct and add a new Tcp Option to the current Tcp Header. \index{ip.h@{ip.h}!TcpHeader\_addTcpOption\_o@{TcpHeader\_addTcpOption\_o}}
+\index{TcpHeader\_addTcpOption\_o@{TcpHeader\_addTcpOption\_o}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_addTcpOption\_o()}
+{\footnotesize\ttfamily \label{ip_8h_a469d656c28039c6ea6bd90cab6104e33} 
+void Tcp\+Header\+\_\+add\+Tcp\+Option\+\_\+o (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Tcp\+Option} $\ast$}]{\+\_\+opt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Add a Tcp Option to the current Tcp Header. \index{ip.h@{ip.h}!TcpHeader\_decode@{TcpHeader\_decode}}
+\index{TcpHeader\_decode@{TcpHeader\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a55c522e97711f0d84e57fd24dcfcd6dc} 
+void Tcp\+Header\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into a TCP Header \index{ip.h@{ip.h}!TcpHeader\_deleteTcpOptions@{TcpHeader\_deleteTcpOptions}}
+\index{TcpHeader\_deleteTcpOptions@{TcpHeader\_deleteTcpOptions}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_deleteTcpOptions()}
+{\footnotesize\ttfamily \label{ip_8h_a45df399ab7a57f3077408cbccf25171a} 
+void Tcp\+Header\+\_\+delete\+Tcp\+Options (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for each Tcp Option \index{ip.h@{ip.h}!TcpHeader\_encode@{TcpHeader\_encode}}
+\index{TcpHeader\_encode@{TcpHeader\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a0c879a506f78089a93697a4074ad6ad0} 
+void Tcp\+Header\+\_\+encode (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the input TCP Header into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!TcpHeader\_getHeaderSize@{TcpHeader\_getHeaderSize}}
+\index{TcpHeader\_getHeaderSize@{TcpHeader\_getHeaderSize}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_getHeaderSize()}
+{\footnotesize\ttfamily \label{ip_8h_a116bd803c810443a7cbc8cd978bc2163} 
+size\+\_\+t Tcp\+Header\+\_\+get\+Header\+Size (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the size of the tcp header \index{ip.h@{ip.h}!TcpHeader\_mergeControlBits@{TcpHeader\_mergeControlBits}}
+\index{TcpHeader\_mergeControlBits@{TcpHeader\_mergeControlBits}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_mergeControlBits()}
+{\footnotesize\ttfamily \label{ip_8h_a5e453a5a7d660cd01b06c8475bd5ba11} 
+u\+\_\+int8\+\_\+t Tcp\+Header\+\_\+merge\+Control\+Bits (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Sum all the control bits together in an unsigned short value \index{ip.h@{ip.h}!TcpHeader\_printInfo@{TcpHeader\_printInfo}}
+\index{TcpHeader\_printInfo@{TcpHeader\_printInfo}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_printInfo()}
+{\footnotesize\ttfamily \label{ip_8h_ae9034a07f74153ede153c352884c7cfd} 
+void Tcp\+Header\+\_\+print\+Info (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Print informations about the header, in particular all the fields \index{ip.h@{ip.h}!TcpHeader\_setAcknowledgmentFieldFlag@{TcpHeader\_setAcknowledgmentFieldFlag}}
+\index{TcpHeader\_setAcknowledgmentFieldFlag@{TcpHeader\_setAcknowledgmentFieldFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setAcknowledgmentFieldFlag()}
+{\footnotesize\ttfamily \label{ip_8h_aafc4c5810b56d8619ba217dab6c2808a} 
+void Tcp\+Header\+\_\+set\+Acknowledgment\+Field\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the ACK flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setAcknowledgmentNumber@{TcpHeader\_setAcknowledgmentNumber}}
+\index{TcpHeader\_setAcknowledgmentNumber@{TcpHeader\_setAcknowledgmentNumber}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setAcknowledgmentNumber()}
+{\footnotesize\ttfamily \label{ip_8h_a98c8f903697606f6a8a20fc278c321a4} 
+void Tcp\+Header\+\_\+set\+Acknowledgment\+Number (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int32\+\_\+t}]{\+\_\+acknum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Acknowledgment number of input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_setChecksum@{TcpHeader\_setChecksum}}
+\index{TcpHeader\_setChecksum@{TcpHeader\_setChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_aa49c4ae5e49afa8daaf815bab0eb24a8} 
+void Tcp\+Header\+\_\+set\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the checksum of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setCongestionWindowReducedFlag@{TcpHeader\_setCongestionWindowReducedFlag}}
+\index{TcpHeader\_setCongestionWindowReducedFlag@{TcpHeader\_setCongestionWindowReducedFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setCongestionWindowReducedFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a35f49af35493ecad4df5c49c5eb171bb} 
+void Tcp\+Header\+\_\+set\+Congestion\+Window\+Reduced\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the CWR Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setControlBits@{TcpHeader\_setControlBits}}
+\index{TcpHeader\_setControlBits@{TcpHeader\_setControlBits}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setControlBits()}
+{\footnotesize\ttfamily \label{ip_8h_aa5847cc54898334ebf8cb69121725db5} 
+void Tcp\+Header\+\_\+set\+Control\+Bits (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Control\+Bits}}]{\+\_\+cbits}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Controlbits of the input header from the input Control bits structure \index{ip.h@{ip.h}!TcpHeader\_setDataOffset@{TcpHeader\_setDataOffset}}
+\index{TcpHeader\_setDataOffset@{TcpHeader\_setDataOffset}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setDataOffset()}
+{\footnotesize\ttfamily \label{ip_8h_a0e45922e00ee3e27b943faab6e8d17e5} 
+void Tcp\+Header\+\_\+set\+Data\+Offset (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int8\+\_\+t}]{\+\_\+srcport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Data Offset of the input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_setDestinationPort@{TcpHeader\_setDestinationPort}}
+\index{TcpHeader\_setDestinationPort@{TcpHeader\_setDestinationPort}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setDestinationPort()}
+{\footnotesize\ttfamily \label{ip_8h_a56d58f9e80d0a95de808e51ddfe46b7d} 
+void Tcp\+Header\+\_\+set\+Destination\+Port (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the destination port of the input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_setECNEchoFlag@{TcpHeader\_setECNEchoFlag}}
+\index{TcpHeader\_setECNEchoFlag@{TcpHeader\_setECNEchoFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setECNEchoFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a1484c847d1d4dff5561d8e64567b6ab2} 
+void Tcp\+Header\+\_\+set\+ECNEcho\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the ECE Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setFinFlag@{TcpHeader\_setFinFlag}}
+\index{TcpHeader\_setFinFlag@{TcpHeader\_setFinFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setFinFlag()}
+{\footnotesize\ttfamily \label{ip_8h_aa082537e6d6fc18f8c7fd32a25ab0428} 
+void Tcp\+Header\+\_\+set\+Fin\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the FIN Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setPushFunctionFlag@{TcpHeader\_setPushFunctionFlag}}
+\index{TcpHeader\_setPushFunctionFlag@{TcpHeader\_setPushFunctionFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setPushFunctionFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a99d4380fc8b41f521da8db0fe9a0c34b} 
+void Tcp\+Header\+\_\+set\+Push\+Function\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the PSH Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setResetConnectionFlag@{TcpHeader\_setResetConnectionFlag}}
+\index{TcpHeader\_setResetConnectionFlag@{TcpHeader\_setResetConnectionFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setResetConnectionFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a06857349fd598ebd3406a8198847e0d2} 
+void Tcp\+Header\+\_\+set\+Reset\+Connection\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the RST Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setSequenceNumber@{TcpHeader\_setSequenceNumber}}
+\index{TcpHeader\_setSequenceNumber@{TcpHeader\_setSequenceNumber}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setSequenceNumber()}
+{\footnotesize\ttfamily \label{ip_8h_aa21bc3c22e4cd39ade80582fe34dd127} 
+void Tcp\+Header\+\_\+set\+Sequence\+Number (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int32\+\_\+t}]{\+\_\+seqnum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the sequence number of the input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_setSourcePort@{TcpHeader\_setSourcePort}}
+\index{TcpHeader\_setSourcePort@{TcpHeader\_setSourcePort}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setSourcePort()}
+{\footnotesize\ttfamily \label{ip_8h_a5d924896acab8403f2a2595baae821ea} 
+void Tcp\+Header\+\_\+set\+Source\+Port (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the source port of the input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_setSynchronizeFlag@{TcpHeader\_setSynchronizeFlag}}
+\index{TcpHeader\_setSynchronizeFlag@{TcpHeader\_setSynchronizeFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setSynchronizeFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a4fcbbc96d34049e0d65004015983b55c} 
+void Tcp\+Header\+\_\+set\+Synchronize\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the SYN Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setTcpOptions@{TcpHeader\_setTcpOptions}}
+\index{TcpHeader\_setTcpOptions@{TcpHeader\_setTcpOptions}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setTcpOptions()}
+{\footnotesize\ttfamily \label{ip_8h_ae8dabf644a7b1072fca7b08d17c4bf59} 
+void Tcp\+Header\+\_\+set\+Tcp\+Options (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Tcp\+Option} $\ast$}]{\+\_\+opts}{[$\,$], }\item[{const int}]{\+\_\+n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new set of options into the tcp header. {\ttfamily \+\_\+n} is the length of the vector \index{ip.h@{ip.h}!TcpHeader\_setUrgentPointer@{TcpHeader\_setUrgentPointer}}
+\index{TcpHeader\_setUrgentPointer@{TcpHeader\_setUrgentPointer}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setUrgentPointer()}
+{\footnotesize\ttfamily \label{ip_8h_ab00d598425a76358afeadf818eab1636} 
+void Tcp\+Header\+\_\+set\+Urgent\+Pointer (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+urgpntr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the urgent pointer field of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setUrgentPointerFlag@{TcpHeader\_setUrgentPointerFlag}}
+\index{TcpHeader\_setUrgentPointerFlag@{TcpHeader\_setUrgentPointerFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setUrgentPointerFlag()}
+{\footnotesize\ttfamily \label{ip_8h_ad0ad13835a0e2a32c042dd8b1a631987} 
+void Tcp\+Header\+\_\+set\+Urgent\+Pointer\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the URG Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_setWindowSize@{TcpHeader\_setWindowSize}}
+\index{TcpHeader\_setWindowSize@{TcpHeader\_setWindowSize}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_setWindowSize()}
+{\footnotesize\ttfamily \label{ip_8h_acc3c14384ff37ed488c944ac0db2d7d4} 
+void Tcp\+Header\+\_\+set\+Window\+Size (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+window}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Window size of the input Tcp Header \index{ip.h@{ip.h}!TcpHeader\_unsetAcknowledgmentFieldFlag@{TcpHeader\_unsetAcknowledgmentFieldFlag}}
+\index{TcpHeader\_unsetAcknowledgmentFieldFlag@{TcpHeader\_unsetAcknowledgmentFieldFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetAcknowledgmentFieldFlag()}
+{\footnotesize\ttfamily \label{ip_8h_ad91167f9cdbf23c153bbaa5b47f6b55f} 
+void Tcp\+Header\+\_\+unset\+Acknowledgment\+Field\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the ACK flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetCongestionWindowReducedFlag@{TcpHeader\_unsetCongestionWindowReducedFlag}}
+\index{TcpHeader\_unsetCongestionWindowReducedFlag@{TcpHeader\_unsetCongestionWindowReducedFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetCongestionWindowReducedFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a5ac896c431bc9d46610eca39d64641a1} 
+void Tcp\+Header\+\_\+unset\+Congestion\+Window\+Reduced\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the CWR Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetECNEchoFlag@{TcpHeader\_unsetECNEchoFlag}}
+\index{TcpHeader\_unsetECNEchoFlag@{TcpHeader\_unsetECNEchoFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetECNEchoFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a901e67609b08bf85b8b9d7c7e64bd6f4} 
+void Tcp\+Header\+\_\+unset\+ECNEcho\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the ECE Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetFinFlag@{TcpHeader\_unsetFinFlag}}
+\index{TcpHeader\_unsetFinFlag@{TcpHeader\_unsetFinFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetFinFlag()}
+{\footnotesize\ttfamily \label{ip_8h_af3e854b4197f957bea7c1120248dcaed} 
+void Tcp\+Header\+\_\+unset\+Fin\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the FIN Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetPushFunctionFlag@{TcpHeader\_unsetPushFunctionFlag}}
+\index{TcpHeader\_unsetPushFunctionFlag@{TcpHeader\_unsetPushFunctionFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetPushFunctionFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a8474a5ddf657c48f671be7d50aceb5eb} 
+void Tcp\+Header\+\_\+unset\+Push\+Function\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the PSH Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetResetConnectionFlag@{TcpHeader\_unsetResetConnectionFlag}}
+\index{TcpHeader\_unsetResetConnectionFlag@{TcpHeader\_unsetResetConnectionFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetResetConnectionFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a3cac0357cd0dce50d520692bea8d78bb} 
+void Tcp\+Header\+\_\+unset\+Reset\+Connection\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the RST Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetSynchronizeFlag@{TcpHeader\_unsetSynchronizeFlag}}
+\index{TcpHeader\_unsetSynchronizeFlag@{TcpHeader\_unsetSynchronizeFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetSynchronizeFlag()}
+{\footnotesize\ttfamily \label{ip_8h_afbf6d0302be2f26bdf48674292d40b4d} 
+void Tcp\+Header\+\_\+unset\+Synchronize\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the SYN Flag of the input TCP Header \index{ip.h@{ip.h}!TcpHeader\_unsetUrgentPointerFlag@{TcpHeader\_unsetUrgentPointerFlag}}
+\index{TcpHeader\_unsetUrgentPointerFlag@{TcpHeader\_unsetUrgentPointerFlag}!ip.h@{ip.h}}
+\doxysubsubsection{TcpHeader\_unsetUrgentPointerFlag()}
+{\footnotesize\ttfamily \label{ip_8h_a3b3bd71c752aa14b6711ae865b900395} 
+void Tcp\+Header\+\_\+unset\+Urgent\+Pointer\+Flag (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Unset the URG Flag of the input TCP Header \index{ip.h@{ip.h}!TcpOption\_new@{TcpOption\_new}}
+\index{TcpOption\_new@{TcpOption\_new}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a96b87110433531bedb0f6c6a18ebe09e} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new (\begin{DoxyParamCaption}\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+kind}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+length}{, }\item[{void $\ast$}]{\+\_\+value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create a new \doxyref{Tcp\+Option}{p.}{structTcpOption} given the values as input. Notice that {\ttfamily \+\_\+value} can be NULL. \index{ip.h@{ip.h}!TcpOption\_newMss@{TcpOption\_newMss}}
+\index{TcpOption\_newMss@{TcpOption\_newMss}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_newMss()}
+{\footnotesize\ttfamily \label{ip_8h_a20d0aa8fa70399cf64d387bdc2a8dab1} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new\+Mss (\begin{DoxyParamCaption}\item[{u\+\_\+int16\+\_\+t}]{\+\_\+mss}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create the TCP Option reserved for Maximum Segment Size \index{ip.h@{ip.h}!TcpOption\_newNoOperation@{TcpOption\_newNoOperation}}
+\index{TcpOption\_newNoOperation@{TcpOption\_newNoOperation}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_newNoOperation()}
+{\footnotesize\ttfamily \label{ip_8h_a3a55af5ecd73b489edf1b2a8224c9ff9} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new\+No\+Operation (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create the TCP Option reserved for No-\/operation \index{ip.h@{ip.h}!TcpOption\_newSackPermitted@{TcpOption\_newSackPermitted}}
+\index{TcpOption\_newSackPermitted@{TcpOption\_newSackPermitted}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_newSackPermitted()}
+{\footnotesize\ttfamily \label{ip_8h_a82dcfb07a385b077d17c1529131fde6b} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new\+Sack\+Permitted (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create the TCP Option reserved for SACK Permitted \index{ip.h@{ip.h}!TcpOption\_newTimestamps@{TcpOption\_newTimestamps}}
+\index{TcpOption\_newTimestamps@{TcpOption\_newTimestamps}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_newTimestamps()}
+{\footnotesize\ttfamily \label{ip_8h_ae0f87d07d9a22a92d2b9b7f81b7d8bd7} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new\+Timestamps (\begin{DoxyParamCaption}\item[{u\+\_\+int32\+\_\+t}]{\+\_\+tsval}{, }\item[{u\+\_\+int32\+\_\+t}]{\+\_\+tsecr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create the TCP Option reserved for Timestamps \index{ip.h@{ip.h}!TcpOption\_newWindowScale@{TcpOption\_newWindowScale}}
+\index{TcpOption\_newWindowScale@{TcpOption\_newWindowScale}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOption\_newWindowScale()}
+{\footnotesize\ttfamily \label{ip_8h_a8ecdeb8c8814e9922beb9d8740510810} 
+struct \textbf{ Tcp\+Option} $\ast$ Tcp\+Option\+\_\+new\+Window\+Scale (\begin{DoxyParamCaption}\item[{u\+\_\+int8\+\_\+t}]{\+\_\+scale}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create the TCP Option reserved for Window Scale \index{ip.h@{ip.h}!TcpOptions\_copy@{TcpOptions\_copy}}
+\index{TcpOptions\_copy@{TcpOptions\_copy}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOptions\_copy()}
+{\footnotesize\ttfamily \label{ip_8h_af801c88068a0084b6116b4cf3a836325} 
+void Tcp\+Options\+\_\+copy (\begin{DoxyParamCaption}\item[{struct \textbf{ Tcp\+Option} $\ast$$\ast$}]{\+\_\+src}{, }\item[{struct \textbf{ Tcp\+Option} $\ast$$\ast$}]{\+\_\+dst}{, }\item[{const int}]{\+\_\+n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Copy all the options in {\ttfamily \+\_\+src} into {\ttfamily \+\_\+dst}. \index{ip.h@{ip.h}!TcpOptions\_delete@{TcpOptions\_delete}}
+\index{TcpOptions\_delete@{TcpOptions\_delete}!ip.h@{ip.h}}
+\doxysubsubsection{TcpOptions\_delete()}
+{\footnotesize\ttfamily \label{ip_8h_a30fa889f868ba06ca6518dc497633266} 
+void Tcp\+Options\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \textbf{ Tcp\+Option} $\ast$$\ast$}]{\+\_\+opts}{, }\item[{const int}]{\+\_\+n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocate for each Tcp Option \index{ip.h@{ip.h}!TcpPacket\_decode@{TcpPacket\_decode}}
+\index{TcpPacket\_decode@{TcpPacket\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_ae91d434f6b2ba0986bce87f7e4733bb3} 
+\textbf{ Tcp\+Packet} $\ast$ Tcp\+Packet\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decodes a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into a TCP Packet \index{ip.h@{ip.h}!TcpPacket\_delete@{TcpPacket\_delete}}
+\index{TcpPacket\_delete@{TcpPacket\_delete}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_delete()}
+{\footnotesize\ttfamily \label{ip_8h_a7b80f7295e3ba4b5727795740194c0f7} 
+void Tcp\+Packet\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the TCP Packet \index{ip.h@{ip.h}!TcpPacket\_encode@{TcpPacket\_encode}}
+\index{TcpPacket\_encode@{TcpPacket\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a5126829113308863a5aeb8d7d416d69f} 
+\textbf{ Byte\+Buffer} $\ast$ Tcp\+Packet\+\_\+encode (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encodes the TCP Packet into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} and returns it \index{ip.h@{ip.h}!TcpPacket\_encode\_b@{TcpPacket\_encode\_b}}
+\index{TcpPacket\_encode\_b@{TcpPacket\_encode\_b}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_encode\_b()}
+{\footnotesize\ttfamily \label{ip_8h_adbb2bc4b7f471ecacf0c7cc65a829780} 
+void Tcp\+Packet\+\_\+encode\+\_\+b (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encodes the TCP Packet into the input \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!TcpPacket\_fillHeader@{TcpPacket\_fillHeader}}
+\index{TcpPacket\_fillHeader@{TcpPacket\_fillHeader}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_fillHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a40b54951cbbd2482f5c14a6f7547bff2} 
+void Tcp\+Packet\+\_\+fill\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{, }\item[{u\+\_\+int32\+\_\+t}]{\+\_\+seqnum}{, }\item[{u\+\_\+int32\+\_\+t}]{\+\_\+acknum}{, }\item[{u\+\_\+int8\+\_\+t}]{\+\_\+offset}{, }\item[{struct \textbf{ Control\+Bits}}]{\+\_\+cbits}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+window}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{, }\item[{u\+\_\+int16\+\_\+t}]{\+\_\+urgpntr}{, }\item[{struct \textbf{ Tcp\+Option} $\ast$}]{\+\_\+opts}{[$\,$], }\item[{int}]{\+\_\+nopts}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the TCP Packet Header with all values given as input \index{ip.h@{ip.h}!TcpPacket\_fillPayload@{TcpPacket\_fillPayload}}
+\index{TcpPacket\_fillPayload@{TcpPacket\_fillPayload}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_fillPayload()}
+{\footnotesize\ttfamily \label{ip_8h_ad84dcaa98479d8901016ac30a1781fcc} 
+void Tcp\+Packet\+\_\+fill\+Payload (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the TCP Packet payload with the given input data of input size \index{ip.h@{ip.h}!TcpPacket\_getNumberOfOptions@{TcpPacket\_getNumberOfOptions}}
+\index{TcpPacket\_getNumberOfOptions@{TcpPacket\_getNumberOfOptions}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_getNumberOfOptions()}
+{\footnotesize\ttfamily \label{ip_8h_a1b892a8a629a660269230756ab5d2193} 
+int Tcp\+Packet\+\_\+get\+Number\+Of\+Options (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the number of Tcp options in the header \index{ip.h@{ip.h}!TcpPacket\_getOptionSize\_bytes@{TcpPacket\_getOptionSize\_bytes}}
+\index{TcpPacket\_getOptionSize\_bytes@{TcpPacket\_getOptionSize\_bytes}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_getOptionSize\_bytes()}
+{\footnotesize\ttfamily \label{ip_8h_aaaf4bfb05f74937f371b6a8aacbec946} 
+u\+\_\+int8\+\_\+t Tcp\+Packet\+\_\+get\+Option\+Size\+\_\+bytes (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the number of bytes of the header assigned to Tcp Options \index{ip.h@{ip.h}!TcpPacket\_getPacketSize@{TcpPacket\_getPacketSize}}
+\index{TcpPacket\_getPacketSize@{TcpPacket\_getPacketSize}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_getPacketSize()}
+{\footnotesize\ttfamily \label{ip_8h_ab8f45ebdefe89f6d3f46b4a834aaf1ad} 
+size\+\_\+t Tcp\+Packet\+\_\+get\+Packet\+Size (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the size of the packet Header + Payload \index{ip.h@{ip.h}!TcpPacket\_new@{TcpPacket\_new}}
+\index{TcpPacket\_new@{TcpPacket\_new}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a5a10845bce85315985b0dd9d94ba5607} 
+\textbf{ Tcp\+Packet} $\ast$ Tcp\+Packet\+\_\+new (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns a new TCP Packet \index{ip.h@{ip.h}!TcpPacket\_new\_s@{TcpPacket\_new\_s}}
+\index{TcpPacket\_new\_s@{TcpPacket\_new\_s}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_new\_s()}
+{\footnotesize\ttfamily \label{ip_8h_afc2575e71ca1d3718892b54c96b6963c} 
+\textbf{ Tcp\+Packet} $\ast$ Tcp\+Packet\+\_\+new\+\_\+s (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create and returns a new TCP Packet given the input size \index{ip.h@{ip.h}!TcpPacket\_setHeader@{TcpPacket\_setHeader}}
+\index{TcpPacket\_setHeader@{TcpPacket\_setHeader}!ip.h@{ip.h}}
+\doxysubsubsection{TcpPacket\_setHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a53925654c36199fd0cb9f826e198e55a} 
+void Tcp\+Packet\+\_\+set\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Tcp\+Header} $\ast$}]{\+\_\+hdr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a new header to the TCP Packet copying the input one into the packet \index{ip.h@{ip.h}!UdpHeader\_decode@{UdpHeader\_decode}}
+\index{UdpHeader\_decode@{UdpHeader\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_ae48edbb718f28d117623392613f7dc40} 
+void Udp\+Header\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into an UDP Header \index{ip.h@{ip.h}!UdpHeader\_encode@{UdpHeader\_encode}}
+\index{UdpHeader\_encode@{UdpHeader\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a38498e2652643d48f1bd97f0f2554969} 
+void Udp\+Header\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the UDP Header into a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} \index{ip.h@{ip.h}!UdpHeader\_encode\_\_@{UdpHeader\_encode\_\_}}
+\index{UdpHeader\_encode\_\_@{UdpHeader\_encode\_\_}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_encode\_\_()}
+{\footnotesize\ttfamily \label{ip_8h_a33650c55c8f2f85eb61116ace0ece114} 
+\textbf{ Byte\+Buffer} $\ast$ Udp\+Header\+\_\+encode\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode and returns the \doxyref{Byte\+Buffer}{p.}{structByteBuffer} containing the UDP header \index{ip.h@{ip.h}!UdpHeader\_printInfo@{UdpHeader\_printInfo}}
+\index{UdpHeader\_printInfo@{UdpHeader\_printInfo}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_printInfo()}
+{\footnotesize\ttfamily \label{ip_8h_a9779c43e195cb34c66ea8047839b9786} 
+void Udp\+Header\+\_\+print\+Info (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Print all the Header fields with current values \index{ip.h@{ip.h}!UdpHeader\_setChecksum@{UdpHeader\_setChecksum}}
+\index{UdpHeader\_setChecksum@{UdpHeader\_setChecksum}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_setChecksum()}
+{\footnotesize\ttfamily \label{ip_8h_a6cad2a4fc49dd09be13e776ecc3b0702} 
+void Udp\+Header\+\_\+set\+Checksum (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Checksum field into the UDP Header \index{ip.h@{ip.h}!UdpHeader\_setDestinationPort@{UdpHeader\_setDestinationPort}}
+\index{UdpHeader\_setDestinationPort@{UdpHeader\_setDestinationPort}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_setDestinationPort()}
+{\footnotesize\ttfamily \label{ip_8h_ac9cd7c33392f18e0fc888606be98f1f5} 
+void Udp\+Header\+\_\+set\+Destination\+Port (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Destination Port field into the UDP Header \index{ip.h@{ip.h}!UdpHeader\_setLength@{UdpHeader\_setLength}}
+\index{UdpHeader\_setLength@{UdpHeader\_setLength}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_setLength()}
+{\footnotesize\ttfamily \label{ip_8h_a1493fbe91f10251384ce52f97bf06cdb} 
+void Udp\+Header\+\_\+set\+Length (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+length}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Length field into the UDP Header \index{ip.h@{ip.h}!UdpHeader\_setSourcePort@{UdpHeader\_setSourcePort}}
+\index{UdpHeader\_setSourcePort@{UdpHeader\_setSourcePort}!ip.h@{ip.h}}
+\doxysubsubsection{UdpHeader\_setSourcePort()}
+{\footnotesize\ttfamily \label{ip_8h_ad0ec7ebe003f28edf796210f8c0924d9} 
+void Udp\+Header\+\_\+set\+Source\+Port (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Source Port field into the UDP Header \index{ip.h@{ip.h}!UdpPacket\_decode@{UdpPacket\_decode}}
+\index{UdpPacket\_decode@{UdpPacket\_decode}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_decode()}
+{\footnotesize\ttfamily \label{ip_8h_a28e733ec68cbe3a61412443c5c4e0e5a} 
+\textbf{ Udp\+Packet} $\ast$ Udp\+Packet\+\_\+decode (\begin{DoxyParamCaption}\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Decode a \doxyref{Byte\+Buffer}{p.}{structByteBuffer} into a UDP Packet \index{ip.h@{ip.h}!UdpPacket\_delete@{UdpPacket\_delete}}
+\index{UdpPacket\_delete@{UdpPacket\_delete}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_delete()}
+{\footnotesize\ttfamily \label{ip_8h_ac5da22a7f1513c4ec4e2a63ac54dcb1e} 
+void Udp\+Packet\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input UDP Packet \index{ip.h@{ip.h}!UdpPacket\_encode@{UdpPacket\_encode}}
+\index{UdpPacket\_encode@{UdpPacket\_encode}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_encode()}
+{\footnotesize\ttfamily \label{ip_8h_a1c8ddb4a737b952339110db3e36517dd} 
+\textbf{ Byte\+Buffer} $\ast$ Udp\+Packet\+\_\+encode (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the UDP Packet into a Byte Buffer \index{ip.h@{ip.h}!UdpPacket\_encode\_b@{UdpPacket\_encode\_b}}
+\index{UdpPacket\_encode\_b@{UdpPacket\_encode\_b}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_encode\_b()}
+{\footnotesize\ttfamily \label{ip_8h_a27f2dd55d5e55d0b5b34ce1336f943c9} 
+void Udp\+Packet\+\_\+encode\+\_\+b (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Byte\+Buffer} $\ast$}]{\+\_\+buffer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Encode the UDP Packet into a Byte Buffer given as input \index{ip.h@{ip.h}!UdpPacket\_fillHeader@{UdpPacket\_fillHeader}}
+\index{UdpPacket\_fillHeader@{UdpPacket\_fillHeader}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_fillHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a112a175b841f6518a5e615c5d8c30f1c} 
+void Udp\+Packet\+\_\+fill\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+length}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+checksum}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the header of the input UDP Packet given all its fields \index{ip.h@{ip.h}!UdpPacket\_fillPayload@{UdpPacket\_fillPayload}}
+\index{UdpPacket\_fillPayload@{UdpPacket\_fillPayload}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_fillPayload()}
+{\footnotesize\ttfamily \label{ip_8h_ac5b2584fc1520a3ba45941514f7e046e} 
+void Udp\+Packet\+\_\+fill\+Payload (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+data}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the payload of the UDP Packet with the input buffer of input size \index{ip.h@{ip.h}!UdpPacket\_getPacketSize@{UdpPacket\_getPacketSize}}
+\index{UdpPacket\_getPacketSize@{UdpPacket\_getPacketSize}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_getPacketSize()}
+{\footnotesize\ttfamily \label{ip_8h_a0d22b5ec2d7a40600ea48e4215cd342b} 
+size\+\_\+t Udp\+Packet\+\_\+get\+Packet\+Size (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the size of the entire packet \index{ip.h@{ip.h}!UdpPacket\_getPayloadSize@{UdpPacket\_getPayloadSize}}
+\index{UdpPacket\_getPayloadSize@{UdpPacket\_getPayloadSize}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_getPayloadSize()}
+{\footnotesize\ttfamily \label{ip_8h_a1ecbc8aa778d87c568060315b420985f} 
+size\+\_\+t Udp\+Packet\+\_\+get\+Payload\+Size (\begin{DoxyParamCaption}\item[{const \textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the size of the payload inside the input UDP Packet \index{ip.h@{ip.h}!UdpPacket\_new@{UdpPacket\_new}}
+\index{UdpPacket\_new@{UdpPacket\_new}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_new()}
+{\footnotesize\ttfamily \label{ip_8h_a26224fa0a4c6e150af6e697511cdeac9} 
+\textbf{ Udp\+Packet} $\ast$ Udp\+Packet\+\_\+new (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and returns a new UDP Packet \index{ip.h@{ip.h}!UdpPacket\_new\_s@{UdpPacket\_new\_s}}
+\index{UdpPacket\_new\_s@{UdpPacket\_new\_s}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_new\_s()}
+{\footnotesize\ttfamily \label{ip_8h_a6cf1aeadb68a05bdb2e3e936e738f709} 
+\textbf{ Udp\+Packet} $\ast$ Udp\+Packet\+\_\+new\+\_\+s (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and returns a new UDP Packet with the payload initialized with input size \index{ip.h@{ip.h}!UdpPacket\_setHeader@{UdpPacket\_setHeader}}
+\index{UdpPacket\_setHeader@{UdpPacket\_setHeader}!ip.h@{ip.h}}
+\doxysubsubsection{UdpPacket\_setHeader()}
+{\footnotesize\ttfamily \label{ip_8h_a8870523af6e26b22f7a2dfb5ef6d8f49} 
+void Udp\+Packet\+\_\+set\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Udp\+Header} $\ast$}]{\+\_\+hdr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the header of the udp packet. 

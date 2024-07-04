@@ -1,0 +1,240 @@
+\doxysection{includes/sender.h File Reference}
+\label{sender_8h}\index{includes/sender.h@{includes/sender.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}ip.\+h"{}}\newline
+{\ttfamily \#include "{}utils/crafter.\+h"{}}\newline
+{\ttfamily \#include "{}utils/buffer.\+h"{}}\newline
+{\ttfamily \#include "{}utils/timer.\+h"{}}\newline
+{\ttfamily \#include "{}utils/net.\+h"{}}\newline
+{\ttfamily \#include "{}utils/synch.\+h"{}}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Ip\+Parameters}
+\item 
+struct \textbf{ Icmp\+Parameters}
+\item 
+struct \textbf{ Tcp\+Parameters}
+\item 
+struct \textbf{ Sender}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ handle\+\_\+error}(msg,  fd)~do \{ perror(msg); shutdown(fd, 2); exit(EXIT\+\_\+\+FAILURE); \} while (0)
+\item 
+\#define \textbf{ LOOPBACK}~"{}127.\+0.\+0.\+1"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ Sender} $\ast$ \textbf{ Sender\+\_\+new} (const char $\ast$\+\_\+interface, const char $\ast$\+\_\+dstaddr, char $\ast$\+\_\+gateway, const u\+\_\+int16\+\_\+t \+\_\+dstport, const char $\ast$\+\_\+proto, const bool \+\_\+verbose) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(1
+\item 
+\textbf{ Sender} void \textbf{ Sender\+\_\+delete} (\textbf{ Sender} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+set\+Timer} (\textbf{ Sender} $\ast$\+\_\+self, struct \textbf{ Timer} $\ast$\+\_\+timer) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+set\+Mtu} (\textbf{ Sender} $\ast$\+\_\+self, const int \+\_\+mtu) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+set\+Ip\+Flags} (\textbf{ Sender} $\ast$\+\_\+self, int \+\_\+d, int \+\_\+m) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+set\+Tcp\+Options} (\textbf{ Sender} $\ast$\+\_\+self, struct \textbf{ Tcp\+Option} $\ast$$\ast$\+\_\+opts, const int \+\_\+n) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+sendto} (\textbf{ Sender} $\ast$\+\_\+self, const \textbf{ Ip\+Packet} $\ast$\+\_\+pckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+bsendto} (\textbf{ Sender} $\ast$\+\_\+self, const char $\ast$\+\_\+buffer, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+sendc} (\textbf{ Sender} $\ast$\+\_\+self, const \textbf{ Ip\+Packet} $\ast$\+\_\+pckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+print\+Info} (const \textbf{ Sender} $\ast$\+\_\+self) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+get\+Destination\+IP} (const \textbf{ Sender} $\ast$\+\_\+self, char $\ast$\+\_\+out) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Sender\+\_\+create\+Ip\+Packet} (\textbf{ Sender} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+id) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Sender\+\_\+fill\+Ip\+Header} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Ip\+Packet} $\ast$\+\_\+pckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+fill\+Icmp\+Header} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Icmp\+Packet} $\ast$\+\_\+pckt, const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+fill\+Udp\+Header} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Udp\+Packet} $\ast$\+\_\+pckt, const u\+\_\+int16\+\_\+t \+\_\+srcport) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+fill\+Tcp\+Header} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Tcp\+Packet} $\ast$\+\_\+pckt, const u\+\_\+int16\+\_\+t \+\_\+port, const u\+\_\+int8\+\_\+t \+\_\+offset, const u\+\_\+int16\+\_\+t \+\_\+window, const u\+\_\+int16\+\_\+t \+\_\+urgpntr) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Sender\+\_\+craft\+Icmp} (\textbf{ Sender} $\ast$\+\_\+self, const u\+\_\+int8\+\_\+t \+\_\+type, const u\+\_\+int8\+\_\+t \+\_\+code, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(1))) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Sender\+\_\+craft\+Udp} (\textbf{ Sender} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+port, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(1))) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+\textbf{ Ip\+Packet} $\ast$ \textbf{ Sender\+\_\+craft\+Tcp} (\textbf{ Sender} $\ast$\+\_\+self, const u\+\_\+int16\+\_\+t \+\_\+srcport, const u\+\_\+int8\+\_\+t \+\_\+offset, const u\+\_\+int16\+\_\+t \+\_\+window, const u\+\_\+int16\+\_\+t \+\_\+urgpntr, const char $\ast$\+\_\+payload, const size\+\_\+t \+\_\+size) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull(1))) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Sender\+\_\+send} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Ip\+Packet} $\ast$\+\_\+pckt, const double \+\_\+delay) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+update\+Icmp\+Packet} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Ip\+Packet} $\ast$\+\_\+pckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\item 
+void \textbf{ Sender\+\_\+update\+Udp\+Packet} (\textbf{ Sender} $\ast$\+\_\+self, \textbf{ Ip\+Packet} $\ast$\+\_\+pckt) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\index{sender.h@{sender.h}!handle\_error@{handle\_error}}
+\index{handle\_error@{handle\_error}!sender.h@{sender.h}}
+\doxysubsubsection{handle\_error}
+{\footnotesize\ttfamily \label{sender_8h_a0cc2553fc33439e268eb69c020a61dee} 
+\#define handle\+\_\+error(\begin{DoxyParamCaption}\item[{}]{msg}{, }\item[{}]{fd}{}\end{DoxyParamCaption})~do \{ perror(msg); shutdown(fd, 2); exit(EXIT\+\_\+\+FAILURE); \} while (0)}
+
+
+
+Definition at line \textbf{ 39} of file \textbf{ sender.\+h}.
+
+\index{sender.h@{sender.h}!LOOPBACK@{LOOPBACK}}
+\index{LOOPBACK@{LOOPBACK}!sender.h@{sender.h}}
+\doxysubsubsection{LOOPBACK}
+{\footnotesize\ttfamily \label{sender_8h_a30d320577ff090a9ab718cb45fff6781} 
+\#define LOOPBACK~"{}127.\+0.\+0.\+1"{}}
+
+
+
+Definition at line \textbf{ 40} of file \textbf{ sender.\+h}.
+
+
+
+\doxysubsection{Function Documentation}
+\index{sender.h@{sender.h}!Sender\_bsendto@{Sender\_bsendto}}
+\index{Sender\_bsendto@{Sender\_bsendto}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_bsendto()}
+{\footnotesize\ttfamily \label{sender_8h_ac53f152a3dd220d9fcb7bcc739b307fb} 
+void Sender\+\_\+bsendto (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const char $\ast$}]{\+\_\+buffer}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Send the input Buffer of input size. The buffer should be the encoding of the Ip packet previously constructed. \index{sender.h@{sender.h}!Sender\_craftIcmp@{Sender\_craftIcmp}}
+\index{Sender\_craftIcmp@{Sender\_craftIcmp}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_craftIcmp()}
+{\footnotesize\ttfamily \label{sender_8h_ad4e4af6987f4dbff2146dfd5193fe910} 
+\textbf{ Ip\+Packet} $\ast$ Sender\+\_\+craft\+Icmp (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft a complete Ip Packet containing an ICMP Packet \index{sender.h@{sender.h}!Sender\_craftTcp@{Sender\_craftTcp}}
+\index{Sender\_craftTcp@{Sender\_craftTcp}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_craftTcp()}
+{\footnotesize\ttfamily \label{sender_8h_a0b5901ad18c3e407f0a7c168ee3951dd} 
+\textbf{ Ip\+Packet} $\ast$ Sender\+\_\+craft\+Tcp (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+offset}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+window}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+urgpntr}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft a complete Ip Packet containing a TCP Packet \index{sender.h@{sender.h}!Sender\_craftUdp@{Sender\_craftUdp}}
+\index{Sender\_craftUdp@{Sender\_craftUdp}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_craftUdp()}
+{\footnotesize\ttfamily \label{sender_8h_ae20ad9757fb7aa54e3901c28e10f0708} 
+\textbf{ Ip\+Packet} $\ast$ Sender\+\_\+craft\+Udp (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+port}{, }\item[{const char $\ast$}]{\+\_\+payload}{, }\item[{const size\+\_\+t}]{\+\_\+size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Craft a complete Ip Packet containing an UDP Packet \index{sender.h@{sender.h}!Sender\_createIpPacket@{Sender\_createIpPacket}}
+\index{Sender\_createIpPacket@{Sender\_createIpPacket}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_createIpPacket()}
+{\footnotesize\ttfamily \label{sender_8h_aab5e6dd9846d9f2b578012835ef2c8e3} 
+\textbf{ Ip\+Packet} $\ast$ Sender\+\_\+create\+Ip\+Packet (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create an IP Packet with some informations from the current \doxyref{Sender}{p.}{structSender} \index{sender.h@{sender.h}!Sender\_delete@{Sender\_delete}}
+\index{Sender\_delete@{Sender\_delete}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_delete()}
+{\footnotesize\ttfamily \label{sender_8h_ab67b58acc13bcf005a9b76e57fd65446} 
+\textbf{ Sender} void Sender\+\_\+delete (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the input \doxyref{Sender}{p.}{structSender} \index{sender.h@{sender.h}!Sender\_fillIcmpHeader@{Sender\_fillIcmpHeader}}
+\index{Sender\_fillIcmpHeader@{Sender\_fillIcmpHeader}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_fillIcmpHeader()}
+{\footnotesize\ttfamily \label{sender_8h_a8b2018b4b3c01d23694e0720fb84ebc8} 
+void Sender\+\_\+fill\+Icmp\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Icmp\+Packet} $\ast$}]{\+\_\+pckt}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+type}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the input ICMP packet header with information from the \doxyref{Sender}{p.}{structSender} object \index{sender.h@{sender.h}!Sender\_fillIpHeader@{Sender\_fillIpHeader}}
+\index{Sender\_fillIpHeader@{Sender\_fillIpHeader}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_fillIpHeader()}
+{\footnotesize\ttfamily \label{sender_8h_a47eeed7aa176467b7c3548cdbdf82eb9} 
+void Sender\+\_\+fill\+Ip\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the input IP packet header with information from the \doxyref{Sender}{p.}{structSender} object \index{sender.h@{sender.h}!Sender\_fillTcpHeader@{Sender\_fillTcpHeader}}
+\index{Sender\_fillTcpHeader@{Sender\_fillTcpHeader}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_fillTcpHeader()}
+{\footnotesize\ttfamily \label{sender_8h_a5c64f29e2b685a4436feb303375cff54} 
+void Sender\+\_\+fill\+Tcp\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Tcp\+Packet} $\ast$}]{\+\_\+pckt}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+port}{, }\item[{const u\+\_\+int8\+\_\+t}]{\+\_\+offset}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+window}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+urgpntr}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the header of the input TCP Packet with informations from the \doxyref{Sender}{p.}{structSender} object and in input \index{sender.h@{sender.h}!Sender\_fillUdpHeader@{Sender\_fillUdpHeader}}
+\index{Sender\_fillUdpHeader@{Sender\_fillUdpHeader}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_fillUdpHeader()}
+{\footnotesize\ttfamily \label{sender_8h_ad6a1cc1c4f27d8ae09e79f568a5a0114} 
+void Sender\+\_\+fill\+Udp\+Header (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Udp\+Packet} $\ast$}]{\+\_\+pckt}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+srcport}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fill the header of the input Udp Packet with informations from the \doxyref{Sender}{p.}{structSender} object \index{sender.h@{sender.h}!Sender\_getDestinationIP@{Sender\_getDestinationIP}}
+\index{Sender\_getDestinationIP@{Sender\_getDestinationIP}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_getDestinationIP()}
+{\footnotesize\ttfamily \label{sender_8h_adbe645fe06a9f62f84e67ac58d1ed953} 
+void Sender\+\_\+get\+Destination\+IP (\begin{DoxyParamCaption}\item[{const \textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{char $\ast$}]{\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Returns the string containing the destination IP \index{sender.h@{sender.h}!Sender\_new@{Sender\_new}}
+\index{Sender\_new@{Sender\_new}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_new()}
+{\footnotesize\ttfamily \label{sender_8h_a773f5b92fc2e4b1f5cebf9c4370fd9d6} 
+\textbf{ Sender} $\ast$ Sender\+\_\+new (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+interface}{, }\item[{const char $\ast$}]{\+\_\+dstaddr}{, }\item[{char $\ast$}]{\+\_\+gateway}{, }\item[{const u\+\_\+int16\+\_\+t}]{\+\_\+dstport}{, }\item[{const char $\ast$}]{\+\_\+proto}{, }\item[{const bool}]{\+\_\+verbose}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Creates and returns a new \doxyref{Sender}{p.}{structSender}. Notice that the {\ttfamily \+\_\+gateway} parameter can be NULL. \index{sender.h@{sender.h}!Sender\_printInfo@{Sender\_printInfo}}
+\index{Sender\_printInfo@{Sender\_printInfo}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_printInfo()}
+{\footnotesize\ttfamily \label{sender_8h_a317708ee11133260ffd823c523ba446f} 
+void Sender\+\_\+print\+Info (\begin{DoxyParamCaption}\item[{const \textbf{ Sender} $\ast$}]{\+\_\+self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Print some informations about the input \doxyref{Sender}{p.}{structSender} \index{sender.h@{sender.h}!Sender\_send@{Sender\_send}}
+\index{Sender\_send@{Sender\_send}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_send()}
+{\footnotesize\ttfamily \label{sender_8h_af729e17e3ce336f39c3c3b46385d89c4} 
+void Sender\+\_\+send (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{, }\item[{const double}]{\+\_\+delay}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Send the input Ip packet \index{sender.h@{sender.h}!Sender\_sendc@{Sender\_sendc}}
+\index{Sender\_sendc@{Sender\_sendc}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_sendc()}
+{\footnotesize\ttfamily \label{sender_8h_af2175bc0ffc8ed57b88305d52de5cc0c} 
+void Sender\+\_\+sendc (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Continuously send the input IP Packet \index{sender.h@{sender.h}!Sender\_sendto@{Sender\_sendto}}
+\index{Sender\_sendto@{Sender\_sendto}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_sendto()}
+{\footnotesize\ttfamily \label{sender_8h_a90d92d510d8d774097822d58ea44ba9b} 
+void Sender\+\_\+sendto (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const \textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Send the input IP Packet \index{sender.h@{sender.h}!Sender\_setIpFlags@{Sender\_setIpFlags}}
+\index{Sender\_setIpFlags@{Sender\_setIpFlags}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_setIpFlags()}
+{\footnotesize\ttfamily \label{sender_8h_a098d2afc90384e157efb85c913385459} 
+void Sender\+\_\+set\+Ip\+Flags (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{int}]{\+\_\+d}{, }\item[{int}]{\+\_\+m}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the flags to the Ip Parameters structure \index{sender.h@{sender.h}!Sender\_setMtu@{Sender\_setMtu}}
+\index{Sender\_setMtu@{Sender\_setMtu}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_setMtu()}
+{\footnotesize\ttfamily \label{sender_8h_a81713e317126ef764e409f42b778776b} 
+void Sender\+\_\+set\+Mtu (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{const int}]{\+\_\+mtu}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set the Maximum Transmission Unit into the \doxyref{Sender}{p.}{structSender} \index{sender.h@{sender.h}!Sender\_setTcpOptions@{Sender\_setTcpOptions}}
+\index{Sender\_setTcpOptions@{Sender\_setTcpOptions}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_setTcpOptions()}
+{\footnotesize\ttfamily \label{sender_8h_accdf283b5b52596dc32959af2da9b497} 
+void Sender\+\_\+set\+Tcp\+Options (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Tcp\+Option} $\ast$$\ast$}]{\+\_\+opts}{, }\item[{const int}]{\+\_\+n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a number of TCP Options into the \doxyref{Sender}{p.}{structSender} Tcp Parameters \index{sender.h@{sender.h}!Sender\_setTimer@{Sender\_setTimer}}
+\index{Sender\_setTimer@{Sender\_setTimer}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_setTimer()}
+{\footnotesize\ttfamily \label{sender_8h_ac322c5e98a9c8bf2c9b7ad4521607222} 
+void Sender\+\_\+set\+Timer (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{struct \textbf{ Timer} $\ast$}]{\+\_\+timer}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Set a timer into the sender \index{sender.h@{sender.h}!Sender\_updateIcmpPacket@{Sender\_updateIcmpPacket}}
+\index{Sender\_updateIcmpPacket@{Sender\_updateIcmpPacket}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_updateIcmpPacket()}
+{\footnotesize\ttfamily \label{sender_8h_a2c466f40969eba72c1cbacea03b3a7c8} 
+void Sender\+\_\+update\+Icmp\+Packet (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Update the input Packet identifier. If the Icmp input is for echo requests it also updates the identifier and the sequence number of the icmp header. \index{sender.h@{sender.h}!Sender\_updateUdpPacket@{Sender\_updateUdpPacket}}
+\index{Sender\_updateUdpPacket@{Sender\_updateUdpPacket}!sender.h@{sender.h}}
+\doxysubsubsection{Sender\_updateUdpPacket()}
+{\footnotesize\ttfamily \label{sender_8h_a190adb6342084af9ba0571de8d19c21e} 
+void Sender\+\_\+update\+Udp\+Packet (\begin{DoxyParamCaption}\item[{\textbf{ Sender} $\ast$}]{\+\_\+self}{, }\item[{\textbf{ Ip\+Packet} $\ast$}]{\+\_\+pckt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Update the input Packet identifier and recompute the checksum 

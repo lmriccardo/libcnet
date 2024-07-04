@@ -1,0 +1,152 @@
+\doxysection{sender.\+h}
+\label{sender_8h_source}\index{includes/sender.h@{includes/sender.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ sender.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ header\ file\ contains\ the\ declaration\ of\ the\ Sender\ object\ \ \ \ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ and\ a\ number\ of\ functions\ used\ to\ interact\ with\ it.\ The\ Sender\ struct\ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *****\ \ \ contains\ some\ useful\ information\ in\ order\ to\ be\ able\ to\ craft\ an\ ICMP,\ \ \ \ \ *****}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *****\ \ \ UDP\ or\ TCP\ IP\ Packets\ from\ scratch.\ The\ sender\ can\ also\ be\ syncrhonized\ \ \ \ *****}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *****\ \ \ with\ the\ Receiver,\ so\ that\ RTT\ and\ other\ things\ are\ easily\ computed.\ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#ifndef\ \_SENDER\_H}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ \_SENDER\_H}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <sys/socket.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <netdb.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}ip.h"{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}utils/crafter.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}utils/buffer.h"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}utils/timer.h"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}utils/net.h"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}utils/synch.h"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ handle\_error(msg,\ fd)\ do\ \{\ perror(msg);\ shutdown(fd,\ 2);\ exit(EXIT\_FAILURE);\ \}\ while\ (0)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ LOOPBACK\ "{}127.0.0.1"{}}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }IpParameters}
+\DoxyCodeLine{00049\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_xf;\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_df;\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_mf;\ }
+\DoxyCodeLine{00053\ \ \ \ \ u\_int16\_t\ \_id;\ }
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{struct\ }IcmpParameters}
+\DoxyCodeLine{00061\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ u\_int16\_t\ \_id;\ }
+\DoxyCodeLine{00063\ \ \ \ \ u\_int16\_t\ \_sn;\ }
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }TcpParameters}
+\DoxyCodeLine{00071\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ u\_int32\_t\ \ \ \ \ \ \ \ \ \ \_sn;\ \ \ \ \ }
+\DoxyCodeLine{00073\ \ \ \ \ u\_int32\_t\ \ \ \ \ \ \ \ \ \ \_an;\ \ \ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{struct\ }ControlBits\ \_cbits;\ \ }
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{struct\ }TcpOption*\ \_opts[TCP\_OPTIONS\_MAX\_SIZE];\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_numOfOptions;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00078\ \};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }}
+\DoxyCodeLine{00103\ \{}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{char}*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_srcaddress;\ \ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{struct\ }sockaddr\_in\ \ \ \ \_dstaddress;\ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{char}*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_gateway;\ \ \ \ \ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_socket;\ \ \ \ \ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_msgcnt;\ \ \ \ \ \ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{struct\ }protoent*\ \ \ \ \ \ \_proto;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_verbose;\ \ \ \ \ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{struct\ }Timer*\ \ \ \ \ \ \ \ \ \_timer;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mtu;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ sem\_t\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mutex;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_synch;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_sent;\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{struct\ }IpParameters\ \ \ \_ipp;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{struct\ }IcmpParameters\ \_icmpp;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{struct\ }TcpParameters\ \ \_tcpp;\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \}\ Sender;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{extern}\ Sender*\ Sender\_new(}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_interface,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_dstaddr,\ \textcolor{keywordtype}{char}*\ \_gateway,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_dstport,\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_proto,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \_verbose}
+\DoxyCodeLine{00129\ )\ \_\_attribute\_\_((returns\_nonnull))\ \_\_attribute\_\_((nonnull(1,\ 2,\ 5)));}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00134\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_delete(Sender*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00139\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_setTimer(Sender*\ \_self,\ \textcolor{keyword}{struct}\ Timer*\ \_timer)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00144\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_setMtu(Sender*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \_mtu)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00149\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_setIpFlags(Sender*\ \_self,\ \textcolor{keywordtype}{int}\ \_d,\ \textcolor{keywordtype}{int}\ \_m)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_setTcpOptions(Sender*\ \_self,\ \textcolor{keyword}{struct}\ TcpOption**\ \_opts,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \_n)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00159\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_sendto(Sender*\ \_self,\ \textcolor{keyword}{const}\ IpPacket*\ \_pckt)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_bsendto(Sender*\ \_self,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_buffer,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00170\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_sendc(Sender*\ \_self,\ \textcolor{keyword}{const}\ IpPacket*\ \_pckt)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00175\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_printInfo(\textcolor{keyword}{const}\ Sender*\ \_self)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00180\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_getDestinationIP(\textcolor{keyword}{const}\ Sender*\ \_self,\ \textcolor{keywordtype}{char}\ *\_out)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00185\ \textcolor{keyword}{extern}\ IpPacket*\ Sender\_createIpPacket(Sender\ *\_self,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_id)\ \ \_\_attribute\_\_((nonnull))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00190\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_fillIpHeader(Sender*\ \_self,\ IpPacket*\ \_pckt)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00195\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_fillIcmpHeader(Sender*\ \_self,\ IcmpPacket*\ \_pckt,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_type,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_code)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00200\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_fillUdpHeader(Sender*\ \_self,\ UdpPacket*\ \_pckt,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_srcport)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00205\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Sender\_fillTcpHeader(}
+\DoxyCodeLine{00206\ \ \ \ \ Sender*\ \_self,\ TcpPacket*\ \_pckt,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_port,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_offset,\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_window,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_urgpntr}
+\DoxyCodeLine{00208\ )\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{extern}\ IpPacket*\ Sender\_craftIcmp(Sender*\ \_self,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_type,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_code,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size)\ }
+\DoxyCodeLine{00214\ \ \ \ \ \_\_attribute\_\_((nonnull(1)))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00219\ extern\ IpPacket*\ Sender\_craftUdp(Sender*\ \_self,\ const\ u\_int16\_t\ \_port,\ const\ \textcolor{keywordtype}{char}*\ \_payload,\ const\ \textcolor{keywordtype}{size\_t}\ \_size)\ }
+\DoxyCodeLine{00220\ \ \ \ \ \_\_attribute\_\_((nonnull(1)))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00225\ extern\ IpPacket*\ Sender\_craftTcp(}
+\DoxyCodeLine{00226\ \ \ \ \ Sender*\ \_self,\ const\ u\_int16\_t\ \_srcport,\ const\ u\_int8\_t\ \_offset,\ const\ u\_int16\_t\ \_window,\ }
+\DoxyCodeLine{00227\ \ \ \ \ const\ u\_int16\_t\ \_urgpntr,\ const\ \textcolor{keywordtype}{char}*\ \_payload,\ const\ \textcolor{keywordtype}{size\_t}\ \_size}
+\DoxyCodeLine{00228\ )\ \_\_attribute\_\_((nonnull(1)))\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00233\ extern\ \textcolor{keywordtype}{void}\ Sender\_send(Sender*\ \_self,\ IpPacket*\ \_pckt,\ const\ \textcolor{keywordtype}{double}\ \_delay)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00239\ extern\ \textcolor{keywordtype}{void}\ Sender\_updateIcmpPacket(Sender*\ \_self,\ IpPacket*\ \_pckt)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00244\ extern\ \textcolor{keywordtype}{void}\ Sender\_updateUdpPacket(Sender*\ \_self,\ IpPacket*\ \_pckt)\ \_\_attribute\_\_((nonnull));}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \_\_END\_DECLS}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

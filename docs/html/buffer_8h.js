@@ -11,6 +11,7 @@ var buffer_8h =
     [ "ByteBuffer_getInt", "buffer_8h.html#a909b399035b15013e29d759f67751c4c", null ],
     [ "ByteBuffer_getShort", "buffer_8h.html#a97ff0fe8e79757c4e1fd4f0f288471c0", null ],
     [ "ByteBuffer_isEmpty", "buffer_8h.html#ae4d9836243e1e21733e3d51d0193839d", null ],
+    [ "ByteBuffer_isEndOfBuffer", "buffer_8h.html#ab9b49839705a40832b1cba3a2a82b184", null ],
     [ "ByteBuffer_new", "buffer_8h.html#ae72db89c69091d12192f244e40991151", null ],
     [ "ByteBuffer_new_b", "buffer_8h.html#a624194f61eb82711c2417f19c0a4c90d", null ],
     [ "ByteBuffer_position", "buffer_8h.html#ad63e714be97565567eb3e1e5acfa8496", null ],

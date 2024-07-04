@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.01r</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -134,6 +134,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structUdpPacket.html">UdpPacket</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTcpOption.html">TcpOption</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structControlBits.html">ControlBits</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTcpHeader.html">TcpHeader</a></td></tr>
@@ -211,6 +213,18 @@ Macros</h2></td></tr>
 <tr class="separator:a336dde7d46037b027acd66c5adae1ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abedf98ef779639a967483a41ea032986" id="r_abedf98ef779639a967483a41ea032986"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abedf98ef779639a967483a41ea032986">TCP_PSEUDO_HEADER_SIZE</a>&#160;&#160;&#160;0x0c</td></tr>
 <tr class="separator:abedf98ef779639a967483a41ea032986"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96e9510e3a67042630d17e91a828f0e6" id="r_a96e9510e3a67042630d17e91a828f0e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96e9510e3a67042630d17e91a828f0e6">TCP_OPTIONS_MAX_SIZE</a>&#160;&#160;&#160;0x14</td></tr>
+<tr class="separator:a96e9510e3a67042630d17e91a828f0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975e308450be23279f2792b63fe3a656" id="r_a975e308450be23279f2792b63fe3a656"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a975e308450be23279f2792b63fe3a656">TCP_OPTION_KIND_NOOP</a>&#160;&#160;&#160;0x01</td></tr>
+<tr class="separator:a975e308450be23279f2792b63fe3a656"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a173966fe0d7890406a2f1e877f338507" id="r_a173966fe0d7890406a2f1e877f338507"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a173966fe0d7890406a2f1e877f338507">TCP_OPTION_KIND_MSS</a>&#160;&#160;&#160;0x02</td></tr>
+<tr class="separator:a173966fe0d7890406a2f1e877f338507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45081f07136074db9afd73aced895ef3" id="r_a45081f07136074db9afd73aced895ef3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45081f07136074db9afd73aced895ef3">TCP_OPTION_KIND_WIN_SCALE</a>&#160;&#160;&#160;0x03</td></tr>
+<tr class="separator:a45081f07136074db9afd73aced895ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fb556511608438d5ac45d08eb36adf2" id="r_a1fb556511608438d5ac45d08eb36adf2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1fb556511608438d5ac45d08eb36adf2">TCP_OPTION_KIND_SACK_PERM</a>&#160;&#160;&#160;0x04</td></tr>
+<tr class="separator:a1fb556511608438d5ac45d08eb36adf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75efc72c53e632e5adc2f14eaf15fae6" id="r_a75efc72c53e632e5adc2f14eaf15fae6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75efc72c53e632e5adc2f14eaf15fae6">TCP_OPTION_KIND_TIMESTAMP</a>&#160;&#160;&#160;0x08</td></tr>
+<tr class="separator:a75efc72c53e632e5adc2f14eaf15fae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafb616fa3526bbcea92488cfd1b174bb" id="r_aafb616fa3526bbcea92488cfd1b174bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafb616fa3526bbcea92488cfd1b174bb">IPv4</a>&#160;&#160;&#160;0x4</td></tr>
 <tr class="separator:aafb616fa3526bbcea92488cfd1b174bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c29ea2ee796869613ef16cf5d2d8d9c" id="r_a2c29ea2ee796869613ef16cf5d2d8d9c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c29ea2ee796869613ef16cf5d2d8d9c">IPv6</a>&#160;&#160;&#160;0x6</td></tr>
@@ -396,12 +410,28 @@ Functions</h2></td></tr>
 <tr class="separator:a27f2dd55d5e55d0b5b34ce1336f943c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28e733ec68cbe3a61412443c5c4e0e5a" id="r_a28e733ec68cbe3a61412443c5c4e0e5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structUdpPacket.html">UdpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e733ec68cbe3a61412443c5c4e0e5a">UdpPacket_decode</a> (<a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull)) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:a28e733ec68cbe3a61412443c5c4e0e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a806eec1078a4b5d401e0bde413621f38" id="r_a806eec1078a4b5d401e0bde413621f38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a806eec1078a4b5d401e0bde413621f38">decodeControlBits</a> (struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
-<tr class="separator:a806eec1078a4b5d401e0bde413621f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9889d4285b9a805acb91d0d6a094bc92" id="r_a9889d4285b9a805acb91d0d6a094bc92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9889d4285b9a805acb91d0d6a094bc92">convertControlBitsToBin</a> (const struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, char *_out) __attribute__((nonnull))</td></tr>
-<tr class="separator:a9889d4285b9a805acb91d0d6a094bc92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad21a8a45094f934a4a4cad5dd33f9b18" id="r_ad21a8a45094f934a4a4cad5dd33f9b18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad21a8a45094f934a4a4cad5dd33f9b18">convertIntToControlBits</a> (const u_int8_t _bits, struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits) __attribute__((nonnull))</td></tr>
-<tr class="separator:ad21a8a45094f934a4a4cad5dd33f9b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b87110433531bedb0f6c6a18ebe09e" id="r_a96b87110433531bedb0f6c6a18ebe09e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96b87110433531bedb0f6c6a18ebe09e">TcpOption_new</a> (const u_int8_t _kind, const u_int8_t _length, void *_value) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a96b87110433531bedb0f6c6a18ebe09e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20d0aa8fa70399cf64d387bdc2a8dab1" id="r_a20d0aa8fa70399cf64d387bdc2a8dab1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20d0aa8fa70399cf64d387bdc2a8dab1">TcpOption_newMss</a> (u_int16_t _mss) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a20d0aa8fa70399cf64d387bdc2a8dab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82dcfb07a385b077d17c1529131fde6b" id="r_a82dcfb07a385b077d17c1529131fde6b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82dcfb07a385b077d17c1529131fde6b">TcpOption_newSackPermitted</a> (void) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a82dcfb07a385b077d17c1529131fde6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a55af5ecd73b489edf1b2a8224c9ff9" id="r_a3a55af5ecd73b489edf1b2a8224c9ff9"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a55af5ecd73b489edf1b2a8224c9ff9">TcpOption_newNoOperation</a> (void) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a3a55af5ecd73b489edf1b2a8224c9ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ecdeb8c8814e9922beb9d8740510810" id="r_a8ecdeb8c8814e9922beb9d8740510810"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ecdeb8c8814e9922beb9d8740510810">TcpOption_newWindowScale</a> (u_int8_t _scale) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:a8ecdeb8c8814e9922beb9d8740510810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0f87d07d9a22a92d2b9b7f81b7d8bd7" id="r_ae0f87d07d9a22a92d2b9b7f81b7d8bd7"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structTcpOption.html">TcpOption</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0f87d07d9a22a92d2b9b7f81b7d8bd7">TcpOption_newTimestamps</a> (u_int32_t _tsval, u_int32_t _tsecr) __attribute__((returns_nonnull))</td></tr>
+<tr class="separator:ae0f87d07d9a22a92d2b9b7f81b7d8bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af801c88068a0084b6116b4cf3a836325" id="r_af801c88068a0084b6116b4cf3a836325"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af801c88068a0084b6116b4cf3a836325">TcpOptions_copy</a> (struct <a class="el" href="structTcpOption.html">TcpOption</a> **_src, struct <a class="el" href="structTcpOption.html">TcpOption</a> **_dst, const int _n) __attribute__((nonnull))</td></tr>
+<tr class="separator:af801c88068a0084b6116b4cf3a836325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30fa889f868ba06ca6518dc497633266" id="r_a30fa889f868ba06ca6518dc497633266"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30fa889f868ba06ca6518dc497633266">TcpOptions_delete</a> (struct <a class="el" href="structTcpOption.html">TcpOption</a> **_opts, const int _n) __attribute__((nonnull))</td></tr>
+<tr class="separator:a30fa889f868ba06ca6518dc497633266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c90d05baf882b514233d490e4d1068d" id="r_a4c90d05baf882b514233d490e4d1068d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c90d05baf882b514233d490e4d1068d">ControlBits_decode</a> (struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
+<tr class="separator:a4c90d05baf882b514233d490e4d1068d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5de6a0fba0640949ffab6f7b85aab798" id="r_a5de6a0fba0640949ffab6f7b85aab798"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5de6a0fba0640949ffab6f7b85aab798">ControlBits_toBin</a> (const struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits, char *_out) __attribute__((nonnull))</td></tr>
+<tr class="separator:a5de6a0fba0640949ffab6f7b85aab798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3a4f1707d9994dac00e21ffb10372fe" id="r_aa3a4f1707d9994dac00e21ffb10372fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3a4f1707d9994dac00e21ffb10372fe">ControlBits_fromValue</a> (const u_int8_t _bits, struct <a class="el" href="structControlBits.html">ControlBits</a> *_cbits) __attribute__((nonnull))</td></tr>
+<tr class="separator:aa3a4f1707d9994dac00e21ffb10372fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d924896acab8403f2a2595baae821ea" id="r_a5d924896acab8403f2a2595baae821ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d924896acab8403f2a2595baae821ea">TcpHeader_setSourcePort</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, u_int16_t _srcport) __attribute__((nonnull))</td></tr>
 <tr class="separator:a5d924896acab8403f2a2595baae821ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d58f9e80d0a95de808e51ddfe46b7d" id="r_a56d58f9e80d0a95de808e51ddfe46b7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56d58f9e80d0a95de808e51ddfe46b7d">TcpHeader_setDestinationPort</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, u_int16_t _dstport) __attribute__((nonnull))</td></tr>
@@ -452,6 +482,12 @@ Functions</h2></td></tr>
 <tr class="separator:aa49c4ae5e49afa8daaf815bab0eb24a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab00d598425a76358afeadf818eab1636" id="r_ab00d598425a76358afeadf818eab1636"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab00d598425a76358afeadf818eab1636">TcpHeader_setUrgentPointer</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, u_int16_t _urgpntr) __attribute__((nonnull))</td></tr>
 <tr class="separator:ab00d598425a76358afeadf818eab1636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a469d656c28039c6ea6bd90cab6104e33" id="r_a469d656c28039c6ea6bd90cab6104e33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a469d656c28039c6ea6bd90cab6104e33">TcpHeader_addTcpOption_o</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, struct <a class="el" href="structTcpOption.html">TcpOption</a> *_opt) __attribute__((nonnull))</td></tr>
+<tr class="separator:a469d656c28039c6ea6bd90cab6104e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432738077f5e7c83010a0d98bfffc491" id="r_a432738077f5e7c83010a0d98bfffc491"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a432738077f5e7c83010a0d98bfffc491">TcpHeader_addTcpOption</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, const u_int8_t _kind, const u_int8_t _length, void *_value) __attribute__((nonnull(1)))</td></tr>
+<tr class="separator:a432738077f5e7c83010a0d98bfffc491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8dabf644a7b1072fca7b08d17c4bf59" id="r_ae8dabf644a7b1072fca7b08d17c4bf59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8dabf644a7b1072fca7b08d17c4bf59">TcpHeader_setTcpOptions</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, struct <a class="el" href="structTcpOption.html">TcpOption</a> *_opts[], const int _n) __attribute__((nonnull))</td></tr>
+<tr class="separator:ae8dabf644a7b1072fca7b08d17c4bf59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e453a5a7d660cd01b06c8475bd5ba11" id="r_a5e453a5a7d660cd01b06c8475bd5ba11"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e453a5a7d660cd01b06c8475bd5ba11">TcpHeader_mergeControlBits</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:a5e453a5a7d660cd01b06c8475bd5ba11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c879a506f78089a93697a4074ad6ad0" id="r_a0c879a506f78089a93697a4074ad6ad0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c879a506f78089a93697a4074ad6ad0">TcpHeader_encode</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
@@ -462,6 +498,8 @@ Functions</h2></td></tr>
 <tr class="separator:ae9034a07f74153ede153c352884c7cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a116bd803c810443a7cbc8cd978bc2163" id="r_a116bd803c810443a7cbc8cd978bc2163"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a116bd803c810443a7cbc8cd978bc2163">TcpHeader_getHeaderSize</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:a116bd803c810443a7cbc8cd978bc2163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45df399ab7a57f3077408cbccf25171a" id="r_a45df399ab7a57f3077408cbccf25171a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45df399ab7a57f3077408cbccf25171a">TcpHeader_deleteTcpOptions</a> (<a class="el" href="structTcpHeader.html">TcpHeader</a> *_self) __attribute__((nonnull))</td></tr>
+<tr class="separator:a45df399ab7a57f3077408cbccf25171a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc2575e71ca1d3718892b54c96b6963c" id="r_afc2575e71ca1d3718892b54c96b6963c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTcpPacket.html">TcpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc2575e71ca1d3718892b54c96b6963c">TcpPacket_new_s</a> (const size_t _size) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:afc2575e71ca1d3718892b54c96b6963c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a10845bce85315985b0dd9d94ba5607" id="r_a5a10845bce85315985b0dd9d94ba5607"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTcpPacket.html">TcpPacket</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a10845bce85315985b0dd9d94ba5607">TcpPacket_new</a> () __attribute__((returns_nonnull))</td></tr>
@@ -470,12 +508,16 @@ Functions</h2></td></tr>
 <tr class="separator:a7b80f7295e3ba4b5727795740194c0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53925654c36199fd0cb9f826e198e55a" id="r_a53925654c36199fd0cb9f826e198e55a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53925654c36199fd0cb9f826e198e55a">TcpPacket_setHeader</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self, <a class="el" href="structTcpHeader.html">TcpHeader</a> *_hdr) __attribute__((nonnull))</td></tr>
 <tr class="separator:a53925654c36199fd0cb9f826e198e55a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f12e058c985df7a548700acc957a91b" id="r_a8f12e058c985df7a548700acc957a91b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f12e058c985df7a548700acc957a91b">TcpPacket_fillHeader</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct <a class="el" href="structControlBits.html">ControlBits</a> _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr) __attribute__((nonnull))</td></tr>
-<tr class="separator:a8f12e058c985df7a548700acc957a91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b54951cbbd2482f5c14a6f7547bff2" id="r_a40b54951cbbd2482f5c14a6f7547bff2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40b54951cbbd2482f5c14a6f7547bff2">TcpPacket_fillHeader</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self, u_int16_t _srcport, u_int16_t _dstport, u_int32_t _seqnum, u_int32_t _acknum, u_int8_t _offset, struct <a class="el" href="structControlBits.html">ControlBits</a> _cbits, u_int16_t _window, u_int16_t _checksum, u_int16_t _urgpntr, struct <a class="el" href="structTcpOption.html">TcpOption</a> *_opts[], int _nopts) __attribute__((nonnull))</td></tr>
+<tr class="separator:a40b54951cbbd2482f5c14a6f7547bff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad84dcaa98479d8901016ac30a1781fcc" id="r_ad84dcaa98479d8901016ac30a1781fcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad84dcaa98479d8901016ac30a1781fcc">TcpPacket_fillPayload</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self, const char *_payload, const size_t _size) __attribute__((nonnull))</td></tr>
 <tr class="separator:ad84dcaa98479d8901016ac30a1781fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8f45ebdefe89f6d3f46b4a834aaf1ad" id="r_ab8f45ebdefe89f6d3f46b4a834aaf1ad"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8f45ebdefe89f6d3f46b4a834aaf1ad">TcpPacket_getPacketSize</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:ab8f45ebdefe89f6d3f46b4a834aaf1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b892a8a629a660269230756ab5d2193" id="r_a1b892a8a629a660269230756ab5d2193"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b892a8a629a660269230756ab5d2193">TcpPacket_getNumberOfOptions</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self) __attribute__((nonnull))</td></tr>
+<tr class="separator:a1b892a8a629a660269230756ab5d2193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf4bfb05f74937f371b6a8aacbec946" id="r_aaaf4bfb05f74937f371b6a8aacbec946"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaf4bfb05f74937f371b6a8aacbec946">TcpPacket_getOptionSize_bytes</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self) __attribute__((nonnull))</td></tr>
+<tr class="separator:aaaf4bfb05f74937f371b6a8aacbec946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5126829113308863a5aeb8d7d416d69f" id="r_a5126829113308863a5aeb8d7d416d69f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structByteBuffer.html">ByteBuffer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5126829113308863a5aeb8d7d416d69f">TcpPacket_encode</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:a5126829113308863a5aeb8d7d416d69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbb2bc4b7f471ecacf0c7cc65a829780" id="r_adbb2bc4b7f471ecacf0c7cc65a829780"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbb2bc4b7f471ecacf0c7cc65a829780">TcpPacket_encode_b</a> (<a class="el" href="structTcpPacket.html">TcpPacket</a> *_self, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
@@ -518,8 +560,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad2011069eb0bfcf09a5f7f14b4afa4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ed6c4f29b9cacaa345c0a76bb9e7f93" id="r_a0ed6c4f29b9cacaa345c0a76bb9e7f93"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ed6c4f29b9cacaa345c0a76bb9e7f93">IpHeader_getFragmentOffset</a> (const <a class="el" href="structIpHeader.html">IpHeader</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:a0ed6c4f29b9cacaa345c0a76bb9e7f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e3da869c5ca6fe49f9410efa68ce6c" id="r_a71e3da869c5ca6fe49f9410efa68ce6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71e3da869c5ca6fe49f9410efa68ce6c">IpHeader_encode__</a> (const <a class="el" href="structIpHeader.html">IpHeader</a> *_self, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
-<tr class="separator:a71e3da869c5ca6fe49f9410efa68ce6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d6f532322db9174a0bb9109ba42c08" id="r_aa9d6f532322db9174a0bb9109ba42c08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9d6f532322db9174a0bb9109ba42c08">IpHeader_encode_b</a> (const <a class="el" href="structIpHeader.html">IpHeader</a> *_self, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
+<tr class="separator:aa9d6f532322db9174a0bb9109ba42c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad41138f479db5e5fe21835cb3a6a6cb6" id="r_ad41138f479db5e5fe21835cb3a6a6cb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structByteBuffer.html">ByteBuffer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad41138f479db5e5fe21835cb3a6a6cb6">IpHeader_encode</a> (const <a class="el" href="structIpHeader.html">IpHeader</a> *_self) __attribute__((nonnull)) __attribute__((returns_nonnull))</td></tr>
 <tr class="separator:ad41138f479db5e5fe21835cb3a6a6cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62798d4c10cc08f6d508001327ea144a" id="r_a62798d4c10cc08f6d508001327ea144a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62798d4c10cc08f6d508001327ea144a">IpHeader_decode</a> (<a class="el" href="structIpHeader.html">IpHeader</a> *_self, <a class="el" href="structByteBuffer.html">ByteBuffer</a> *_buffer) __attribute__((nonnull))</td></tr>
@@ -568,6 +610,8 @@ Functions</h2></td></tr>
 <tr class="separator:a12baf04b8e760cd0e67a034dc769f6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab133550c8b276b5a6888ff7a3dc03172" id="r_ab133550c8b276b5a6888ff7a3dc03172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab133550c8b276b5a6888ff7a3dc03172">IpPacket_wrapTcp</a> (<a class="el" href="structIpPacket.html">IpPacket</a> *_self, <a class="el" href="structTcpPacket.html">TcpPacket</a> *_tcppckt) __attribute__((nonnull))</td></tr>
 <tr class="separator:ab133550c8b276b5a6888ff7a3dc03172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb568f3062c05af52027227299b689e" id="r_a0fb568f3062c05af52027227299b689e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb568f3062c05af52027227299b689e">IpPacket_computeChecksum</a> (<a class="el" href="structIpPacket.html">IpPacket</a> *_self) __attribute__((nonnull))</td></tr>
+<tr class="separator:a0fb568f3062c05af52027227299b689e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6cf58e458b603e07d4d8b0da046037e" id="r_ac6cf58e458b603e07d4d8b0da046037e"><td class="memItemLeft" align="right" valign="top">u_int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6cf58e458b603e07d4d8b0da046037e">IpPacket_computeIcmpChecksum</a> (<a class="el" href="structIpPacket.html">IpPacket</a> *_self) __attribute__((nonnull))</td></tr>
 <tr class="separator:ac6cf58e458b603e07d4d8b0da046037e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa587f3c0d7f24339009be7986c388edd" id="r_aa587f3c0d7f24339009be7986c388edd"><td class="memItemLeft" align="right" valign="top">u_int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa587f3c0d7f24339009be7986c388edd">IpPacket_computeUdpChecksum</a> (<a class="el" href="structIpPacket.html">IpPacket</a> *_self) __attribute__((nonnull))</td></tr>
@@ -588,7 +632,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00083">83</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00091">91</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -604,7 +648,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00085">85</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00093">93</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -908,7 +952,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00099">99</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00107">107</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -924,7 +968,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00100">100</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00108">108</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -940,7 +984,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00101">101</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00109">109</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -956,7 +1000,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00102">102</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00110">110</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -972,7 +1016,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00103">103</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00111">111</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -988,7 +1032,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00104">104</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00112">112</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1004,7 +1048,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00105">105</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00113">113</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1020,7 +1064,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00106">106</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00114">114</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1080,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00107">107</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00115">115</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1052,7 +1096,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00108">108</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00116">116</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1112,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00109">109</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00117">117</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1084,7 +1128,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00110">110</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00118">118</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1100,7 +1144,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00091">91</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00099">99</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1116,7 +1160,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00092">92</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00100">100</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1176,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00093">93</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00101">101</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1192,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00094">94</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00102">102</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1208,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00095">95</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00103">103</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1180,7 +1224,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00096">96</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00104">104</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1196,7 +1240,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00097">97</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00105">105</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1212,7 +1256,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00098">98</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00106">106</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1228,7 +1272,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00111">111</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00119">119</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1244,7 +1288,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00112">112</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00120">120</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1260,7 +1304,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00118">118</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00126">126</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1276,7 +1320,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00117">117</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00125">125</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1292,7 +1336,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00116">116</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00124">124</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1308,7 +1352,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00115">115</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00123">123</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1336,7 +1380,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00088">88</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00096">96</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1352,7 +1396,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00121">121</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00129">129</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1368,7 +1412,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00080">80</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00088">88</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1384,7 +1428,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00123">123</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00131">131</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1400,7 +1444,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00122">122</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00130">130</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1416,7 +1460,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00133">133</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00141">141</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1432,7 +1476,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00078">78</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00086">86</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1448,7 +1492,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00079">79</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00087">87</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1464,7 +1508,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00084">84</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00092">92</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1480,7 +1524,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00086">86</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00094">94</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1561,6 +1605,102 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00065">65</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a173966fe0d7890406a2f1e877f338507" name="a173966fe0d7890406a2f1e877f338507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a173966fe0d7890406a2f1e877f338507">&#9670;&#160;</a></span>TCP_OPTION_KIND_MSS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTION_KIND_MSS&#160;&#160;&#160;0x02</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00080">80</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a975e308450be23279f2792b63fe3a656" name="a975e308450be23279f2792b63fe3a656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a975e308450be23279f2792b63fe3a656">&#9670;&#160;</a></span>TCP_OPTION_KIND_NOOP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTION_KIND_NOOP&#160;&#160;&#160;0x01</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00079">79</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a1fb556511608438d5ac45d08eb36adf2" name="a1fb556511608438d5ac45d08eb36adf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fb556511608438d5ac45d08eb36adf2">&#9670;&#160;</a></span>TCP_OPTION_KIND_SACK_PERM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTION_KIND_SACK_PERM&#160;&#160;&#160;0x04</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00082">82</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a75efc72c53e632e5adc2f14eaf15fae6" name="a75efc72c53e632e5adc2f14eaf15fae6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75efc72c53e632e5adc2f14eaf15fae6">&#9670;&#160;</a></span>TCP_OPTION_KIND_TIMESTAMP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTION_KIND_TIMESTAMP&#160;&#160;&#160;0x08</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00083">83</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a45081f07136074db9afd73aced895ef3" name="a45081f07136074db9afd73aced895ef3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45081f07136074db9afd73aced895ef3">&#9670;&#160;</a></span>TCP_OPTION_KIND_WIN_SCALE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTION_KIND_WIN_SCALE&#160;&#160;&#160;0x03</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00081">81</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+
+</div>
+</div>
+<a id="a96e9510e3a67042630d17e91a828f0e6" name="a96e9510e3a67042630d17e91a828f0e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96e9510e3a67042630d17e91a828f0e6">&#9670;&#160;</a></span>TCP_OPTIONS_MAX_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TCP_OPTIONS_MAX_SIZE&#160;&#160;&#160;0x14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00076">76</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1656,7 +1796,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00127">127</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00135">135</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1720,7 +1860,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00082">82</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ip_8h_source.html#l00090">90</a> of file <a class="el" href="ip_8h_source.html">ip.h</a>.</p>
 
 </div>
 </div>
@@ -1795,8 +1935,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9889d4285b9a805acb91d0d6a094bc92" name="a9889d4285b9a805acb91d0d6a094bc92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9889d4285b9a805acb91d0d6a094bc92">&#9670;&#160;</a></span>convertControlBitsToBin()</h2>
+<a id="a4c90d05baf882b514233d490e4d1068d" name="a4c90d05baf882b514233d490e4d1068d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c90d05baf882b514233d490e4d1068d">&#9670;&#160;</a></span>ControlBits_decode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1805,7 +1945,75 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void convertControlBitsToBin </td>
+          <td class="memname">void ControlBits_decode </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structByteBuffer.html">ByteBuffer</a> *</td>          <td class="paramname"><span class="paramname"><em>_buffer</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Fill the ControlBit structure with the content of the <a class="el" href="structByteBuffer.html">ByteBuffer</a> </p>
+
+</div>
+</div>
+<a id="aa3a4f1707d9994dac00e21ffb10372fe" name="aa3a4f1707d9994dac00e21ffb10372fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3a4f1707d9994dac00e21ffb10372fe">&#9670;&#160;</a></span>ControlBits_fromValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ControlBits_fromValue </td>
+          <td>(</td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_bits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts the input integer into <a class="el" href="structControlBits.html">ControlBits</a>. For example, consider that the Control Bits field is 8 bit long, which means that the greatest number that can fit in is 2^8 - 1. Consdering any number between [0, 2^8), it is possible to convert it into flags just by converting it into binary.</p>
+<p>Hence, this function fills each field of the input structure <code>_cbits</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_bits</td><td>a value between 0 and 2^8 - 1 </td></tr>
+    <tr><td class="paramname">_cbits</td><td>a poiter to a <a class="el" href="structControlBits.html">ControlBits</a> structure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5de6a0fba0640949ffab6f7b85aab798" name="a5de6a0fba0640949ffab6f7b85aab798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5de6a0fba0640949ffab6f7b85aab798">&#9670;&#160;</a></span>ControlBits_toBin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ControlBits_toBin </td>
           <td>(</td>
           <td class="paramtype">const struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>, </td>
         </tr>
@@ -1852,74 +2060,6 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Converts the IP Header flags into a binary string (i.e., 2 -&gt; 010) </p>
-
-</div>
-</div>
-<a id="ad21a8a45094f934a4a4cad5dd33f9b18" name="ad21a8a45094f934a4a4cad5dd33f9b18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad21a8a45094f934a4a4cad5dd33f9b18">&#9670;&#160;</a></span>convertIntToControlBits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void convertIntToControlBits </td>
-          <td>(</td>
-          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_bits</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Converts the input integer into <a class="el" href="structControlBits.html">ControlBits</a>. For example, consider that the Control Bits field is 8 bit long, which means that the greatest number that can fit in is 2^8 - 1. Consdering any number between [0, 2^8), it is possible to convert it into flags just by converting it into binary.</p>
-<p>Hence, this function fills each field of the input structure <code>_cbits</code>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">_bits</td><td>a value between 0 and 2^8 - 1 </td></tr>
-    <tr><td class="paramname">_cbits</td><td>a poiter to a <a class="el" href="structControlBits.html">ControlBits</a> structure </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a806eec1078a4b5d401e0bde413621f38" name="a806eec1078a4b5d401e0bde413621f38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a806eec1078a4b5d401e0bde413621f38">&#9670;&#160;</a></span>decodeControlBits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void decodeControlBits </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structControlBits.html">ControlBits</a> *</td>          <td class="paramname"><span class="paramname"><em>_cbits</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structByteBuffer.html">ByteBuffer</a> *</td>          <td class="paramname"><span class="paramname"><em>_buffer</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Fill the ControlBit structure with the content of the <a class="el" href="structByteBuffer.html">ByteBuffer</a> </p>
 
 </div>
 </div>
@@ -2928,8 +3068,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a71e3da869c5ca6fe49f9410efa68ce6c" name="a71e3da869c5ca6fe49f9410efa68ce6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71e3da869c5ca6fe49f9410efa68ce6c">&#9670;&#160;</a></span>IpHeader_encode__()</h2>
+<a id="aa9d6f532322db9174a0bb9109ba42c08" name="aa9d6f532322db9174a0bb9109ba42c08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9d6f532322db9174a0bb9109ba42c08">&#9670;&#160;</a></span>IpHeader_encode_b()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2938,7 +3078,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void IpHeader_encode__ </td>
+          <td class="memname">void IpHeader_encode_b </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structIpHeader.html">IpHeader</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
         </tr>
@@ -3437,6 +3577,32 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Set the IP Version field and the IHL (always 5) field </p>
+
+</div>
+</div>
+<a id="a0fb568f3062c05af52027227299b689e" name="a0fb568f3062c05af52027227299b689e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb568f3062c05af52027227299b689e">&#9670;&#160;</a></span>IpPacket_computeChecksum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IpPacket_computeChecksum </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structIpPacket.html">IpPacket</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compute and set the checksum for TCP/UDP/ICMP Packet </p>
 
 </div>
 </div>
@@ -4125,6 +4291,76 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a432738077f5e7c83010a0d98bfffc491" name="a432738077f5e7c83010a0d98bfffc491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a432738077f5e7c83010a0d98bfffc491">&#9670;&#160;</a></span>TcpHeader_addTcpOption()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpHeader_addTcpOption </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpHeader.html">TcpHeader</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_kind</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_length</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct and add a new Tcp Option to the current Tcp Header. </p>
+
+</div>
+</div>
+<a id="a469d656c28039c6ea6bd90cab6104e33" name="a469d656c28039c6ea6bd90cab6104e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a469d656c28039c6ea6bd90cab6104e33">&#9670;&#160;</a></span>TcpHeader_addTcpOption_o()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpHeader_addTcpOption_o </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpHeader.html">TcpHeader</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> *</td>          <td class="paramname"><span class="paramname"><em>_opt</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Add a Tcp Option to the current Tcp Header. </p>
+
+</div>
+</div>
 <a id="a55c522e97711f0d84e57fd24dcfcd6dc" name="a55c522e97711f0d84e57fd24dcfcd6dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a55c522e97711f0d84e57fd24dcfcd6dc">&#9670;&#160;</a></span>TcpHeader_decode()</h2>
 
@@ -4152,6 +4388,32 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Decode the input <a class="el" href="structByteBuffer.html">ByteBuffer</a> into a TCP Header </p>
+
+</div>
+</div>
+<a id="a45df399ab7a57f3077408cbccf25171a" name="a45df399ab7a57f3077408cbccf25171a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45df399ab7a57f3077408cbccf25171a">&#9670;&#160;</a></span>TcpHeader_deleteTcpOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpHeader_deleteTcpOptions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpHeader.html">TcpHeader</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Free the memory allocated for each Tcp Option </p>
 
 </div>
 </div>
@@ -4655,6 +4917,41 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ae8dabf644a7b1072fca7b08d17c4bf59" name="ae8dabf644a7b1072fca7b08d17c4bf59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8dabf644a7b1072fca7b08d17c4bf59">&#9670;&#160;</a></span>TcpHeader_setTcpOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpHeader_setTcpOptions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpHeader.html">TcpHeader</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> *</td>          <td class="paramname"><span class="paramname"><em>_opts</em></span>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int</td>          <td class="paramname"><span class="paramname"><em>_n</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set a new set of options into the tcp header. <code>_n</code> is the length of the vector </p>
+
+</div>
+</div>
 <a id="ab00d598425a76358afeadf818eab1636" name="ab00d598425a76358afeadf818eab1636"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab00d598425a76358afeadf818eab1636">&#9670;&#160;</a></span>TcpHeader_setUrgentPointer()</h2>
 
@@ -4949,6 +5246,240 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a96b87110433531bedb0f6c6a18ebe09e" name="a96b87110433531bedb0f6c6a18ebe09e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b87110433531bedb0f6c6a18ebe09e">&#9670;&#160;</a></span>TcpOption_new()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_new </td>
+          <td>(</td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_kind</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_length</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>_value</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a new <a class="el" href="structTcpOption.html">TcpOption</a> given the values as input. Notice that <code>_value</code> can be NULL. </p>
+
+</div>
+</div>
+<a id="a20d0aa8fa70399cf64d387bdc2a8dab1" name="a20d0aa8fa70399cf64d387bdc2a8dab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20d0aa8fa70399cf64d387bdc2a8dab1">&#9670;&#160;</a></span>TcpOption_newMss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_newMss </td>
+          <td>(</td>
+          <td class="paramtype">u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_mss</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the TCP Option reserved for Maximum Segment Size </p>
+
+</div>
+</div>
+<a id="a3a55af5ecd73b489edf1b2a8224c9ff9" name="a3a55af5ecd73b489edf1b2a8224c9ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a55af5ecd73b489edf1b2a8224c9ff9">&#9670;&#160;</a></span>TcpOption_newNoOperation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_newNoOperation </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the TCP Option reserved for No-operation </p>
+
+</div>
+</div>
+<a id="a82dcfb07a385b077d17c1529131fde6b" name="a82dcfb07a385b077d17c1529131fde6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82dcfb07a385b077d17c1529131fde6b">&#9670;&#160;</a></span>TcpOption_newSackPermitted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_newSackPermitted </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the TCP Option reserved for SACK Permitted </p>
+
+</div>
+</div>
+<a id="ae0f87d07d9a22a92d2b9b7f81b7d8bd7" name="ae0f87d07d9a22a92d2b9b7f81b7d8bd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0f87d07d9a22a92d2b9b7f81b7d8bd7">&#9670;&#160;</a></span>TcpOption_newTimestamps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_newTimestamps </td>
+          <td>(</td>
+          <td class="paramtype">u_int32_t</td>          <td class="paramname"><span class="paramname"><em>_tsval</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">u_int32_t</td>          <td class="paramname"><span class="paramname"><em>_tsecr</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the TCP Option reserved for Timestamps </p>
+
+</div>
+</div>
+<a id="a8ecdeb8c8814e9922beb9d8740510810" name="a8ecdeb8c8814e9922beb9d8740510810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ecdeb8c8814e9922beb9d8740510810">&#9670;&#160;</a></span>TcpOption_newWindowScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structTcpOption.html">TcpOption</a> * TcpOption_newWindowScale </td>
+          <td>(</td>
+          <td class="paramtype">u_int8_t</td>          <td class="paramname"><span class="paramname"><em>_scale</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the TCP Option reserved for Window Scale </p>
+
+</div>
+</div>
+<a id="af801c88068a0084b6116b4cf3a836325" name="af801c88068a0084b6116b4cf3a836325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af801c88068a0084b6116b4cf3a836325">&#9670;&#160;</a></span>TcpOptions_copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpOptions_copy </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> **</td>          <td class="paramname"><span class="paramname"><em>_src</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> **</td>          <td class="paramname"><span class="paramname"><em>_dst</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int</td>          <td class="paramname"><span class="paramname"><em>_n</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Copy all the options in <code>_src</code> into <code>_dst</code>. </p>
+
+</div>
+</div>
+<a id="a30fa889f868ba06ca6518dc497633266" name="a30fa889f868ba06ca6518dc497633266"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30fa889f868ba06ca6518dc497633266">&#9670;&#160;</a></span>TcpOptions_delete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TcpOptions_delete </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> **</td>          <td class="paramname"><span class="paramname"><em>_opts</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int</td>          <td class="paramname"><span class="paramname"><em>_n</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Free the memory allocate for each Tcp Option </p>
+
+</div>
+</div>
 <a id="ae91d434f6b2ba0986bce87f7e4733bb3" name="ae91d434f6b2ba0986bce87f7e4733bb3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae91d434f6b2ba0986bce87f7e4733bb3">&#9670;&#160;</a></span>TcpPacket_decode()</h2>
 
@@ -5057,8 +5588,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8f12e058c985df7a548700acc957a91b" name="a8f12e058c985df7a548700acc957a91b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f12e058c985df7a548700acc957a91b">&#9670;&#160;</a></span>TcpPacket_fillHeader()</h2>
+<a id="a40b54951cbbd2482f5c14a6f7547bff2" name="a40b54951cbbd2482f5c14a6f7547bff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40b54951cbbd2482f5c14a6f7547bff2">&#9670;&#160;</a></span>TcpPacket_fillHeader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5114,7 +5645,17 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_urgpntr</em></span>&#160;)</td>
+          <td class="paramtype">u_int16_t</td>          <td class="paramname"><span class="paramname"><em>_urgpntr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> *</td>          <td class="paramname"><span class="paramname"><em>_opts</em></span>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>_nopts</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -5159,6 +5700,58 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Fill the TCP Packet payload with the given input data of input size </p>
+
+</div>
+</div>
+<a id="a1b892a8a629a660269230756ab5d2193" name="a1b892a8a629a660269230756ab5d2193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b892a8a629a660269230756ab5d2193">&#9670;&#160;</a></span>TcpPacket_getNumberOfOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TcpPacket_getNumberOfOptions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpPacket.html">TcpPacket</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the number of Tcp options in the header </p>
+
+</div>
+</div>
+<a id="aaaf4bfb05f74937f371b6a8aacbec946" name="aaaf4bfb05f74937f371b6a8aacbec946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaf4bfb05f74937f371b6a8aacbec946">&#9670;&#160;</a></span>TcpPacket_getOptionSize_bytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">u_int8_t TcpPacket_getOptionSize_bytes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTcpPacket.html">TcpPacket</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the number of bytes of the header assigned to Tcp Options </p>
 
 </div>
 </div>

@@ -1,0 +1,43 @@
+\doxysection{includes/utils/fragment.h File Reference}
+\label{fragment_8h}\index{includes/utils/fragment.h@{includes/utils/fragment.h}}
+{\ttfamily \#include $<$sys/cdefs.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include "{}ip.\+h"{}}\newline
+{\ttfamily \#include "{}utils/version.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \textbf{ Fragment\+List}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \textbf{ compute\+Number\+Of\+Fragments} (const size\+\_\+t \+\_\+sizem, const size\+\_\+t \+\_\+max)
+\item 
+struct \textbf{ Fragment\+List} $\ast$ \textbf{ create\+Fragments} (const char $\ast$\+\_\+buffer, const size\+\_\+t \+\_\+size, const size\+\_\+t \+\_\+max) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull)) \+\_\+\+\_\+attribute\+\_\+\+\_\+((returns\+\_\+nonnull))
+\item 
+void \textbf{ Fragment\+List\+\_\+delete} (struct \textbf{ Fragment\+List} $\ast$\+\_\+fraglist) \+\_\+\+\_\+attribute\+\_\+\+\_\+((nonnull))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\index{fragment.h@{fragment.h}!computeNumberOfFragments@{computeNumberOfFragments}}
+\index{computeNumberOfFragments@{computeNumberOfFragments}!fragment.h@{fragment.h}}
+\doxysubsubsection{computeNumberOfFragments()}
+{\footnotesize\ttfamily \label{fragment_8h_a4715e9a9fce052dc698bdabb877fff40} 
+int compute\+Number\+Of\+Fragments (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{\+\_\+sizem}{, }\item[{const size\+\_\+t}]{\+\_\+max}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Compute the number of fragments to create with an IP Packet payload of input size \index{fragment.h@{fragment.h}!createFragments@{createFragments}}
+\index{createFragments@{createFragments}!fragment.h@{fragment.h}}
+\doxysubsubsection{createFragments()}
+{\footnotesize\ttfamily \label{fragment_8h_a79e683e90eec6a5f54187aad97d073f6} 
+struct \textbf{ Fragment\+List} $\ast$ create\+Fragments (\begin{DoxyParamCaption}\item[{const char $\ast$}]{\+\_\+buffer}{, }\item[{const size\+\_\+t}]{\+\_\+size}{, }\item[{const size\+\_\+t}]{\+\_\+max}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Create all the fragments and returns the structure containing the list with all pointer to fragmented Ip packets and its size \index{fragment.h@{fragment.h}!FragmentList\_delete@{FragmentList\_delete}}
+\index{FragmentList\_delete@{FragmentList\_delete}!fragment.h@{fragment.h}}
+\doxysubsubsection{FragmentList\_delete()}
+{\footnotesize\ttfamily \label{fragment_8h_a7597c0e1dc43cba0ce6ba26121d3776d} 
+void Fragment\+List\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \textbf{ Fragment\+List} $\ast$}]{\+\_\+fraglist}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+Free the memory allocated for the fragment list 

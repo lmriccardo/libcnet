@@ -72,6 +72,9 @@ struct TcpParameters
     u_int32_t          _sn;     //!< The Sequence number to put into the TCP Packet
     u_int32_t          _an;     //!< The acknowledgment number to put into the TCP Packet
     struct ControlBits _cbits;  //!< Control Bits
+
+    struct TcpOption* _opts[TCP_OPTIONS_MAX_SIZE]; //!< An array of header Options
+    int               _numOfOptions;               //!< The total number of options
 };
 
 /**
@@ -144,6 +147,11 @@ extern void Sender_setMtu(Sender* _self, const int _mtu) __attribute__((nonnull)
  * Set the flags to the Ip Parameters structure
  */
 extern void Sender_setIpFlags(Sender* _self, int _d, int _m) __attribute__((nonnull));
+
+/**
+ * Set a number of TCP Options into the Sender Tcp Parameters
+ */
+extern void Sender_setTcpOptions(Sender* _self, struct TcpOption** _opts, const int _n) __attribute__((nonnull));
 
 /**
  * Send the input IP Packet

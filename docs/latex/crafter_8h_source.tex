@@ -1,0 +1,73 @@
+\doxysection{crafter.\+h}
+\label{crafter_8h_source}\index{includes/utils/crafter.h@{includes/utils/crafter.h}}
+\textbf{ Go to the documentation of this file.}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *****\ \ \ @details\ Header\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *****\ \ \ @name\ crafter.h\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *****\ \ \ @author\ Riccardo\ La\ Marca\ (riccardo.lamarca98@gmail.com)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *****\ \ \ @date\ 1\ June\ 2024\ (Mon\ Jul\ 01\ 2024\ Last\ Modification)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *****\ \ \ @brief\ This\ file\ contains\ the\ declarations\ of\ functions\ to\ craft\ packets\ \ \ *****}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *****\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *****}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ ****************************************************************************************}}
+\DoxyCodeLine{00013\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifndef\ \_CRAFTER\_H}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ \_CRAFTER\_H}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <sys/cdefs.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}ip.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}utils/version.h"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \_\_BEGIN\_DECLS}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{extern}\ IpPacket*\ craftIpPacket(}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \ \_version,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_dscp,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \_ecn,\ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_tlen,}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_id,\ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_xf,\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \_df,\ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_mf,\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \ \ \ \ \ \ \_offset,\ \ \textcolor{keyword}{const}\ u\_int8\_t\ \ \_ttl,\ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_proto,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{const}\ u\_int32\_t\ \_srcaddr,\ \textcolor{keyword}{const}\ u\_int32\_t\ \_dstaddr}
+\DoxyCodeLine{00033\ )\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{extern}\ IcmpPacket*\ craftIcmpPacket\_Unused(}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_type,\ \textcolor{keyword}{const}\ u\_int8\_t\ \_code,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \_size}
+\DoxyCodeLine{00040\ )\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{extern}\ IcmpPacket*\ craftIcmpPacket\_Echo(}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \ \_type,\ \textcolor{keyword}{const}\ u\_int8\_t\ \ \_code,\ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_id,\ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_seqnum,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \ \ \ \ \_payload,\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \ \ \ \_size}
+\DoxyCodeLine{00049\ )\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{extern}\ IcmpPacket*\ craftIcmpPacket\_Redirect(}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_type,\ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_code,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_gateway,}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \ \ \ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \ \ \_size}
+\DoxyCodeLine{00057\ )\ \_\_attribute\_\_((returns\_nonnull))\ \_\_attribute\_\_((nonnull(4)));}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{extern}\ IcmpPacket*\ craftIcmpPacket\_Mtu(}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_type,\ \ \ \ \textcolor{keyword}{const}\ u\_int8\_t\ \_code,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_mtu,}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \ \ \ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \ \ \_size}
+\DoxyCodeLine{00065\ )\ \ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{extern}\ UdpPacket*\ craftUdpPacket(}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_srcport,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_dstport,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_length,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \ \ \ \ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \ \ \ \_size}
+\DoxyCodeLine{00073\ )\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{extern}\ TcpPacket*\ craftTcpPacket(}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_srcport,\ \textcolor{keyword}{const}\ u\_int16\_t\ \_dstport,\ \ \textcolor{keyword}{const}\ u\_int32\_t\ \ \ \ \ \ \ \ \ \ \_seqnum,\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ u\_int32\_t\ \_acknum,\ \ \textcolor{keyword}{const}\ u\_int8\_t\ \ \_offset,\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ ControlBits\ \_cbits,}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_window,\ \ \textcolor{keyword}{const}\ u\_int16\_t\ \_checksum,\ \textcolor{keyword}{const}\ u\_int16\_t\ \ \ \ \ \ \ \ \ \ \_urgpntr,}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \ \ \ \ \_payload,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \ \ \ \_size}
+\DoxyCodeLine{00084\ )\ \_\_attribute\_\_((returns\_nonnull));}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \_\_END\_DECLS}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

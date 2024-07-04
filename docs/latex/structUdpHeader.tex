@@ -1,0 +1,98 @@
+\doxysection{Udp\+Header Struct Reference}
+\label{structUdpHeader}\index{UdpHeader@{UdpHeader}}
+
+
+{\ttfamily \#include $<$ip.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+srcport}
+\begin{DoxyCompactList}\small\item\em The optional Source Port. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+dstport}
+\begin{DoxyCompactList}\small\item\em The Desination Port. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+length}
+\begin{DoxyCompactList}\small\item\em The total length of the UDP Packet. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+checksum}
+\begin{DoxyCompactList}\small\item\em The checksum. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing the UDP Header of the UDP Packet. It consists of the classical 8 bytes divided into\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+srcport}, (optional) Source port (16 bits),
+\item {\ttfamily \+\_\+dstport}, Destination port (16 bits)
+\item {\ttfamily \+\_\+length}, Total length (16 bits)
+\item {\ttfamily \+\_\+checksum}, Checksum (16 bits)
+\end{DoxyItemize}
+
+This structure refers to the RFC 768 {\texttt{ https\+://datatracker.\+ietf.\+org/doc/html/rfc768}} 
+
+Definition at line \textbf{ 406} of file \textbf{ ip.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{UdpHeader@{UdpHeader}!\_checksum@{\_checksum}}
+\index{\_checksum@{\_checksum}!UdpHeader@{UdpHeader}}
+\doxysubsubsection{\_checksum}
+{\footnotesize\ttfamily \label{structUdpHeader_ad2ed3f50729959b773f1c60d577f17f6} 
+u\+\_\+int16\+\_\+t \+\_\+checksum}
+
+
+
+The checksum. 
+
+
+
+Definition at line \textbf{ 412} of file \textbf{ ip.\+h}.
+
+\index{UdpHeader@{UdpHeader}!\_dstport@{\_dstport}}
+\index{\_dstport@{\_dstport}!UdpHeader@{UdpHeader}}
+\doxysubsubsection{\_dstport}
+{\footnotesize\ttfamily \label{structUdpHeader_a8c95c8bb25459cbd718928d4658485ea} 
+u\+\_\+int16\+\_\+t \+\_\+dstport}
+
+
+
+The Desination Port. 
+
+
+
+Definition at line \textbf{ 410} of file \textbf{ ip.\+h}.
+
+\index{UdpHeader@{UdpHeader}!\_length@{\_length}}
+\index{\_length@{\_length}!UdpHeader@{UdpHeader}}
+\doxysubsubsection{\_length}
+{\footnotesize\ttfamily \label{structUdpHeader_a10ae027acd56faf9d500dac0b91dca84} 
+u\+\_\+int16\+\_\+t \+\_\+length}
+
+
+
+The total length of the UDP Packet. 
+
+
+
+Definition at line \textbf{ 411} of file \textbf{ ip.\+h}.
+
+\index{UdpHeader@{UdpHeader}!\_srcport@{\_srcport}}
+\index{\_srcport@{\_srcport}!UdpHeader@{UdpHeader}}
+\doxysubsubsection{\_srcport}
+{\footnotesize\ttfamily \label{structUdpHeader_a617c28886c8739e65ece6c86a5b363ce} 
+u\+\_\+int16\+\_\+t \+\_\+srcport}
+
+
+
+The optional Source Port. 
+
+
+
+Definition at line \textbf{ 409} of file \textbf{ ip.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ ip.\+h}\end{DoxyCompactItemize}

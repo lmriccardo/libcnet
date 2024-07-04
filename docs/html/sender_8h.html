@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.02d0</span>
+   <div id="projectname">libcnet<span id="projectnumber">&#160;v01.01r</span>
    </div>
    <div id="projectbrief">C-based library for interacting with Sockets</div>
   </td>
@@ -151,6 +151,8 @@ Functions</h2></td></tr>
 <tr class="separator:a81713e317126ef764e409f42b778776b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a098d2afc90384e157efb85c913385459" id="r_a098d2afc90384e157efb85c913385459"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a098d2afc90384e157efb85c913385459">Sender_setIpFlags</a> (<a class="el" href="structSender.html">Sender</a> *_self, int _d, int _m) __attribute__((nonnull))</td></tr>
 <tr class="separator:a098d2afc90384e157efb85c913385459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdf283b5b52596dc32959af2da9b497" id="r_accdf283b5b52596dc32959af2da9b497"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accdf283b5b52596dc32959af2da9b497">Sender_setTcpOptions</a> (<a class="el" href="structSender.html">Sender</a> *_self, struct <a class="el" href="structTcpOption.html">TcpOption</a> **_opts, const int _n) __attribute__((nonnull))</td></tr>
+<tr class="separator:accdf283b5b52596dc32959af2da9b497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90d92d510d8d774097822d58ea44ba9b" id="r_a90d92d510d8d774097822d58ea44ba9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90d92d510d8d774097822d58ea44ba9b">Sender_sendto</a> (<a class="el" href="structSender.html">Sender</a> *_self, const <a class="el" href="structIpPacket.html">IpPacket</a> *_pckt) __attribute__((nonnull))</td></tr>
 <tr class="separator:a90d92d510d8d774097822d58ea44ba9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac53f152a3dd220d9fcb7bcc739b307fb" id="r_ac53f152a3dd220d9fcb7bcc739b307fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac53f152a3dd220d9fcb7bcc739b307fb">Sender_bsendto</a> (<a class="el" href="structSender.html">Sender</a> *_self, const char *_buffer, const size_t _size) __attribute__((nonnull))</td></tr>
@@ -874,6 +876,41 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Set the Maximum Transmission Unit into the <a class="el" href="structSender.html">Sender</a> </p>
+
+</div>
+</div>
+<a id="accdf283b5b52596dc32959af2da9b497" name="accdf283b5b52596dc32959af2da9b497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accdf283b5b52596dc32959af2da9b497">&#9670;&#160;</a></span>Sender_setTcpOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sender_setTcpOptions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSender.html">Sender</a> *</td>          <td class="paramname"><span class="paramname"><em>_self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structTcpOption.html">TcpOption</a> **</td>          <td class="paramname"><span class="paramname"><em>_opts</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int</td>          <td class="paramname"><span class="paramname"><em>_n</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set a number of TCP Options into the <a class="el" href="structSender.html">Sender</a> Tcp Parameters </p>
 
 </div>
 </div>

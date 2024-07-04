@@ -1,0 +1,232 @@
+\doxysection{Tcp\+Header Struct Reference}
+\label{structTcpHeader}\index{TcpHeader@{TcpHeader}}
+
+
+{\ttfamily \#include $<$ip.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+srcport}
+\begin{DoxyCompactList}\small\item\em Source port number. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+dstport}
+\begin{DoxyCompactList}\small\item\em Destination port number. \end{DoxyCompactList}\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+seqnum}
+\begin{DoxyCompactList}\small\item\em Sequence number of first data octet in this segment. \end{DoxyCompactList}\item 
+u\+\_\+int32\+\_\+t \textbf{ \+\_\+acknum}
+\begin{DoxyCompactList}\small\item\em Contains the next sequence the sender of the segment is expecting to receive. \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+offset}
+\begin{DoxyCompactList}\small\item\em This number indicates where the data begins + reserved bits set to 0. \end{DoxyCompactList}\item 
+struct \textbf{ Control\+Bits} \textbf{ \+\_\+flags}
+\begin{DoxyCompactList}\small\item\em A number of control bits for different pourposes. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+window}
+\begin{DoxyCompactList}\small\item\em The number of data octets beginning with the one indicated in the ACK field. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+checksum}
+\begin{DoxyCompactList}\small\item\em The checksum. \end{DoxyCompactList}\item 
+u\+\_\+int16\+\_\+t \textbf{ \+\_\+urgpntr}
+\begin{DoxyCompactList}\small\item\em The current value of the urgent pointer as a positive offset from the sequence number. \end{DoxyCompactList}\item 
+struct \textbf{ Tcp\+Option} $\ast$ \textbf{ \+\_\+options} [\textbf{ TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE}]
+\begin{DoxyCompactList}\small\item\em A vector of TCP Options (maximum 20 bytes) \end{DoxyCompactList}\item 
+u\+\_\+int8\+\_\+t \textbf{ \+\_\+tot\+Opt\+Len\+\_\+b}
+\begin{DoxyCompactList}\small\item\em The current length in bytes of the options. \end{DoxyCompactList}\item 
+int \textbf{ \+\_\+num\+Of\+Opts}
+\begin{DoxyCompactList}\small\item\em The total number of options in the current header. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing the TCP header of the TCP Packet. It consists of classical minimum of 20 bytes divided into\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+srcport}, source port (2 bytes)
+\item {\ttfamily \+\_\+dstport}, destination port (2 bytes),
+\item {\ttfamily \+\_\+seqnum}, sequence number (4 bytes)
+\item {\ttfamily \+\_\+acknum}, acknowledgment number (4 bytes)
+\item {\ttfamily \+\_\+offset}, Data Offset + reserved bits (1 byte)
+\item {\ttfamily \+\_\+flags}, Control bits or flags (1 byte)
+\item {\ttfamily \+\_\+window}, \doxyref{Receiver}{p.}{structReceiver} Window size (2 bytes),
+\item {\ttfamily \+\_\+checksum}, Checksum (2 bytes)
+\item {\ttfamily \+\_\+urgpntr}, Urgent Pointer (2 bytes)
+\item {\ttfamily \+\_\+options}, Optional Options (from 0 to 20 bytes).
+\end{DoxyItemize}
+
+This structure refers to the RFC 9293 {\texttt{ https\+://www.\+rfc-\/editor.\+org/rfc/rfc9293.\+html}} 
+
+Definition at line \textbf{ 574} of file \textbf{ ip.\+h}.
+
+
+
+\doxysubsection{Field Documentation}
+\index{TcpHeader@{TcpHeader}!\_acknum@{\_acknum}}
+\index{\_acknum@{\_acknum}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_acknum}
+{\footnotesize\ttfamily \label{structTcpHeader_afa33303d18db9a5ce0f98d58f0daafd4} 
+u\+\_\+int32\+\_\+t \+\_\+acknum}
+
+
+
+Contains the next sequence the sender of the segment is expecting to receive. 
+
+
+
+Definition at line \textbf{ 580} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_checksum@{\_checksum}}
+\index{\_checksum@{\_checksum}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_checksum}
+{\footnotesize\ttfamily \label{structTcpHeader_ad2ed3f50729959b773f1c60d577f17f6} 
+u\+\_\+int16\+\_\+t \+\_\+checksum}
+
+
+
+The checksum. 
+
+
+
+Definition at line \textbf{ 584} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_dstport@{\_dstport}}
+\index{\_dstport@{\_dstport}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_dstport}
+{\footnotesize\ttfamily \label{structTcpHeader_a8c95c8bb25459cbd718928d4658485ea} 
+u\+\_\+int16\+\_\+t \+\_\+dstport}
+
+
+
+Destination port number. 
+
+
+
+Definition at line \textbf{ 578} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_flags@{\_flags}}
+\index{\_flags@{\_flags}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_flags}
+{\footnotesize\ttfamily \label{structTcpHeader_a26b4fa782d0944cd65d453d32daf0ec2} 
+struct \textbf{ Control\+Bits} \+\_\+flags}
+
+
+
+A number of control bits for different pourposes. 
+
+
+
+Definition at line \textbf{ 582} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_numOfOpts@{\_numOfOpts}}
+\index{\_numOfOpts@{\_numOfOpts}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_numOfOpts}
+{\footnotesize\ttfamily \label{structTcpHeader_a73786c7f9295e0c8bd2a5468237543e5} 
+int \+\_\+num\+Of\+Opts}
+
+
+
+The total number of options in the current header. 
+
+
+
+Definition at line \textbf{ 590} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_offset@{\_offset}}
+\index{\_offset@{\_offset}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_offset}
+{\footnotesize\ttfamily \label{structTcpHeader_a71b8ce4061f5f20ba3153dc447f754b1} 
+u\+\_\+int8\+\_\+t \+\_\+offset}
+
+
+
+This number indicates where the data begins + reserved bits set to 0. 
+
+
+
+Definition at line \textbf{ 581} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_options@{\_options}}
+\index{\_options@{\_options}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_options}
+{\footnotesize\ttfamily \label{structTcpHeader_a1c8f79f57b57891ea09572e039864048} 
+struct \textbf{ Tcp\+Option}$\ast$ \+\_\+options[\textbf{ TCP\+\_\+\+OPTIONS\+\_\+\+MAX\+\_\+\+SIZE}]}
+
+
+
+A vector of TCP Options (maximum 20 bytes) 
+
+
+
+Definition at line \textbf{ 587} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_seqnum@{\_seqnum}}
+\index{\_seqnum@{\_seqnum}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_seqnum}
+{\footnotesize\ttfamily \label{structTcpHeader_affec41e0ae5a63d5f538bd713d943001} 
+u\+\_\+int32\+\_\+t \+\_\+seqnum}
+
+
+
+Sequence number of first data octet in this segment. 
+
+
+
+Definition at line \textbf{ 579} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_srcport@{\_srcport}}
+\index{\_srcport@{\_srcport}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_srcport}
+{\footnotesize\ttfamily \label{structTcpHeader_a617c28886c8739e65ece6c86a5b363ce} 
+u\+\_\+int16\+\_\+t \+\_\+srcport}
+
+
+
+Source port number. 
+
+
+
+Definition at line \textbf{ 577} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_totOptLen\_b@{\_totOptLen\_b}}
+\index{\_totOptLen\_b@{\_totOptLen\_b}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_totOptLen\_b}
+{\footnotesize\ttfamily \label{structTcpHeader_a1d0b152ae8d0438aa3739a38e40421f7} 
+u\+\_\+int8\+\_\+t \+\_\+tot\+Opt\+Len\+\_\+b}
+
+
+
+The current length in bytes of the options. 
+
+
+
+Definition at line \textbf{ 589} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_urgpntr@{\_urgpntr}}
+\index{\_urgpntr@{\_urgpntr}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_urgpntr}
+{\footnotesize\ttfamily \label{structTcpHeader_aaff46211c690c4690111aefc85905f9d} 
+u\+\_\+int16\+\_\+t \+\_\+urgpntr}
+
+
+
+The current value of the urgent pointer as a positive offset from the sequence number. 
+
+
+
+Definition at line \textbf{ 585} of file \textbf{ ip.\+h}.
+
+\index{TcpHeader@{TcpHeader}!\_window@{\_window}}
+\index{\_window@{\_window}!TcpHeader@{TcpHeader}}
+\doxysubsubsection{\_window}
+{\footnotesize\ttfamily \label{structTcpHeader_a1aeec45756f7de785f87303e17e1035d} 
+u\+\_\+int16\+\_\+t \+\_\+window}
+
+
+
+The number of data octets beginning with the one indicated in the ACK field. 
+
+
+
+Definition at line \textbf{ 583} of file \textbf{ ip.\+h}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\textbf{ ip.\+h}\end{DoxyCompactItemize}

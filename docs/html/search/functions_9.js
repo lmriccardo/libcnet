@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['node_5fdelete_0',['Node_delete',['../list_8h.html#aadba4938d35791c4bf7e1f85c40e0711',1,'list.h']]],
-  ['node_5fnew_1',['Node_new',['../list_8h.html#a91dfc67d643fb51d57f175f40f20187a',1,'list.h']]]
+  ['pathmtudiscovery_0',['pathMtuDiscovery',['../net_8h.html#a06de88483e46075098d204b0446e59ff',1,'net.h']]],
+  ['pseudoheader_5fcreate_1',['PseudoHeader_create',['../ip_8h.html#aebd718cdcf1d034777070a5b6ad61bde',1,'ip.h']]],
+  ['pseudoheader_5fencode_2',['PseudoHeader_encode',['../ip_8h.html#a3bca53adb0f551568cd84072b5c48a95',1,'ip.h']]]
 ];

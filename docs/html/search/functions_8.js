@@ -1,22 +1,5 @@
 var searchData=
 [
-  ['linkedlist_5fappend_0',['LinkedList_append',['../list_8h.html#a3781465c512eccdd239ea34d482f17ef',1,'list.h']]],
-  ['linkedlist_5fappendt_1',['LinkedList_appendt',['../list_8h.html#a801d01fa936fc7a9dfbb3e9aea5bbdfe',1,'list.h']]],
-  ['linkedlist_5fappendv_2',['LinkedList_appendv',['../list_8h.html#a1108d72600508619f56ad75897e1dc0a',1,'list.h']]],
-  ['linkedlist_5fappendvt_3',['LinkedList_appendvt',['../list_8h.html#aac624f57195bba0041a097d98d37175d',1,'list.h']]],
-  ['linkedlist_5fdelete_4',['LinkedList_delete',['../list_8h.html#a07bb0b083224eb911aa9765f29919347',1,'list.h']]],
-  ['linkedlist_5fdeletet_5',['LinkedList_deletet',['../list_8h.html#a5853ad4a2989533e4c9b024ed56c02bc',1,'list.h']]],
-  ['linkedlist_5fgetsize_6',['LinkedList_getSize',['../list_8h.html#aa1e3fb3d1107f94bc6f1aac2befb1501',1,'list.h']]],
-  ['linkedlist_5fgetsizet_7',['LinkedList_getSizet',['../list_8h.html#add3341f8fdfa0b1aeced17d032da0977',1,'list.h']]],
-  ['linkedlist_5fisempty_8',['LinkedList_isEmpty',['../list_8h.html#a9d9e0b078af0e1a3bd896741ca123310',1,'list.h']]],
-  ['linkedlist_5fisemptyt_9',['LinkedList_isEmptyt',['../list_8h.html#aeedb703487a17e1305b35c7c2d459ee7',1,'list.h']]],
-  ['linkedlist_5fnew_10',['LinkedList_new',['../list_8h.html#af2279504ba7b130d7d5ecbb9ebe13950',1,'list.h']]],
-  ['linkedlist_5fpop_11',['LinkedList_pop',['../list_8h.html#a52252af266b8c33425329597f53d57c6',1,'list.h']]],
-  ['linkedlist_5fpopt_12',['LinkedList_popt',['../list_8h.html#a7876eb6b5fbcc55fa8e80bc100cea821',1,'list.h']]],
-  ['linkedlist_5fpush_13',['LinkedList_push',['../list_8h.html#a92520ffa8b142648263f1f9db8e15359',1,'list.h']]],
-  ['linkedlist_5fpusht_14',['LinkedList_pusht',['../list_8h.html#a6e14091a2995510bb75da2076ab2cba4',1,'list.h']]],
-  ['linkedlist_5fpushv_15',['LinkedList_pushv',['../list_8h.html#ae4cf094bcedcae2c83e5da069dc3be61',1,'list.h']]],
-  ['linkedlist_5fpushvt_16',['LinkedList_pushvt',['../list_8h.html#ac216cac0e6549d6743f7385281881148',1,'list.h']]],
-  ['linkedlist_5fremove_17',['LinkedList_remove',['../list_8h.html#a4f2cf0177046951f585676707ce30f00',1,'list.h']]],
-  ['linkedlist_5fremovet_18',['LinkedList_removet',['../list_8h.html#a18ad9fcc5a5ed98a706f69c5440e5eab',1,'list.h']]]
+  ['node_5fdelete_0',['Node_delete',['../list_8h.html#aadba4938d35791c4bf7e1f85c40e0711',1,'list.h']]],
+  ['node_5fnew_1',['Node_new',['../list_8h.html#a91dfc67d643fb51d57f175f40f20187a',1,'list.h']]]
 ];
