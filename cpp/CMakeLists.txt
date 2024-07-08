@@ -1,3 +1,5 @@
+include_directories(./)
+
 add_subdirectory(Utils)
 add_subdirectory(Packets)
 add_subdirectory(Communication)
@@ -10,3 +12,5 @@ set_target_properties( ${TARGETS}
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/cpp"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib/cpp"
 )
+
+target_link_libraries(Packets PUBLIC Utils)

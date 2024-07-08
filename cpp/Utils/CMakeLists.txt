@@ -3,4 +3,6 @@ add_library(Utils STATIC
     ByteBuffer.cpp
     MessageQueue.hpp
     MessageQueue.cpp
+    Timer.hpp
+    Timer.cpp
 )

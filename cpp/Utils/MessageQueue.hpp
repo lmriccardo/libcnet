@@ -2,11 +2,11 @@
  ****************************************************************************************
  *****                                                                              *****
  *****   @details Header file                                                       *****
- *****   @name LinkedList.hpp                                                       *****
+ *****   @name MessageQueue.hpp                                                     *****
  *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
  *****   @date 1 June 2024 (Mon Jul 08 2024 Last Modification)                      *****
  *****                                                                              *****
- *****   @brief This file contains the declarations of a Linked List object struct  *****
+ *****   @brief This file contains the declarations of a MessageQueue object class  *****
  *****   and a number of functions to interact with it.                             *****
  *****                                                                              *****
  ****************************************************************************************
