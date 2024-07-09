@@ -1,9 +1,11 @@
 #ifndef _BASE_H
 #define _BASE_H
 
+#include <iostream>
+#include <arpa/inet.h>
 #include <Utils/ByteBuffer.hpp>
 
-namespace Ip
+namespace Packets
 {
     class PacketHeader
     {

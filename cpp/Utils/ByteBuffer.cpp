@@ -213,6 +213,8 @@ bool Utils::ByteBuffer::isEndOfBuffer()
 
 void Utils::ByteBuffer::writeToFile(const std::string _filename)
 {
+    this->resetPosition();
+    
     unsigned char* buffer = new unsigned char[this->_size];
     this->getBuffer(buffer, this->_size);
 
@@ -222,6 +224,11 @@ void Utils::ByteBuffer::writeToFile(const std::string _filename)
     fclose(fptr);
 
     delete(buffer);
+}
+
+int Utils::ByteBuffer::getCurrentPosition()
+{
+    return this->_position;
 }
 
 void Utils::ByteBuffer::checkForOutOfBound(

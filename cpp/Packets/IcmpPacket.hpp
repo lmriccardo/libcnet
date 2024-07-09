@@ -27,7 +27,7 @@
 #define ICMP_ECHO_CODE 0x0
 #define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
 
-namespace Ip
+namespace Packets
 {
 
     /**
@@ -85,6 +85,10 @@ namespace Ip
             void createHeaderUnused();
             void createHeaderRedirect();
 
+            void printInfoRedirect();
+            void printInfoEcho();
+            void printInfoMtu();
+
         public:
             IcmpHeader(const unsigned char _type, const unsigned char _code);
             ~IcmpHeader() = default;
@@ -92,7 +96,7 @@ namespace Ip
             /**
              * @brief Set the type for the current ICMP Header
              */
-            void setType(unsigned char _type);
+            void setType(const unsigned char _type);
 
             /**
              * @brief Get the type field for the current ICMP Header
@@ -103,13 +107,101 @@ namespace Ip
             /**
              * @brief Set the code for the current ICMP Header
              */
-            void setCode(unsigned char _code);
+            void setCode(const unsigned char _code);
 
             /**
              * @brief Get the code field for the current ICMP Header
              * @return An unsigned char (8 bits)
              */
             unsigned char getCode();
+
+            /**
+             * @brief Set the checksum field for the current ICMP Header
+             */
+            void setChecksum(const unsigned short _checksum);
+
+            /**
+             * @brief Get the checksum field value for the current ICMP Header
+             * @return An unsigned short (16 bits)
+             */
+            unsigned short getChecksum();
+
+            /**
+             * @brief Set the gateway field for the current ICMP Header
+             * @throw runtime_error if the current type and code do not match
+             * the header format that includes the gateway.
+             */
+            void setGateway(const unsigned int _gateway);
+
+            /**
+             * @brief Get the gateway field value for the current ICMP Header
+             */
+            unsigned int getGateway();
+
+            /**
+             * @brief Set the Identifier field for the current ICMP Header
+             * @throw runtime_error if the current type and code do not match
+             * the header format that includes the identifier
+             */
+            void setIdentifier(const unsigned short _id);
+
+            /**
+             * @brief Get the Identifier field for the current ICMP Header
+             */
+            unsigned short getIdentifier();
+
+            /**
+             * @brief Set the Sequence Number field for the current ICMP Header
+             * @throw runtime_error if the current type and code do not match
+             * the header format that includes the sequence number
+             */
+            void setSequenceNumber(const unsigned short _sn);
+
+            /**
+             * @brief Get the Sequence Number field for the current ICMP Header
+             */
+            unsigned short getSequenceNumber();
+
+            /**
+             * @brief Set the Next Hop MTU field for the current ICMP Header
+             * @throw runtime_error if the current type and code do not match
+             * the header format that includes the Next Hop MTU
+             */
+            void setNextHopMtu(const unsigned short _mtu);
+
+            /**
+             * @brief Get the Next Hop MTU field for the current ICMP Header
+             */
+            unsigned short getNextHopMtu();
+
+            /**
+             * @overload PacketHeader::printInfo
+             * @brief Print all the header fields with corresponding values
+             */
+            void printInfo();
+
+            /**
+             * @overload PacketHeader::encode
+             * @brief Encode the ICMP Header into a buffer of bytes filling the input ByteBuffer.
+             * Notice that all elements with size grater than 1 are converted from little-endian
+             * into big-endian (network byte order).
+             * 
+             * @param _buffer The ByteBuffer to fill with the Header
+             */
+            void encode(Utils::ByteBuffer& _buffer);
+
+            /**
+             * @overload PacketHeader::encode
+             * @brief Encode the ICMP Header into a Byte Buffer
+             * @return The byte buffer containing the header
+             */
+            Utils::ByteBuffer encode();
+
+            /**
+             * @overload PacketHeader::decode
+             * @brief Decode the input ByteBuffer into an ICMP Header
+             */
+            void decode(Utils::ByteBuffer& _buffer);
     };
 };
 

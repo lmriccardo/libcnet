@@ -23,9 +23,6 @@
 
 namespace Utils
 {
-    using nanoseconds = std::chrono::nanoseconds;
-    using time_point = std::chrono::time_point<std::chrono::steady_clock>;
-
     /**
      * @class Timer
      * 
@@ -37,6 +34,10 @@ namespace Utils
     class Timer
     {
         private:
+            using nanoseconds = std::chrono::nanoseconds;
+            using time_point = std::chrono::time_point<std::chrono::steady_clock>;
+
+            
             nanoseconds _elapsed;  //!< The total elapsed time from the start
             bool        _running;  //!< Is true if the corresponding thread is running
             time_point  _start;    //!< The time when the timer has started
@@ -45,6 +46,10 @@ namespace Utils
 
         public:
             Timer();
+            ~Timer()
+            {
+                this->stop();
+            }
 
             /**
              * @brief Starts the timer as a detached thread.
@@ -69,14 +74,14 @@ namespace Utils
              * 
              * @return A time in nanoseconds
              */
-            auto constexpr getDeltaTime();
+            int getDeltaTime();
 
             /**
              * @brief Returns the elapsed time, in nanoseconds.
              * 
              * @return A time in nanoseconds
              */
-            auto constexpr getElapsedTime();
+            int getElapsedTime();
 
             /**
              * @brief Reset the start time of the timer to current time.

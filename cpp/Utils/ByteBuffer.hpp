@@ -142,6 +142,12 @@ namespace Utils
              * @param filename The name of the file
              */
             void writeToFile(const std::string _filename);
+
+            /**
+             * @brief Get the current position inside the buffer
+             * @return An Integer representing the position
+             */
+            int getCurrentPosition();
     };
 }
 

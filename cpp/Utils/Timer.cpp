@@ -9,6 +9,7 @@ Utils::Timer::Timer()
 
 void Utils::Timer::start()
 {
+    this->_running = true;
     std::thread timerth(&Timer::run, this);
     timerth.detach();
 }
@@ -28,14 +29,14 @@ void Utils::Timer::stop()
     this->_running = false;
 }
 
-constexpr auto Utils::Timer::getDeltaTime()
+int Utils::Timer::getDeltaTime()
 {
     nanoseconds dtime = this->_current - this->_previous;
     this->_previous = this->_current;
     return dtime.count();
 }
 
-constexpr auto Utils::Timer::getElapsedTime()
+int Utils::Timer::getElapsedTime()
 {
     nanoseconds dtime = this->_current - this->_start;
     return dtime.count();
