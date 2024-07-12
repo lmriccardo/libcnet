@@ -30,5 +30,13 @@
 
 ## Communication Development
 
-- [ ] Implements Sender
+- [?] Implements Sender
 - [ ] Implements Receiver
+- [ ] Synchrnonization function Sender-Receiver (*NOTA 1*)
+
+*NOTA 1*
+
+To perform thread synchronization between sender and receiver the idea is to
+set the same mutex and condition variable the sender has to the receiver.
+Whenever the receiver needs to receive it acquire the lock and wait to be
+notified by the sender, once received it release the lock and notify the sender.

@@ -17,6 +17,8 @@
 #ifndef _BYTE_BUFFER_H
 #define _BYTE_BUFFER_H
 
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -25,6 +27,13 @@
 
 namespace Utils
 {
+    /**
+     * @class ByteBuffer
+     * 
+     * This class represents a ByteBuffer. It has a number of methods to fill the buffer
+     * and to get bytes from it. It is possible to put and get unsigned char, unsigned short,
+     * unsigned int and variable length buffers. 
+     */
     class ByteBuffer
     {
         protected:
@@ -45,40 +54,52 @@ namespace Utils
             ~ByteBuffer() = default;
 
             /**
-             * Set a new position into the buffer
+             * @brief Set a new position into the buffer
              * 
              * @param _newpos The new position
              */
             void position(const int _newpos);
 
             /**
-             * Reset the position of the Byte Buffer
+             * @brief Returns the current position of the buffer
+             * @return An integer value
+             */
+            int position();
+
+            /**
+             * @brief Returns the total size of the buffer
+             * @return The size of the buffer
+             */
+            std::size_t getBufferSize() const;
+
+            /**
+             * @brief Reset the position of the Byte Buffer
              */
             void resetPosition();
 
             /**
-             * Put an unsigned byte into the buffer
+             * @brief Put an unsigned byte into the buffer
              * 
              * @param _data The input data of size 8 bits (1 byte)
              */
             void put(const unsigned char _data);
 
             /**
-             * Put an unisnged short into the buffer
+             * @brief Put an unisnged short into the buffer
              * 
              * @param _data The input data of size 16 bits (2 bytes)
              */
             void putShort(const unsigned short _data);
 
             /**
-             * Put an unsigned integer into the buffer
+             * @brief Put an unsigned integer into the buffer
              * 
              * @param _data The input data of size 32 bits (4 bytes)
              */
             void putInt(const unsigned int _data);
 
             /**
-             * Put an input buffer into the buffer starting from a given input position
+             * @brief Put an input buffer into the buffer starting from a given input position
              * 
              * @param _data A buffer of unisnged char
              * @param _start The starting position inside the Byte Buffer
@@ -87,7 +108,7 @@ namespace Utils
             void putBuffer(unsigned char* const& _data, const int _start, const std::size_t _size);
             
             /**
-             * Put an input buffer into the buffer starting from the current position
+             * @brief Put an input buffer into the buffer starting from the current position
              * 
              * @param _data A buffer of unisnged char
              * @param _size The total length in bytes of the input unsigned char buffer
@@ -95,22 +116,22 @@ namespace Utils
             void putBuffer(unsigned char* const& _data, const std::size_t _size);
 
             /**
-             * Return the unsigned char at the current buffer position
+             * @brief Return the unsigned char at the current buffer position
              */
             unsigned char get();
 
             /**
-             * Return an unsigned short from the buffer and increase the position of 2
+             * @brief Return an unsigned short from the buffer and increase the position of 2
              */
             unsigned short getShort();
 
             /**
-             * Return an unsigned int from the buffer and increase the position of 4
+             * @brief Return an unsigned int from the buffer and increase the position of 4
              */
             unsigned int getInt();
 
             /**
-             * Return a buffer of input size from a given starting position.
+             * @brief Return a buffer of input size from a given starting position.
              * 
              * @param _data The input destination buffer
              * @param _start The starting index inside the buffer
@@ -119,7 +140,7 @@ namespace Utils
             void getBuffer(unsigned char* _data, const int _start, const std::size_t _size);
 
             /**
-             * Return a buffer of input size from the current Byte Buffer position.
+             * @brief Return a buffer of input size from the current Byte Buffer position.
              * 
              * @param _data The input destination buffer
              * @param _size The total number of bytes to take from the Byte Buffer
@@ -127,17 +148,19 @@ namespace Utils
             void getBuffer(unsigned char* _data, const std::size_t _size);
 
             /**
-             * Check if the Byte Buffer is Empty or not
+             * @brief Check if the Byte Buffer is Empty or not
+             * @return A boolean value
              */
             bool isEmpty();
 
             /**
-             * Check if the current position is at the end of the buffer
+             * @brief Check if the current position is at the end of the buffer
+             * @return A boolean value
              */
             bool isEndOfBuffer();
 
             /**
-             * Write the content of the byte buffer into a file
+             * @brief Write the content of the byte buffer into a file
              * 
              * @param filename The name of the file
              */
@@ -149,6 +172,8 @@ namespace Utils
              */
             int getCurrentPosition();
     };
+
+    typedef std::shared_ptr<ByteBuffer> ByteBuffer_ptr;
 }
 
 #endif

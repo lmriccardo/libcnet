@@ -17,6 +17,8 @@
 #ifndef _LINKED_LIST_H
 #define _LINKED_LIST_H
 
+#pragma once
+
 #include <mutex>
 #include <condition_variable>
 #include <stdexcept>

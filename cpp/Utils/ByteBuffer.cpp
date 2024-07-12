@@ -12,6 +12,16 @@ void Utils::ByteBuffer::position(const int _newpos)
     this->_position = _newpos;
 }
 
+int Utils::ByteBuffer::position()
+{
+    return this->_position;
+}
+
+std::size_t Utils::ByteBuffer::getBufferSize() const
+{
+    return this->_size;
+}
+
 void Utils::ByteBuffer::resetPosition()
 {
     this->_position = 0;

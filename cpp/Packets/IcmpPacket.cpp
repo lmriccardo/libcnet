@@ -318,11 +318,11 @@ void Packets::IcmpHeader::encode(Utils::ByteBuffer &_buffer)
     }
 }
 
-Utils::ByteBuffer Packets::IcmpHeader::encode()
+Utils::ByteBuffer_ptr Packets::IcmpHeader::encode()
 {
     Utils::ByteBuffer buff(ICMP_HEADER_MAX_SIZE);
     this->encode(buff);
-    return buff;
+    return std::make_shared<Utils::ByteBuffer>(buff);
 }
 
 void Packets::IcmpHeader::decode(Utils::ByteBuffer &_buffer)

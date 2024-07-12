@@ -17,7 +17,10 @@
 #ifndef _TIMER_H
 #define _TIMER_H
 
+#pragma once
+
 #include <thread>
+#include <memory>
 
 #define NS_PER_SECOND 1000000000
 
@@ -98,6 +101,8 @@ namespace Utils
              */
             static void sleep(double delay);
     };
+
+    typedef std::shared_ptr<Timer> Timer_ptr;
 };
 
 #endif

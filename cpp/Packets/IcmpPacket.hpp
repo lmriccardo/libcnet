@@ -1,3 +1,17 @@
+/****************************************************************************************
+ ****************************************************************************************
+ *****                                                                              *****
+ *****   @details Header file                                                       *****
+ *****   @name IcmpPacket.hpp                                                       *****
+ *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
+ *****   @date 08 July 2024 (Mon Jul 12 2024 Last Modification)                     *****
+ *****                                                                              *****
+ *****   @brief This file contains the creation of Icmp classes for ICMP Packets    ***** 
+ *****                                                                              *****
+ ****************************************************************************************
+ ****************************************************************************************
+*/
+
 #ifndef _ICMP_PACKET_H
 #define _ICMP_PACKET_H
 
@@ -193,9 +207,9 @@ namespace Packets
             /**
              * @overload PacketHeader::encode
              * @brief Encode the ICMP Header into a Byte Buffer
-             * @return The byte buffer containing the header
+             * @return A pointer to the byte buffer containing the header
              */
-            Utils::ByteBuffer encode();
+            Utils::ByteBuffer_ptr encode();
 
             /**
              * @overload PacketHeader::decode
