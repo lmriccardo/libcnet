@@ -17,32 +17,44 @@
 
 #include "Base.hpp"
 
-#define ICMP_HEADER_MAX_SIZE 0x08
-
-// Summary of ICMP Message Types
-#define ICMP_ECHO_REPLY_TYPE              0x00
-#define ICMP_DESTINATION_UNREACHABLE_TYPE 0x03
-#define ICMP_SOURCE_QUENCH_TYPE           0x04
-#define ICMP_REDIRECT_TYPE                0x05
-#define ICMP_ECHO_TYPE                    0x08
-#define ICMP_TIME_EXCEEEDED_TYPE          0x0b
-#define ICMP_PARAMETER_PROBLEM_TYPE       0x0c
-#define ICMP_INFORMATION_REQUEST_TYPE     0x0f
-#define ICMP_INFORMATION_REPLY_TYPE       0x10
-
-// Summary of Destination Unreachable Codes
-#define ICMP_NET_UNREACHABLE_CODE      0x00
-#define ICMP_HOST_UNREACHABLE_CODE     0x01
-#define ICMP_PROTOCOL_UNREACHABLE_CODE 0x02
-#define ICMP_PORT_UNREACHABLE_CODE     0x03
-#define ICMP_FRAGMENTATION_NEEDED_CODE 0x04
-#define ICMP_SOURCE_ROUTE_FAILED_CODE  0x05
-
-#define ICMP_ECHO_CODE 0x0
-#define ICMP_PAYLOAD_MAXIMUM_SIZE 0xffe3
-
 namespace Packets
 {
+    namespace Icmp
+    {
+        /**
+         * @enum Type
+         * 
+         * Enumerates all possible types for an ICMP Packet
+         */
+        enum class Type : unsigned char
+        {
+            ECHO_REPLY              = 0x00,
+            DESTINATION_UNREACHABLE = 0x03,
+            SOURCE_QUENCH           = 0x04,
+            REDIRECT                = 0x05,
+            ECHO                    = 0x08,
+            TIME_EXCEEEDED          = 0x0b,
+            PARAMETER_PROBLEM       = 0x0c,
+            INFORMATION_REQUEST     = 0x0f,
+            INFORMATION_REPLY       = 0x10
+        };
+
+        /**
+         * @enum Code
+         * 
+         * Enumerates all possible codes for an ICMP Packet
+         */
+        enum class Code : unsigned char
+        {
+            ECHO                 = 0x00,
+            NET_UNREACHABLE      = 0x00,
+            HOST_UNREACHABLE     = 0x01,
+            PROTOCOL_UNREACHABLE = 0x02,
+            PORT_UNREACHABLE     = 0x03,
+            FRAGMENTATION_NEEDED = 0x04,
+            SOURCE_ROUTE_FAILED  = 0x05
+        };
+    };
 
     /**
      * Part of the ICMP Header reserved for Echo-like requests and responses
@@ -88,11 +100,26 @@ namespace Packets
      */
     class IcmpHeader : public PacketHeader
     {
+        public:
+            static const std::size_t size = 0x08; //!< The size of the ICMP Header
+
+            template<typename T>
+            static T cast(const Icmp::Type& __t)
+            {
+                return static_cast<T>(__t);
+            }
+
+            template<typename T>
+            static T cast(const Icmp::Code& __c)
+            {
+                return static_cast<T>(__c);
+            }
+
         private:
-            unsigned char  _type;     //!< The type of the ICMP Message
-            unsigned char  _code;     //!< The code corresponding to the Type
+            Icmp::Type     _type;     //!< The type of the ICMP Message
+            Icmp::Code     _code;     //!< The code corresponding to the Type
             unsigned short _checksum; //!< The checksum for packet validation
-            union h_data_t _rest;
+            union h_data_t _rest;     //!< Remaining data of the ICMP Header
 
             void createHeaderMtu();
             void createHeaderEcho();
@@ -104,30 +131,30 @@ namespace Packets
             void printInfoMtu();
 
         public:
-            IcmpHeader(const unsigned char _type, const unsigned char _code);
+            IcmpHeader(const Icmp::Type _type, const Icmp::Code _code);
             ~IcmpHeader() = default;
 
             /**
              * @brief Set the type for the current ICMP Header
              */
-            void setType(const unsigned char _type);
+            void setType(const Icmp::Type _type);
 
             /**
              * @brief Get the type field for the current ICMP Header
              * @return An unsigned char (8 bits)
              */
-            unsigned char getType();
+            Icmp::Type getType();
 
             /**
              * @brief Set the code for the current ICMP Header
              */
-            void setCode(const unsigned char _code);
+            void setCode(const Icmp::Code _code);
 
             /**
              * @brief Get the code field for the current ICMP Header
              * @return An unsigned char (8 bits)
              */
-            unsigned char getCode();
+            Icmp::Code getCode();
 
             /**
              * @brief Set the checksum field for the current ICMP Header
@@ -214,6 +241,98 @@ namespace Packets
             /**
              * @overload PacketHeader::decode
              * @brief Decode the input ByteBuffer into an ICMP Header
+             */
+            void decode(Utils::ByteBuffer& _buffer);
+    };
+
+    /**
+     * @class Icmp
+     * 
+     * This class contains the ICMP Packet.
+     */
+    class IcmpPacket : public Packet
+    {
+        public:
+            static const unsigned short maxSize = 0xffe3; //!< The maximum size of the payload
+
+        private:
+            IcmpHeader  _hdr;   //!< The ICMP Packet Header
+
+            void fillHeaderUnused(const unsigned short _checksum);
+            void fillHeaderRedirect(const unsigned short _checksum, const unsigned int _gateway);
+            void fillHeaderEcho(
+                const unsigned short _checksum, const unsigned short _id, 
+                const unsigned short _seqnum);
+
+            void fillHeaderMtu(const unsigned short _checksum, const unsigned short _mtu);
+        
+        public:
+            IcmpPacket(const Icmp::Type _type, const Icmp::Code _code) \
+                : Packet(IcmpPacket::maxSize), _hdr(_type, _code) {};
+
+            IcmpPacket(const Icmp::Type _type, const Icmp::Code _code, const std::size_t _size) \
+                : Packet(_size), _hdr(_type, _code) {};
+
+            ~IcmpPacket() = default;
+
+            /**
+             * @brief Returns the pointer to the packet header
+             * @return The packet header memory address
+             */
+            PacketHeader* getPacketHeader();
+
+            /**
+             * @brief Returns the total size of the packet header + payload
+             * @return The total size of the packet
+             */
+            std::size_t getPacketSize();
+
+            /**
+             * @brief Returns the total size of the payload
+             */
+            const std::size_t& getPayloadSize();
+
+            /**
+             * @brief Set the Packet header with the values of the input header
+             * 
+             * @param _hdr The input packet header
+             */
+            void setHeader(PacketHeader* _hdr);
+            
+            /**
+             * @brief Copy the input payload of given size into the ByteBuffer
+             * 
+             * If the input size of the input payload differs from the size
+             * given as input, in particular it is bigger, the ByteBuffer of 
+             * the packet will be adapted.
+             * 
+             * @param _payload The payload to be copied
+             * @param _size The size of the input payload 
+             */
+            void setPayload(unsigned char* _payload, const std::size_t _size);
+            
+            /**
+             * @brief Set the current ByteBuffer with the one in input
+             * 
+             * @param _buff The input ByteBuffer
+             */
+            void setPayload(Utils::ByteBuffer& _buff);
+
+            /**
+             * @brief Encode the current Icmp Packet into a ByteBuffer
+             * @param _buffer The input ByteBuffer
+             */
+            void encode(Utils::ByteBuffer& _buffer);
+
+            /**
+             * @brief Encode the Icmp Packet and returns the ByteBuffer
+             * @returns The ByteBuffer with the encoding
+             */
+            Utils::ByteBuffer_ptr encode();
+
+            /**
+             * @brief Decode the input ByteBuffer into an ICMP Packet
+             * @param _buffer The ByteBuffer containing the encoded Packet
              */
             void decode(Utils::ByteBuffer& _buffer);
     };

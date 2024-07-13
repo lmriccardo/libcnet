@@ -67,7 +67,7 @@ namespace Utils
              * @brief Get the current size of the Message Queue
              * @returns The size of the queue
              */
-            std::size_t getSize() const
+            const std::size_t getSize()
             {
                 return this->_queue.size();
             }
@@ -76,7 +76,7 @@ namespace Utils
              * @brief Get the maximum Capacity of the Message Queue
              * @returns The maximum capacity (read-only)
              */
-            std::size_t getCapacity() const
+            const std::size_t getCapacity()
             {
                 return this->_capacity;
             }

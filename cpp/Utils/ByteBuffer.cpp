@@ -7,6 +7,21 @@ Utils::ByteBuffer::ByteBuffer(const std::size_t _size)
     this->_buffer.reserve(_size);
 }
 
+Utils::ByteBuffer::ByteBuffer(const ByteBuffer &other) : ByteBuffer(other.getBufferSize()) 
+{
+    const buffer_t buffer = other.getBuffer();
+    std::copy(buffer.begin(), buffer.end(), this->_buffer.begin());
+}
+
+Utils::ByteBuffer &Utils::ByteBuffer::operator=(const ByteBuffer &other)
+{
+    const std::size_t size = other.getBufferSize();
+    this->resize(size);
+    this->copy(other.getBuffer());
+
+    return *this;
+}
+
 void Utils::ByteBuffer::position(const int _newpos)
 {
     this->_position = _newpos;
@@ -17,9 +32,49 @@ int Utils::ByteBuffer::position()
     return this->_position;
 }
 
-std::size_t Utils::ByteBuffer::getBufferSize() const
+const std::size_t& Utils::ByteBuffer::getBufferSize()
 {
     return this->_size;
+}
+
+const std::size_t &Utils::ByteBuffer::getBufferSize() const
+{
+    return this->_size;
+}
+
+void Utils::ByteBuffer::resize(const std::size_t _size)
+{
+    this->_size = _size;
+    this->_buffer.resize(_size);
+}
+
+void Utils::ByteBuffer::copy(const buffer_t& _buffer)
+{
+    this->copy(_buffer, 0, _buffer.size());
+}
+
+void Utils::ByteBuffer::copy(const buffer_t &_buffer, const int _start)
+{
+    this->copy(_buffer, _start, _buffer.size());
+}
+
+void Utils::ByteBuffer::copy(const buffer_t &_buffer, const int _start, const int _end)
+{
+    assert((_start > 0 && _end > 0) && "[ByteBuffer::copy] Start and Stop range must be positive");
+    
+    // Resize if necessary
+    if ((std::size_t)(_end - _start) > this->_size) this->resize(_end - _start);
+    this->_buffer.clear();
+
+    int _rem = _buffer.size() - _end;
+    std::copy(_buffer.begin() + _start, _buffer.end() - _rem, this->_buffer.begin());
+}
+
+void Utils::ByteBuffer::merge(ByteBuffer &_buffer)
+{
+    std::size_t remaining = _buffer.getBufferSize() - (this->getBufferSize() - this->position());
+    if (remaining > 0) this->resize(this->getBufferSize() + remaining);
+    this->putBuffer(_buffer.getBuffer());
 }
 
 void Utils::ByteBuffer::resetPosition()
@@ -86,7 +141,7 @@ void Utils::ByteBuffer::putBuffer(unsigned char* const& _data, const int _start,
     try
     {
         this->position(_start);
-        ByteBuffer::checkForOutOfBound(this->_position, _size, this->_size, "ByteBuffer::putBufferFrom");
+        ByteBuffer::checkForOutOfBound(this->_position, _size, this->_size, "ByteBuffer::putBuffer");
 
         for (std::size_t pos = 0; pos < _size; pos++)
         {
@@ -104,6 +159,22 @@ void Utils::ByteBuffer::putBuffer(unsigned char* const& _data, const int _start,
 void Utils::ByteBuffer::putBuffer(unsigned char* const& _data, const std::size_t _size)
 {
     this->putBuffer(_data, this->_position, _size);
+}
+
+void Utils::ByteBuffer::putBuffer(const buffer_t&_buffer)
+{
+    try
+    {
+        ByteBuffer::checkForOutOfBound(this->_position, _buffer.size(), this->_size, "ByteBuffer::putBuffer");
+        std::copy(_buffer.begin(), _buffer.end(), this->_buffer.begin() + this->_position);
+        this->position(this->_position + _buffer.size());
+    }
+    catch(const std::out_of_range& oob)
+    {
+        std::cerr << oob.what() << '\n';
+        exit(EXIT_FAILURE);
+    }
+    
 }
 
 unsigned char Utils::ByteBuffer::get()
@@ -211,6 +282,16 @@ void Utils::ByteBuffer::getBuffer(unsigned char *_data, const std::size_t _size)
     this->getBuffer(_data, this->_position, _size);
 }
 
+const Utils::ByteBuffer::buffer_t &Utils::ByteBuffer::getBuffer()
+{
+    return this->_buffer;
+}
+
+const Utils::ByteBuffer::buffer_t &Utils::ByteBuffer::getBuffer() const
+{
+    return this->_buffer;
+}
+
 bool Utils::ByteBuffer::isEmpty()
 {
     return this->_size == 0;
@@ -234,11 +315,6 @@ void Utils::ByteBuffer::writeToFile(const std::string _filename)
     fclose(fptr);
 
     delete(buffer);
-}
-
-int Utils::ByteBuffer::getCurrentPosition()
-{
-    return this->_position;
 }
 
 void Utils::ByteBuffer::checkForOutOfBound(

@@ -24,6 +24,8 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <algorithm>
+#include <cassert>
 
 namespace Utils
 {
@@ -36,10 +38,13 @@ namespace Utils
      */
     class ByteBuffer
     {
+        private:
+            using buffer_t = std::vector<unsigned char>;
+
         protected:
-            int                        _position; //!< The current position into the buffer
-            std::size_t                _size;     //!< The size of the buffer
-            std::vector<unsigned char> _buffer;   //!< The actual buffer
+            int         _position; //!< The current position into the buffer
+            std::size_t _size;     //!< The size of the buffer
+            buffer_t    _buffer;   //!< The actual buffer
 
         private:
             static void checkForOutOfBound(const int _position, const std::size_t _size, const std::size_t _max, std::string _func);
@@ -51,7 +56,10 @@ namespace Utils
             const static std::size_t INT_SIZE   = 4;
 
             ByteBuffer(const std::size_t _size);
+            ByteBuffer(const ByteBuffer& other);
             ~ByteBuffer() = default;
+
+            ByteBuffer& operator=(const ByteBuffer& other);
 
             /**
              * @brief Set a new position into the buffer
@@ -70,7 +78,52 @@ namespace Utils
              * @brief Returns the total size of the buffer
              * @return The size of the buffer
              */
-            std::size_t getBufferSize() const;
+            const std::size_t& getBufferSize();
+
+            /**
+             * @brief Returns the total size of the buffer
+             * 
+             * This function is called only by const instance of ByteBuffer
+             * 
+             * @return The size of the buffer
+             */
+            const std::size_t& getBufferSize() const;
+
+            /**
+             * @brief "Resize" the current ByteBuffer by changing the actual size
+             * 
+             * @param _size The new size of the ByteBuffer
+             */
+            void resize(const std::size_t _size);
+
+            /**
+             * @brief Copy the input buffer into the ByteBuffer
+             * 
+             * @param _buffer The input buffer to be copied
+             */
+            void copy(const buffer_t& _buffer);
+
+            /**
+             * @brief Copy only a portion of the input buffer starting from a given position.
+             * @param _buffer The input buffer to be copied
+             * @param _start The starting position
+             */
+            void copy(const buffer_t& _buffer, const int _start);
+
+            /**
+             * @brief Copy only a portion of the input buffer given the interval.
+             * 
+             * @param _buffer The input buffer to be copied
+             * @param _start The starting position
+             * @param _end The ending position
+             */
+            void copy(const buffer_t& _buffer, const int _start, const int _end);
+
+            /**
+             * @brief Merge the input ByteBuffer into the current one
+             * @param _buffer The input ByteBuffer
+             */
+            void merge(ByteBuffer& _buffer);
 
             /**
              * @brief Reset the position of the Byte Buffer
@@ -101,7 +154,7 @@ namespace Utils
             /**
              * @brief Put an input buffer into the buffer starting from a given input position
              * 
-             * @param _data A buffer of unisnged char
+             * @param _data A buffer of unsinged char
              * @param _start The starting position inside the Byte Buffer
              * @param _size The total length in bytes of the input unsigned char buffer
              */
@@ -110,10 +163,17 @@ namespace Utils
             /**
              * @brief Put an input buffer into the buffer starting from the current position
              * 
-             * @param _data A buffer of unisnged char
+             * @param _data A buffer of unsinged char
              * @param _size The total length in bytes of the input unsigned char buffer
              */
             void putBuffer(unsigned char* const& _data, const std::size_t _size);
+
+            /**
+             * @brief Put an input buffer (vector of unsigned char) into the ByteBuffer
+             * 
+             * @param _buffer The vector of unsigned char
+             */
+            void putBuffer(const buffer_t& _buffer);
 
             /**
              * @brief Return the unsigned char at the current buffer position
@@ -148,6 +208,24 @@ namespace Utils
             void getBuffer(unsigned char* _data, const std::size_t _size);
 
             /**
+             * @brief Returns the entire buffer in vector format
+             * 
+             * Notice that the returned vector cannot be modified.
+             * 
+             * @return A std::vector of unsigned char
+             */
+            const buffer_t& getBuffer();
+
+            /**
+             * @brief Returns the entire buffer in vector format
+             * 
+             * This function can be called only by const reference to ByteBuffer
+             * 
+             * @return A std::vector of unsigned char
+             */
+            const buffer_t& getBuffer() const;
+
+            /**
              * @brief Check if the Byte Buffer is Empty or not
              * @return A boolean value
              */
@@ -165,12 +243,6 @@ namespace Utils
              * @param filename The name of the file
              */
             void writeToFile(const std::string _filename);
-
-            /**
-             * @brief Get the current position inside the buffer
-             * @return An Integer representing the position
-             */
-            int getCurrentPosition();
     };
 
     typedef std::shared_ptr<ByteBuffer> ByteBuffer_ptr;
