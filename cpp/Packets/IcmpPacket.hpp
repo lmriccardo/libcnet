@@ -4,7 +4,7 @@
  *****   @details Header file                                                       *****
  *****   @name IcmpPacket.hpp                                                       *****
  *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
- *****   @date 08 July 2024 (Mon Jul 12 2024 Last Modification)                     *****
+ *****   @date 08 July 2024 (Mon Jul 13 2024 Last Modification)                     *****
  *****                                                                              *****
  *****   @brief This file contains the creation of Icmp classes for ICMP Packets    ***** 
  *****                                                                              *****
@@ -102,18 +102,6 @@ namespace Packets
     {
         public:
             static const std::size_t size = 0x08; //!< The size of the ICMP Header
-
-            template<typename T>
-            static T cast(const Icmp::Type& __t)
-            {
-                return static_cast<T>(__t);
-            }
-
-            template<typename T>
-            static T cast(const Icmp::Code& __c)
-            {
-                return static_cast<T>(__c);
-            }
 
         private:
             Icmp::Type     _type;     //!< The type of the ICMP Message

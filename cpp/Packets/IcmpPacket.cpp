@@ -92,7 +92,7 @@ Packets::IcmpHeader::IcmpHeader(const Icmp::Type _type, const Icmp::Code _code)
     {
         fprintf(
             stderr, "[IcmpHeader::new] ICMP Header Type %d do not exists!\n", 
-            IcmpHeader::cast<int>(_type)
+            Enum::cast<Icmp::Type, int>(_type)
         );
 
         throw std::runtime_error("[IcmpHeader::new] Error!\n");
@@ -138,8 +138,8 @@ void Packets::IcmpHeader::setGateway(const unsigned int _gateway)
     if (this->_type != Type::REDIRECT)
     {
         fprintf(stderr, "[IcmpHeader::setGateway] To set gateway address ");
-        fprintf(stderr, "an ICMP message of Type %d is required. ", IcmpHeader::cast<int>(Type::REDIRECT));
-        fprintf(stderr, "Current Type is: %d.\n", IcmpHeader::cast<int>(this->_type));
+        fprintf(stderr, "an ICMP message of Type %d is required. ", Enum::cast<Icmp::Type, int>(Type::REDIRECT));
+        fprintf(stderr, "Current Type is: %d.\n", Enum::cast<Icmp::Type, int>(this->_type));
 
         throw std::runtime_error("[IcmpHeader::setGateway] Error!\n");
     }
@@ -166,12 +166,12 @@ void Packets::IcmpHeader::setIdentifier(const unsigned short _id)
 
         fprintf(
             stderr, "an ICMP message of Type %d/%d/%d/%d is required. ", 
-            IcmpHeader::cast<int>(Type::ECHO_REPLY), IcmpHeader::cast<int>(Type::ECHO), 
-            IcmpHeader::cast<int>(Type::INFORMATION_REQUEST), 
-            IcmpHeader::cast<int>(Type::INFORMATION_REPLY)
+            Enum::cast<Icmp::Type, int>(Type::ECHO_REPLY), Enum::cast<Icmp::Type, int>(Type::ECHO), 
+            Enum::cast<Icmp::Type, int>(Type::INFORMATION_REQUEST), 
+            Enum::cast<Icmp::Type, int>(Type::INFORMATION_REPLY)
         );
 
-        fprintf(stderr, "Current Type is: %d.\n", IcmpHeader::cast<int>(this->_type));
+        fprintf(stderr, "Current Type is: %d.\n", Enum::cast<Icmp::Type, int>(this->_type));
 
         throw std::runtime_error("[IcmpHeader::setIdentifier] Error!\n");
     }
@@ -198,12 +198,12 @@ void Packets::IcmpHeader::setSequenceNumber(const unsigned short _sn)
 
         fprintf(
             stderr, "an ICMP message of Type %d/%d/%d/%d is required. ", 
-            IcmpHeader::cast<int>(Type::ECHO_REPLY), IcmpHeader::cast<int>(Type::ECHO), 
-            IcmpHeader::cast<int>(Type::INFORMATION_REQUEST), 
-            IcmpHeader::cast<int>(Type::INFORMATION_REPLY)
+            Enum::cast<Icmp::Type, int>(Type::ECHO_REPLY), Enum::cast<Icmp::Type, int>(Type::ECHO), 
+            Enum::cast<Icmp::Type, int>(Type::INFORMATION_REQUEST), 
+            Enum::cast<Icmp::Type, int>(Type::INFORMATION_REPLY)
         );
 
-        fprintf(stderr, "Current Type is: %d.\n", IcmpHeader::cast<int>(this->_type));
+        fprintf(stderr, "Current Type is: %d.\n", Enum::cast<Icmp::Type, int>(this->_type));
 
         throw std::runtime_error("[IcmpHeader::setIdentifier] Error!\n");
     }
@@ -228,14 +228,14 @@ void Packets::IcmpHeader::setNextHopMtu(const unsigned short _mtu)
 
         fprintf(
             stderr, "an ICMP Message of Type %d and Code %d is required. ",
-            IcmpHeader::cast<int>(Type::DESTINATION_UNREACHABLE),
-            IcmpHeader::cast<int>(Code::FRAGMENTATION_NEEDED)
+            Enum::cast<Icmp::Type, int>(Type::DESTINATION_UNREACHABLE),
+            Enum::cast<Icmp::Code, int>(Code::FRAGMENTATION_NEEDED)
         );
 
         fprintf(
             stderr, "Current Type and Code are: t=%d, c=%d\n", 
-            IcmpHeader::cast<int>(this->_type),
-            IcmpHeader::cast<int>(this->_code)
+            Enum::cast<Icmp::Type, int>(this->_type),
+            Enum::cast<Icmp::Code, int>(this->_code)
         );
         
         throw std::runtime_error("[IcmpHeader::setNextHopMtu] Error!\n");
@@ -252,9 +252,9 @@ unsigned short Packets::IcmpHeader::getNextHopMtu()
 void Packets::IcmpHeader::printInfo()
 {
     std::cout << "[*] Printing Information of the ICMP Header" << std::endl;
-    std::cout << "ICMP Message Type: " << IcmpHeader::cast<unsigned char>(this->_type) << std::endl;
-    std::cout << "ICMP Message Code: " << IcmpHeader::cast<unsigned char>(this->_code) << std::endl;
-    std::cout << "ICMP Checksum : "    << this->_checksum                              << std::endl;
+    std::cout << "ICMP Message Type: " << Enum::cast<Icmp::Type, unsigned char>(this->_type) << std::endl;
+    std::cout << "ICMP Message Code: " << Enum::cast<Icmp::Code, unsigned char>(this->_code) << std::endl;
+    std::cout << "ICMP Checksum : "    << this->_checksum                                    << std::endl;
 
     if (this->_type == Type::REDIRECT)
     {

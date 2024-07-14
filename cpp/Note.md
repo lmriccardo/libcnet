@@ -13,7 +13,7 @@
 
 ### IP Packet
 
-- [ ] Implements IP Packet and IP Header class
+- [?] Implements IP Packet and IP Header class
 
 ### TCP Packet
 
@@ -22,6 +22,7 @@
 ### ICMP Packet
 
 - [?] Implements ICMP Packet and ICMP Header class
+- [ ] Test ICMP Implementation
 
 ### UDP Packet
 

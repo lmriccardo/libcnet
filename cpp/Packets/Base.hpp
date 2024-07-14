@@ -4,7 +4,7 @@
  *****   @details Header file                                                       *****
  *****   @name Base.hpp                                                             *****
  *****   @author Riccardo La Marca (riccardo.lamarca98@gmail.com)                   *****
- *****   @date 08 July 2024 (Mon Jul 12 2024 Last Modification)                     *****
+ *****   @date 08 July 2024 (Mon Jul 14 2024 Last Modification)                     *****
  *****                                                                              *****
  *****   @brief This file contains the creation of bases classes for constructing   *****
  *****   different IP Packets: ICMP, TCP, UDP and IP itself. All the packet header  *****
@@ -21,10 +21,33 @@
 
 #include <iostream>
 #include <arpa/inet.h>
+#include <type_traits>
 #include <Utils/ByteBuffer.hpp>
 
 namespace Packets
 {
+    class Enum
+    {
+        public:
+            template <typename U, typename T, typename = typename std::enable_if<std::is_enum<U>::value>::type>
+            static T cast(const U& __obj)
+            {
+                return static_cast<T>(__obj);
+            }
+
+            template <typename T, typename U, typename = typename std::enable_if<std::is_enum<U>::value>::type>
+            static U cast(const T __val)
+            {
+                return static_cast<U>(__val);
+            }
+    };
+
+    /**
+     * @class PacketHeader
+     * 
+     * The base class for all Packet header. All class inheriting from this class
+     * must implement all methods.
+     */
     class PacketHeader
     {
         public:
@@ -56,6 +79,12 @@ namespace Packets
             virtual void decode(Utils::ByteBuffer& _buffer) = 0;
     };
 
+    /**
+     * @class Packet
+     * 
+     * The base class for actual packets. All class inheriting from this class
+     * must implements all methods.
+     */
     class Packet
     {
         protected:
@@ -76,6 +105,42 @@ namespace Packets
             virtual void encode(Utils::ByteBuffer& _buffer) = 0;
             virtual Utils::ByteBuffer_ptr encode() = 0;
             virtual void decode(Utils::ByteBuffer& _buffer) = 0;
+    };
+
+    /**
+     * @class PseudoHeader
+     * 
+     * This class is used when computing the Checksum for TCP and UDP Packet.
+     * In both cases, some informations must be taken from the IP Packet and
+     * used to compute the checksum.
+     */
+    class PseudoHeader
+    {
+        protected:
+            unsigned int   _srcaddr;   //!< The source address from the IP Packet
+            unsigned int   _dstaddr;   //!< The Destination address from the IP Packet
+            unsigned char  _protocol;  //!< The protocol number from the IP Packet
+            unsigned short _size;      //!< The total size of the underlying packet
+
+        public:
+            PseudoHeader(
+                unsigned int _src, unsigned int _dst, 
+                unsigned char _proto, unsigned short _size
+            ) : _srcaddr(_src), _dstaddr(_dst), _protocol(_proto), _size(_size) {};
+
+            ~PseudoHeader() = default;
+
+            /**
+             * @brief Add to the ByteBuffer the values from the Pseudo Header
+             * @param _buffer The input ByteBuffer
+             */
+            void encode(Utils::ByteBuffer& _buffer)
+            {
+                _buffer.putInt(htonl(this->_srcaddr));
+                _buffer.putInt(htonl(this->_dstaddr));
+                _buffer.put(this->_protocol);
+                _buffer.putShort(htons(this->_size));
+            }
     };
 };
 
